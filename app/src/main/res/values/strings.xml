@@ -1,0 +1,10 @@
+<resources>
+    <string name="facebook_app_id">131584480776960</string>
+    <string name="fb_login_protocol_scheme">fb131584480776960</string>
+    <string name="com.twitter.sdk.android.CONSUMER_KEY">DsQpZuWxVXdNeii1rMy98rjSp</string>
+    <string name="com.twitter.sdk.android.CONSUMER_SECRET">icMqh1zfD9vhs3uRslXaneRMR4zWIHTeXgT4AnB5rqqaCUs3KF</string>
+    <string name="app_name">CastleEvent</string>
+    <string name="ed_text_email">E-mail</string>
+    <string name="ed_text_password">Password</string>
+
+</resources>

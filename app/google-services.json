@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "8001269554",
+    "project_id": "castleeventapp"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:8001269554:android:88041c382b68b4e6",
+        "android_client_info": {
+          "package_name": "com.ipati.dev.castleevent"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "8001269554-dobgskdkmdser5vvotf5nvu03it4viu2.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "8001269554-j43urtg7bgduqs91p08c16815ko5pmfb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ipati.dev.castleevent",
+            "certificate_hash": "f20f7ecdaa3319ca54fa34054eeb3b0d8c966b5e"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCdxPcyGpk1leMfTZmLTkoxWAucFUVVOz0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
