@@ -4,6 +4,7 @@ import android.content.Context
 import android.support.v4.app.FragmentActivity
 import android.util.Log
 import android.widget.Toast
+import com.ipati.dev.castleevent.authCredential.TwitterAuthCredential
 import com.twitter.sdk.android.core.*
 import com.twitter.sdk.android.core.identity.TwitterAuthClient
 
@@ -25,7 +26,7 @@ fun LoginTwitter(activity: FragmentActivity) {
     twitterLoginAuthentication.authorize(activity, object : Callback<TwitterSession>() {
         override fun success(result: Result<TwitterSession>?) {
             if (result != null) {
-                Toast.makeText(activity, result.data.userName, Toast.LENGTH_SHORT).show()
+                TwitterAuthCredential(result.data)
             }
         }
 

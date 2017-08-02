@@ -2,12 +2,14 @@ package com.ipati.dev.castleevent.service
 
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
 import android.support.v4.app.FragmentActivity
 import android.widget.Toast
 import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.auth.api.signin.GoogleSignInResult
 import com.google.android.gms.common.api.GoogleApiClient
+import com.ipati.dev.castleevent.authCredential.GoogleAuthCredential
 
 var SignInGoogle: Int = 1010
     get() = field
@@ -27,9 +29,16 @@ fun GoogleSignInOptionsApi(): GoogleSignInOptions {
 
 fun GoogleApiService(activity: FragmentActivity): GoogleApiClient? {
     val mGoogleApiClient: GoogleApiClient? = GoogleApiClient.Builder(activity)
-            .enableAutoManage(activity) { connectionResult ->
-                Toast.makeText(activity, connectionResult.errorMessage.toString(), Toast.LENGTH_SHORT).show()
-            }
+            .addConnectionCallbacks(object : GoogleApiClient.ConnectionCallbacks {
+                override fun onConnected(p0: Bundle?) {
+
+                }
+
+                override fun onConnectionSuspended(p0: Int) {
+
+                }
+            })
+            .addOnConnectionFailedListener { connectionResult -> Toast.makeText(activity, connectionResult.errorMessage.toString(), Toast.LENGTH_SHORT).show() }
             .addApi(Auth.GOOGLE_SIGN_IN_API, GoogleSignInOptionsApi())
             .build()
 
@@ -37,5 +46,5 @@ fun GoogleApiService(activity: FragmentActivity): GoogleApiClient? {
 }
 
 fun CallbackGoogleSignIn(context: Context, result: GoogleSignInResult) {
-    Toast.makeText(context, result.signInAccount.toString(), Toast.LENGTH_SHORT).show()
+    GoogleAuthCredential(result.signInAccount!!)
 }

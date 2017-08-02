@@ -7,6 +7,7 @@ import com.facebook.FacebookCallback
 import com.facebook.FacebookException
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
+import com.ipati.dev.castleevent.authCredential.FacebookAuthCredential
 import java.util.*
 
 var publicFacebookTag: String = "public_profile"
@@ -23,7 +24,7 @@ fun LoginFacebook(activity: Activity) {
 fun RegisterCallbackFacebook(activity: Activity, callbackManager: CallbackManager): LoginManager {
     loginManager.registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
         override fun onSuccess(result: LoginResult?) {
-            Toast.makeText(activity, result?.accessToken?.token.toString(), Toast.LENGTH_SHORT).show()
+            FacebookAuthCredential(result?.accessToken!!)
         }
 
         override fun onError(error: FacebookException?) {
