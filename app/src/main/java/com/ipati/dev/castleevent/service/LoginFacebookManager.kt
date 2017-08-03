@@ -24,7 +24,7 @@ fun LoginFacebook(activity: Activity) {
 fun RegisterCallbackFacebook(activity: Activity, callbackManager: CallbackManager): LoginManager {
     loginManager.registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
         override fun onSuccess(result: LoginResult?) {
-            FacebookAuthCredential(result?.accessToken!!)
+            FacebookAuthCredential(activity, result?.accessToken!!)
         }
 
         override fun onError(error: FacebookException?) {

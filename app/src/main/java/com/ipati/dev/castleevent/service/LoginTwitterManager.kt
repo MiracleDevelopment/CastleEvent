@@ -26,7 +26,7 @@ fun LoginTwitter(activity: FragmentActivity) {
     twitterLoginAuthentication.authorize(activity, object : Callback<TwitterSession>() {
         override fun success(result: Result<TwitterSession>?) {
             if (result != null) {
-                TwitterAuthCredential(result.data)
+                TwitterAuthCredential(activity, result.data)
             }
         }
 

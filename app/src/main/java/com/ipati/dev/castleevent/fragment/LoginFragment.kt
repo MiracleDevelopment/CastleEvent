@@ -44,7 +44,7 @@ class LoginFragment : StatedFragment(), View.OnClickListener {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
-            SignInGoogle -> CallbackGoogleSignIn(context, Auth.GoogleSignInApi.getSignInResultFromIntent(data))
+            SignInGoogle -> CallbackGoogleSignIn(activity, Auth.GoogleSignInApi.getSignInResultFromIntent(data))
             else -> {
                 callbackManager.onActivityResult(requestCode, resultCode, data)
                 twitterLoginAuthentication.onActivityResult(requestCode, resultCode, data)
@@ -55,14 +55,11 @@ class LoginFragment : StatedFragment(), View.OnClickListener {
     override fun onStart() {
         super.onStart()
         GoogleApiService(activity)?.connect()
-
     }
 
     override fun onStop() {
         super.onStop()
         loginManager.logOut()
-
-        GoogleApiService(activity)?.stopAutoManage(activity)
         GoogleApiService(activity)?.disconnect()
     }
 

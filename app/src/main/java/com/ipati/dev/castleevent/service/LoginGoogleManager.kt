@@ -1,5 +1,6 @@
 package com.ipati.dev.castleevent.service
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -45,6 +46,6 @@ fun GoogleApiService(activity: FragmentActivity): GoogleApiClient? {
     return mGoogleApiClient
 }
 
-fun CallbackGoogleSignIn(context: Context, result: GoogleSignInResult) {
-    GoogleAuthCredential(result.signInAccount!!)
+fun CallbackGoogleSignIn(activity: Activity, result: GoogleSignInResult) {
+    GoogleAuthCredential(activity, result.signInAccount!!)
 }
