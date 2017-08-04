@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.FragmentActivity
+import android.util.Log
 import android.widget.Toast
 import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -39,7 +40,8 @@ fun GoogleApiService(activity: FragmentActivity): GoogleApiClient? {
 
                 }
             })
-            .addOnConnectionFailedListener { connectionResult -> Toast.makeText(activity, connectionResult.errorMessage.toString(), Toast.LENGTH_SHORT).show() }
+            //Todo: Fix This Bug is null
+            .addOnConnectionFailedListener { connectionResult -> Log.d("OnFailed", connectionResult.errorMessage.toString()) }
             .addApi(Auth.GOOGLE_SIGN_IN_API, GoogleSignInOptionsApi())
             .build()
 
