@@ -4,7 +4,7 @@ import android.content.Context
 import android.support.v4.app.FragmentActivity
 import android.util.Log
 import android.widget.Toast
-import com.ipati.dev.castleevent.authCredential.TwitterAuthCredential
+import com.ipati.dev.castleevent.authCredential.twitterAuthCredential
 import com.twitter.sdk.android.core.*
 import com.twitter.sdk.android.core.identity.TwitterAuthClient
 
@@ -12,7 +12,7 @@ var consumerKEY: String? = "CONSUMER_KEY"
 var consumerSecret: String? = "CONSUMER_SECRET"
 var twitterLoginAuthentication: TwitterAuthClient = TwitterAuthClient()
 
-fun TwitterConfig(context: Context) {
+fun twitterConfig(context: Context) {
     val twitterConfig: TwitterConfig = TwitterConfig.Builder(context)
             .logger(DefaultLogger(Log.DEBUG))
             .twitterAuthConfig(TwitterAuthConfig(consumerKEY, consumerSecret))
@@ -22,11 +22,11 @@ fun TwitterConfig(context: Context) {
 
 }
 
-fun LoginTwitter(activity: FragmentActivity) {
+fun loginTwitter(activity: FragmentActivity) {
     twitterLoginAuthentication.authorize(activity, object : Callback<TwitterSession>() {
         override fun success(result: Result<TwitterSession>?) {
             if (result != null) {
-                TwitterAuthCredential(activity, result.data)
+                twitterAuthCredential(activity, result.data)
             }
         }
 

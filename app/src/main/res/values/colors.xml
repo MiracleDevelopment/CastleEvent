@@ -5,4 +5,5 @@
     <color name="colorAccent">#FF4081</color>
     <color name="colorBackgroundResource">#263238</color>
     <color name="colorFontEditText">#000000</color>
+    <color name="colorFontListEvent">#FFFFFF</color>
 </resources>

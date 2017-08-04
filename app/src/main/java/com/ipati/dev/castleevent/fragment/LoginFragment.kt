@@ -17,8 +17,8 @@ class LoginFragment : StatedFragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.im_facebook -> LoginFacebook(activity)
-            R.id.im_twitter -> LoginTwitter(activity)
-            R.id.im_google_plus -> LoginGoogleSignInDialog(activity)
+            R.id.im_twitter -> loginTwitter(activity)
+            R.id.im_google_plus -> loginGoogleSignInDialog(activity)
         }
     }
 
@@ -27,7 +27,7 @@ class LoginFragment : StatedFragment(), View.OnClickListener {
         CallbackManagerFacebook()
         RegisterCallbackFacebook(activity, callbackManager)
         Twitter.initialize(activity)
-        TwitterConfig(context)
+        twitterConfig(context)
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -44,7 +44,7 @@ class LoginFragment : StatedFragment(), View.OnClickListener {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
-            SignInGoogle -> CallbackGoogleSignIn(activity, Auth.GoogleSignInApi.getSignInResultFromIntent(data))
+            SignInGoogle -> callbackGoogleSignIn(activity, Auth.GoogleSignInApi.getSignInResultFromIntent(data))
             else -> {
                 callbackManager.onActivityResult(requestCode, resultCode, data)
                 twitterLoginAuthentication.onActivityResult(requestCode, resultCode, data)
@@ -54,13 +54,13 @@ class LoginFragment : StatedFragment(), View.OnClickListener {
 
     override fun onStart() {
         super.onStart()
-        GoogleApiService(activity)?.connect()
+        googleApiService(activity)?.connect()
     }
 
     override fun onStop() {
         super.onStop()
         loginManager.logOut()
-        GoogleApiService(activity)?.disconnect()
+        googleApiService(activity)?.disconnect()
     }
 
     companion object {

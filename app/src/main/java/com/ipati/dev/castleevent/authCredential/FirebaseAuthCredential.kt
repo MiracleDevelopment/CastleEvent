@@ -14,21 +14,22 @@ import com.twitter.sdk.android.core.TwitterSession
 
 var mAuth: FirebaseAuth = FirebaseAuth.getInstance()
 var listEventListener: ShowListEventFragment? = null
-fun FacebookAuthCredential(loadingListener: LoadingListener?, activity: Activity, token: AccessToken) {
+
+fun facebookAuthCredential(loadingListener: LoadingListener?, activity: Activity, token: AccessToken) {
     val authCredential: AuthCredential = FacebookAuthProvider.getCredential(token.token)
     listEventListener = activity as LoginActivity
 
     mAuth.signInWithCredential(authCredential).addOnCompleteListener(activity, { task ->
         if (task.isSuccessful) {
             val fireBaseUser: FirebaseUser = mAuth.currentUser!!
-            UpdateUserProfile(fireBaseUser, fireBaseUser.displayName, fireBaseUser.photoUrl)
+            updateUserProfile(fireBaseUser, fireBaseUser.displayName, fireBaseUser.photoUrl)
         } else {
             loadingListener?.onHindLoading(false)
         }
     })
 }
 
-fun TwitterAuthCredential(activity: Activity, session: TwitterSession) {
+fun twitterAuthCredential(activity: Activity, session: TwitterSession) {
     val authCredential: AuthCredential = TwitterAuthProvider.getCredential(session.authToken.token, session.authToken.secret)
     mAuth.signInWithCredential(authCredential).addOnCompleteListener(activity, { task ->
         if (task.isSuccessful) {
@@ -37,7 +38,7 @@ fun TwitterAuthCredential(activity: Activity, session: TwitterSession) {
     })
 }
 
-fun GoogleAuthCredential(activity: Activity, account: GoogleSignInAccount) {
+fun googleAuthCredential(activity: Activity, account: GoogleSignInAccount) {
     val authCredential: AuthCredential = GoogleAuthProvider.getCredential(account.idToken, null)
     mAuth.signInWithCredential(authCredential).addOnCompleteListener(activity, { task ->
         if (task.isSuccessful) {
@@ -46,7 +47,7 @@ fun GoogleAuthCredential(activity: Activity, account: GoogleSignInAccount) {
     })
 }
 
-fun UpdateUserProfile(fireBaseUser: FirebaseUser, nameUser: String?, photoUserUrl: Uri?) {
+fun updateUserProfile(fireBaseUser: FirebaseUser, nameUser: String?, photoUserUrl: Uri?) {
     val userProfileUpdate: UserProfileChangeRequest = UserProfileChangeRequest
             .Builder()
             .setDisplayName(nameUser)

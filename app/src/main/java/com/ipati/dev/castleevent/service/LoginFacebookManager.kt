@@ -7,7 +7,7 @@ import com.facebook.FacebookCallback
 import com.facebook.FacebookException
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
-import com.ipati.dev.castleevent.authCredential.FacebookAuthCredential
+import com.ipati.dev.castleevent.authCredential.facebookAuthCredential
 import com.ipati.dev.castleevent.model.LoadingListener
 import java.util.*
 
@@ -31,7 +31,7 @@ fun LoginFacebook(activity: Activity) {
 fun RegisterCallbackFacebook(activity: Activity, callbackManager: CallbackManager): LoginManager {
     loginManager.registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
         override fun onSuccess(result: LoginResult?) {
-            FacebookAuthCredential(loadingListener, activity, result?.accessToken!!)
+            facebookAuthCredential(loadingListener, activity, result?.accessToken!!)
         }
 
         override fun onError(error: FacebookException?) {
