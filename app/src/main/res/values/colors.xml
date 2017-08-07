@@ -6,4 +6,6 @@
     <color name="colorBackgroundResource">#263238</color>
     <color name="colorFontEditText">#000000</color>
     <color name="colorFontListEvent">#FFFFFF</color>
+    <color name="colorBackgroundButtonStatus">#FFFFFF</color>
+    <color name="colorFontStatus">#000000</color>
 </resources>

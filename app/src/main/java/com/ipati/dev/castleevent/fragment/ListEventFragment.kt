@@ -1,5 +1,8 @@
 package com.ipati.dev.castleevent.fragment
 
+import android.arch.lifecycle.LifecycleFragment
+import android.arch.lifecycle.LifecycleRegistry
+import android.arch.lifecycle.LifecycleRegistryOwner
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.DefaultItemAnimator
@@ -8,12 +11,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.ipati.dev.castleevent.R
-import com.ipati.dev.castleevent.adapter.ListEventAdapter
-import com.ipati.dev.castleevent.model.modelListEvent.ItemListEvent
+import com.ipati.dev.castleevent.service.FirebaseService.*
 import kotlinx.android.synthetic.main.activity_list_event_fragment.*
 
-class ListEventFragment : Fragment() {
-    lateinit var listEventAdapter: ListEventAdapter
+class ListEventFragment : Fragment(), LifecycleRegistryOwner {
+    var mRegistry: LifecycleRegistry = LifecycleRegistry(this)
+    lateinit var realTimeDatabaseManager: realTimeDatabaseManager
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        realTimeDatabaseManager = realTimeDatabaseManager(context, lifecycle)
+
+    }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater?.inflate(R.layout.activity_list_event_fragment, container, false)
@@ -28,8 +38,12 @@ class ListEventFragment : Fragment() {
         recycler_list_event.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
         recycler_list_event.itemAnimator = DefaultItemAnimator()
 
-        listEventAdapter = ListEventAdapter()
-        recycler_list_event.adapter = listEventAdapter
+        recycler_list_event.adapter = realTimeDatabaseManager.adapterListEvent
+    }
+
+
+    override fun getLifecycle(): LifecycleRegistry {
+        return this.mRegistry
     }
 
     companion object {

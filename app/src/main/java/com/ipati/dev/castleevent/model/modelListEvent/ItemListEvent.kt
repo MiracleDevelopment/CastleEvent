@@ -1,83 +1,15 @@
 package com.ipati.dev.castleevent.model.modelListEvent
 
-class ItemListEvent {
-    var eventId: String? = null
-        get() = field
-        set(value) {
-            if (value != null) {
-                field = value
-            }
-        }
+data class ItemListEvent(var eventId: String
+                         , var eventName: String
+                         , var categoryName: String
+                         , var accountBank: String
+                         , var eventDescription: String
+                         , var eventLocation: String
+                         , var eventMax: Long
+                         , var eventRest: Long
+                         , var eventStatus: Boolean
+                         , var eventTime: String
+)
 
-    var eventName: String? = null
-        get() = field
-        set(value) {
-            if (value != null) {
-                field = value
-            }
-        }
 
-    var categoryName: String? = null
-        get() = field
-        set(value) {
-            if (value != null) {
-                field = value
-            }
-        }
-
-    var accountBank: String? = null
-        get() = field
-        set(value) {
-            if (value != null) {
-
-            }
-        }
-
-    var eventDiscription: String? = null
-        get() = field
-        set(value) {
-            if (value != null) {
-                field = value
-            }
-        }
-
-    var eventLocation: String? = null
-        get() = field
-        set(value) {
-            if (value != null) {
-                field = value
-            }
-        }
-
-    var eventMax: String? = null
-        get() = field
-        set(value) {
-            if (value != null) {
-                field = value
-            }
-        }
-
-    var eventRest: String? = null
-        get() = field
-        set(value) {
-            if (value != null) {
-                field = value
-            }
-        }
-
-    var eventStatus: Boolean? = null
-        get() = field
-        set(value) {
-            if (value != null) {
-                field = value
-            }
-        }
-
-    var eventTime: Int? = null
-        get() = field
-        set(value) {
-            if (value != null) {
-                field = value
-            }
-        }
-}
