@@ -4,11 +4,13 @@ import android.arch.lifecycle.Lifecycle
 import android.arch.lifecycle.LifecycleObserver
 import android.arch.lifecycle.OnLifecycleEvent
 import android.content.Context
+import android.net.Uri
 import android.util.Log
 import android.widget.Toast
 import com.google.firebase.database.*
 import com.ipati.dev.castleevent.adapter.ListEventAdapter
 import com.ipati.dev.castleevent.model.modelListEvent.ItemListEvent
+import retrofit2.http.Url
 
 class realTimeDatabaseManager(context: Context, lifeCycle: Lifecycle) : LifecycleObserver {
     var tagChild = "eventItem/eventContinue"
@@ -68,6 +70,25 @@ class realTimeDatabaseManager(context: Context, lifeCycle: Lifecycle) : Lifecycl
             }
 
             override fun onChildChanged(p0: DataSnapshot?, p1: String?) {
+                hasMapData = p0?.value as HashMap<*, *>
+                val objectItem: List<ItemListEvent> = arrayItemList.filter { it.eventId == hasMapData!!["eventId"].toString() }
+                listItem = ItemListEvent(
+                        hasMapData!!["eventId"].toString(),
+                        hasMapData!!["eventName"].toString(),
+                        hasMapData!!["eventCover"].toString(),
+                        hasMapData!!["categoryName"].toString(),
+                        hasMapData!!["accountBank"].toString(),
+                        hasMapData!!["eventDescription"].toString(),
+                        hasMapData!!["eventLocation"].toString(),
+                        hasMapData!!["eventMax"] as Long,
+                        hasMapData!!["eventRest"] as Long,
+                        hasMapData!!["eventStatus"] as Boolean,
+                        hasMapData!!["eventTime"].toString()
+                )
+                arrayItemList.remove(objectItem[0])
+                adapterListEvent?.notifyDataSetChanged()
+
+                arrayItemList.add(0, listItem!!)
 
             }
 
@@ -76,7 +97,8 @@ class realTimeDatabaseManager(context: Context, lifeCycle: Lifecycle) : Lifecycl
                 listItem = ItemListEvent(
                         hasMapData!!["eventId"].toString(),
                         hasMapData!!["eventName"].toString(),
-                        hasMapData!!["categoryName"] as String,
+                        hasMapData!!["eventCover"].toString(),
+                        hasMapData!!["categoryName"].toString(),
                         hasMapData!!["accountBank"].toString(),
                         hasMapData!!["eventDescription"].toString(),
                         hasMapData!!["eventLocation"].toString(),
@@ -84,8 +106,8 @@ class realTimeDatabaseManager(context: Context, lifeCycle: Lifecycle) : Lifecycl
                         hasMapData!!["eventRest"] as Long,
                         hasMapData!!["eventStatus"] as Boolean,
                         hasMapData!!["eventTime"].toString()
-
                 )
+
                 Log.d("somethingValue", listItem?.eventName)
                 arrayItemList.add(listItem!!)
                 adapterListEvent?.notifyDataSetChanged()
@@ -93,6 +115,10 @@ class realTimeDatabaseManager(context: Context, lifeCycle: Lifecycle) : Lifecycl
             }
 
             override fun onChildRemoved(p0: DataSnapshot?) {
+                hasMapData = p0?.value as HashMap<*, *>
+                val objectItem: List<ItemListEvent> = arrayItemList.filter { it.eventId == hasMapData!!["eventId"].toString() }
+                adapterListEvent?.notifyDataSetChanged()
+                arrayItemList.remove(objectItem[0])
 
             }
 
