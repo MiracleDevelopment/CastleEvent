@@ -37,10 +37,8 @@ class ListEventAdapter(listItem: ArrayList<ItemListEvent>) : RecyclerView.Adapte
 
             itemView.custom_tv_header_list_event.text = itemList[adapterPosition].eventName
 
-            itemView.custom_tv_location_list_event.text = itemView.resources.getString(R.string.tv_location) +
-                    " " + itemList[adapterPosition].eventLocation
-            itemView.custom_tv_time_list_event.text = itemView.resources.getString(R.string.tv_time) +
-                    " " + itemList[adapterPosition].eventTime
+            itemView.custom_tv_location_list_event.text = itemList[adapterPosition].eventLocation
+            itemView.custom_tv_time_list_event.text = itemList[adapterPosition].eventTime
 
             itemView.custom_tv_people_count_list_event.text = itemView.resources.getString(R.string.tv_count_people) +
                     " " + itemList[adapterPosition].eventMax.toString() +
