@@ -12,6 +12,10 @@
         android:roundIcon="@mipmap/ic_launcher_round_corner"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <meta-data
+            android:name="com.ipati.dev.castleevent.model.Glide.GlideConfig"
+            android:value="AppGlideModule" />
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
