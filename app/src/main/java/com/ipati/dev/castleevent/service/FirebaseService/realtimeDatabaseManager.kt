@@ -113,9 +113,9 @@ class realTimeDatabaseManager(context: Context, lifeCycle: Lifecycle) : Lifecycl
             }
 
             override fun onChildRemoved(p0: DataSnapshot?) {
+                adapterListEvent?.notifyDataSetChanged()
                 hasMapData = p0?.value as HashMap<*, *>
                 val objectItem: List<ItemListEvent> = arrayItemList.filter { it.eventId == hasMapData!!["eventId"].toString() }
-                adapterListEvent?.notifyDataSetChanged()
                 arrayItemList.remove(objectItem[0])
             }
         }
