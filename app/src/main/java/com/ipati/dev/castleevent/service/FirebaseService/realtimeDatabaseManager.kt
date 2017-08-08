@@ -4,13 +4,11 @@ import android.arch.lifecycle.Lifecycle
 import android.arch.lifecycle.LifecycleObserver
 import android.arch.lifecycle.OnLifecycleEvent
 import android.content.Context
-import android.net.Uri
 import android.util.Log
 import android.widget.Toast
 import com.google.firebase.database.*
 import com.ipati.dev.castleevent.adapter.ListEventAdapter
 import com.ipati.dev.castleevent.model.modelListEvent.ItemListEvent
-import retrofit2.http.Url
 
 class realTimeDatabaseManager(context: Context, lifeCycle: Lifecycle) : LifecycleObserver {
     var tagChild = "eventItem/eventContinue"
@@ -119,9 +117,7 @@ class realTimeDatabaseManager(context: Context, lifeCycle: Lifecycle) : Lifecycl
                 val objectItem: List<ItemListEvent> = arrayItemList.filter { it.eventId == hasMapData!!["eventId"].toString() }
                 adapterListEvent?.notifyDataSetChanged()
                 arrayItemList.remove(objectItem[0])
-
             }
-
         }
         return childEvent
     }
