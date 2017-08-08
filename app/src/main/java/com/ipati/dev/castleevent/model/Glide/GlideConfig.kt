@@ -5,6 +5,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.GlideBuilder
 import com.bumptech.glide.Registry
 import com.bumptech.glide.load.DecodeFormat
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.module.AppGlideModule
 import com.bumptech.glide.request.RequestOptions
 
@@ -13,7 +14,7 @@ class GlideConfig : AppGlideModule() {
     var decodeFormat: DecodeFormat = DecodeFormat.PREFER_ARGB_8888
     override fun applyOptions(context: Context?, builder: GlideBuilder?) {
         super.applyOptions(context, builder)
-        val defaultRequestOption: RequestOptions = RequestOptions.formatOf(decodeFormat)
+        val defaultRequestOption: RequestOptions = RequestOptions.formatOf(decodeFormat).diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
         builder?.setDefaultRequestOptions(defaultRequestOption)
     }
 

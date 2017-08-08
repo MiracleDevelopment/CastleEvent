@@ -6,7 +6,7 @@
     <solid android:color="@color/colorBackgroundButtonStatus" />
     <padding
         android:bottom="2dp"
-        android:left="5dp"
+        android:left="2dp"
         android:right="2dp"
         android:top="2dp" />
 </shape>

@@ -13,8 +13,9 @@
 
         <ImageView
             android:id="@+id/custom_im_cover_list_event"
-            android:layout_width="100dp"
-            android:layout_height="120dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_margin="5dp"
             android:adjustViewBounds="true"
             android:src="@mipmap/ic_launcher" />
@@ -28,25 +29,28 @@
                 android:id="@+id/custom_tv_header_list_event"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/circular"
                 android:gravity="start"
                 android:textColor="@color/colorFontListEvent"
-                android:textSize="16sp" />
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/custom_tv_location_list_event"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/circular"
                 android:gravity="start"
                 android:textColor="@color/colorFontListEvent"
-                android:textSize="14sp" />
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/custom_tv_time_list_event"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/circular"
                 android:gravity="start"
                 android:textColor="@color/colorFontListEvent"
-                android:textSize="14sp" />
+                android:textSize="18sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -57,9 +61,10 @@
                     android:id="@+id/custom_tv_people_count_list_event"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/circular"
                     android:gravity="start"
                     android:textColor="@color/colorFontListEvent"
-                    android:textSize="14sp" />
+                    android:textSize="18sp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -72,8 +77,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@drawable/status_background"
+                        android:fontFamily="@font/circular"
+                        android:gravity="center"
                         android:textColor="@color/colorFontStatus"
-                        android:textSize="15sp" />
+                        android:textSize="16sp" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
