@@ -9,8 +9,6 @@ import com.ipati.dev.castleevent.model.OnBackPress
 import com.ipati.dev.castleevent.model.ShowDetailListEvent
 
 class ListEventActivity : AppCompatActivity(), ShowDetailListEvent, OnBackPress {
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list_event)

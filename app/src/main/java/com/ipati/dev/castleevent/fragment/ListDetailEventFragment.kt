@@ -8,26 +8,34 @@ import android.support.v7.app.AppCompatActivity
 
 import android.view.*
 import android.widget.Toast
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
 import com.ipati.dev.castleevent.ListEventActivity
 import com.ipati.dev.castleevent.R
 import com.ipati.dev.castleevent.model.Glide.loadPhotoDetial
 import com.ipati.dev.castleevent.model.LoadingDetailData
 import com.ipati.dev.castleevent.model.OnBackPress
+import com.ipati.dev.castleevent.model.gmsLocation.GooglePlayServiceMapManager
 import com.ipati.dev.castleevent.model.modelListEvent.ItemListEvent
 import com.ipati.dev.castleevent.service.FirebaseService.RealTimeDatabaseDetailManager
 import kotlinx.android.synthetic.main.activity_detail_event_fragment.*
 
-class ListDetailEventFragment : Fragment(), LifecycleRegistryOwner, LoadingDetailData {
+class ListDetailEventFragment : Fragment(), LifecycleRegistryOwner, LoadingDetailData, OnMapReadyCallback {
     var mRegistry: LifecycleRegistry = LifecycleRegistry(this)
+    lateinit var googlePlayServiceMap: GooglePlayServiceMapManager
     lateinit var realTimeDatabaseDetailManager: RealTimeDatabaseDetailManager
     lateinit var bundle: Bundle
     lateinit var eventId: String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
         bundle = arguments
         eventId = bundle.getString(keyObject)
         realTimeDatabaseDetailManager = RealTimeDatabaseDetailManager(context, lifecycle, eventId, this)
+        googlePlayServiceMap = GooglePlayServiceMapManager(activity, lifecycle)
+        googlePlayServiceMap.initialMapFragment().getMapAsync(this)
+
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -36,6 +44,7 @@ class ListDetailEventFragment : Fragment(), LifecycleRegistryOwner, LoadingDetai
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
     }
 
     fun initialToolbar(itemListEvent: ItemListEvent) {
@@ -56,6 +65,10 @@ class ListDetailEventFragment : Fragment(), LifecycleRegistryOwner, LoadingDetai
     fun onBackPressDetailEvent() {
         val onBackPress: OnBackPress = activity as ListEventActivity
         onBackPress.onBackPressFragment()
+    }
+
+    override fun onMapReady(p0: GoogleMap?) {
+        Toast.makeText(context, "Connecting Google Map", Toast.LENGTH_SHORT).show()
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
