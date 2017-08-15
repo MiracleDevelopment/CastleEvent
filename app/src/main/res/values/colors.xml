@@ -4,8 +4,10 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="colorBackgroundResource">#263238</color>
+    <color name="colorBackgroundDetailResource">#FFFFFF</color>
     <color name="colorFontEditText">#000000</color>
     <color name="colorFontListEvent">#FFFFFF</color>
     <color name="colorBackgroundButtonStatus">#FFFFFF</color>
     <color name="colorFontStatus">#000000</color>
+    <color name="colorFontDetail">#000000</color>
 </resources>

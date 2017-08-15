@@ -10,3 +10,8 @@ fun loadPhoto(context: Context, url: String, im: ImageView) {
     val requestOption: RequestOptions = RequestOptions().placeholder(R.mipmap.ic_launcher).override(200, 200)
     Glide.with(context).load(url).apply(requestOption).into(im)
 }
+
+fun loadPhotoDetial(context: Context, url: String, im: ImageView) {
+    val requestOption: RequestOptions = RequestOptions().placeholder(R.mipmap.ic_launcher).override(100, 100)
+    Glide.with(context).load(url).apply(requestOption).into(im)
+}

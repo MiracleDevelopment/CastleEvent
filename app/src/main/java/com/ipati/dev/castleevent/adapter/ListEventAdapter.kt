@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.ipati.dev.castleevent.R
 import com.ipati.dev.castleevent.model.Glide.loadPhoto
+import com.ipati.dev.castleevent.model.ShowDetailListEvent
 import com.ipati.dev.castleevent.model.modelListEvent.ItemListEvent
 import kotlinx.android.synthetic.main.custom_list_event_adapter_layout.view.*
 
@@ -26,9 +27,10 @@ class ListEventAdapter(listItem: ArrayList<ItemListEvent>) : RecyclerView.Adapte
         return ListEventHolder(view)
     }
 
-    class ListEventHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
+    inner class ListEventHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
         override fun onClick(p0: View?) {
-
+            val onShowDetailEvent: ShowDetailListEvent = p0?.context as ShowDetailListEvent
+            onShowDetailEvent.onShowDetailListEvent(itemList[adapterPosition].eventId)
         }
 
         @SuppressLint("SetTextI18n")
@@ -46,10 +48,8 @@ class ListEventAdapter(listItem: ArrayList<ItemListEvent>) : RecyclerView.Adapte
 
             if (itemList[adapterPosition].eventStatus) {
                 itemView.custom_tv_status_list_event.text = itemView.context.resources.getString(R.string.tv_status_open)
-
             } else {
                 itemView.custom_tv_status_list_event.text = itemView.context.resources.getString(R.string.tv_status_close)
-
             }
 
             itemView.setOnClickListener { view -> onClick(view) }

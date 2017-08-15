@@ -10,7 +10,7 @@ import com.google.firebase.database.*
 import com.ipati.dev.castleevent.adapter.ListEventAdapter
 import com.ipati.dev.castleevent.model.modelListEvent.ItemListEvent
 
-class realTimeDatabaseManager(context: Context, lifeCycle: Lifecycle) : LifecycleObserver {
+class RealTimeDatabaseManager(context: Context, lifeCycle: Lifecycle) : LifecycleObserver {
     var tagChild = "eventItem/eventContinue"
     var refDatabase: DatabaseReference = FirebaseDatabase.getInstance().reference
     var refDatabaseChild: DatabaseReference = refDatabase.child(tagChild)
@@ -33,13 +33,13 @@ class realTimeDatabaseManager(context: Context, lifeCycle: Lifecycle) : Lifecycl
     //Todo:Handling Life Cycle
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     fun onStart() {
-        Toast.makeText(mContext, "onStart", Toast.LENGTH_SHORT).show()
+//        Toast.makeText(mContext, "onStart", Toast.LENGTH_SHORT).show()
         registerChildEvent()
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
     fun onStop() {
-        Toast.makeText(mContext, "onStop", Toast.LENGTH_SHORT).show()
+//        Toast.makeText(mContext, "onStop", Toast.LENGTH_SHORT).show()
         removeChildEvent()
     }
 

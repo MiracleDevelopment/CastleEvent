@@ -12,5 +12,6 @@
     <string name="tv_people">คน</string>
     <string name="tv_location">สถานที่:</string>
     <string name="tv_time">เวลา:</string>
+    <string name="detail">รายละเอียด</string>
 
 </resources>

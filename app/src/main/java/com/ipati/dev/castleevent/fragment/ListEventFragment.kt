@@ -1,6 +1,5 @@
 package com.ipati.dev.castleevent.fragment
 
-import android.arch.lifecycle.LifecycleFragment
 import android.arch.lifecycle.LifecycleRegistry
 import android.arch.lifecycle.LifecycleRegistryOwner
 import android.os.Bundle
@@ -16,12 +15,12 @@ import kotlinx.android.synthetic.main.activity_list_event_fragment.*
 
 class ListEventFragment : Fragment(), LifecycleRegistryOwner {
     var mRegistry: LifecycleRegistry = LifecycleRegistry(this)
-    lateinit var realTimeDatabaseManager: realTimeDatabaseManager
+    lateinit var realTimeDatabaseManager: RealTimeDatabaseManager
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        realTimeDatabaseManager = realTimeDatabaseManager(context, lifecycle)
+        realTimeDatabaseManager = RealTimeDatabaseManager(context, lifecycle)
 
     }
 
