@@ -42,6 +42,7 @@ class ListDetailEventFragment : Fragment(), LifecycleRegistryOwner, LoadingDetai
         return inflater?.inflate(R.layout.activity_detail_event_fragment, container, false)
     }
 
+
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 

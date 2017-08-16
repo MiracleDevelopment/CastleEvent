@@ -9,7 +9,7 @@
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="300dp">
+        android:layout_height="256dp">
 
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/collapsingToolbar_detail_event_fragment"
@@ -115,17 +115,19 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="center"
                     android:orientation="horizontal">
 
                     <ImageView
                         android:id="@+id/im_detail_phone_contact"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:adjustViewBounds="true" />
+                        android:adjustViewBounds="true"
+                        android:src="@mipmap/ic_call" />
 
                     <TextView
                         android:id="@+id/tv_detail_number_phone_contact"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/circular"
                         android:gravity="center"
@@ -135,18 +137,20 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="500dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
                     android:orientation="horizontal">
 
                     <ImageView
                         android:id="@+id/im_detail_mail_contact"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:adjustViewBounds="true" />
+                        android:adjustViewBounds="true"
+                        android:src="@mipmap/ic_markunread" />
 
                     <TextView
                         android:id="@+id/tv_detail_mail_description_contact"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/circular"
                         android:gravity="center"
@@ -156,4 +160,11 @@
             </LinearLayout>
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
+
+    <include
+        android:id="@+id/bt_get_tickets"
+        layout="@layout/layout_get_tickets_submit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom" />
 </android.support.design.widget.CoordinatorLayout>

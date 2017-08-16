@@ -11,7 +11,6 @@ import com.google.android.gms.maps.MapFragment
 import com.ipati.dev.castleevent.R
 
 class GooglePlayServiceMapManager(activity: Activity, lifecycle: Lifecycle) : LifecycleObserver {
-
     var mLifecycle: Lifecycle? = null
     var activity: Activity? = null
     var view: Int? = null
@@ -25,6 +24,10 @@ class GooglePlayServiceMapManager(activity: Activity, lifecycle: Lifecycle) : Li
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     fun onStart() {
         initialGoogleApiClient()
+    }
+
+    fun searchPlace(){
+
     }
 
     fun initialGoogleApiClient(): GoogleApiClient {
