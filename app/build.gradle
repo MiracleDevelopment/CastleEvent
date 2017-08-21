@@ -8,7 +8,7 @@ android {
     buildToolsVersion "25.0.3"
     defaultConfig {
         applicationId "com.ipati.dev.castleevent"
-        minSdkVersion 16
+        minSdkVersion 21
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
@@ -44,12 +44,9 @@ dependencies {
     implementation "com.google.android.gms:play-services-maps:$gmsVersion"
 
     implementation 'com.twitter.sdk.android:twitter:3.1.0'
-    implementation 'com.twitter.sdk.android:twitter-mopub:3.1.0'
 
     implementation 'com.inthecheesefactory.thecheeselibrary:stated-fragment-support-v4:0.9.3'
-
     implementation "com.google.android.gms:play-services-auth:$fireBaseVersion"
-    implementation 'com.wang.avi:library:2.1.3'
 
     implementation 'com.github.bumptech.glide:glide:4.0.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.0.0'

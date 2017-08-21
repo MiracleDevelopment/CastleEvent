@@ -14,4 +14,5 @@
     <color name="colorTextGetTickets">#FFFFFF</color>
     <color name="colorTextCredit">#000000</color>
     <color name="colorToolbar">#FFFFFF</color>
+    <color name="colorSelector">#FFFFFF</color>
 </resources>
