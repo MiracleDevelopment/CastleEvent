@@ -30,7 +30,7 @@ class ListEventAdapter(listItem: ArrayList<ItemListEvent>) : RecyclerView.Adapte
     inner class ListEventHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
         override fun onClick(p0: View?) {
             val onShowDetailEvent: ShowDetailListEvent = p0?.context as ShowDetailListEvent
-            onShowDetailEvent.onShowDetailListEvent(itemList[adapterPosition].eventId)
+            onShowDetailEvent.onShowDetailListEvent(itemList[adapterPosition].eventId.toString())
         }
 
         @SuppressLint("SetTextI18n")

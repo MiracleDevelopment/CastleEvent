@@ -4,6 +4,7 @@ import android.arch.lifecycle.Lifecycle
 import android.arch.lifecycle.LifecycleObserver
 import android.arch.lifecycle.OnLifecycleEvent
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import com.google.firebase.database.*
 import com.ipati.dev.castleevent.fragment.ListDetailEventFragment
@@ -21,8 +22,8 @@ class RealTimeDatabaseDetailManager(context: Context, lifecycle: Lifecycle, even
     var itemListEvent: ItemListEvent? = null
         get() = field
 
-    lateinit var mChildEvent: ChildEventListener
     lateinit var hasMapData: HashMap<*, *>
+    lateinit var mChildEvent: ChildEventListener
 
     var realTimeDataDetail: DatabaseReference = FirebaseDatabase.getInstance().reference
     var realTimeDataDetailRef: DatabaseReference = realTimeDataDetail.child("eventItem").child("eventContinue")
@@ -45,7 +46,7 @@ class RealTimeDatabaseDetailManager(context: Context, lifecycle: Lifecycle, even
         realTimeDataDetailRef.removeEventListener(mChildEvent)
     }
 
-    fun onChildEvent(): ChildEventListener {
+    private fun onChildEvent(): ChildEventListener {
         mChildEvent = object : ChildEventListener {
             override fun onCancelled(p0: DatabaseError?) {
                 Toast.makeText(mContext, p0?.message.toString(), Toast.LENGTH_SHORT).show()
@@ -59,13 +60,12 @@ class RealTimeDatabaseDetailManager(context: Context, lifecycle: Lifecycle, even
 
             }
 
-            override fun onChildAdded(p0: DataSnapshot?, p1: String?) {
-                hasMapData = p0?.value as HashMap<*, *>
-                mapEventId = hasMapData["eventId"].toString()
+            override fun onChildAdded(p0: DataSnapshot, p1: String?) {
+                hasMapData = p0.value as HashMap<*, *>
+                mapEventId = (hasMapData["eventId"] as Long).toString()
                 if (mapEventId.equals(mEventId)) {
-                    onItemListDataChange = mListDetailEventFragment as LoadingDetailData
                     itemListEvent = ItemListEvent(
-                            hasMapData["eventId"].toString(),
+                            hasMapData["eventId"] as Long,
                             hasMapData["eventName"].toString(),
                             hasMapData["eventCover"].toString(),
                             hasMapData["eventAdvertise"].toString(),
@@ -79,6 +79,7 @@ class RealTimeDatabaseDetailManager(context: Context, lifecycle: Lifecycle, even
                             hasMapData["eventStatus"] as Boolean,
                             hasMapData["eventTime"].toString()
                     )
+                    onItemListDataChange = mListDetailEventFragment as LoadingDetailData
                     onItemListDataChange?.onLoadingUpdateData(itemListEvent!!)
                 }
             }
@@ -86,7 +87,6 @@ class RealTimeDatabaseDetailManager(context: Context, lifecycle: Lifecycle, even
             override fun onChildRemoved(p0: DataSnapshot?) {
 
             }
-
         }
         return mChildEvent
     }

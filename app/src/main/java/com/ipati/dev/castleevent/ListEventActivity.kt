@@ -1,5 +1,6 @@
 package com.ipati.dev.castleevent
 
+import android.content.res.Configuration
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import com.google.firebase.auth.FirebaseAuth
@@ -21,7 +22,7 @@ class ListEventActivity : AppCompatActivity(), ShowDetailListEvent, OnBackPress 
 
     override fun onShowDetailListEvent(eventId: String) {
         supportFragmentManager.beginTransaction()
-                .add(R.id.frame_list_event_layout
+                .replace(R.id.frame_list_event_layout
                         , ListDetailEventFragment.newInstance(eventId))
                 .commitNow()
     }
@@ -32,6 +33,7 @@ class ListEventActivity : AppCompatActivity(), ShowDetailListEvent, OnBackPress 
                         , ListEventFragment.newInstance("listEvent"))
                 .commitNow()
     }
+
 
     override fun onBackPressed() {
         super.onBackPressed()

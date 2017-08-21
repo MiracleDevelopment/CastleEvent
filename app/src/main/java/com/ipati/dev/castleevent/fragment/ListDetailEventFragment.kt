@@ -2,6 +2,7 @@ package com.ipati.dev.castleevent.fragment
 
 import android.arch.lifecycle.LifecycleRegistry
 import android.arch.lifecycle.LifecycleRegistryOwner
+import android.content.res.Configuration
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
@@ -72,6 +73,8 @@ class ListDetailEventFragment : Fragment(), LifecycleRegistryOwner, LoadingDetai
         val onBackPress: OnBackPress = activity as ListEventActivity
         onBackPress.onBackPressFragment()
     }
+
+
 
     override fun onMapReady(p0: GoogleMap?) {
 

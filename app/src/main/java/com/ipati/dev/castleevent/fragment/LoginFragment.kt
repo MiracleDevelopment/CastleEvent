@@ -59,7 +59,6 @@ class LoginFragment : StatedFragment(), View.OnClickListener {
 
     override fun onStop() {
         super.onStop()
-        loginManager.logOut()
         googleApiService(activity)?.disconnect()
     }
 
