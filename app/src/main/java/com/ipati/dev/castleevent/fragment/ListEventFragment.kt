@@ -33,7 +33,7 @@ class ListEventFragment : Fragment(), LifecycleRegistryOwner {
         initialRecyclerView()
     }
 
-    fun initialRecyclerView() {
+    private fun initialRecyclerView() {
         recycler_list_event.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
         recycler_list_event.itemAnimator = DefaultItemAnimator()
 
@@ -46,10 +46,10 @@ class ListEventFragment : Fragment(), LifecycleRegistryOwner {
     }
 
     companion object {
-        var listEventObject: String = "ListEventFragment"
+        private var listEventObject: String = "ListEventFragment"
         fun newInstance(nameObject: String): ListEventFragment {
-            val listEventFragment: ListEventFragment = ListEventFragment()
-            val bundle: Bundle = Bundle()
+            val listEventFragment = ListEventFragment()
+            val bundle = Bundle()
             bundle.putString(listEventObject, nameObject)
             listEventFragment.arguments = bundle
             return listEventFragment

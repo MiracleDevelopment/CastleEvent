@@ -26,9 +26,6 @@ class GooglePlayServiceMapManager(activity: Activity, lifecycle: Lifecycle) : Li
         initialGoogleApiClient()
     }
 
-    fun searchPlace(){
-
-    }
 
     fun initialGoogleApiClient(): GoogleApiClient {
         val googleApiClient: GoogleApiClient = GoogleApiClient.Builder(activity!!)

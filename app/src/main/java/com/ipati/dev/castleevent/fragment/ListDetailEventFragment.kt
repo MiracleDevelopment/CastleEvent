@@ -12,7 +12,9 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.ipati.dev.castleevent.ListEventActivity
 import com.ipati.dev.castleevent.R
-import com.ipati.dev.castleevent.model.Glide.loadPhotoDetial
+import com.ipati.dev.castleevent.model.Glide.loadLogo
+import com.ipati.dev.castleevent.model.Glide.loadPhotoAdvertise
+import com.ipati.dev.castleevent.model.Glide.loadPhotoDetail
 import com.ipati.dev.castleevent.model.LoadingDetailData
 import com.ipati.dev.castleevent.model.OnBackPress
 import com.ipati.dev.castleevent.model.gmsLocation.GooglePlayServiceMapManager
@@ -31,7 +33,7 @@ class ListDetailEventFragment : Fragment(), LifecycleRegistryOwner, LoadingDetai
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
         bundle = arguments
-        eventId = bundle.getString(keyObject)
+        eventId = bundle.getString(listEventObject)
         realTimeDatabaseDetailManager = RealTimeDatabaseDetailManager(context, lifecycle, eventId, this)
         googlePlayServiceMap = GooglePlayServiceMapManager(activity, lifecycle)
         googlePlayServiceMap.initialMapFragment().getMapAsync(this)
@@ -40,22 +42,25 @@ class ListDetailEventFragment : Fragment(), LifecycleRegistryOwner, LoadingDetai
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater?.inflate(R.layout.activity_detail_event_fragment, container, false)
+
     }
 
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        card_view_get_tickets.setOnClickListener { Toast.makeText(context, "Buy", Toast.LENGTH_SHORT).show() }
     }
 
-    fun initialToolbar(itemListEvent: ItemListEvent) {
+    private fun initialToolbar(itemListEvent: ItemListEvent) {
         (activity as AppCompatActivity).setSupportActionBar(toolbar_detail_event_fragment)
         (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
         toolbar_detail_event_fragment.title = itemListEvent.eventName
     }
 
-    fun initialDetailEvent(itemListEvent: ItemListEvent) {
-        loadPhotoDetial(context, itemListEvent.eventCover, im_detail_cover)
+    private fun initialDetailEvent(itemListEvent: ItemListEvent) {
+        loadPhotoDetail(context, itemListEvent.eventCover, im_detail_cover)
+        loadPhotoAdvertise(context, itemListEvent.eventAdvertise, im_advertise_detail)
+        loadLogo(context, itemListEvent.eventLogoCredit, im_logo_credit_detail)
         tv_detail_time.text = itemListEvent.eventTime
         tv_detail_location.text = itemListEvent.eventLocation
         tv_detail_description.text = itemListEvent.eventDescription
@@ -63,13 +68,13 @@ class ListDetailEventFragment : Fragment(), LifecycleRegistryOwner, LoadingDetai
         tv_detail_mail_description_contact.text = "admin@contact.co.th"
     }
 
-    fun onBackPressDetailEvent() {
+    private fun onBackPressDetailEvent() {
         val onBackPress: OnBackPress = activity as ListEventActivity
         onBackPress.onBackPressFragment()
     }
 
     override fun onMapReady(p0: GoogleMap?) {
-        Toast.makeText(context, "Connecting Google Map", Toast.LENGTH_SHORT).show()
+
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
@@ -91,11 +96,11 @@ class ListDetailEventFragment : Fragment(), LifecycleRegistryOwner, LoadingDetai
     }
 
     companion object {
-        var keyObject: String = "ListDetailEventFragment"
+        var listEventObject: String = "ListDetailEventFragment"
         fun newInstance(nameObject: String): ListDetailEventFragment {
-            val listDetailEventFragment: ListDetailEventFragment = ListDetailEventFragment()
-            val bundle: Bundle = Bundle()
-            bundle.putString(keyObject, nameObject)
+            val listDetailEventFragment = ListDetailEventFragment()
+            val bundle = Bundle()
+            bundle.putString(listEventObject, nameObject)
             listDetailEventFragment.arguments = bundle
             return listDetailEventFragment
         }

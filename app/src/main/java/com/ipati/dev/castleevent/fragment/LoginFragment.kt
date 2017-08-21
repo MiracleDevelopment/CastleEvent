@@ -64,11 +64,11 @@ class LoginFragment : StatedFragment(), View.OnClickListener {
     }
 
     companion object {
-        var LoginFragmentKey: String = "LoginActivity"
+        private var listEventObject: String = "LoginActivity"
         fun newInstance(Object: String): LoginFragment {
-            val loginFragment: LoginFragment = LoginFragment()
-            val bundle: Bundle = Bundle()
-            bundle.putString(LoginFragmentKey, Object)
+            val loginFragment = LoginFragment()
+            val bundle = Bundle()
+            bundle.putString(listEventObject, Object)
             loginFragment.arguments = bundle
             return loginFragment
         }

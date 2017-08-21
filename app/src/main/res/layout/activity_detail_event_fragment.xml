@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackgroundDetailResource"
+    android:orientation="vertical"
     tools:context="com.ipati.dev.castleevent.fragment.ListDetailEventFragment">
 
     <android.support.design.widget.AppBarLayout
@@ -17,6 +18,7 @@
             android:layout_height="match_parent"
             app:collapsedTitleGravity="center_vertical"
             app:collapsedTitleTextAppearance="@style/CollapsingAppBar"
+
             app:expandedTitleTextAppearance="@style/ExpandCollapsingAppBar"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
@@ -38,19 +40,20 @@
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
             </android.support.v7.widget.Toolbar>
-
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:clipToPadding="false"
         android:fillViewport="true"
+        android:paddingBottom="70dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
             <LinearLayout
@@ -84,6 +87,12 @@
 
             </FrameLayout>
 
+            <ImageView
+                android:id="@+id/im_advertise_detail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp" />
+
             <TextView
                 android:id="@+id/detail_header"
                 android:layout_width="wrap_content"
@@ -106,6 +115,36 @@
                 android:paddingStart="5dp"
                 android:textColor="@color/colorFontDetail"
                 android:textSize="20sp" />
+
+            <ImageView
+                android:id="@+id/im_logo_credit_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:adjustViewBounds="true"
+                android:src="@mipmap/ic_launcher" />
+
+            <TextView
+                android:id="@+id/tv_credit_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/circular"
+                android:text="@string/tv_example_credit"
+                android:textColor="@color/colorTextCredit"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/tv_credit_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/circular"
+                android:text="@string/tv_header_contact"
+                android:textColor="@color/colorTextCredit"
+                android:textSize="22sp"
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -156,15 +195,26 @@
                         android:gravity="center"
                         android:textColor="@color/colorFontDetail"
                         android:textSize="18sp" />
+
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 
-    <include
-        android:id="@+id/bt_get_tickets"
-        layout="@layout/layout_get_tickets_submit"
+    <android.support.v7.widget.CardView
+        android:id="@+id/card_view_get_tickets"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom" />
+        android:layout_gravity="bottom"
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
+
+        <include
+            android:id="@+id/bt_get_tickets"
+            layout="@layout/layout_get_tickets_submit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </android.support.v7.widget.CardView>
 </android.support.design.widget.CoordinatorLayout>

@@ -8,6 +8,8 @@
     <string name="ed_text_password">Password</string>
     <string name="tv_price_start">STARTING FROM ฿2,000.00</string>
     <string name="tv_get_tickets">GET TICKETS</string>
+    <string name="tv_example_credit">Thai Best Shopping 2017</string>
+    <string name="tv_header_contact">Contact</string>
     <string name="tv_status_open">เปิด</string>
     <string name="tv_status_close">ปิด</string>
     <string name="tv_count_people">จำนวน</string>

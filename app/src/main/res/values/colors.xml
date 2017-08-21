@@ -12,4 +12,5 @@
     <color name="colorFontDetail">#000000</color>
     <color name="colorBarTickets">#263238</color>
     <color name="colorTextGetTickets">#FFFFFF</color>
+    <color name="colorTextCredit">#000000</color>
 </resources>

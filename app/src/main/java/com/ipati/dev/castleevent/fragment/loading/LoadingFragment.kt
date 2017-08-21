@@ -29,8 +29,8 @@ class LoadingFragment : Fragment() {
     companion object {
         var loadingFragmentBundle: String = "LoadingFragment"
         fun newInstance(status: Boolean): LoadingFragment {
-            val loadingFragment: LoadingFragment = LoadingFragment()
-            val bundle: Bundle = Bundle()
+            val loadingFragment = LoadingFragment()
+            val bundle = Bundle()
             bundle.putBoolean(loadingFragmentBundle, status)
             loadingFragment.arguments = bundle
             return loadingFragment
