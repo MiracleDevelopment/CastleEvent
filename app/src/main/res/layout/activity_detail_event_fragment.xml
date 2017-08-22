@@ -91,7 +91,8 @@
                 android:id="@+id/im_advertise_detail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp" />
+                android:adjustViewBounds="true"
+                android:padding="25dp" />
 
             <TextView
                 android:id="@+id/detail_header"

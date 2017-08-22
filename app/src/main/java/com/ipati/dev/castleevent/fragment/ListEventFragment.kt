@@ -19,12 +19,10 @@ import kotlinx.android.synthetic.main.activity_list_event_fragment.*
 class ListEventFragment : Fragment(), LifecycleRegistryOwner {
     private var mRegistry: LifecycleRegistry = LifecycleRegistry(this)
     private lateinit var realTimeDatabaseManager: RealTimeDatabaseManager
-    private lateinit var actionBarDrawerToggle: ActionBarDrawerToggle
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         realTimeDatabaseManager = RealTimeDatabaseManager(context, lifecycle)
         activity.invalidateOptionsMenu()
-        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -33,18 +31,7 @@ class ListEventFragment : Fragment(), LifecycleRegistryOwner {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initialToolbar()
         initialRecyclerView()
-    }
-
-    private fun initialToolbar() {
-        (activity as AppCompatActivity).setSupportActionBar(toolbar_list_event_fragment)
-        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        (activity as AppCompatActivity).supportActionBar?.setDisplayShowHomeEnabled(true)
-
-        actionBarDrawerToggle = ActionBarDrawerToggle(activity, drawer_list_event_fragment, toolbar_list_event_fragment, R.string.open_drawer_layout, R.string.close_drawer_layout)
-        drawer_list_event_fragment.addDrawerListener(actionBarDrawerToggle)
-
     }
 
     private fun initialRecyclerView() {
@@ -52,17 +39,6 @@ class ListEventFragment : Fragment(), LifecycleRegistryOwner {
         recycler_list_event.itemAnimator = DefaultItemAnimator()
         recycler_list_event.adapter = realTimeDatabaseManager.adapterListEvent
     }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        actionBarDrawerToggle.syncState()
-    }
-
-    override fun onConfigurationChanged(newConfig: Configuration?) {
-        super.onConfigurationChanged(newConfig)
-        actionBarDrawerToggle.onConfigurationChanged(newConfig)
-    }
-
 
     override fun getLifecycle(): LifecycleRegistry {
         return this.mRegistry

@@ -12,11 +12,11 @@ import com.ipati.dev.castleevent.model.LoadingDetailData
 import com.ipati.dev.castleevent.model.modelListEvent.ItemListEvent
 
 
-class RealTimeDatabaseDetailManager(context: Context, lifecycle: Lifecycle, eventId: String, listDetailEventFragment: ListDetailEventFragment) : LifecycleObserver {
+class RealTimeDatabaseDetailManager(context: Context, lifecycle: Lifecycle, eventId: Long, listDetailEventFragment: ListDetailEventFragment) : LifecycleObserver {
     var mContext: Context? = null
     var mLifecycle: Lifecycle? = null
-    var mEventId: String? = null
-    var mapEventId: String? = null
+    var mEventId: Long? = null
+    var mapEventId: Long? = null
     var mListDetailEventFragment: ListDetailEventFragment? = null
     var onItemListDataChange: LoadingDetailData? = null
     var itemListEvent: ItemListEvent? = null
@@ -25,8 +25,8 @@ class RealTimeDatabaseDetailManager(context: Context, lifecycle: Lifecycle, even
     lateinit var hasMapData: HashMap<*, *>
     lateinit var mChildEvent: ChildEventListener
 
-    var realTimeDataDetail: DatabaseReference = FirebaseDatabase.getInstance().reference
-    var realTimeDataDetailRef: DatabaseReference = realTimeDataDetail.child("eventItem").child("eventContinue")
+    private var realTimeDataDetail: DatabaseReference = FirebaseDatabase.getInstance().reference
+    private var realTimeDataDetailRef: DatabaseReference = realTimeDataDetail.child("eventItem").child("eventContinue")
 
     init {
         mEventId = eventId
@@ -62,8 +62,8 @@ class RealTimeDatabaseDetailManager(context: Context, lifecycle: Lifecycle, even
 
             override fun onChildAdded(p0: DataSnapshot, p1: String?) {
                 hasMapData = p0.value as HashMap<*, *>
-                mapEventId = (hasMapData["eventId"] as Long).toString()
-                if (mapEventId.equals(mEventId)) {
+                mapEventId = (hasMapData["eventId"] as Long)
+                if (mapEventId!! == mEventId) {
                     itemListEvent = ItemListEvent(
                             hasMapData["eventId"] as Long,
                             hasMapData["eventName"].toString(),

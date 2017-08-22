@@ -16,7 +16,6 @@ class LoginActivity : AppCompatActivity(), LoadingListener, ShowListEventFragmen
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         supportFragmentManager.beginTransaction().replace(R.id.frame_login_fragment
                 , LoginFragment.newInstance("LoginFragment")).commitNow()
 
@@ -34,7 +33,7 @@ class LoginActivity : AppCompatActivity(), LoadingListener, ShowListEventFragmen
     }
 
     override fun onShowListFragment() {
-        val listEventIntent: Intent = Intent(applicationContext, ListEventActivity::class.java)
+        val listEventIntent = Intent(applicationContext, ListEventActivity::class.java)
         startActivity(listEventIntent)
     }
 

@@ -12,14 +12,7 @@ interface ShowListEventFragment {
     fun onShowListFragment()
 }
 
-interface ShowDetailListEvent {
-    fun onShowDetailListEvent(eventId: String)
-}
 
 interface LoadingDetailData {
     fun onLoadingUpdateData(itemListEvent: ItemListEvent)
-}
-
-interface OnBackPress {
-    fun onBackPressFragment()
 }

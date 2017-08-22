@@ -11,7 +11,7 @@ import com.bumptech.glide.request.RequestOptions
 
 
 class GlideConfig : AppGlideModule() {
-    var decodeFormat: DecodeFormat = DecodeFormat.PREFER_ARGB_8888
+    private var decodeFormat: DecodeFormat = DecodeFormat.PREFER_ARGB_8888
     override fun applyOptions(context: Context?, builder: GlideBuilder?) {
         super.applyOptions(context, builder)
         val defaultRequestOption: RequestOptions = RequestOptions.formatOf(decodeFormat).diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
