@@ -51,7 +51,7 @@
         android:layout_width="256dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="@color/colorToolbar"
+        android:background="#263238"
         android:clickable="false"
         android:orientation="vertical">
 
@@ -62,10 +62,11 @@
 
             <ImageView
                 android:id="@+id/im_profile_user_list_event"
-                android:layout_width="200dp"
-                android:layout_height="200dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:adjustViewBounds="true"
+                android:padding="10dp"
                 android:src="@mipmap/ic_launcher" />
 
             <TextView
@@ -74,8 +75,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:fontFamily="@font/circular"
-                android:text="Patipan Injai"
-                android:textColor="#000"
+                android:textColor="@color/colorMenuList"
                 android:textSize="20sp" />
 
             <TextView
@@ -84,8 +84,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:fontFamily="@font/circular"
-                android:text="i.patipan2539@gmail.com"
-                android:textColor="#000"
+                android:textColor="@color/colorMenuList"
                 android:textSize="18sp" />
 
             <TextView
@@ -97,7 +96,7 @@
                 android:paddingTop="10dp"
                 android:text="MenuList"
                 android:textColor="@color/colorMenuList"
-                android:textSize="30sp"
+                android:textSize="25sp"
                 android:textStyle="bold" />
 
             <android.support.v7.widget.RecyclerView
@@ -108,6 +107,132 @@
 
             </android.support.v7.widget.RecyclerView>
 
+            <TextView
+                android:id="@+id/tv_header_setting"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/circular"
+                android:gravity="center"
+                android:text="Setting"
+                android:textColor="@color/colorMenuList"
+                android:textSize="25sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/circular"
+                    android:text="Language"
+                    android:textColor="@color/colorMenuList"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/language_thai"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/circular"
+                    android:text="Thai"
+                    android:textColor="@color/colorMenuList"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <Switch
+                    android:id="@+id/switch_language_thai"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/language_english"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/circular"
+                    android:text="English(US)"
+                    android:textColor="@color/colorMenuList"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingTop="5dp">
+
+                <TextView
+                    android:id="@+id/tv_header_notification"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/circular"
+                    android:text="Notification"
+                    android:textColor="@color/colorMenuList"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_close_notification"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/circular"
+                    android:text="ปิด  "
+                    android:textColor="@color/colorMenuList"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <Switch
+                    android:id="@+id/switch_notification"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/tv_open_notification"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/circular"
+                    android:text="เปิด"
+                    android:textColor="@color/colorMenuList"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="bottom"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_logout_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:fontFamily="@font/circular"
+                    android:gravity="center|bottom"
+                    android:padding="5dp"
+                    android:text="LogOut"
+                    android:textColor="@color/colorMenuList"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 </android.support.v4.widget.DrawerLayout>
