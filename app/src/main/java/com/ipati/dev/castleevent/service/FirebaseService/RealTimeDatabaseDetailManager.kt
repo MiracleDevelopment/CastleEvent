@@ -13,10 +13,10 @@ import com.ipati.dev.castleevent.model.modelListEvent.ItemListEvent
 
 
 class RealTimeDatabaseDetailManager(context: Context, lifecycle: Lifecycle, eventId: Long, listDetailEventFragment: ListDetailEventFragment) : LifecycleObserver {
-    var mContext: Context? = null
-    var mLifecycle: Lifecycle? = null
-    var mEventId: Long? = null
-    var mapEventId: Long? = null
+    private var mContext: Context? = null
+    private var mLifecycle: Lifecycle? = null
+    private var mEventId: Long? = null
+    private var mapEventId: Long? = null
     var mListDetailEventFragment: ListDetailEventFragment? = null
     var onItemListDataChange: LoadingDetailData? = null
     var itemListEvent: ItemListEvent? = null

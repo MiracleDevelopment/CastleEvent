@@ -5,6 +5,7 @@
     android:id="@+id/drawer_list_event"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorBackgroundResource"
     android:orientation="vertical"
     tools:context="com.ipati.dev.castleevent.ListEventActivity">
 
@@ -15,26 +16,34 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar_list_event"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
+                android:background="@color/colorBackgroundResource"
                 android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
+
             </android.support.v7.widget.Toolbar>
 
-            <FrameLayout
-                android:id="@+id/frame_list_event_layout"
+            <View
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="1dp"
+                android:background="@color/colorToolbar" />
 
-            </FrameLayout>
         </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/frame_list_event_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </FrameLayout>
+
     </LinearLayout>
 
     <LinearLayout
@@ -43,7 +52,62 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:background="@color/colorToolbar"
+        android:clickable="false"
         android:orientation="vertical">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/im_profile_user_list_event"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center_horizontal"
+                android:adjustViewBounds="true"
+                android:src="@mipmap/ic_launcher" />
+
+            <TextView
+                android:id="@+id/tv_name_user_list_event"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:fontFamily="@font/circular"
+                android:text="Patipan Injai"
+                android:textColor="#000"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/email_user_list_event"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:fontFamily="@font/circular"
+                android:text="i.patipan2539@gmail.com"
+                android:textColor="#000"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/header_menu_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/circular"
+                android:gravity="center"
+                android:paddingTop="10dp"
+                android:text="MenuList"
+                android:textColor="@color/colorMenuList"
+                android:textSize="30sp"
+                android:textStyle="bold" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_list_view_menu_list_event"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal">
+
+            </android.support.v7.widget.RecyclerView>
+
+        </LinearLayout>
     </LinearLayout>
 </android.support.v4.widget.DrawerLayout>

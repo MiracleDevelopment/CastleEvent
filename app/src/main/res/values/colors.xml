@@ -15,4 +15,5 @@
     <color name="colorTextCredit">#000000</color>
     <color name="colorToolbar">#FFFFFF</color>
     <color name="colorSelector">#FFFFFF</color>
+    <color name="colorMenuList">#000000</color>
 </resources>
