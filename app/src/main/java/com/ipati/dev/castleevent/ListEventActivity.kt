@@ -11,7 +11,6 @@ import android.support.v7.app.AlertDialog
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
-import android.widget.CompoundButton
 import com.google.firebase.auth.FirebaseAuth
 import com.ipati.dev.castleevent.fragment.ListEventFragment
 import com.ipati.dev.castleevent.model.Glide.loadPhotoProfileUser
@@ -19,6 +18,7 @@ import com.ipati.dev.castleevent.model.userManage.email
 import com.ipati.dev.castleevent.model.userManage.photoUrl
 import com.ipati.dev.castleevent.model.userManage.username
 import com.ipati.dev.castleevent.service.FirebaseService.RealTimeDatabaseMenuListItem
+import com.ipati.dev.castleevent.utill.SharePreferenceManager
 import kotlinx.android.synthetic.main.activity_list_event.*
 
 class ListEventActivity : AppCompatActivity(), LifecycleRegistryOwner, View.OnClickListener {
@@ -26,6 +26,7 @@ class ListEventActivity : AppCompatActivity(), LifecycleRegistryOwner, View.OnCl
     private lateinit var realTimeDatabaseMenuList: RealTimeDatabaseMenuListItem
     private lateinit var mAlertDialog: AlertDialog.Builder
     private lateinit var dialog: Dialog
+    private lateinit var sharePreferenceManager: SharePreferenceManager
     private var mLifeCycleRegistry: LifecycleRegistry = LifecycleRegistry(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,10 +34,13 @@ class ListEventActivity : AppCompatActivity(), LifecycleRegistryOwner, View.OnCl
         setContentView(R.layout.activity_list_event)
         setSupportActionBar(toolbar_list_event)
         realTimeDatabaseMenuList = RealTimeDatabaseMenuListItem(context = applicationContext, lifecycle = lifecycle)
+        sharePreferenceManager = SharePreferenceManager(context = applicationContext)
+
         initialToolbar()
         initialListItemMenu()
         initialLogOutButton()
         initialDefaultSetting()
+
         supportFragmentManager.beginTransaction()
                 .replace(R.id.frame_list_event_layout
                         , ListEventFragment.newInstance("listEvent"))
@@ -57,7 +61,6 @@ class ListEventActivity : AppCompatActivity(), LifecycleRegistryOwner, View.OnCl
 
         recycler_list_view_menu_list_event.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         recycler_list_view_menu_list_event.itemAnimator = DefaultItemAnimator()
-
         recycler_list_view_menu_list_event.adapter = realTimeDatabaseMenuList.adapterListItemMenu
 
 
@@ -68,12 +71,30 @@ class ListEventActivity : AppCompatActivity(), LifecycleRegistryOwner, View.OnCl
     }
 
     private fun initialDefaultSetting() {
-        switch_notification.isChecked = true
-        switch_language_thai.isChecked = true
+        switch_notification.isChecked = sharePreferenceManager.defaultSharePreferenceNotificationManager()
+        switch_language_thai.isChecked = sharePreferenceManager.defaultSharePreferenceLanguageManager()
 
-        switch_notification.setOnCheckedChangeListener { compoundButton, b ->
-            compoundButton.isChecked
+        switch_notification.setOnCheckedChangeListener { compoundButton, i ->
+            if (i) {
+                sharePreferenceManager.sharePreferenceNotificationManager(i)
+                compoundButton.isChecked = i
+            } else {
+                sharePreferenceManager.sharePreferenceNotificationManager(i)
+                compoundButton.isChecked = i
+            }
         }
+
+
+        switch_language_thai.setOnCheckedChangeListener { compoundButton, i ->
+            if (i) {
+                sharePreferenceManager.sharePreferenceLanguageManager(i)
+                compoundButton.isChecked = i
+            } else {
+                sharePreferenceManager.sharePreferenceLanguageManager(i)
+                compoundButton.isChecked = i
+            }
+        }
+
     }
 
     private fun alertDialogExit(): Dialog {
@@ -118,7 +139,6 @@ class ListEventActivity : AppCompatActivity(), LifecycleRegistryOwner, View.OnCl
 
     override fun onBackPressed() {
         super.onBackPressed()
-        FirebaseAuth.getInstance().signOut()
-        finish()
+        alertDialogExit().show()
     }
 }
