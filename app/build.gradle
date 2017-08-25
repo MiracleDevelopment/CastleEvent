@@ -22,8 +22,8 @@ android {
     }
 }
 
-def fireBaseVersion = "11.0.4"
-def gmsVersion = "11.0.4"
+def fireBaseVersion = "11.2.0"
+def gmsVersion = "11.2.0"
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
@@ -32,29 +32,50 @@ dependencies {
     })
 
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
-    implementation "com.google.firebase:firebase-database:$fireBaseVersion"
-    implementation "com.google.firebase:firebase-auth:$fireBaseVersion"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
-    implementation 'com.android.support:appcompat-v7:26.0.1'
-    implementation 'com.android.support:design:26.0.1'
+
+    implementation('com.android.support:appcompat-v7:26.0.1') {
+        exclude group: 'com.android.support', module: 'animated-vector-drawable'
+    }
+
+    implementation('com.android.support:design:26.0.1') {
+        exclude group: 'com.android.support', module: 'animated-vector-drawable'
+    }
+    implementation("com.google.firebase:firebase-database:$fireBaseVersion") {
+        exclude group: 'com.google.android.gms', module: 'play-services-basement'
+    }
+
+    implementation("com.google.firebase:firebase-auth:$fireBaseVersion") {
+        exclude group: 'com.google.android.gms', module: 'play-services-location'
+    }
+
     implementation 'com.facebook.android:facebook-android-sdk:4.25.0'
 
-    implementation "com.google.android.gms:play-services-places:$gmsVersion"
-    implementation "com.google.android.gms:play-services-location:$gmsVersion"
-    implementation "com.google.android.gms:play-services-maps:$gmsVersion"
+    implementation("com.google.android.gms:play-services-location:$gmsVersion") {
+        exclude group: 'com.google.android.gms', module: 'play-services-base'
+    }
+
+    implementation("com.google.android.gms:play-services-maps:$gmsVersion") {
+        exclude group: 'com.google.android.gms', module: 'play-services-base'
+    }
+
 
     implementation 'com.twitter.sdk.android:twitter:3.1.0'
+    implementation("com.google.android.gms:play-services-auth:$fireBaseVersion") {
+        exclude group: 'com.google.android.gms', module: 'play-services-location'
+    }
 
-    implementation 'com.inthecheesefactory.thecheeselibrary:stated-fragment-support-v4:0.9.3'
-    implementation "com.google.android.gms:play-services-auth:$fireBaseVersion"
 
     implementation 'com.github.bumptech.glide:glide:4.0.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.0.0'
 
-    implementation 'android.arch.lifecycle:runtime:1.0.0-alpha8'
-    implementation 'android.arch.lifecycle:extensions:1.0.0-alpha8'
+
+    implementation 'android.arch.lifecycle:runtime:1.0.0-alpha9'
+    implementation 'android.arch.lifecycle:extensions:1.0.0-alpha9'
     testCompile 'junit:junit:4.12'
-    annotationProcessor 'android.arch.lifecycle:compiler:1.0.0-alpha8'
+    annotationProcessor 'android.arch.lifecycle:compiler:1.0.0-alpha9'
+
+
 }
 apply plugin: 'com.google.gms.google-services'
 

@@ -2,6 +2,7 @@ package com.ipati.dev.castleevent.model.Glide
 
 import android.content.Context
 import android.media.Image
+import android.net.Uri
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -34,4 +35,9 @@ fun loadPhotoProfileUser(context: Context, url: String?, im: ImageView) {
             .transform(CircleCrop()).override(350, 350)
 
     Glide.with(context).load(url).apply(requestOption).into(im)
+}
+
+fun loadPhotoItemMenu(context: Context, resource: Int, im: ImageView) {
+    val requestOption: RequestOptions = RequestOptions().placeholder(R.mipmap.ic_launcher).override(50, 50)
+    Glide.with(context).load(resource).apply(requestOption).into(im)
 }

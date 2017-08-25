@@ -19,5 +19,6 @@
     <string name="detail">รายละเอียด</string>
     <string name="open_drawer_layout">ปิด</string>
     <string name="close_drawer_layout">เปิด</string>
+    <string name="LoginReSource">ล๊อคอิน</string>
 
 </resources>

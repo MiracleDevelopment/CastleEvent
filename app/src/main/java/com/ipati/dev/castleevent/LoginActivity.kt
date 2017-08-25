@@ -4,8 +4,6 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import com.inthecheesefactory.thecheeselibrary.fragment.support.v4.app.bus.ActivityResultBus
-import com.inthecheesefactory.thecheeselibrary.fragment.support.v4.app.bus.ActivityResultEvent
 import com.ipati.dev.castleevent.fragment.loading.LoadingFragment
 import com.ipati.dev.castleevent.fragment.LoginFragment
 import com.ipati.dev.castleevent.model.LoadingListener
@@ -37,11 +35,8 @@ class LoginActivity : AppCompatActivity(), LoadingListener, ShowListEventFragmen
         startActivity(listEventIntent)
     }
 
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        ActivityResultBus.getInstance().postQueue(ActivityResultEvent(requestCode, resultCode, data))
     }
-
 
 }

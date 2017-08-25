@@ -1,5 +1,6 @@
 package com.ipati.dev.castleevent.service.FirebaseService
 
+import android.app.Activity
 import android.arch.lifecycle.Lifecycle
 import android.arch.lifecycle.LifecycleObserver
 import android.arch.lifecycle.OnLifecycleEvent
@@ -9,7 +10,7 @@ import com.google.firebase.database.*
 import com.ipati.dev.castleevent.adapter.ListEventMenuAdapter
 
 
-class RealTimeDatabaseMenuListItem(context: Context, lifecycle: Lifecycle) : LifecycleObserver {
+class RealTimeDatabaseMenuListItem(context: Context, activity: Activity, lifecycle: Lifecycle) : LifecycleObserver {
     private var Ref: DatabaseReference = FirebaseDatabase.getInstance().reference
     private var mRef: DatabaseReference = Ref.child("eventMenu")
     var listItemMenu: ArrayList<String> = ArrayList()

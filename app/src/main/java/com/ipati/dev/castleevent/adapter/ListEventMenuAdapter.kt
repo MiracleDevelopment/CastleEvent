@@ -1,15 +1,18 @@
 package com.ipati.dev.castleevent.adapter
 
+import android.app.Activity
+import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.ipati.dev.castleevent.R
+import com.ipati.dev.castleevent.model.Glide.loadPhotoItemMenu
 import kotlinx.android.synthetic.main.custom_layout_menu_event_adapter.view.*
 
 class ListEventMenuAdapter(listItemMenu: ArrayList<String>) : RecyclerView.Adapter<ListEventMenuAdapter.ViewHolder>() {
     private var mListItemMenu: ArrayList<String> = listItemMenu
-
     override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
         holder?.onBind()
     }
@@ -24,9 +27,47 @@ class ListEventMenuAdapter(listItemMenu: ArrayList<String>) : RecyclerView.Adapt
         return ViewHolder(view)
     }
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
         fun onBind() {
             itemView.tv_item_menu_event.text = mListItemMenu[adapterPosition]
+            itemView.tv_item_menu_event.setOnClickListener(this)
+            iconItemMenu(adapterPosition)
+        }
+
+        private fun iconItemMenu(position: Int) {
+            when (position) {
+                0 -> {
+                    loadPhotoItemMenu(itemView.context, R.mipmap.ic_person_pin, itemView.im_item_icon_menu_event)
+                }
+                1 -> {
+                    loadPhotoItemMenu(itemView.context, R.mipmap.ic_list, itemView.im_item_icon_menu_event)
+                }
+                2 -> {
+                    loadPhotoItemMenu(itemView.context, R.mipmap.ic_perm_contact_calendar, itemView.im_item_icon_menu_event)
+                }
+                3 -> {
+                    loadPhotoItemMenu(itemView.context, R.mipmap.ic_contact_phone, itemView.im_item_icon_menu_event)
+                }
+            }
+
+        }
+
+        override fun onClick(p0: View?) {
+            when {
+                itemView.tv_item_menu_event.text == "My Profile" -> {
+                    Toast.makeText(itemView.context, mListItemMenu[adapterPosition], Toast.LENGTH_SHORT).show()
+                }
+                itemView.tv_item_menu_event.text == "My Order" -> {
+                    Toast.makeText(itemView.context, mListItemMenu[adapterPosition], Toast.LENGTH_SHORT).show()
+                }
+                itemView.tv_item_menu_event.text == "Calendar" -> {
+
+                }
+                else -> {
+                    Toast.makeText(itemView.context, mListItemMenu[adapterPosition], Toast.LENGTH_SHORT).show()
+                }
+            }
         }
     }
 }

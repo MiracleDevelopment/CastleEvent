@@ -1,4 +1,4 @@
-package com.ipati.dev.castleevent.utill
+package com.ipati.dev.castleevent.utill.manager
 
 import android.annotation.SuppressLint
 import android.content.Context

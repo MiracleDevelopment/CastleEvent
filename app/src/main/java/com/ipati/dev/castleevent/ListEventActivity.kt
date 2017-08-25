@@ -1,8 +1,10 @@
 package com.ipati.dev.castleevent
 
+
 import android.app.Dialog
 import android.arch.lifecycle.LifecycleRegistry
 import android.arch.lifecycle.LifecycleRegistryOwner
+import android.content.Intent
 import android.content.res.Configuration
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -18,7 +20,7 @@ import com.ipati.dev.castleevent.model.userManage.email
 import com.ipati.dev.castleevent.model.userManage.photoUrl
 import com.ipati.dev.castleevent.model.userManage.username
 import com.ipati.dev.castleevent.service.FirebaseService.RealTimeDatabaseMenuListItem
-import com.ipati.dev.castleevent.utill.SharePreferenceManager
+import com.ipati.dev.castleevent.utill.manager.SharePreferenceManager
 import kotlinx.android.synthetic.main.activity_list_event.*
 
 class ListEventActivity : AppCompatActivity(), LifecycleRegistryOwner, View.OnClickListener {
@@ -33,9 +35,8 @@ class ListEventActivity : AppCompatActivity(), LifecycleRegistryOwner, View.OnCl
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list_event)
         setSupportActionBar(toolbar_list_event)
-        realTimeDatabaseMenuList = RealTimeDatabaseMenuListItem(context = applicationContext, lifecycle = lifecycle)
+        realTimeDatabaseMenuList = RealTimeDatabaseMenuListItem(applicationContext, this, lifecycle)
         sharePreferenceManager = SharePreferenceManager(context = applicationContext)
-
         initialToolbar()
         initialListItemMenu()
         initialLogOutButton()
@@ -45,6 +46,7 @@ class ListEventActivity : AppCompatActivity(), LifecycleRegistryOwner, View.OnCl
                 .replace(R.id.frame_list_event_layout
                         , ListEventFragment.newInstance("listEvent"))
                 .commitNow()
+
     }
 
 
@@ -58,12 +60,11 @@ class ListEventActivity : AppCompatActivity(), LifecycleRegistryOwner, View.OnCl
         tv_name_user_list_event.text = username
         email_user_list_event.text = email
         loadPhotoProfileUser(applicationContext, photoUrl, im_profile_user_list_event)
-
-        recycler_list_view_menu_list_event.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        recycler_list_view_menu_list_event.itemAnimator = DefaultItemAnimator()
-        recycler_list_view_menu_list_event.adapter = realTimeDatabaseMenuList.adapterListItemMenu
-
-
+        recycler_list_view_menu_list_event.apply {
+            layoutManager = LinearLayoutManager(applicationContext, LinearLayoutManager.VERTICAL, false)
+            recycler_list_view_menu_list_event.itemAnimator = DefaultItemAnimator()
+            recycler_list_view_menu_list_event.adapter = realTimeDatabaseMenuList.adapterListItemMenu
+        }
     }
 
     private fun initialLogOutButton() {
@@ -73,7 +74,6 @@ class ListEventActivity : AppCompatActivity(), LifecycleRegistryOwner, View.OnCl
     private fun initialDefaultSetting() {
         switch_notification.isChecked = sharePreferenceManager.defaultSharePreferenceNotificationManager()
         switch_language_thai.isChecked = sharePreferenceManager.defaultSharePreferenceLanguageManager()
-
         switch_notification.setOnCheckedChangeListener { compoundButton, i ->
             if (i) {
                 sharePreferenceManager.sharePreferenceNotificationManager(i)
@@ -135,6 +135,11 @@ class ListEventActivity : AppCompatActivity(), LifecycleRegistryOwner, View.OnCl
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
         actionBarDrawerToggle.syncState()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
     }
 
     override fun onBackPressed() {

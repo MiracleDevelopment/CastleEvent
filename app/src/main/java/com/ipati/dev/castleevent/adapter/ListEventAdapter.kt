@@ -12,6 +12,7 @@ import com.ipati.dev.castleevent.ListDetailEventActivity
 import com.ipati.dev.castleevent.R
 import com.ipati.dev.castleevent.model.Glide.loadPhoto
 import com.ipati.dev.castleevent.model.modelListEvent.ItemListEvent
+import kotlinx.android.synthetic.main.custom_layout_menu_event_adapter.view.*
 import kotlinx.android.synthetic.main.custom_list_event_adapter_layout.view.*
 
 
@@ -62,6 +63,7 @@ class ListEventAdapter(listItem: ArrayList<ItemListEvent>) : RecyclerView.Adapte
 
             itemView.setOnClickListener { view -> onClick(view) }
         }
+
 
         private fun animationListItem(): Animation {
             animatorListItem = AnimationUtils.loadAnimation(itemView.context, R.anim.fade_item_translation)

@@ -10,6 +10,7 @@ import com.facebook.ProfileTracker
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.firebase.auth.*
 import com.ipati.dev.castleevent.LoginActivity
+import com.ipati.dev.castleevent.fragment.LoginFragment
 import com.ipati.dev.castleevent.model.LoadingListener
 import com.ipati.dev.castleevent.model.ShowListEventFragment
 import com.ipati.dev.castleevent.model.userManage.email
