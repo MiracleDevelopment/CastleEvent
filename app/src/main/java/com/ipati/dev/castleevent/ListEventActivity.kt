@@ -61,6 +61,7 @@ class ListEventActivity : AppCompatActivity(), LifecycleRegistryOwner, View.OnCl
         tv_name_user_list_event.text = username
         email_user_list_event.text = email
         loadPhotoProfileUser(applicationContext, photoUrl, im_profile_user_list_event)
+
         recycler_list_view_menu_list_event.apply {
             layoutManager = LinearLayoutManager(applicationContext, LinearLayoutManager.VERTICAL, false)
             recycler_list_view_menu_list_event.itemAnimator = DefaultItemAnimator()
@@ -147,6 +148,7 @@ class ListEventActivity : AppCompatActivity(), LifecycleRegistryOwner, View.OnCl
 
     override fun onBackPressed() {
         super.onBackPressed()
-        alertDialogExit().show()
+        FirebaseAuth.getInstance().signOut()
+        googleApiClient?.disconnect()
     }
 }

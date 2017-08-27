@@ -40,7 +40,6 @@ fun twitterAuthCredential(loadingListener: LoadingListener?, activity: Activity,
     val authCredential: AuthCredential = TwitterAuthProvider.getCredential(session.authToken.token, session.authToken.secret)
     listEventListener = activity as LoginActivity
     loadingListener?.onShowLoading(true)
-
     mAuth.signInWithCredential(authCredential).addOnCompleteListener(activity, { task ->
         if (task.isSuccessful) {
             val fireBaseUser: FirebaseUser = mAuth.currentUser!!
@@ -62,6 +61,7 @@ fun googleAuthCredential(activity: Activity, account: GoogleSignInAccount) {
         if (task.isSuccessful) {
             val fireBaseUser: FirebaseUser = mAuth.currentUser!!
             updateUserProfile(fireBaseUser, fireBaseUser.displayName, fireBaseUser.photoUrl, fireBaseUser.email)
+            Toast.makeText(activity, fireBaseUser.email.toString(), Toast.LENGTH_SHORT).show()
         }
     })
 }
