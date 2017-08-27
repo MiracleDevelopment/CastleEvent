@@ -1,6 +1,5 @@
 package com.ipati.dev.castleevent.service
 
-import android.app.Activity
 import android.content.Context
 import com.facebook.login.LoginManager
 import com.ipati.dev.castleevent.fragment.LoginFragment
@@ -13,7 +12,7 @@ var cancelMsg: String = "Cancel"
 var loadingListener: LoadingListener? = null
 
 fun LoginFacebook(context: Context, activity: LoginFragment) {
-    LoginManager.getInstance().logInWithReadPermissions(activity, Arrays.asList(publicFacebookTag))
+    LoginManager.getInstance().logInWithReadPermissions(activity, Arrays.asList(publicFacebookTag, "email"))
 
     loadingListener = context as LoadingListener
     loadingListener?.onShowLoading(true)

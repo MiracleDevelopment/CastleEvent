@@ -3,6 +3,7 @@ package com.ipati.dev.castleevent.fragment
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,21 +14,27 @@ import com.facebook.FacebookException
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.Auth
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInResult
+import com.ipati.dev.castleevent.LoginActivity
 import com.ipati.dev.castleevent.R
 import com.ipati.dev.castleevent.authCredential.facebookAuthCredential
+import com.ipati.dev.castleevent.authCredential.twitterAuthCredential
 import com.ipati.dev.castleevent.service.*
-import com.twitter.sdk.android.core.Twitter
+import com.twitter.sdk.android.core.*
+import com.twitter.sdk.android.core.identity.TwitterAuthClient
 import kotlinx.android.synthetic.main.activity_login_fragment.*
 
 
 class LoginFragment : Fragment(), View.OnClickListener {
     private lateinit var callbackManager: CallbackManager
+    private lateinit var loginTwitterAuthentication: TwitterAuthClient
+    private lateinit var twitterConfig: TwitterConfig
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         callbackManager = CallbackManager.Factory.create()
+        twitterConfig()
         facebookLoginManager()
-        Twitter.initialize(activity)
-        twitterConfig(context)
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -56,7 +63,33 @@ class LoginFragment : Fragment(), View.OnClickListener {
                 loadingListener?.onHindLoading(false)
                 Toast.makeText(activity, error?.message.toString(), Toast.LENGTH_SHORT).show()
             }
+        })
+    }
 
+    private fun twitterConfig() {
+        twitterConfig = TwitterConfig.Builder(this.context)
+                .logger(DefaultLogger(Log.DEBUG))
+                .twitterAuthConfig(TwitterAuthConfig("DsQpZuWxVXdNeii1rMy98rjSp"
+                        , "icMqh1zfD9vhs3uRslXaneRMR4zWIHTeXgT4AnB5rqqaCUs3KF"))
+                .debug(true)
+                .build()
+        Twitter.initialize(twitterConfig)
+        loginTwitterAuthentication = TwitterAuthClient()
+    }
+
+
+    private fun TwitterLoginManager() {
+        loginTwitterAuthentication.authorize(this.activity, object : Callback<TwitterSession>() {
+            override fun success(result: Result<TwitterSession>?) {
+                result?.let {
+                    loadingListener = context as LoginActivity
+                    twitterAuthCredential(loadingListener, activity, result.data)
+                }
+            }
+
+            override fun failure(exception: TwitterException?) {
+                Toast.makeText(context, exception?.message.toString(), Toast.LENGTH_SHORT).show()
+            }
         })
     }
 
@@ -64,18 +97,27 @@ class LoginFragment : Fragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.im_facebook -> LoginFacebook(context, this)
-            R.id.im_twitter -> loginTwitter(activity)
-            R.id.im_google_plus -> loginGoogleSignInDialog(activity)
+            R.id.im_twitter -> TwitterLoginManager()
+            R.id.im_google_plus -> loginGoogleSignInOption(activity)
         }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
-            SignInGoogle -> callbackGoogleSignIn(activity, Auth.GoogleSignInApi.getSignInResultFromIntent(data))
+            SignInGoogle -> {
+                val mGoogleSignInResult: GoogleSignInResult = Auth.GoogleSignInApi.getSignInResultFromIntent(data)
+                if (mGoogleSignInResult.isSuccess) {
+                    val mGoogleSignInAccount: GoogleSignInAccount = mGoogleSignInResult.signInAccount!!
+                    callbackGoogleSignIn(activity, mGoogleSignInAccount)
+                } else {
+                    Toast.makeText(context, mGoogleSignInResult.status.toString(), Toast.LENGTH_SHORT).show()
+                }
+            }
+
             else -> {
                 callbackManager.onActivityResult(requestCode, resultCode, data)
-                twitterLoginAuthentication.onActivityResult(requestCode, resultCode, data)
+                loginTwitterAuthentication.onActivityResult(requestCode, resultCode, data)
             }
         }
     }

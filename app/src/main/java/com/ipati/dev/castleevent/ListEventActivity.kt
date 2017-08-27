@@ -20,6 +20,7 @@ import com.ipati.dev.castleevent.model.userManage.email
 import com.ipati.dev.castleevent.model.userManage.photoUrl
 import com.ipati.dev.castleevent.model.userManage.username
 import com.ipati.dev.castleevent.service.FirebaseService.RealTimeDatabaseMenuListItem
+import com.ipati.dev.castleevent.service.googleApiClient
 import com.ipati.dev.castleevent.utill.manager.SharePreferenceManager
 import kotlinx.android.synthetic.main.activity_list_event.*
 
@@ -103,6 +104,8 @@ class ListEventActivity : AppCompatActivity(), LifecycleRegistryOwner, View.OnCl
         mAlertDialog.setTitle("คุณต้องการออกจากแอพนี้ใช่ / ไม่")
         mAlertDialog.setPositiveButton("exit", { dialogInterface, _ ->
             FirebaseAuth.getInstance().signOut()
+            googleApiClient?.disconnect()
+
             dialogInterface.dismiss()
             finish()
         })

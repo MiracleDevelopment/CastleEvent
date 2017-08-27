@@ -29,31 +29,44 @@ fun facebookAuthCredential(loadingListener: LoadingListener?, activity: Activity
         if (task.isSuccessful) {
             val fireBaseUser: FirebaseUser = mAuth.currentUser!!
             updateUserProfile(fireBaseUser, fireBaseUser.displayName, fireBaseUser.photoUrl, fireBaseUser.email)
+            Toast.makeText(activity, fireBaseUser.email.toString(), Toast.LENGTH_SHORT).show()
         } else {
             loadingListener?.onHindLoading(false)
         }
     })
 }
 
-fun twitterAuthCredential(activity: Activity, session: TwitterSession) {
+fun twitterAuthCredential(loadingListener: LoadingListener?, activity: Activity, session: TwitterSession) {
     val authCredential: AuthCredential = TwitterAuthProvider.getCredential(session.authToken.token, session.authToken.secret)
+    listEventListener = activity as LoginActivity
+    loadingListener?.onShowLoading(true)
+
     mAuth.signInWithCredential(authCredential).addOnCompleteListener(activity, { task ->
         if (task.isSuccessful) {
-            Toast.makeText(activity, session.userName, Toast.LENGTH_SHORT).show()
+            val fireBaseUser: FirebaseUser = mAuth.currentUser!!
+            updateUserProfile(fireBaseUser, session.userName, fireBaseUser.photoUrl, fireBaseUser.email)
+            Log.d("userTwitterLogin", session.userName.toString() + " : " + fireBaseUser.photoUrl.toString() + " : " + fireBaseUser.email.toString())
+            Toast.makeText(activity, fireBaseUser.email.toString(), Toast.LENGTH_SHORT).show()
+        } else {
+            loadingListener?.onHindLoading(false)
         }
     })
 }
 
 fun googleAuthCredential(activity: Activity, account: GoogleSignInAccount) {
     val authCredential: AuthCredential = GoogleAuthProvider.getCredential(account.idToken, null)
+    loadingListener = activity as LoginActivity
+    loadingListener?.onShowLoading(true)
+
     mAuth.signInWithCredential(authCredential).addOnCompleteListener(activity, { task ->
         if (task.isSuccessful) {
-            Toast.makeText(activity, account.displayName, Toast.LENGTH_SHORT).show()
+            val fireBaseUser: FirebaseUser = mAuth.currentUser!!
+            updateUserProfile(fireBaseUser, fireBaseUser.displayName, fireBaseUser.photoUrl, fireBaseUser.email)
         }
     })
 }
 
-fun updateUserProfile(fireBaseUser: FirebaseUser, nameUser: String?, photoUserUrl: Uri?, emailUser: String?) {
+fun updateUserProfile(fireBaseUser: FirebaseUser, nameUser: String?, photoUserUrl: Uri?, userEmail: String?) {
     val userProfileUpdate: UserProfileChangeRequest = UserProfileChangeRequest
             .Builder()
             .setDisplayName(nameUser)
@@ -65,14 +78,13 @@ fun updateUserProfile(fireBaseUser: FirebaseUser, nameUser: String?, photoUserUr
             username = fireBaseUser.displayName
             photoUrl = fireBaseUser.photoUrl.toString()
 
-            fireBaseUser.updateEmail("i.patipan2539@gmail.com").addOnCompleteListener { task ->
-                if (task.isSuccessful) {
+            fireBaseUser.updateEmail(userEmail.toString()).addOnCompleteListener { fireBaseResult ->
+                if (fireBaseResult.isSuccessful) {
                     loadingListener?.onHindLoading(false)
                     listEventListener?.onShowListFragment()
                     email = fireBaseUser.email
                 }
             }
-
         }
     }
 }

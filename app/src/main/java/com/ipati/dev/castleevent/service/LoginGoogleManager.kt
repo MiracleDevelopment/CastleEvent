@@ -6,29 +6,34 @@ import android.os.Bundle
 import android.support.v4.app.FragmentActivity
 import android.util.Log
 import com.google.android.gms.auth.api.Auth
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.auth.api.signin.GoogleSignInResult
 import com.google.android.gms.common.api.GoogleApiClient
 import com.ipati.dev.castleevent.authCredential.googleAuthCredential
 
 var SignInGoogle: Int = 1010
     get() = field
+var googleLoginManager: GoogleSignInOptions? = null
+var googleApiClient: GoogleApiClient? = null
+var serverClientSide: String = "816401657226-jq3a7du27lran3okem2j57l6jnl9q210.apps.googleusercontent.com"
 
-fun loginGoogleSignInDialog(activity: FragmentActivity) {
+fun loginGoogleSignInOption(activity: FragmentActivity) {
     val googleSignInIntent: Intent = Auth.GoogleSignInApi.getSignInIntent(googleApiService(activity))
     activity.startActivityForResult(googleSignInIntent, 1010)
 }
 
-fun googleSignInOptionsApi(): GoogleSignInOptions {
-    val googleLoginManager: GoogleSignInOptions = GoogleSignInOptions
+fun googleSignInOptionsApi(): GoogleSignInOptions? {
+    googleLoginManager = GoogleSignInOptions
             .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(serverClientSide)
             .requestProfile()
+            .requestEmail()
             .build()
     return googleLoginManager
 }
 
 fun googleApiService(activity: FragmentActivity): GoogleApiClient? {
-    val mGoogleApiClient: GoogleApiClient? = GoogleApiClient.Builder(activity)
+    googleApiClient = GoogleApiClient.Builder(activity)
             .addConnectionCallbacks(object : GoogleApiClient.ConnectionCallbacks {
                 override fun onConnected(p0: Bundle?) {
 
@@ -38,14 +43,15 @@ fun googleApiService(activity: FragmentActivity): GoogleApiClient? {
 
                 }
             })
+
             //Todo: Fix This Bug is null
             .addOnConnectionFailedListener { connectionResult -> Log.d("OnFailed", connectionResult.errorMessage.toString()) }
-            .addApi(Auth.GOOGLE_SIGN_IN_API, googleSignInOptionsApi())
+            .addApi(Auth.GOOGLE_SIGN_IN_API, googleSignInOptionsApi()!!)
             .build()
 
-    return mGoogleApiClient
+    return googleApiClient
 }
 
-fun callbackGoogleSignIn(activity: Activity, result: GoogleSignInResult) {
-    googleAuthCredential(activity, result.signInAccount!!)
+fun callbackGoogleSignIn(activity: Activity, result: GoogleSignInAccount) {
+    googleAuthCredential(activity, result)
 }
