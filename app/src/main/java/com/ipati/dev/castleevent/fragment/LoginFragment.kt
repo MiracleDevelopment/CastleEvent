@@ -21,6 +21,7 @@ import com.ipati.dev.castleevent.R
 import com.ipati.dev.castleevent.authCredential.facebookAuthCredential
 import com.ipati.dev.castleevent.authCredential.twitterAuthCredential
 import com.ipati.dev.castleevent.service.*
+import com.ipati.dev.castleevent.utill.SharePreferenceGoogleSignInManager
 import com.twitter.sdk.android.core.*
 import com.twitter.sdk.android.core.identity.TwitterAuthClient
 import kotlinx.android.synthetic.main.activity_login_fragment.*
@@ -30,8 +31,10 @@ class LoginFragment : Fragment(), View.OnClickListener {
     private lateinit var callbackManager: CallbackManager
     private lateinit var loginTwitterAuthentication: TwitterAuthClient
     private lateinit var twitterConfig: TwitterConfig
+    private lateinit var mGoogleSharePreference: SharePreferenceGoogleSignInManager
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        mGoogleSharePreference = SharePreferenceGoogleSignInManager(context)
         callbackManager = CallbackManager.Factory.create()
         twitterConfig()
         facebookLoginManager()
@@ -109,7 +112,7 @@ class LoginFragment : Fragment(), View.OnClickListener {
                 val mGoogleSignInResult: GoogleSignInResult = Auth.GoogleSignInApi.getSignInResultFromIntent(data)
                 if (mGoogleSignInResult.isSuccess) {
                     val mGoogleSignInAccount: GoogleSignInAccount = mGoogleSignInResult.signInAccount!!
-                    callbackGoogleSignIn(activity, mGoogleSignInAccount)
+                    callbackGoogleSignIn(activity, mGoogleSignInAccount, mGoogleSharePreference)
                 } else {
                     Toast.makeText(context, mGoogleSignInResult.status.toString(), Toast.LENGTH_SHORT).show()
                 }

@@ -1,11 +1,11 @@
-package com.ipati.dev.castleevent.utill.manager
+package com.ipati.dev.castleevent.utill
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 
 
-class SharePreferenceManager(context: Context) {
+class SharePreferenceSettingManager(context: Context) {
     private var sharePreferenceNotificationKey: String = "notification"
     private var sharePreferenceLanguageKey: String = "Language"
     private lateinit var sharePreferenceNotification: SharedPreferences
@@ -40,4 +40,5 @@ class SharePreferenceManager(context: Context) {
         sharePreferenceNotification = mContext.getSharedPreferences(sharePreferenceLanguageKey, Context.MODE_PRIVATE)
         return sharePreferenceNotification.getBoolean(sharePreferenceLanguageKey, true)
     }
+
 }

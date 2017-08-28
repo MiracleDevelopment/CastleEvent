@@ -5,18 +5,16 @@ import android.net.Uri
 import android.util.Log
 import android.widget.Toast
 import com.facebook.AccessToken
-import com.facebook.Profile
-import com.facebook.ProfileTracker
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.firebase.auth.*
 import com.ipati.dev.castleevent.LoginActivity
-import com.ipati.dev.castleevent.fragment.LoginFragment
 import com.ipati.dev.castleevent.model.LoadingListener
 import com.ipati.dev.castleevent.model.ShowListEventFragment
 import com.ipati.dev.castleevent.model.userManage.email
 import com.ipati.dev.castleevent.model.userManage.photoUrl
 import com.ipati.dev.castleevent.model.userManage.username
 import com.ipati.dev.castleevent.service.loadingListener
+import com.ipati.dev.castleevent.utill.SharePreferenceGoogleSignInManager
 import com.twitter.sdk.android.core.TwitterSession
 
 var mAuth: FirebaseAuth = FirebaseAuth.getInstance()
@@ -52,7 +50,7 @@ fun twitterAuthCredential(loadingListener: LoadingListener?, activity: Activity,
     })
 }
 
-fun googleAuthCredential(activity: Activity, account: GoogleSignInAccount) {
+fun googleAuthCredential(activity: Activity, account: GoogleSignInAccount, mGoogleSharedPreferences: SharePreferenceGoogleSignInManager) {
     val authCredential: AuthCredential = GoogleAuthProvider.getCredential(account.idToken, null)
     loadingListener = activity as LoginActivity
     loadingListener?.onShowLoading(true)
@@ -60,6 +58,7 @@ fun googleAuthCredential(activity: Activity, account: GoogleSignInAccount) {
     mAuth.signInWithCredential(authCredential).addOnCompleteListener(activity, { task ->
         if (task.isSuccessful) {
             val fireBaseUser: FirebaseUser = mAuth.currentUser!!
+            mGoogleSharedPreferences.sharePreferenceManager(fireBaseUser.email)
             updateUserProfile(fireBaseUser, fireBaseUser.displayName, fireBaseUser.photoUrl, fireBaseUser.email)
             Toast.makeText(activity, fireBaseUser.email.toString(), Toast.LENGTH_SHORT).show()
         }
@@ -88,3 +87,4 @@ fun updateUserProfile(fireBaseUser: FirebaseUser, nameUser: String?, photoUserUr
         }
     }
 }
+

@@ -13,6 +13,8 @@ data class ItemListEvent(var eventId: Long
                          , var eventRest: Long
                          , var eventStatus: Boolean
                          , var eventTime: String
+                         , var eventCalendarStart: String
+                         , var eventCalendarEnd: String
 )
 
 

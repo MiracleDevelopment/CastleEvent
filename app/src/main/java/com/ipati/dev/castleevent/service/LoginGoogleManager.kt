@@ -10,6 +10,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.GoogleApiClient
 import com.ipati.dev.castleevent.authCredential.googleAuthCredential
+import com.ipati.dev.castleevent.utill.SharePreferenceGoogleSignInManager
 
 var SignInGoogle: Int = 1010
     get() = field
@@ -52,6 +53,6 @@ fun googleApiService(activity: FragmentActivity): GoogleApiClient? {
     return googleApiClient
 }
 
-fun callbackGoogleSignIn(activity: Activity, result: GoogleSignInAccount) {
-    googleAuthCredential(activity, result)
+fun callbackGoogleSignIn(activity: Activity, result: GoogleSignInAccount, mGoogleSharedPreferences: SharePreferenceGoogleSignInManager) {
+    googleAuthCredential(activity, result, mGoogleSharedPreferences)
 }

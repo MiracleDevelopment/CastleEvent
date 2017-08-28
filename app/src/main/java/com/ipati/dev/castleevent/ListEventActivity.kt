@@ -21,7 +21,7 @@ import com.ipati.dev.castleevent.model.userManage.photoUrl
 import com.ipati.dev.castleevent.model.userManage.username
 import com.ipati.dev.castleevent.service.FirebaseService.RealTimeDatabaseMenuListItem
 import com.ipati.dev.castleevent.service.googleApiClient
-import com.ipati.dev.castleevent.utill.manager.SharePreferenceManager
+import com.ipati.dev.castleevent.utill.SharePreferenceSettingManager
 import kotlinx.android.synthetic.main.activity_list_event.*
 
 class ListEventActivity : AppCompatActivity(), LifecycleRegistryOwner, View.OnClickListener {
@@ -29,15 +29,15 @@ class ListEventActivity : AppCompatActivity(), LifecycleRegistryOwner, View.OnCl
     private lateinit var realTimeDatabaseMenuList: RealTimeDatabaseMenuListItem
     private lateinit var mAlertDialog: AlertDialog.Builder
     private lateinit var dialog: Dialog
-    private lateinit var sharePreferenceManager: SharePreferenceManager
+    private lateinit var sharePreferenceManager: SharePreferenceSettingManager
     private var mLifeCycleRegistry: LifecycleRegistry = LifecycleRegistry(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list_event)
         setSupportActionBar(toolbar_list_event)
-        realTimeDatabaseMenuList = RealTimeDatabaseMenuListItem(applicationContext, this, lifecycle)
-        sharePreferenceManager = SharePreferenceManager(context = applicationContext)
+        realTimeDatabaseMenuList = RealTimeDatabaseMenuListItem(applicationContext, lifecycle)
+        sharePreferenceManager = SharePreferenceSettingManager(context = applicationContext)
         initialToolbar()
         initialListItemMenu()
         initialLogOutButton()

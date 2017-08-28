@@ -84,7 +84,9 @@ class RealTimeDatabaseManager(context: Context, lifeCycle: Lifecycle) : Lifecycl
                             hasMapData!!["eventMax"] as Long,
                             hasMapData!!["eventRest"] as Long,
                             hasMapData!!["eventStatus"] as Boolean,
-                            hasMapData!!["eventTime"].toString()
+                            hasMapData!!["eventTime"].toString(),
+                            hasMapData!!["eventCalendarStart"].toString(),
+                            hasMapData!!["eventCalendarEnd"].toString()
                     )
                     arrayItemList.remove(objectItem[0])
                     adapterListEvent?.notifyDataSetChanged()
@@ -107,7 +109,9 @@ class RealTimeDatabaseManager(context: Context, lifeCycle: Lifecycle) : Lifecycl
                         hasMapData!!["eventMax"] as Long,
                         hasMapData!!["eventRest"] as Long,
                         hasMapData!!["eventStatus"] as Boolean,
-                        hasMapData!!["eventTime"].toString()
+                        hasMapData!!["eventTime"].toString(),
+                        hasMapData!!["eventCalendarStart"].toString(),
+                        hasMapData!!["eventCalendarEnd"].toString()
                 )
                 arrayItemList.add(listItem!!)
                 adapterListEvent?.notifyDataSetChanged()

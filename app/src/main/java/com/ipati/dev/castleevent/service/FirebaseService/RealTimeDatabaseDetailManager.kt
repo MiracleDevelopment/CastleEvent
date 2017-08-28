@@ -77,7 +77,9 @@ class RealTimeDatabaseDetailManager(context: Context, lifecycle: Lifecycle, even
                             hasMapData["eventMax"] as Long,
                             hasMapData["eventRest"] as Long,
                             hasMapData["eventStatus"] as Boolean,
-                            hasMapData["eventTime"].toString()
+                            hasMapData["eventTime"].toString(),
+                            hasMapData["eventCalendarStart"].toString(),
+                            hasMapData["eventCalendarEnd"].toString()
                     )
                     onItemListDataChange = mListDetailEventFragment as LoadingDetailData
                     onItemListDataChange?.onLoadingUpdateData(itemListEvent!!)
