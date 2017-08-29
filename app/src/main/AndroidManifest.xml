@@ -58,12 +58,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ListEventActivity">
-
-        </activity>
-        <activity android:name=".ListDetailEventActivity">
-
-        </activity>
+        <activity android:name=".ListEventActivity" />
+        <activity android:name=".ListDetailEventActivity" />
+        <activity android:name=".fragment.CalendarFragment" />
+        <activity android:name=".CalendarActivity"></activity>
     </application>
 
 </manifest>

@@ -17,4 +17,7 @@
     <color name="colorToolbar">#FFFFFF</color>
     <color name="colorSelector">#FFFFFF</color>
     <color name="colorMenuList">#FFFFFF</color>
+    <color name="colorBackgroundCalendar">#37474F</color>
+    <color name="colorFontCalendar">#FFFFFF</color>
+    <color name="colorSelectDate">#00B8D4</color>
 </resources>

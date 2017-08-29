@@ -21,5 +21,6 @@
     <string name="open_drawer_layout">ปิด</string>
     <string name="close_drawer_layout">เปิด</string>
     <string name="LoginReSource">ล๊อคอิน</string>
+    <string name="stringTestCalendar">25</string>
 
 </resources>
