@@ -33,6 +33,7 @@ class CalendarFragment : Fragment(), View.OnClickListener {
         defaultMonth()
 
         tv_header_month.text = defaultMonth()
+        tv_calendar_select_date.text = mCalendar.get(Calendar.DATE).toString()
         addEvent()
     }
 
