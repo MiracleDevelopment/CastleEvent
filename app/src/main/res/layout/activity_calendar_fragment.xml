@@ -54,7 +54,7 @@
                     android:padding="5dp"
                     android:text="THAILAND BEST SHOPPING FAIR"
                     android:textColor="@color/colorFontHeader"
-                    android:textSize="15sp" />
+                    android:textSize="20sp" />
 
                 <TextView
                     android:id="@+id/tv_calendar_time_ticket"
@@ -64,7 +64,7 @@
                     android:padding="5dp"
                     android:text="เวลา 11.00 น - 15.00 น"
                     android:textColor="@color/colorFontHeader"
-                    android:textSize="15sp" />
+                    android:textSize="20sp" />
 
             </LinearLayout>
         </android.support.v7.widget.CardView>
@@ -74,12 +74,12 @@
         android:id="@+id/compat_calendar_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:compactCalendarOtherMonthDaysTextColor="#E0E0E0"
         app:compactCalendarCurrentDayBackgroundColor="@color/colorSelectDate"
         app:compactCalendarCurrentDayTextColor="@color/colorFontSelectCalendar"
         app:compactCalendarCurrentSelectedDayBackgroundColor="@color/colorBackgroundCalendar"
         app:compactCalendarCurrentSelectedDayTextColor="@color/colorFontSelectCalendar"
         app:compactCalendarMultiEventIndicatorColor="@color/colorFontSelectCalendar"
+        app:compactCalendarOtherMonthDaysTextColor="#E0E0E0"
         app:compactCalendarTextColor="@color/colorFontCalendar"
         app:compactCalendarTextSize="18sp" />
 </LinearLayout>

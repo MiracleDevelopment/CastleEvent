@@ -22,6 +22,6 @@
     <color name="colorSelectDate">#00B8D4</color>
     <color name="colorFontSelectCalendar">#E0E0E0</color>
     <color name="colorFontHeader">#FFFFFF</color>
-    <color name="colorEvent">#000000</color>
+    <color name="colorEvent">#FFCA28</color>
 
 </resources>

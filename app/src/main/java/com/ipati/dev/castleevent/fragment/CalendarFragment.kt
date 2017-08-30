@@ -6,11 +6,11 @@ import android.content.Intent
 import android.os.AsyncTask
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import com.github.sundeepk.compactcalendarview.CompactCalendarView
 import com.google.android.gms.common.ConnectionResult
 import com.google.api.client.extensions.android.http.AndroidHttp
@@ -24,10 +24,13 @@ import com.google.api.client.util.DateTime
 import com.google.api.services.calendar.model.Event
 import com.google.api.services.calendar.model.Events
 import com.ipati.dev.castleevent.R
+import com.ipati.dev.castleevent.model.EventDetailModel
 import com.ipati.dev.castleevent.model.GoogleCalendar.CalendarFragment.CalendarManager
 import com.ipati.dev.castleevent.utill.SharePreferenceGoogleSignInManager
 import kotlinx.android.synthetic.main.activity_calendar_fragment.*
+import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 class CalendarFragment : Fragment() {
     private var REQUEST_ACCOUNT: Int = 1111
@@ -36,8 +39,10 @@ class CalendarFragment : Fragment() {
     private lateinit var monthDefault: String
     private lateinit var monthScroll: String
     private lateinit var dateScroll: String
-
-
+    private lateinit var mListEventDateClick: List<com.github.sundeepk.compactcalendarview.domain.Event>
+    private lateinit var mSimpleDateFormat: SimpleDateFormat
+    private var mCalender: Calendar = Calendar.getInstance()
+    private var mListItemShow: ArrayList<EventDetailModel> = ArrayList()
     private var statusCodeGoogleApiAvailability: Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,7 +60,6 @@ class CalendarFragment : Fragment() {
         initialCalendar()
         defaultMonth()
 
-
         tv_header_month.text = defaultMonth()
         tv_calendar_select_date.text = mCalendarManager.initialCalendar().get(Calendar.DATE).toString()
         addEvent()
@@ -66,7 +70,19 @@ class CalendarFragment : Fragment() {
         compat_calendar_view.displayOtherMonthDays(true)
         compat_calendar_view.setFirstDayOfWeek(Calendar.WEDNESDAY)
         compat_calendar_view.setListener(object : CompactCalendarView.CompactCalendarViewListener {
+            @SuppressLint("SetTextI18n")
             override fun onDayClick(dateClicked: Date?) {
+                mListEventDateClick = compat_calendar_view.getEvents(dateClicked)
+                if (mListEventDateClick.count() == 0) {
+                    tv_calendar_detail_event.text = "ไม่มีอีเว้น"
+                    tv_calendar_time_ticket.text = " "
+                } else {
+                    for ((title, timeEventStart, timeEventEnd) in mListItemShow) {
+                        tv_calendar_detail_event.text = title
+                        tv_calendar_time_ticket.text = "เวลา $timeEventStart น. - $timeEventEnd น."
+                    }
+                }
+
                 mCalendarManager.initialCalendar().time = dateClicked
                 tv_calendar_select_date.text = mCalendarManager.initialCalendar().get(Calendar.DATE).toString()
             }
@@ -136,11 +152,17 @@ class CalendarFragment : Fragment() {
     inner class MakeRequestTask(mGoogleCredentialAccount: GoogleAccountCredential) : AsyncTask<Void, Void, List<Event>>() {
         private var mService: com.google.api.services.calendar.Calendar? = null
         private var mListError: Exception? = null
-        private var dateTimeStart: DateTime? = null
         private lateinit var mDateTimeNow: DateTime
         private lateinit var eventListString: ArrayList<String>
         private lateinit var mEvents: Events
+        private lateinit var mEventCalendar: com.github.sundeepk.compactcalendarview.domain.Event
         private lateinit var mListEvent: List<Event>
+        private lateinit var mItemEvent: EventDetailModel
+        private lateinit var mDateFormatStart: String
+        private lateinit var mDateFormatEnd: String
+        private lateinit var mDateStart: Date
+        private lateinit var mDateEnd: Date
+
         private var transport: HttpTransport = AndroidHttp.newCompatibleTransport()
         private var jsonFactory: JsonFactory = JacksonFactory.getDefaultInstance()
 
@@ -171,15 +193,6 @@ class CalendarFragment : Fragment() {
                     ?.execute()!!
 
             mListEvent = mEvents.items
-
-//            for (item in mListEvent) {
-//                dateTimeStart = item.start.dateTime
-//                if (dateTimeStart == null) {
-//                    dateTimeStart = item.start.date
-//                }
-//                eventListString.add(String.format("%s (%s)", item.summary, dateTimeStart))
-//            }
-
             return mListEvent
         }
 
@@ -190,7 +203,27 @@ class CalendarFragment : Fragment() {
 
         override fun onPostExecute(result: List<Event>?) {
             super.onPostExecute(result)
-            Log.d("resultAsyncTask", result?.toString())
+
+            for (items in result!!) {
+                //Todo: Convert Start Or End Time
+                mSimpleDateFormat = SimpleDateFormat("HH.mm", Locale.getDefault())
+                mDateStart = Date(items.start.dateTime.value)
+                mDateFormatStart = mSimpleDateFormat.format(mDateStart)
+
+                mDateEnd = Date(items.end.dateTime.value)
+                mDateFormatEnd = mSimpleDateFormat.format(mDateEnd)
+
+                mItemEvent = EventDetailModel(items.summary, mDateFormatStart, mDateFormatEnd)
+                mListItemShow.add(mItemEvent)
+
+
+                //Todo: AddEvent To Calendar
+                mEventCalendar = com.github.sundeepk.compactcalendarview.domain
+                        .Event(ContextCompat.getColor(context, R.color.colorEvent)
+                                , items.start.dateTime.value, items.summary)
+
+                compat_calendar_view.addEvent(mEventCalendar, true)
+            }
         }
 
         override fun onCancelled() {
