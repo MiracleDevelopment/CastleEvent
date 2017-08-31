@@ -1,10 +1,13 @@
 package com.ipati.dev.castleevent.model.GoogleCalendar
 
+
+import android.util.Log
 import com.google.api.client.util.DateTime
 import com.google.api.services.calendar.model.Event
 import com.google.api.services.calendar.model.EventAttendee
 import com.google.api.services.calendar.model.EventDateTime
 import com.google.api.services.calendar.model.EventReminder
+import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -17,6 +20,10 @@ class GoogleCalendarInsertEvent(summary: String?, location: String?, description
     private lateinit var listEventAttendee: List<EventAttendee>
     private lateinit var listEventReminder: List<EventReminder>
     private lateinit var reminders: Event.Reminders
+    private lateinit var mSimpleDateFormat: SimpleDateFormat
+    private lateinit var mDate: Date
+    private lateinit var simpleDateStart: String
+    private lateinit var simpleDateEnd: String
     var event: Event = Event()
     var mCalendar: Calendar = Calendar.getInstance()
     var mTimeZone: TimeZone = mCalendar.timeZone
@@ -33,13 +40,23 @@ class GoogleCalendarInsertEvent(summary: String?, location: String?, description
     }
 
     private fun setDateTimeStart(): EventDateTime {
-        startDateTime = DateTime(startEvent)
+        simpleDateStart = "01-9-2017T07:00:00-10:00"
+        mSimpleDateFormat = SimpleDateFormat("dd-MM-yyyy'T'HH:mm:ss", Locale("th"))
+        mDate = mSimpleDateFormat.parse(simpleDateStart)
+        Log.d("DateTimeFormatStart", mDate.toString())
+
+        startDateTime = DateTime(mDate.time)
         eventDateTimeStart = EventDateTime().setDateTime(startDateTime).setTimeZone(mTimeZone.id.toString())
         return eventDateTimeStart
     }
 
     private fun setDateTimeEnd(): EventDateTime {
-        endDateTime = DateTime(endEvent)
+        simpleDateEnd = "01-9-2017T10:00:00-10:00"
+        mSimpleDateFormat = SimpleDateFormat("dd-MM-yyyy'T'HH:mm:ss", Locale("th"))
+        mDate = mSimpleDateFormat.parse(simpleDateEnd)
+        Log.d("DateTimeFormatEnd", mDate.toString())
+
+        endDateTime = DateTime(mDate.time)
         eventDateTimeEnd = EventDateTime().setDateTime(endDateTime).setTimeZone(mTimeZone.id.toString())
         return eventDateTimeEnd
     }

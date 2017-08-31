@@ -11,6 +11,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.github.sundeepk.compactcalendarview.CompactCalendarView
 import com.google.android.gms.common.ConnectionResult
 import com.google.api.client.extensions.android.http.AndroidHttp
@@ -74,7 +75,7 @@ class CalendarFragment : Fragment() {
             override fun onDayClick(dateClicked: Date?) {
                 mListEventDateClick = compat_calendar_view.getEvents(dateClicked)
                 if (mListEventDateClick.count() == 0) {
-                    tv_calendar_detail_event.text = "ไม่มีอีเว้น"
+                    tv_calendar_detail_event.text = " "
                     tv_calendar_time_ticket.text = " "
                 } else {
                     for ((title, timeEventStart, timeEventEnd) in mListItemShow) {
@@ -203,7 +204,7 @@ class CalendarFragment : Fragment() {
 
         override fun onPostExecute(result: List<Event>?) {
             super.onPostExecute(result)
-
+            Toast.makeText(context, "Read Event", Toast.LENGTH_SHORT).show()
             for (items in result!!) {
                 //Todo: Convert Start Or End Time
                 mSimpleDateFormat = SimpleDateFormat("HH.mm", Locale.getDefault())
