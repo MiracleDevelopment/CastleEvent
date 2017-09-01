@@ -23,5 +23,8 @@
     <color name="colorFontSelectCalendar">#E0E0E0</color>
     <color name="colorFontHeader">#FFFFFF</color>
     <color name="colorEvent">#FFCA28</color>
+    <color name="colorBackgroundOver">#80DEEA</color>
+    <color name="colorBarItem">#000000</color>
+    <color name="colorBackgroundRecyclerView">#FFFFFF</color>
 
 </resources>

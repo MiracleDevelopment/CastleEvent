@@ -25,7 +25,6 @@ class CustomHeightViewCollapseCalendar(view: View, height: Int, viewHeight: Int)
         super.applyTransformation(interpolatedTime, t)
         if (mViewHeight!! > mHeight!!) {
             mCalculateAnimation = (mViewHeight!! + (mHeight!! - mViewHeight!!) * interpolatedTime).toInt()
-            Log.d("collapse", mCalculateAnimation.toString())
             mView?.layoutParams?.height = mCalculateAnimation
             mView?.requestLayout()
         }

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorBackgroundRecyclerView"
     android:orientation="vertical"
     tools:context="com.ipati.dev.castleevent.fragment.CalendarFragment">
 
@@ -75,6 +76,15 @@
                         android:textSize="20sp" />
 
                 </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/im_calendar_today"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end|bottom"
+                    android:layout_margin="5dp"
+                    android:src="@mipmap/ic_today" />
+
             </android.support.v7.widget.CardView>
         </LinearLayout>
 
@@ -94,11 +104,41 @@
             app:compactCalendarTextColor="@color/colorFontCalendar"
             app:compactCalendarTextSize="18sp" />
 
+        <LinearLayout
+            android:id="@+id/tv_hind_bt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/circular"
+                android:padding="5dp"
+                android:text="@string/hind"
+                android:textColor="@color/colorFontCalendar"
+                android:textSize="25sp" />
+
+            <ImageView
+                android:id="@+id/im_arrow_download"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@mipmap/ic_arrow_downward" />
+
+        </LinearLayout>
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/calendar_recycler_list_event"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:paddingTop="5dp">
 
         </android.support.v7.widget.RecyclerView>
+
+
     </LinearLayout>
 </LinearLayout>

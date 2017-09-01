@@ -27,7 +27,6 @@ class CustomHeightViewExpandedCalendar(view: View, height: Int, viewHeight: Int)
         if (mViewHeight!! < mHeight!!) {
             mCalculateAnimation = (mViewHeight!! + (mHeight!! - mViewHeight!!) * interpolatedTime).toInt()
             if (mCalculateAnimation != 0) {
-                Log.d("expanded", mCalculateAnimation.toString())
                 view?.layoutParams?.height = mCalculateAnimation
                 view?.requestLayout()
             }

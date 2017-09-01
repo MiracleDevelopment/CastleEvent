@@ -4,6 +4,7 @@ import android.accounts.AccountManager
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.res.Resources
+import android.graphics.Paint
 import android.os.AsyncTask
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -39,7 +40,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-class CalendarFragment : Fragment() {
+class CalendarFragment : Fragment(), View.OnClickListener {
     private var REQUEST_ACCOUNT: Int = 1111
     private lateinit var mCalendarManager: CalendarManager
     private lateinit var mSharePreferenceManager: SharePreferenceGoogleSignInManager
@@ -52,9 +53,16 @@ class CalendarFragment : Fragment() {
     private lateinit var monthDefault: String
     private lateinit var monthScroll: String
     private lateinit var dateScroll: String
+    private lateinit var mSimpleDateFormatDateTime: SimpleDateFormat
+    private lateinit var mSimpleDateFormatNickNameDate: SimpleDateFormat
+    private lateinit var mSimpleDateFormatDateOfYear: SimpleDateFormat
     private lateinit var mSimpleDateFormat: SimpleDateFormat
-
+    private lateinit var eventDetailModel: EventDetailModel
+    private lateinit var mCalendarToday: Calendar
+    private lateinit var mDateCurrent: Date
     private var mListItemShow: ArrayList<EventDetailModel> = ArrayList()
+    private var mListItemEvent: ArrayList<EventDetailModel> = ArrayList()
+
     private var statusCodeGoogleApiAvailability: Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,12 +81,13 @@ class CalendarFragment : Fragment() {
         initialCalendar()
         initialRecyclerViewCalendar()
 
-
         defaultMonth()
+        requestEventGoogleCalendar()
+        tv_hind_bt.setOnClickListener { hindView: View -> onClick(hindView) }
+        im_calendar_today.setOnClickListener { todayView: View -> onClick(todayView) }
         tv_header_month.text = defaultMonth()
         tv_calendar_select_date.text = mCalendarManager.initialCalendar().get(Calendar.DATE).toString()
-        addEvent()
-        requestEventGoogleCalendar()
+        tv_title.paintFlags = Paint.UNDERLINE_TEXT_FLAG
     }
 
     private fun initialCalendar() {
@@ -97,30 +106,47 @@ class CalendarFragment : Fragment() {
                     tv_calendar_select_date.text = mCalendarManager.initialCalendar().get(Calendar.DATE).toString()
                     tv_header_month.text = mCalendarManager.initialCalendar().getDisplayName(Calendar.MONTH
                             , Calendar.LONG, Locale("th"))
+                    tv_hind_bt.visibility = View.GONE
 
                     initialCalendarExpanded()
-                    calendar_recycler_list_event.adapter = null
+                    mListItemEvent.clear()
+                    mListEventCalendarAdapter.notifyDataSetChanged()
 
                 } else {
                     initialAnimationCollapse()
-
                     initialCalendarCollapse()
+
+                    mListItemEvent.clear()
+                    val dayOfYear = mCalendarManager.initialCalendar().get(Calendar.DATE)
+                    val monthOfYear: Int = mCalendarManager.initialCalendar().get(Calendar.MONTH) + 1
+                    val yearOfYear = mCalendarManager.initialCalendar().get(Calendar.YEAR)
+                    val dateTimeStamp = "0$dayOfYear/0$monthOfYear/$yearOfYear"
+                    tv_hind_bt.visibility = View.VISIBLE
+
+                    for ((title, timeEventStart, timeEventEnd, timeDayOfYear, timeMonthDate, timeDateEvent) in mListItemShow) {
+                        if (timeDateEvent == dateTimeStamp) {
+                            eventDetailModel = EventDetailModel(title, timeEventStart, timeEventEnd, timeDayOfYear, timeMonthDate, timeDateEvent)
+                            mListItemEvent.add(eventDetailModel)
+                            mListEventCalendarAdapter.notifyDataSetChanged()
+                        }
+                    }
+
                     tv_calendar_select_date.text = ""
-                    tv_header_month.text = "EventList " + mCalendarManager.initialCalendar().get(Calendar.DATE).toString() + "/" + mCalendarManager.initialCalendar().get(Calendar.MONTH) + "/" + mCalendarManager.initialCalendar().get(Calendar.YEAR)
-                    mListEventCalendarAdapter = ListEventCalendarAdapter(mListItemShow)
-                    calendar_recycler_list_event.adapter = mListEventCalendarAdapter
+                    tv_header_month.text = "EventList " + yearOfYear
                 }
             }
 
             override fun onMonthScroll(firstDayOfNewMonth: Date?) {
                 mCalendarManager.initialCalendar().time = firstDayOfNewMonth
-                monthScroll = mCalendarManager.initialCalendar().getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault())
+                monthScroll = mCalendarManager.initialCalendar().getDisplayName(Calendar.MONTH, Calendar.LONG, Locale("th"))
                 dateScroll = mCalendarManager.initialCalendar().get(Calendar.DATE).toString()
                 tv_header_month.text = monthScroll
                 tv_calendar_select_date.text = dateScroll
                 initialAnimationExpanded()
+                initialCalendarExpanded()
             }
         })
+
         initialCalendarExpanded()
     }
 
@@ -146,6 +172,8 @@ class CalendarFragment : Fragment() {
     private fun initialRecyclerViewCalendar() {
         calendar_recycler_list_event.layoutManager = LinearLayoutManager(context, LinearLayout.VERTICAL, false)
         calendar_recycler_list_event.itemAnimator = DefaultItemAnimator()
+        mListEventCalendarAdapter = ListEventCalendarAdapter(mListItemEvent)
+        calendar_recycler_list_event.adapter = mListEventCalendarAdapter
     }
 
     private fun dpToPx(dp: Int): Int {
@@ -174,10 +202,6 @@ class CalendarFragment : Fragment() {
         return monthDefault
     }
 
-    private fun addEvent() {
-        mCalendarManager.initialCalendar().set(Calendar.YEAR, Calendar.MONTH, Calendar.DATE, Calendar.HOUR_OF_DAY, Calendar.MINUTE, Calendar.SECOND)
-        compat_calendar_view.addEvent(mCalendarManager.addEvent("Thailand Best Shopping Fair 2017"), true)
-    }
 
     private fun requestEventGoogleCalendar() {
         if (!mGoogleServiceApiAvailabilityEnable()) {
@@ -194,6 +218,31 @@ class CalendarFragment : Fragment() {
             }
         } else {
             MakeRequestTask(mGoogleCredentialAccount = mCalendarManager.initialGoogleAccountCredential()).execute()
+        }
+    }
+
+    override fun onClick(p0: View?) {
+        when (p0?.id) {
+            R.id.tv_hind_bt -> {
+                val dayOfYear = mCalendarManager.initialCalendar().get(Calendar.DATE)
+                tv_header_month.text = mCalendarManager.initialCalendar().getDisplayName(Calendar.MONTH, Calendar.LONG, Locale("th"))
+                tv_calendar_select_date.text = "$dayOfYear"
+                initialAnimationExpanded()
+                initialCalendarExpanded()
+            }
+
+            R.id.im_calendar_today -> {
+                mCalendarToday = Calendar.getInstance()
+                mCalendarToday.timeZone = TimeZone.getDefault()
+
+                mDateCurrent = Date(mCalendarToday.timeInMillis)
+                tv_calendar_select_date.text = mCalendarToday.get(Calendar.DATE).toString()
+                tv_header_month.text = mCalendarToday.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale("th"))
+                compat_calendar_view.setCurrentDate(mDateCurrent)
+
+                initialAnimationExpanded()
+                initialCalendarExpanded()
+            }
         }
     }
 
@@ -229,8 +278,10 @@ class CalendarFragment : Fragment() {
         private lateinit var mEventCalendar: com.github.sundeepk.compactcalendarview.domain.Event
         private lateinit var mListEvent: List<Event>
         private lateinit var mItemEvent: EventDetailModel
+        private lateinit var mDateMonth: Date
         private lateinit var mDateFormatStart: String
         private lateinit var mDateFormatEnd: String
+        private lateinit var mDateMonthFormat: String
 
         private var mDateStart: Date? = null
         private var mDateEnd: Date? = null
@@ -277,7 +328,11 @@ class CalendarFragment : Fragment() {
             Toast.makeText(context, "Read Event", Toast.LENGTH_SHORT).show()
             for (items in result!!) {
                 //Todo: Convert Start Or End Time
-                mSimpleDateFormat = SimpleDateFormat("HH.mm", Locale.getDefault())
+                mSimpleDateFormat = SimpleDateFormat("HH.mm", Locale("th"))
+                mSimpleDateFormatDateTime = SimpleDateFormat("dd/MM/yyyy", Locale("th"))
+                mSimpleDateFormatNickNameDate = SimpleDateFormat("MMM", Locale("th"))
+                mSimpleDateFormatDateOfYear = SimpleDateFormat("d", Locale("th"))
+
                 if (items.start != null) {
                     mDateStart = Date(items.start.dateTime.value)
                     mDateFormatStart = mSimpleDateFormat.format(mDateStart)
@@ -285,14 +340,17 @@ class CalendarFragment : Fragment() {
                     mDateEnd = Date(items.end.dateTime.value)
                     mDateFormatEnd = mSimpleDateFormat.format(mDateEnd)
 
-                    mItemEvent = EventDetailModel(items.summary, mDateFormatStart, mDateFormatEnd)
+                    mDateMonth = Date(items.start.dateTime.value)
+                    mDateMonthFormat = mSimpleDateFormatDateTime.format(mDateMonth)
+
+                    mItemEvent = EventDetailModel(items.summary, mDateFormatStart, mDateFormatEnd, mSimpleDateFormatDateOfYear.format(mDateMonth), mSimpleDateFormatNickNameDate.format(mDateMonth), mDateMonthFormat)
                     mListItemShow.add(mItemEvent)
 
 
                     //Todo: AddEvent To Calendar
                     mEventCalendar = com.github.sundeepk.compactcalendarview.domain
                             .Event(ContextCompat.getColor(context, R.color.colorEvent)
-                                    , items.start.dateTime.value, items.summary)
+                                    , items.start.dateTime.value, items)
 
                     compat_calendar_view.addEvent(mEventCalendar, true)
                 }

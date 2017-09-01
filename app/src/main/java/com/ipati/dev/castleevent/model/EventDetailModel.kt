@@ -1,6 +1,3 @@
 package com.ipati.dev.castleevent.model
 
-import java.util.*
-
-
-data class EventDetailModel(var title: String, var timeEventStart: String, var timeEventEnd: String)
+data class EventDetailModel(var title: String, var timeEventStart: String, var timeEventEnd: String, var timeDayOfYear: String, var timeMonthDate: String, var timeDateEventFormat: String)

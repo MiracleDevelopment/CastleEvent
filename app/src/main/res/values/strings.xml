@@ -22,5 +22,6 @@
     <string name="close_drawer_layout">เปิด</string>
     <string name="LoginReSource">ล๊อคอิน</string>
     <string name="stringTestCalendar">25</string>
+    <string name="hind">ซ่อนลิสรายการ</string>
 
 </resources>
