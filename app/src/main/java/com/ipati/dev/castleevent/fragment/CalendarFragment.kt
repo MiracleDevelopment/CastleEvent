@@ -54,15 +54,20 @@ class CalendarFragment : Fragment(), View.OnClickListener {
     private lateinit var mSimpleDateFormatNickNameDate: SimpleDateFormat
     private lateinit var mSimpleDateFormatDateOfYear: SimpleDateFormat
     private lateinit var mSimpleDateFormat: SimpleDateFormat
+    private lateinit var mSimpleDateSingleDateFormat: SimpleDateFormat
     private lateinit var eventDetailModel: EventDetailModel
     private lateinit var mCalendarToday: Calendar
     private lateinit var mDateCurrent: Date
     private lateinit var monthDefault: String
 
+
     private var mListItemShow: ArrayList<EventDetailModel> = ArrayList()
     private var mListItemEvent: ArrayList<EventDetailModel> = ArrayList()
     private var statusCodeGoogleApiAvailability: Int? = null
-
+    private var dayOfYear: Int? = null
+    private var monthOfYear: Int? = null
+    private var yearOfYear: Int? = null
+    private var dateTimeStamp: String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -130,29 +135,44 @@ class CalendarFragment : Fragment(), View.OnClickListener {
                     mListItemEvent.clear()
                     mListEventCalendarAdapter.notifyDataSetChanged()
                 } else {
-                    val dayOfYear = mCalendarManager.initialCalendar().get(Calendar.DATE)
-                    val monthOfYear: Int = mCalendarManager.initialCalendar().get(Calendar.MONTH) + 1
-                    val yearOfYear = mCalendarManager.initialCalendar().get(Calendar.YEAR)
-                    val dateTimeStamp = "0$dayOfYear/0$monthOfYear/$yearOfYear"
+                    if (mListEventDateClick.count() > 1) {
+                        dayOfYear = mCalendarManager.initialCalendar().get(Calendar.DATE)
+                        monthOfYear = mCalendarManager.initialCalendar().get(Calendar.MONTH) + 1
+                        yearOfYear = mCalendarManager.initialCalendar().get(Calendar.YEAR)
+                        dateTimeStamp = "0$dayOfYear/0$monthOfYear/$yearOfYear"
 
-                    tv_calendar_select_date.text = ""
-                    tv_calendar_year.text = ""
-                    tv_calendar_detail_event.text = ""
-                    tv_calendar_time_ticket.text = ""
-                    tv_header_month.text = "EventList " + yearOfYear
-                    tv_hind_bt.visibility = View.VISIBLE
-
-                    mListItemEvent.clear()
-                    for ((title, timeEventStart, timeEventEnd, timeDayOfYear, timeMonthDate, timeDateEvent) in mListItemShow) {
-                        if (timeDateEvent == dateTimeStamp) {
-                            eventDetailModel = EventDetailModel(title, timeEventStart, timeEventEnd, timeDayOfYear, timeMonthDate, timeDateEvent)
-                            mListItemEvent.add(eventDetailModel)
-                            mListEventCalendarAdapter.notifyDataSetChanged()
+                        tv_calendar_select_date.text = ""
+                        tv_calendar_year.text = ""
+                        tv_calendar_detail_event.text = ""
+                        tv_calendar_time_ticket.text = ""
+                        tv_header_month.text = "EventList " + yearOfYear
+                        tv_hind_bt.visibility = View.VISIBLE
+                        mListItemEvent.clear()
+                        for ((title, timeEventStart, timeEventEnd, timeDayOfYear, timeMonthDate, timeDateEvent) in mListItemShow) {
+                            if (dateTimeStamp == timeDateEvent) {
+                                eventDetailModel = EventDetailModel(title, timeEventStart, timeEventEnd, timeDayOfYear, timeMonthDate, timeDateEvent)
+                                mListItemEvent.add(eventDetailModel)
+                                mListEventCalendarAdapter.notifyDataSetChanged()
+                            }
                         }
-                    }
 
-                    mCalendarManager.animationHeaderCollapse(calendar_bar_app, minHeaderCalendar, calendar_bar_app.height)
-                    mCalendarManager.animationCalendarCollapse(compat_calendar_view, minCalendarHeight, compat_calendar_view.height)
+                        mCalendarManager.animationHeaderCollapse(calendar_bar_app, minHeaderCalendar, calendar_bar_app.height)
+                        mCalendarManager.animationCalendarCollapse(compat_calendar_view, minCalendarHeight, compat_calendar_view.height)
+                    } else if (mListEventDateClick.count() == 1) {
+                        tv_header_month.text = mCalendarManager.initialCalendar().getDisplayName(Calendar.MONTH, Calendar.LONG, Locale("th"))
+                        tv_calendar_select_date.text = mCalendarManager.initialCalendar().get(Calendar.DATE).toString()
+                        tv_calendar_year.text = mCalendarManager.initialCalendar().get(Calendar.YEAR).toString()
+
+                        for ((title, timeEvent, timeEventEnd, timeDayOfYear, timeMonthDate, timeDateEvent) in mListItemShow) {
+                            if (dateTimeStamp == timeDateEvent) {
+                                tv_calendar_detail_event.text = title
+                                tv_calendar_time_ticket.text = "$timeEvent น. - $timeEventEnd น."
+                            }
+                        }
+                        mCalendarManager.animationHeaderExpanded(calendar_bar_app, maxHeaderCalendar, calendar_bar_app.height)
+                        mCalendarManager.animationCalendarExpanded(compat_calendar_view, maxCalendarHeight, compat_calendar_view.height)
+
+                    }
                 }
             }
 
@@ -314,13 +334,10 @@ class CalendarFragment : Fragment(), View.OnClickListener {
                 mSimpleDateFormatNickNameDate = SimpleDateFormat("MMM", Locale("th"))
                 mSimpleDateFormatDateOfYear = SimpleDateFormat("d", Locale("th"))
 
-                mCalendarToday = Calendar.getInstance()
-                mCalendarToday.timeZone = TimeZone.getDefault()
-
                 mDateStart = Date(items.start.dateTime.value)
                 mDateEnd = Date(items.end.dateTime.value)
 
-                mDateMonth = Date(mCalendarToday.timeInMillis)
+                mDateMonth = Date(items.start.dateTime.value)
                 if (items.start != null) {
                     mItemEvent = EventDetailModel(items.summary
                             , mSimpleDateFormat.format(mDateStart)
