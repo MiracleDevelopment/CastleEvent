@@ -79,7 +79,7 @@
                         android:id="@+id/im_alarm_clock"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@mipmap/ic_access_alarm" />
+                        android:src="@mipmap/ic_timer" />
 
                     <TextView
                         android:id="@+id/tv_custom_list_date_calendar"
@@ -90,12 +90,7 @@
                         android:textColor="@color/colorFontCalendar"
                         android:textSize="18sp" />
                 </LinearLayout>
-
             </LinearLayout>
         </LinearLayout>
-
-
     </LinearLayout>
-
-
 </LinearLayout>

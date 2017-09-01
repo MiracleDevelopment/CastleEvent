@@ -27,6 +27,16 @@
                 android:elevation="15dp"
                 app:cardBackgroundColor="@color/colorBackgroundCalendar">
 
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/toolbar_calendar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:background="@android:color/transparent"
+                    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+                </android.support.v7.widget.Toolbar>
+
                 <TextView
                     android:id="@+id/tv_header_month"
                     android:layout_width="wrap_content"
@@ -53,6 +63,16 @@
                         android:text="@string/stringTestCalendar"
                         android:textColor="@color/colorFontHeader"
                         android:textSize="120sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_calendar_year"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/circular"
+                        android:padding="5dp"
+                        android:textColor="@color/colorFontHeader"
+                        android:textSize="35sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -91,7 +111,7 @@
         <com.github.sundeepk.compactcalendarview.CompactCalendarView
             android:id="@+id/compat_calendar_view"
             android:layout_width="match_parent"
-            android:layout_height="256dp"
+            android:layout_height="wrap_content"
             android:scrollbarAlwaysDrawHorizontalTrack="true"
             app:compactCalendarCurrentDayBackgroundColor="@color/colorSelectDate"
             app:compactCalendarCurrentDayTextColor="@color/colorFontSelectCalendar"
@@ -127,7 +147,7 @@
                 android:id="@+id/im_arrow_download"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:src="@mipmap/ic_arrow_downward" />
+                android:src="@mipmap/ic_expand_more" />
 
         </LinearLayout>
 

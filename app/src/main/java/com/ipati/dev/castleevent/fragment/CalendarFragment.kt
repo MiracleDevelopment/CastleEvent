@@ -9,10 +9,12 @@ import android.os.AsyncTask
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateInterpolator
@@ -67,6 +69,7 @@ class CalendarFragment : Fragment(), View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
         mCalendarManager = CalendarManager(context)
         mSharePreferenceManager = SharePreferenceGoogleSignInManager(context)
 
@@ -78,6 +81,7 @@ class CalendarFragment : Fragment(), View.OnClickListener {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initialToolbar()
         initialCalendar()
         initialRecyclerViewCalendar()
 
@@ -87,7 +91,15 @@ class CalendarFragment : Fragment(), View.OnClickListener {
         im_calendar_today.setOnClickListener { todayView: View -> onClick(todayView) }
         tv_header_month.text = defaultMonth()
         tv_calendar_select_date.text = mCalendarManager.initialCalendar().get(Calendar.DATE).toString()
+        tv_calendar_year.text = mCalendarManager.initialCalendar().get(Calendar.YEAR).toString()
         tv_title.paintFlags = Paint.UNDERLINE_TEXT_FLAG
+    }
+
+    private fun initialToolbar() {
+        ((activity as AppCompatActivity)).setSupportActionBar(toolbar_calendar)
+        ((activity as AppCompatActivity)).supportActionBar?.setDisplayShowHomeEnabled(true)
+        ((activity as AppCompatActivity)).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        ((activity as AppCompatActivity)).supportActionBar?.title = ""
     }
 
     private fun initialCalendar() {
@@ -103,7 +115,9 @@ class CalendarFragment : Fragment(), View.OnClickListener {
 
                     tv_calendar_detail_event.text = ""
                     tv_calendar_time_ticket.text = ""
+
                     tv_calendar_select_date.text = mCalendarManager.initialCalendar().get(Calendar.DATE).toString()
+                    tv_calendar_year.text = mCalendarManager.initialCalendar().get(Calendar.YEAR).toString()
                     tv_header_month.text = mCalendarManager.initialCalendar().getDisplayName(Calendar.MONTH
                             , Calendar.LONG, Locale("th"))
                     tv_hind_bt.visibility = View.GONE
@@ -132,6 +146,9 @@ class CalendarFragment : Fragment(), View.OnClickListener {
                     }
 
                     tv_calendar_select_date.text = ""
+                    tv_calendar_year.text = ""
+                    tv_calendar_detail_event.text = ""
+                    tv_calendar_time_ticket.text = ""
                     tv_header_month.text = "EventList " + yearOfYear
                 }
             }
@@ -140,6 +157,7 @@ class CalendarFragment : Fragment(), View.OnClickListener {
                 mCalendarManager.initialCalendar().time = firstDayOfNewMonth
                 monthScroll = mCalendarManager.initialCalendar().getDisplayName(Calendar.MONTH, Calendar.LONG, Locale("th"))
                 dateScroll = mCalendarManager.initialCalendar().get(Calendar.DATE).toString()
+                tv_calendar_year.text = mCalendarManager.initialCalendar().get(Calendar.YEAR).toString()
                 tv_header_month.text = monthScroll
                 tv_calendar_select_date.text = dateScroll
                 initialAnimationExpanded()
@@ -259,6 +277,16 @@ class CalendarFragment : Fragment(), View.OnClickListener {
                 requestEventGoogleCalendar()
             }
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            android.R.id.home -> {
+                activity.finish()
+            }
+        }
+        return true
+
     }
 
 
