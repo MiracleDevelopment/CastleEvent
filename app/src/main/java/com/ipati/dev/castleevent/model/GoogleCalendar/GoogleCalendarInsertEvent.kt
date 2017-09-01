@@ -24,9 +24,9 @@ class GoogleCalendarInsertEvent(summary: String?, location: String?, description
     private lateinit var mDate: Date
     private lateinit var simpleDateStart: String
     private lateinit var simpleDateEnd: String
-    var event: Event = Event()
-    var mCalendar: Calendar = Calendar.getInstance()
-    var mTimeZone: TimeZone = mCalendar.timeZone
+    private var event: Event = Event()
+    private var mCalendar: Calendar = Calendar.getInstance()
+    private var mTimeZone: TimeZone = mCalendar.timeZone
 
     init {
         event.summary = summary

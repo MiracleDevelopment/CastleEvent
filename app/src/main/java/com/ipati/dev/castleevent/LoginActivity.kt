@@ -1,5 +1,6 @@
 package com.ipati.dev.castleevent
 
+import android.content.Context
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -8,6 +9,12 @@ import com.ipati.dev.castleevent.fragment.loading.LoadingFragment
 import com.ipati.dev.castleevent.fragment.LoginFragment
 import com.ipati.dev.castleevent.model.LoadingListener
 import com.ipati.dev.castleevent.model.ShowListEventFragment
+import android.content.pm.PackageManager
+import android.util.Base64
+import android.util.Log
+import java.security.MessageDigest
+import java.security.NoSuchAlgorithmException
+
 
 class LoginActivity : AppCompatActivity(), LoadingListener, ShowListEventFragment {
 
@@ -16,6 +23,8 @@ class LoginActivity : AppCompatActivity(), LoadingListener, ShowListEventFragmen
         setContentView(R.layout.activity_main)
         supportFragmentManager.beginTransaction().replace(R.id.frame_login_fragment
                 , LoginFragment.newInstance("LoginFragment"), "LoginFragment").commitNow()
+
+        Log.d("hasKeyFacebook", initHashKey(context = applicationContext))
 
     }
 
@@ -33,6 +42,24 @@ class LoginActivity : AppCompatActivity(), LoadingListener, ShowListEventFragmen
     override fun onShowListFragment() {
         val listEventIntent = Intent(applicationContext, ListEventActivity::class.java)
         startActivity(listEventIntent)
+    }
+
+    private fun initHashKey(context: Context): String {
+        try {
+            val info = context.packageManager.getPackageInfo(context.packageName, PackageManager.GET_SIGNATURES)
+            for (signature in info.signatures) {
+                val md = MessageDigest.getInstance("SHA")
+                md.update(signature.toByteArray())
+                return String(Base64.encode(md.digest(), 0)).trim({ it <= ' ' })
+            }
+        } catch (e: PackageManager.NameNotFoundException) {
+            e.printStackTrace()
+            return ""
+        } catch (e: NoSuchAlgorithmException) {
+            e.printStackTrace()
+            return ""
+        }
+        return ""
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

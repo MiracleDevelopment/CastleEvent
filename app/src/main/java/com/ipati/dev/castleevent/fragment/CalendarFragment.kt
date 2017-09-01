@@ -3,14 +3,19 @@ package com.ipati.dev.castleevent.fragment
 import android.accounts.AccountManager
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.res.Resources
 import android.os.AsyncTask
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
+import android.support.v7.widget.DefaultItemAnimator
+import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AccelerateInterpolator
+import android.widget.LinearLayout
 import android.widget.Toast
 import com.github.sundeepk.compactcalendarview.CompactCalendarView
 import com.google.android.gms.common.ConnectionResult
@@ -25,9 +30,10 @@ import com.google.api.client.util.DateTime
 import com.google.api.services.calendar.model.Event
 import com.google.api.services.calendar.model.Events
 import com.ipati.dev.castleevent.R
+import com.ipati.dev.castleevent.adapter.ListEventCalendarAdapter
 import com.ipati.dev.castleevent.model.EventDetailModel
 import com.ipati.dev.castleevent.model.GoogleCalendar.CalendarFragment.CalendarManager
-import com.ipati.dev.castleevent.utill.SharePreferenceGoogleSignInManager
+import com.ipati.dev.castleevent.utill.*
 import kotlinx.android.synthetic.main.activity_calendar_fragment.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -37,12 +43,17 @@ class CalendarFragment : Fragment() {
     private var REQUEST_ACCOUNT: Int = 1111
     private lateinit var mCalendarManager: CalendarManager
     private lateinit var mSharePreferenceManager: SharePreferenceGoogleSignInManager
+    private lateinit var mListEventDateClick: List<com.github.sundeepk.compactcalendarview.domain.Event>
+    private lateinit var mCustomAnimationHeightCollapse: CustomHeightViewCollapse
+    private lateinit var mCustomAnimationHeightExpanded: CustomHeightViewExpanded
+    private lateinit var mCustomAnimationHeightExpandedCalendar: CustomHeightViewExpandedCalendar
+    private lateinit var mCustomAnimationHeightCollapseCalendar: CustomHeightViewCollapseCalendar
+    private lateinit var mListEventCalendarAdapter: ListEventCalendarAdapter
     private lateinit var monthDefault: String
     private lateinit var monthScroll: String
     private lateinit var dateScroll: String
-    private lateinit var mListEventDateClick: List<com.github.sundeepk.compactcalendarview.domain.Event>
     private lateinit var mSimpleDateFormat: SimpleDateFormat
-    private var mCalender: Calendar = Calendar.getInstance()
+
     private var mListItemShow: ArrayList<EventDetailModel> = ArrayList()
     private var statusCodeGoogleApiAvailability: Int? = null
 
@@ -50,6 +61,7 @@ class CalendarFragment : Fragment() {
         super.onCreate(savedInstanceState)
         mCalendarManager = CalendarManager(context)
         mSharePreferenceManager = SharePreferenceGoogleSignInManager(context)
+
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -59,8 +71,10 @@ class CalendarFragment : Fragment() {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initialCalendar()
-        defaultMonth()
+        initialRecyclerViewCalendar()
 
+
+        defaultMonth()
         tv_header_month.text = defaultMonth()
         tv_calendar_select_date.text = mCalendarManager.initialCalendar().get(Calendar.DATE).toString()
         addEvent()
@@ -74,18 +88,28 @@ class CalendarFragment : Fragment() {
             @SuppressLint("SetTextI18n")
             override fun onDayClick(dateClicked: Date?) {
                 mListEventDateClick = compat_calendar_view.getEvents(dateClicked)
-                if (mListEventDateClick.count() == 0) {
-                    tv_calendar_detail_event.text = " "
-                    tv_calendar_time_ticket.text = " "
-                } else {
-                    for ((title, timeEventStart, timeEventEnd) in mListItemShow) {
-                        tv_calendar_detail_event.text = title
-                        tv_calendar_time_ticket.text = "เวลา $timeEventStart น. - $timeEventEnd น."
-                    }
-                }
-
                 mCalendarManager.initialCalendar().time = dateClicked
-                tv_calendar_select_date.text = mCalendarManager.initialCalendar().get(Calendar.DATE).toString()
+                if (mListEventDateClick.count() == 0) {
+                    initialAnimationExpanded()
+
+                    tv_calendar_detail_event.text = ""
+                    tv_calendar_time_ticket.text = ""
+                    tv_calendar_select_date.text = mCalendarManager.initialCalendar().get(Calendar.DATE).toString()
+                    tv_header_month.text = mCalendarManager.initialCalendar().getDisplayName(Calendar.MONTH
+                            , Calendar.LONG, Locale("th"))
+
+                    initialCalendarExpanded()
+                    calendar_recycler_list_event.adapter = null
+
+                } else {
+                    initialAnimationCollapse()
+
+                    initialCalendarCollapse()
+                    tv_calendar_select_date.text = ""
+                    tv_header_month.text = "EventList " + mCalendarManager.initialCalendar().get(Calendar.DATE).toString() + "/" + mCalendarManager.initialCalendar().get(Calendar.MONTH) + "/" + mCalendarManager.initialCalendar().get(Calendar.YEAR)
+                    mListEventCalendarAdapter = ListEventCalendarAdapter(mListItemShow)
+                    calendar_recycler_list_event.adapter = mListEventCalendarAdapter
+                }
             }
 
             override fun onMonthScroll(firstDayOfNewMonth: Date?) {
@@ -94,8 +118,54 @@ class CalendarFragment : Fragment() {
                 dateScroll = mCalendarManager.initialCalendar().get(Calendar.DATE).toString()
                 tv_header_month.text = monthScroll
                 tv_calendar_select_date.text = dateScroll
+                initialAnimationExpanded()
             }
         })
+        initialCalendarExpanded()
+    }
+
+    private fun initialCalendarCollapse() {
+        mCustomAnimationHeightCollapseCalendar = CustomHeightViewCollapseCalendar(compat_calendar_view, dpToPx(256)
+                , compat_calendar_view.height)
+        mCustomAnimationHeightCollapseCalendar.interpolator = AccelerateInterpolator()
+        mCustomAnimationHeightCollapseCalendar.duration = 600
+
+        compat_calendar_view.animation = mCustomAnimationHeightCollapseCalendar
+        compat_calendar_view.startAnimation(mCustomAnimationHeightCollapseCalendar)
+    }
+
+    private fun initialCalendarExpanded() {
+        mCustomAnimationHeightExpandedCalendar = CustomHeightViewExpandedCalendar(compat_calendar_view, dpToPx(345), compat_calendar_view.height)
+        mCustomAnimationHeightExpandedCalendar.interpolator = AccelerateInterpolator()
+        mCustomAnimationHeightExpandedCalendar.duration = 600
+
+        compat_calendar_view.animation = mCustomAnimationHeightExpandedCalendar
+        compat_calendar_view.startAnimation(mCustomAnimationHeightExpandedCalendar)
+    }
+
+    private fun initialRecyclerViewCalendar() {
+        calendar_recycler_list_event.layoutManager = LinearLayoutManager(context, LinearLayout.VERTICAL, false)
+        calendar_recycler_list_event.itemAnimator = DefaultItemAnimator()
+    }
+
+    private fun dpToPx(dp: Int): Int {
+        return dp * (Resources.getSystem().displayMetrics.density).toInt()
+    }
+
+    private fun initialAnimationCollapse() {
+        mCustomAnimationHeightCollapse = CustomHeightViewCollapse(calendar_bar_app, 100, calendar_bar_app.height)
+        mCustomAnimationHeightCollapse.interpolator = AccelerateInterpolator()
+        mCustomAnimationHeightCollapse.duration = 500
+        calendar_bar_app.animation = mCustomAnimationHeightCollapse
+        calendar_bar_app.startAnimation(mCustomAnimationHeightCollapse)
+    }
+
+    private fun initialAnimationExpanded() {
+        mCustomAnimationHeightExpanded = CustomHeightViewExpanded(calendar_bar_app, dpToPx(312), calendar_bar_app.height)
+        mCustomAnimationHeightExpanded.interpolator = AccelerateInterpolator()
+        mCustomAnimationHeightExpanded.duration = 600
+        calendar_bar_app.animation = mCustomAnimationHeightExpanded
+        calendar_bar_app.startAnimation(mCustomAnimationHeightExpanded)
     }
 
 
@@ -161,9 +231,9 @@ class CalendarFragment : Fragment() {
         private lateinit var mItemEvent: EventDetailModel
         private lateinit var mDateFormatStart: String
         private lateinit var mDateFormatEnd: String
-        private lateinit var mDateStart: Date
-        private lateinit var mDateEnd: Date
 
+        private var mDateStart: Date? = null
+        private var mDateEnd: Date? = null
         private var transport: HttpTransport = AndroidHttp.newCompatibleTransport()
         private var jsonFactory: JsonFactory = JacksonFactory.getDefaultInstance()
 
@@ -208,22 +278,24 @@ class CalendarFragment : Fragment() {
             for (items in result!!) {
                 //Todo: Convert Start Or End Time
                 mSimpleDateFormat = SimpleDateFormat("HH.mm", Locale.getDefault())
-                mDateStart = Date(items.start.dateTime.value)
-                mDateFormatStart = mSimpleDateFormat.format(mDateStart)
+                if (items.start != null) {
+                    mDateStart = Date(items.start.dateTime.value)
+                    mDateFormatStart = mSimpleDateFormat.format(mDateStart)
 
-                mDateEnd = Date(items.end.dateTime.value)
-                mDateFormatEnd = mSimpleDateFormat.format(mDateEnd)
+                    mDateEnd = Date(items.end.dateTime.value)
+                    mDateFormatEnd = mSimpleDateFormat.format(mDateEnd)
 
-                mItemEvent = EventDetailModel(items.summary, mDateFormatStart, mDateFormatEnd)
-                mListItemShow.add(mItemEvent)
+                    mItemEvent = EventDetailModel(items.summary, mDateFormatStart, mDateFormatEnd)
+                    mListItemShow.add(mItemEvent)
 
 
-                //Todo: AddEvent To Calendar
-                mEventCalendar = com.github.sundeepk.compactcalendarview.domain
-                        .Event(ContextCompat.getColor(context, R.color.colorEvent)
-                                , items.start.dateTime.value, items.summary)
+                    //Todo: AddEvent To Calendar
+                    mEventCalendar = com.github.sundeepk.compactcalendarview.domain
+                            .Event(ContextCompat.getColor(context, R.color.colorEvent)
+                                    , items.start.dateTime.value, items.summary)
 
-                compat_calendar_view.addEvent(mEventCalendar, true)
+                    compat_calendar_view.addEvent(mEventCalendar, true)
+                }
             }
         }
 
