@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#B2EBF2</color>
     <color name="colorBackgroundResource">#263238</color>
     <color name="colorBackgroundDetailResource">#FFFFFF</color>
     <color name="colorFontLogin">#FFFFFF</color>
@@ -26,5 +26,7 @@
     <color name="colorBackgroundOver">#80DEEA</color>
     <color name="colorBarItem">#000000</color>
     <color name="colorBackgroundRecyclerView">#FFFFFF</color>
+    <color name="colorHintResource">#FFFFFF</color>
+    <color name="colorEditTextResource">#FFFFFF</color>
 
 </resources>

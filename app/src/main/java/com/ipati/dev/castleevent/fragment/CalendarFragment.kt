@@ -54,7 +54,6 @@ class CalendarFragment : Fragment(), View.OnClickListener {
     private lateinit var mSimpleDateFormatNickNameDate: SimpleDateFormat
     private lateinit var mSimpleDateFormatDateOfYear: SimpleDateFormat
     private lateinit var mSimpleDateFormat: SimpleDateFormat
-    private lateinit var mSimpleDateSingleDateFormat: SimpleDateFormat
     private lateinit var eventDetailModel: EventDetailModel
     private lateinit var mCalendarToday: Calendar
     private lateinit var mDateCurrent: Date

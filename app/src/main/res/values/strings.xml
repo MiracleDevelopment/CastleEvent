@@ -23,5 +23,15 @@
     <string name="LoginReSource">ล๊อคอิน</string>
     <string name="stringTestCalendar">25</string>
     <string name="hind">ซ่อนลิสรายการ</string>
+    <string name="loginPassword">Password</string>
+    <string name="loginUsername">Username</string>
+    <string name="create_account"><![CDATA[Create Account ->]]></string>
+    <string name="register_phone">Phone</string>
+    <string name="register_re_password">Re-Password</string>
+    <string name="register_password">Password</string>
+    <string name="register_email">Email</string>
+    <string name="register_username">Name - LastName</string>
+    <string name="register_confirm_register">Confirm Register</string>
+    <string name="register">Register</string>
 
 </resources>

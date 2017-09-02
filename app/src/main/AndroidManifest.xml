@@ -60,8 +60,12 @@
         </activity>
         <activity android:name=".ListEventActivity" />
         <activity android:name=".ListDetailEventActivity" />
-        <activity android:name=".fragment.CalendarFragment" />
-        <activity android:name=".CalendarActivity"></activity>
+        <activity android:name=".CalendarActivity" />
+        <activity
+            android:name=".RegisterActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize">
+
+        </activity>
     </application>
 
 </manifest>

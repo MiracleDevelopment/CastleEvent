@@ -18,6 +18,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInResult
 import com.ipati.dev.castleevent.LoginActivity
 import com.ipati.dev.castleevent.R
+import com.ipati.dev.castleevent.RegisterActivity
 import com.ipati.dev.castleevent.authCredential.facebookAuthCredential
 import com.ipati.dev.castleevent.authCredential.twitterAuthCredential
 import com.ipati.dev.castleevent.service.*
@@ -49,6 +50,7 @@ class LoginFragment : Fragment(), View.OnClickListener {
         im_facebook.setOnClickListener { v -> onClick(v) }
         im_twitter.setOnClickListener { v -> onClick(v) }
         im_google_plus.setOnClickListener { v -> onClick(v) }
+        tv_create_account_login.setOnClickListener { v -> onClick(v) }
     }
 
     private fun facebookLoginManager() {
@@ -102,6 +104,10 @@ class LoginFragment : Fragment(), View.OnClickListener {
             R.id.im_facebook -> LoginFacebook(context, this)
             R.id.im_twitter -> TwitterLoginManager()
             R.id.im_google_plus -> loginGoogleSignInOption(activity)
+            R.id.tv_create_account_login -> {
+                val registerIntent = Intent(context, RegisterActivity::class.java)
+                startActivity(registerIntent)
+            }
         }
     }
 
