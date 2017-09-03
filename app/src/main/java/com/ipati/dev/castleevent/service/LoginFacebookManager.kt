@@ -9,13 +9,9 @@ import java.util.*
 
 var publicFacebookTag: String = "public_profile"
 var cancelMsg: String = "Cancel"
-var loadingListener: LoadingListener? = null
 
 fun LoginFacebook(context: Context, activity: LoginFragment) {
-    LoginManager.getInstance().logInWithReadPermissions(activity, Arrays.asList(publicFacebookTag, "email"))
-
-    loadingListener = context as LoadingListener
-    loadingListener?.onShowLoading(true)
+    LoginManager.getInstance().logInWithReadPermissions(activity, Arrays.asList(publicFacebookTag, "userEmail"))
 }
 
 

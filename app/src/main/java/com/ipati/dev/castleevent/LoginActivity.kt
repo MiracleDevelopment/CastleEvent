@@ -16,7 +16,7 @@ import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 
 
-class LoginActivity : AppCompatActivity(), LoadingListener, ShowListEventFragment {
+class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,23 +25,6 @@ class LoginActivity : AppCompatActivity(), LoadingListener, ShowListEventFragmen
                 , LoginFragment.newInstance("LoginFragment"), "LoginFragment").commitNow()
 
         Log.d("hasKeyFacebook", initHashKey(context = applicationContext))
-
-    }
-
-    override fun onShowLoading(statusLoading: Boolean) {
-        supportFragmentManager.beginTransaction().add(R.id.frame_login_fragment
-                , LoadingFragment.newInstance(statusLoading), "LoadingFragment").commitNow()
-    }
-
-    override fun onHindLoading(statusLoading: Boolean) {
-        val loadingFragment: Fragment = supportFragmentManager.findFragmentByTag("LoadingFragment")
-        supportFragmentManager.beginTransaction()
-                .remove(loadingFragment).commitNow()
-    }
-
-    override fun onShowListFragment() {
-        val listEventIntent = Intent(applicationContext, ListEventActivity::class.java)
-        startActivity(listEventIntent)
     }
 
     private fun initHashKey(context: Context): String {

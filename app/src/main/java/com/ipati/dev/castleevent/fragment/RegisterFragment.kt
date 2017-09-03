@@ -18,19 +18,16 @@ import com.ipati.dev.castleevent.R
 import com.ipati.dev.castleevent.model.register.RegisterManager
 import kotlinx.android.synthetic.main.activity_register_fragment.*
 import java.lang.Exception
-import java.util.regex.Matcher
-import java.util.regex.Pattern
 
 class RegisterFragment : Fragment() {
     lateinit var registerManager: RegisterManager
     lateinit var mAuth: FirebaseAuth
     lateinit var fireBaseUser: FirebaseUser
     lateinit var fireBaseUpdateProfile: UserProfileChangeRequest
-    lateinit var mPattern: Pattern
-    lateinit var mMatcher: Matcher
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+        mAuth = FirebaseAuth.getInstance()
         registerManager = RegisterManager(context)
     }
 
@@ -40,9 +37,7 @@ class RegisterFragment : Fragment() {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mAuth = FirebaseAuth.getInstance()
         initialToolbar()
-
         tv_success_register.setOnClickListener {
             initialValidateAccount()
         }
@@ -121,7 +116,7 @@ class RegisterFragment : Fragment() {
                         }
                     }
                     else -> {
-                        register_ed_email.error = "missing pattern email"
+                        register_ed_email.error = "missing pattern userEmail"
                     }
                 }
             }
@@ -131,6 +126,7 @@ class RegisterFragment : Fragment() {
     private fun stateRegisterListener(email: String, password: String) {
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { resultLogin ->
             if (resultLogin.isSuccessful) {
+                //todo: Think miss position this
                 fireBaseUser = FirebaseAuth.getInstance().currentUser!!
                 fireBaseUpdateProfile = UserProfileChangeRequest.Builder()
                         .setDisplayName(register_ed_username.text.toString())
@@ -141,8 +137,7 @@ class RegisterFragment : Fragment() {
 
                         fireBaseUser.updateProfile(fireBaseUpdateProfile).addOnCompleteListener { resultPassword ->
                             if (resultPassword.isSuccessful) {
-                                Toast.makeText(context, "Register Success", Toast.LENGTH_SHORT).show()
-                                activity.finish()
+
                             } else {
                                 Toast.makeText(context, "fail Update Profile User", Toast.LENGTH_SHORT).show()
                             }
@@ -150,13 +145,12 @@ class RegisterFragment : Fragment() {
                             Toast.makeText(context, exception.message.toString(), Toast.LENGTH_SHORT).show()
                         }
                     }
-
                 }.addOnFailureListener { exception ->
                     Toast.makeText(context, exception.message.toString(), Toast.LENGTH_SHORT).show()
                 }
-
             } else {
-                Toast.makeText(context, "The email address is already in use by another account", Toast.LENGTH_SHORT).show()
+                register_ed_email.error = "The userEmail address is already"
+                Toast.makeText(context, "The userEmail address is already in use by another account", Toast.LENGTH_SHORT).show()
             }
         }.addOnFailureListener { exception: Exception ->
             Toast.makeText(context, exception.message.toString(), Toast.LENGTH_SHORT).show()

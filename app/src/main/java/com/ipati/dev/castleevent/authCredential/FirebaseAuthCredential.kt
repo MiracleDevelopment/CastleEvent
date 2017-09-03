@@ -7,54 +7,37 @@ import android.widget.Toast
 import com.facebook.AccessToken
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.firebase.auth.*
-import com.ipati.dev.castleevent.LoginActivity
-import com.ipati.dev.castleevent.model.LoadingListener
-import com.ipati.dev.castleevent.model.ShowListEventFragment
-import com.ipati.dev.castleevent.model.userManage.email
 import com.ipati.dev.castleevent.model.userManage.photoUrl
 import com.ipati.dev.castleevent.model.userManage.username
-import com.ipati.dev.castleevent.service.loadingListener
 import com.ipati.dev.castleevent.utill.SharePreferenceGoogleSignInManager
 import com.twitter.sdk.android.core.TwitterSession
 
 var mAuth: FirebaseAuth = FirebaseAuth.getInstance()
-var listEventListener: ShowListEventFragment? = null
-fun facebookAuthCredential(loadingListener: LoadingListener?, activity: Activity, token: AccessToken) {
+fun facebookAuthCredential( activity: Activity, token: AccessToken) {
     val authCredential: AuthCredential = FacebookAuthProvider.getCredential(token.token)
-    listEventListener = activity as LoginActivity
-
     mAuth.signInWithCredential(authCredential).addOnCompleteListener(activity, { task ->
         if (task.isSuccessful) {
             val fireBaseUser: FirebaseUser = mAuth.currentUser!!
             updateUserProfile(fireBaseUser, fireBaseUser.displayName, fireBaseUser.photoUrl, fireBaseUser.email)
             Toast.makeText(activity, fireBaseUser.email.toString(), Toast.LENGTH_SHORT).show()
-        } else {
-            loadingListener?.onHindLoading(false)
         }
     })
 }
 
-fun twitterAuthCredential(loadingListener: LoadingListener?, activity: Activity, session: TwitterSession) {
+fun twitterAuthCredential(activity: Activity, session: TwitterSession) {
     val authCredential: AuthCredential = TwitterAuthProvider.getCredential(session.authToken.token, session.authToken.secret)
-    listEventListener = activity as LoginActivity
-    loadingListener?.onShowLoading(true)
     mAuth.signInWithCredential(authCredential).addOnCompleteListener(activity, { task ->
         if (task.isSuccessful) {
             val fireBaseUser: FirebaseUser = mAuth.currentUser!!
             updateUserProfile(fireBaseUser, session.userName, fireBaseUser.photoUrl, fireBaseUser.email)
             Log.d("userTwitterLogin", session.userName.toString() + " : " + fireBaseUser.photoUrl.toString() + " : " + fireBaseUser.email.toString())
             Toast.makeText(activity, fireBaseUser.email.toString(), Toast.LENGTH_SHORT).show()
-        } else {
-            loadingListener?.onHindLoading(false)
         }
     })
 }
 
 fun googleAuthCredential(activity: Activity, account: GoogleSignInAccount, mGoogleSharedPreferences: SharePreferenceGoogleSignInManager) {
     val authCredential: AuthCredential = GoogleAuthProvider.getCredential(account.idToken, null)
-    loadingListener = activity as LoginActivity
-    loadingListener?.onShowLoading(true)
-
     mAuth.signInWithCredential(authCredential).addOnCompleteListener(activity, { task ->
         if (task.isSuccessful) {
             val fireBaseUser: FirebaseUser = mAuth.currentUser!!
@@ -79,9 +62,7 @@ fun updateUserProfile(fireBaseUser: FirebaseUser, nameUser: String?, photoUserUr
 
             fireBaseUser.updateEmail(userEmail.toString()).addOnCompleteListener { fireBaseResult ->
                 if (fireBaseResult.isSuccessful) {
-                    loadingListener?.onHindLoading(false)
-                    listEventListener?.onShowListFragment()
-                    email = fireBaseUser.email
+                    com.ipati.dev.castleevent.model.userManage.userEmail = fireBaseUser.email
                 }
             }
         }

@@ -5,6 +5,7 @@ import android.arch.lifecycle.Lifecycle
 import android.arch.lifecycle.LifecycleObserver
 import android.arch.lifecycle.OnLifecycleEvent
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import com.google.firebase.database.*
 import com.ipati.dev.castleevent.adapter.ListEventMenuAdapter
@@ -39,7 +40,7 @@ class RealTimeDatabaseMenuListItem(context: Context, lifecycle: Lifecycle) : Lif
     private fun childListItem(): ChildEventListener {
         return object : ChildEventListener {
             override fun onCancelled(p0: DatabaseError?) {
-                Toast.makeText(mContext, p0?.message, Toast.LENGTH_SHORT).show()
+                Log.d("onCancelled", p0?.message.toString())
             }
 
             override fun onChildMoved(p0: DataSnapshot?, p1: String?) {

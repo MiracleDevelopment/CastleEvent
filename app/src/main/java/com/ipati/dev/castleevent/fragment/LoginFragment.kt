@@ -1,8 +1,12 @@
 package com.ipati.dev.castleevent.fragment
 
+import android.arch.lifecycle.LifecycleRegistry
+import android.arch.lifecycle.LifecycleRegistryOwner
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -28,17 +32,21 @@ import com.twitter.sdk.android.core.identity.TwitterAuthClient
 import kotlinx.android.synthetic.main.activity_login_fragment.*
 
 
-class LoginFragment : Fragment(), View.OnClickListener {
+class LoginFragment : Fragment(), View.OnClickListener, LifecycleRegistryOwner {
+
     private lateinit var callbackManager: CallbackManager
     private lateinit var loginTwitterAuthentication: TwitterAuthClient
     private lateinit var twitterConfig: TwitterConfig
     private lateinit var mGoogleSharePreference: SharePreferenceGoogleSignInManager
     private lateinit var mLoginAuthManager: LoginAuthManager
+
+    private var mRegistry: LifecycleRegistry = LifecycleRegistry(this)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mGoogleSharePreference = SharePreferenceGoogleSignInManager(context)
-        mLoginAuthManager = LoginAuthManager(context)
+        mLoginAuthManager = LoginAuthManager(context, lifecycle)
         callbackManager = CallbackManager.Factory.create()
+
         twitterConfig()
         facebookLoginManager()
     }
@@ -59,16 +67,14 @@ class LoginFragment : Fragment(), View.OnClickListener {
     private fun facebookLoginManager() {
         LoginManager.getInstance().registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
             override fun onSuccess(result: LoginResult?) {
-                facebookAuthCredential(loadingListener, activity, result?.accessToken!!)
+                facebookAuthCredential(activity, result?.accessToken!!)
             }
 
             override fun onCancel() {
-                loadingListener?.onHindLoading(false)
                 Toast.makeText(activity, cancelMsg, Toast.LENGTH_SHORT).show()
             }
 
             override fun onError(error: FacebookException?) {
-                loadingListener?.onHindLoading(false)
                 Toast.makeText(activity, error?.message.toString(), Toast.LENGTH_SHORT).show()
             }
         })
@@ -90,8 +96,7 @@ class LoginFragment : Fragment(), View.OnClickListener {
         loginTwitterAuthentication.authorize(this.activity, object : Callback<TwitterSession>() {
             override fun success(result: Result<TwitterSession>?) {
                 result?.let {
-                    loadingListener = context as LoginActivity
-                    twitterAuthCredential(loadingListener, activity, result.data)
+                    twitterAuthCredential(activity, result.data)
                 }
             }
 
@@ -112,7 +117,37 @@ class LoginFragment : Fragment(), View.OnClickListener {
                 startActivity(registerIntent)
             }
             R.id.tv_login_fragment -> {
-                mLoginAuthManager.loginAuthentication(login_ed_username.text.toString(), login_ed_password.text.toString())
+                when {
+                    TextUtils.isEmpty(login_ed_username.text.toString()) -> {
+                        login_ed_username.error = "Please put your userEmail"
+                    }
+                }
+
+                when {
+                    TextUtils.isEmpty(login_ed_password.text.toString()) -> {
+                        login_ed_password.error = "Please put your password"
+                    }
+                }
+
+                when {
+                    !TextUtils.isEmpty(login_ed_username.text.toString()) && !TextUtils.isEmpty(login_ed_password.text.toString()) -> {
+                        when (true) {
+                            android.util.Patterns.EMAIL_ADDRESS.matcher(login_ed_username.text.toString()).matches() -> {
+                                when (login_ed_password.length()) {
+                                    in 6..10 -> {
+                                        mLoginAuthManager.loginAuthentication(login_ed_username.text.toString(), login_ed_password.text.toString(), login_ed_username, login_ed_password)
+                                    }
+                                    else -> {
+                                        login_ed_password.error = "Password is More  6 Character"
+                                    }
+                                }
+                            }
+                            else -> {
+                                login_ed_username.error = "Please put @ in your userEmail"
+                            }
+                        }
+                    }
+                }
             }
         }
     }
@@ -135,6 +170,15 @@ class LoginFragment : Fragment(), View.OnClickListener {
                 loginTwitterAuthentication.onActivityResult(requestCode, resultCode, data)
             }
         }
+    }
+
+    override fun getLifecycle(): LifecycleRegistry {
+        return mRegistry
+    }
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+
     }
 
     override fun onStart() {

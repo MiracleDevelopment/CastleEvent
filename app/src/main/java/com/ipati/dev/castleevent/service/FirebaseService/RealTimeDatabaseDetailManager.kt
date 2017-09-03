@@ -49,7 +49,7 @@ class RealTimeDatabaseDetailManager(context: Context, lifecycle: Lifecycle, even
     private fun onChildEvent(): ChildEventListener {
         mChildEvent = object : ChildEventListener {
             override fun onCancelled(p0: DatabaseError?) {
-                Toast.makeText(mContext, p0?.message.toString(), Toast.LENGTH_SHORT).show()
+                Log.d("onCancelled", p0?.message.toString())
             }
 
             override fun onChildMoved(p0: DataSnapshot?, p1: String?) {

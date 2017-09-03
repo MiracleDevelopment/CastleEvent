@@ -16,7 +16,7 @@ import android.view.View
 import com.google.firebase.auth.FirebaseAuth
 import com.ipati.dev.castleevent.fragment.ListEventFragment
 import com.ipati.dev.castleevent.model.Glide.loadPhotoProfileUser
-import com.ipati.dev.castleevent.model.userManage.email
+import com.ipati.dev.castleevent.model.userManage.userEmail
 import com.ipati.dev.castleevent.model.userManage.photoUrl
 import com.ipati.dev.castleevent.model.userManage.username
 import com.ipati.dev.castleevent.service.FirebaseService.RealTimeDatabaseMenuListItem
@@ -59,7 +59,7 @@ class ListEventActivity : AppCompatActivity(), LifecycleRegistryOwner, View.OnCl
 
     private fun initialListItemMenu() {
         tv_name_user_list_event.text = username
-        email_user_list_event.text = email
+        email_user_list_event.text = userEmail
         loadPhotoProfileUser(applicationContext, photoUrl, im_profile_user_list_event)
 
         recycler_list_view_menu_list_event.apply {

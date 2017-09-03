@@ -77,7 +77,7 @@ class GoogleCalendarInsertEvent(summary: String?, location: String?, description
     }
 
     private fun setEventListReminder(): List<EventReminder> {
-        listEventReminder = ArrayList(Arrays.asList(EventReminder().setMethod("email").setMinutes(24 * 60)
+        listEventReminder = ArrayList(Arrays.asList(EventReminder().setMethod("userEmail").setMinutes(24 * 60)
                 , EventReminder().setMethod("popup").setMinutes(24 * 60)))
         return listEventReminder
     }
