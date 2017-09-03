@@ -18,12 +18,16 @@ import com.ipati.dev.castleevent.R
 import com.ipati.dev.castleevent.model.register.RegisterManager
 import kotlinx.android.synthetic.main.activity_register_fragment.*
 import java.lang.Exception
+import java.util.regex.Matcher
+import java.util.regex.Pattern
 
 class RegisterFragment : Fragment() {
     lateinit var registerManager: RegisterManager
     lateinit var mAuth: FirebaseAuth
     lateinit var fireBaseUser: FirebaseUser
     lateinit var fireBaseUpdateProfile: UserProfileChangeRequest
+    lateinit var mPattern: Pattern
+    lateinit var mMatcher: Matcher
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -96,8 +100,15 @@ class RegisterFragment : Fragment() {
                             android.util.Patterns.PHONE.matcher(register_ed_phone.text.toString()).matches() -> {
                                 when (register_ed_password.text.toString()) {
                                     register_ed_re_password.text.toString() -> {
-                                        stateRegisterListener(register_ed_email.text.toString()
-                                                , register_ed_password.text.toString())
+                                        when (register_ed_password.length()) {
+                                            in 6..10 -> {
+                                                stateRegisterListener(register_ed_email.text.toString()
+                                                        , register_ed_password.text.toString())
+                                            }
+                                            else -> {
+                                                register_ed_password.error = "Password Less 6 Character"
+                                            }
+                                        }
                                     }
                                     else -> {
                                         register_ed_re_password.error = "Missing Confirm Password"
@@ -125,17 +136,25 @@ class RegisterFragment : Fragment() {
                         .setDisplayName(register_ed_username.text.toString())
                         .setPhotoUri(Uri.parse("https://static.pexels.com/photos/126407/pexels-photo-126407.jpeg"))
                         .build()
-
-                fireBaseUser.updateProfile(fireBaseUpdateProfile).addOnCompleteListener { task ->
+                fireBaseUser.updatePassword(register_ed_password.text.toString()).addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-                        Toast.makeText(context, "Register Success", Toast.LENGTH_SHORT).show()
-                        activity.finish()
-                    } else {
-                        Toast.makeText(context, "fail Update Profile User", Toast.LENGTH_SHORT).show()
+
+                        fireBaseUser.updateProfile(fireBaseUpdateProfile).addOnCompleteListener { resultPassword ->
+                            if (resultPassword.isSuccessful) {
+                                Toast.makeText(context, "Register Success", Toast.LENGTH_SHORT).show()
+                                activity.finish()
+                            } else {
+                                Toast.makeText(context, "fail Update Profile User", Toast.LENGTH_SHORT).show()
+                            }
+                        }.addOnFailureListener { exception ->
+                            Toast.makeText(context, exception.message.toString(), Toast.LENGTH_SHORT).show()
+                        }
                     }
+
                 }.addOnFailureListener { exception ->
                     Toast.makeText(context, exception.message.toString(), Toast.LENGTH_SHORT).show()
                 }
+
             } else {
                 Toast.makeText(context, "The email address is already in use by another account", Toast.LENGTH_SHORT).show()
             }

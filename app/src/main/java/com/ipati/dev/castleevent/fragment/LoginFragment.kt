@@ -33,9 +33,11 @@ class LoginFragment : Fragment(), View.OnClickListener {
     private lateinit var loginTwitterAuthentication: TwitterAuthClient
     private lateinit var twitterConfig: TwitterConfig
     private lateinit var mGoogleSharePreference: SharePreferenceGoogleSignInManager
+    private lateinit var mLoginAuthManager: LoginAuthManager
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mGoogleSharePreference = SharePreferenceGoogleSignInManager(context)
+        mLoginAuthManager = LoginAuthManager(context)
         callbackManager = CallbackManager.Factory.create()
         twitterConfig()
         facebookLoginManager()
@@ -51,6 +53,7 @@ class LoginFragment : Fragment(), View.OnClickListener {
         im_twitter.setOnClickListener { v -> onClick(v) }
         im_google_plus.setOnClickListener { v -> onClick(v) }
         tv_create_account_login.setOnClickListener { v -> onClick(v) }
+        tv_login_fragment.setOnClickListener { v -> onClick(v) }
     }
 
     private fun facebookLoginManager() {
@@ -107,6 +110,9 @@ class LoginFragment : Fragment(), View.OnClickListener {
             R.id.tv_create_account_login -> {
                 val registerIntent = Intent(context, RegisterActivity::class.java)
                 startActivity(registerIntent)
+            }
+            R.id.tv_login_fragment -> {
+                mLoginAuthManager.loginAuthentication(login_ed_username.text.toString(), login_ed_password.text.toString())
             }
         }
     }
