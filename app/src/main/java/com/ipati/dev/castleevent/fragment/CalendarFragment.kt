@@ -158,6 +158,7 @@ class CalendarFragment : Fragment(), View.OnClickListener {
                         mCalendarManager.animationHeaderCollapse(calendar_bar_app, minHeaderCalendar, calendar_bar_app.height)
                         mCalendarManager.animationCalendarCollapse(compat_calendar_view, minCalendarHeight, compat_calendar_view.height)
                     } else if (mListEventDateClick.count() == 1) {
+                        Toast.makeText(context, "1", Toast.LENGTH_SHORT).show()
                         tv_header_month.text = mCalendarManager.initialCalendar().getDisplayName(Calendar.MONTH, Calendar.LONG, Locale("th"))
                         tv_calendar_select_date.text = mCalendarManager.initialCalendar().get(Calendar.DATE).toString()
                         tv_calendar_year.text = mCalendarManager.initialCalendar().get(Calendar.YEAR).toString()
@@ -170,7 +171,6 @@ class CalendarFragment : Fragment(), View.OnClickListener {
                         }
                         mCalendarManager.animationHeaderExpanded(calendar_bar_app, maxHeaderCalendar, calendar_bar_app.height)
                         mCalendarManager.animationCalendarExpanded(compat_calendar_view, maxCalendarHeight, compat_calendar_view.height)
-
                     }
                 }
             }
