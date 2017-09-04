@@ -325,7 +325,6 @@ class CalendarFragment : Fragment(), View.OnClickListener {
 
         override fun onPostExecute(result: List<Event>?) {
             super.onPostExecute(result)
-            Toast.makeText(context, "Read Event", Toast.LENGTH_SHORT).show()
             for (items in result!!) {
                 //Todo: Convert Start Or End Time
                 mSimpleDateFormat = SimpleDateFormat("HH.mm", Locale("th"))

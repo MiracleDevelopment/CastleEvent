@@ -63,9 +63,8 @@
         <activity android:name=".CalendarActivity" />
         <activity
             android:name=".RegisterActivity"
-            android:windowSoftInputMode="stateHidden|adjustResize">
-
-        </activity>
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+        <activity android:name=".fragment.UserProfileFragment"></activity>
     </application>
 
 </manifest>

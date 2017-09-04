@@ -28,5 +28,8 @@
     <color name="colorBackgroundRecyclerView">#FFFFFF</color>
     <color name="colorHintResource">#FFFFFF</color>
     <color name="colorEditTextResource">#FFFFFF</color>
+    <color name="colorBackgroundBottomNavigation">#00BCD4</color>
+    <color name="colorItemTextBottomNavigation">#FFFFFF</color>
+    <color name="colorItemIconBottomNavigation">#FFFFFF</color>
 
 </resources>
