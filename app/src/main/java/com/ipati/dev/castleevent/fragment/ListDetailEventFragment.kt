@@ -10,11 +10,16 @@ import android.content.pm.PackageManager
 import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
+import android.support.design.widget.BottomSheetBehavior
+import android.support.design.widget.BottomSheetDialog
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 
 import android.view.*
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
+import android.widget.LinearLayout
 import android.widget.Toast
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
@@ -42,6 +47,8 @@ import com.ipati.dev.castleevent.model.modelListEvent.ItemListEvent
 import com.ipati.dev.castleevent.service.FirebaseService.RealTimeDatabaseDetailManager
 import com.ipati.dev.castleevent.utill.SharePreferenceGoogleSignInManager
 import kotlinx.android.synthetic.main.activity_detail_event_fragment.*
+import kotlinx.android.synthetic.main.layout_bottom_sheet.*
+import kotlinx.android.synthetic.main.layout_get_tickets_submit.*
 import java.util.*
 
 
@@ -59,7 +66,12 @@ class ListDetailEventFragment : Fragment(), LifecycleRegistryOwner, LoadingDetai
     private lateinit var mGoogleCredentialAccount: GoogleAccountCredential
     private lateinit var mGoogleApiAvailability: GoogleApiAvailability
     private lateinit var mapFragment: MapFragment
+    private lateinit var mBottomSheetDialog: BottomSheetDialog
+    private lateinit var mBottomSheetBehavior: BottomSheetBehavior<View>
+    private lateinit var mAnimationBottomSheet: Animation
     private lateinit var bundle: Bundle
+    private lateinit var mViewBottomSheetBehavior: View
+
 
     private var eventId: Long? = null
     private var accountName: String? = null
@@ -80,6 +92,34 @@ class ListDetailEventFragment : Fragment(), LifecycleRegistryOwner, LoadingDetai
 
         initialGoogleMapFragment()
         initialGoogleCredentialAccount()
+        initialBottomSheet()
+    }
+
+    @SuppressLint("InflateParams", "ResourceType")
+    private fun initialBottomSheet() {
+        mViewBottomSheetBehavior = layoutInflater.inflate(R.layout.layout_get_tickets_submit, null)
+        mBottomSheetDialog = BottomSheetDialog(context)
+        mBottomSheetDialog.setContentView(mViewBottomSheetBehavior)
+
+        mBottomSheetBehavior = BottomSheetBehavior.from(mViewBottomSheetBehavior.parent as View)
+
+        mBottomSheetBehavior.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+                Toast.makeText(context, "Slide", Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                when (newState) {
+                    BottomSheetBehavior.STATE_DRAGGING -> {
+                        Toast.makeText(context, "Dragging", Toast.LENGTH_SHORT).show()
+                    }
+                    else -> {
+                        Toast.makeText(context, "Collapsed", Toast.LENGTH_SHORT).show()
+                        mBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                    }
+                }
+            }
+        })
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -89,8 +129,8 @@ class ListDetailEventFragment : Fragment(), LifecycleRegistryOwner, LoadingDetai
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        card_view_get_tickets.setOnClickListener {
-            onCheckStatusCredentialGoogleCalendar()
+        bt_get_tickets.setOnClickListener {
+
         }
     }
 

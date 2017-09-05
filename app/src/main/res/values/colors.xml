@@ -31,5 +31,7 @@
     <color name="colorBackgroundBottomNavigation">#00BCD4</color>
     <color name="colorItemTextBottomNavigation">#FFFFFF</color>
     <color name="colorItemIconBottomNavigation">#FFFFFF</color>
+    <color name="colorHeaderBottomSheet">#000000</color>
+    <color name="colorBackgroundBottomSheet">#FFFFFF</color>
 
 </resources>
