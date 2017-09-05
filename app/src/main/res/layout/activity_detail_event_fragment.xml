@@ -202,16 +202,20 @@
 
     </android.support.v4.widget.NestedScrollView>
 
-    <android.support.design.widget.CoordinatorLayout
-        android:id="@+id/coordinator_bottom_sheet"
-        android:layout_width="match_parent"
+
+    <include layout="@layout/layout_bottom_sheet" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/floating_bt_close"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:animateLayoutChanges="true">
+        android:layout_margin="5dp"
+        android:elevation="14dp"
+        android:src="@mipmap/ic_keyboard_arrow_up"
+        app:backgroundTint="@color/colorFabBackgroundTintResource"
+        app:fabSize="auto"
+        app:layout_anchor="@+id/bottom_sheet"
+        app:layout_anchorGravity="top|end"
+        app:rippleColor="@color/colorRippleFab" />
 
-        <include
-            android:id="@+id/bt_get_tickets"
-            layout="@layout/layout_get_tickets_submit" />
-
-    </android.support.design.widget.CoordinatorLayout>
 </android.support.design.widget.CoordinatorLayout>

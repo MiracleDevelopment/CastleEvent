@@ -1,6 +1,7 @@
 package com.ipati.dev.castleevent.fragment
 
 import android.accounts.AccountManager
+import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.arch.lifecycle.LifecycleRegistry
@@ -11,15 +12,11 @@ import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
 import android.support.design.widget.BottomSheetBehavior
-import android.support.design.widget.BottomSheetDialog
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 
 import android.view.*
-import android.view.animation.Animation
-import android.view.animation.AnimationUtils
-import android.widget.LinearLayout
 import android.widget.Toast
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
@@ -59,19 +56,14 @@ class ListDetailEventFragment : Fragment(), LifecycleRegistryOwner, LoadingDetai
     private var REQUEST_CALENDAR_PERMISSION: Int = 1101
 
     private var mRegistry: LifecycleRegistry = LifecycleRegistry(this)
-
     private lateinit var realTimeDatabaseDetailManager: RealTimeDatabaseDetailManager
     private lateinit var mGoogleSharePreference: SharePreferenceGoogleSignInManager
     private lateinit var googlePlayServiceMap: GooglePlayServiceMapManager
     private lateinit var mGoogleCredentialAccount: GoogleAccountCredential
     private lateinit var mGoogleApiAvailability: GoogleApiAvailability
-    private lateinit var mapFragment: MapFragment
-    private lateinit var mBottomSheetDialog: BottomSheetDialog
     private lateinit var mBottomSheetBehavior: BottomSheetBehavior<View>
-    private lateinit var mAnimationBottomSheet: Animation
+    private lateinit var mapFragment: MapFragment
     private lateinit var bundle: Bundle
-    private lateinit var mViewBottomSheetBehavior: View
-
 
     private var eventId: Long? = null
     private var accountName: String? = null
@@ -92,35 +84,9 @@ class ListDetailEventFragment : Fragment(), LifecycleRegistryOwner, LoadingDetai
 
         initialGoogleMapFragment()
         initialGoogleCredentialAccount()
-        initialBottomSheet()
+
     }
 
-    @SuppressLint("InflateParams", "ResourceType")
-    private fun initialBottomSheet() {
-        mViewBottomSheetBehavior = layoutInflater.inflate(R.layout.layout_get_tickets_submit, null)
-        mBottomSheetDialog = BottomSheetDialog(context)
-        mBottomSheetDialog.setContentView(mViewBottomSheetBehavior)
-
-        mBottomSheetBehavior = BottomSheetBehavior.from(mViewBottomSheetBehavior.parent as View)
-
-        mBottomSheetBehavior.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
-            override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                Toast.makeText(context, "Slide", Toast.LENGTH_SHORT).show()
-            }
-
-            override fun onStateChanged(bottomSheet: View, newState: Int) {
-                when (newState) {
-                    BottomSheetBehavior.STATE_DRAGGING -> {
-                        Toast.makeText(context, "Dragging", Toast.LENGTH_SHORT).show()
-                    }
-                    else -> {
-                        Toast.makeText(context, "Collapsed", Toast.LENGTH_SHORT).show()
-                        mBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-                    }
-                }
-            }
-        })
-    }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater?.inflate(R.layout.activity_detail_event_fragment, container, false)
@@ -129,8 +95,20 @@ class ListDetailEventFragment : Fragment(), LifecycleRegistryOwner, LoadingDetai
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initialBottomSheet()
         bt_get_tickets.setOnClickListener {
-
+            when (mBottomSheetBehavior.state) {
+                BottomSheetBehavior.STATE_COLLAPSED -> {
+                    floating_bt_close.setImageResource(R.mipmap.ic_keyboard_arrow_down)
+                    mBottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+                    onShowBottomSheet()
+                }
+                BottomSheetBehavior.STATE_EXPANDED -> {
+                    floating_bt_close.setImageResource(R.mipmap.ic_keyboard_arrow_up)
+                    mBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                    onShowBottomSheet()
+                }
+            }
         }
     }
 
@@ -179,6 +157,50 @@ class ListDetailEventFragment : Fragment(), LifecycleRegistryOwner, LoadingDetai
                 .commit()
 
         mapFragment.getMapAsync(this)
+    }
+
+    @SuppressLint("InflateParams", "ResourceType")
+    private fun initialBottomSheet() {
+        mBottomSheetBehavior = BottomSheetBehavior.from(view?.findViewById(R.id.bottom_sheet))
+        mBottomSheetBehavior.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+//                floating_bt_close.animate().scaleX(1 - slideOffset).scaleY(1 - slideOffset).setDuration(0).start()
+            }
+
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+
+            }
+        })
+
+        floating_bt_close.setOnClickListener {
+            when (mBottomSheetBehavior.state) {
+                BottomSheetBehavior.STATE_EXPANDED -> {
+                    floating_bt_close.setImageResource(R.mipmap.ic_keyboard_arrow_up)
+                    mBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                    onShowBottomSheet()
+                }
+
+                BottomSheetBehavior.STATE_COLLAPSED -> {
+                    mBottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+                    floating_bt_close.setImageResource(R.mipmap.ic_keyboard_arrow_down)
+                    onShowBottomSheet()
+                }
+            }
+
+        }
+
+    }
+
+    private fun onShowBottomSheet() {
+        tv_bottom_sheet_header_event.text = nameEvent
+        tv_bottom_sheet_description_event.text = descriptionEvent
+        setUIClickable()
+    }
+
+    private fun setUIClickable() {
+        tv_receive_tickets.setOnClickListener {
+            Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun onLoadingUpdateData(itemListEvent: ItemListEvent) {
