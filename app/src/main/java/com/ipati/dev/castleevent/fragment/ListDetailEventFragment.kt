@@ -33,8 +33,6 @@ import com.google.api.services.calendar.Calendar
 import com.google.api.services.calendar.CalendarScopes
 import com.google.api.services.calendar.model.Event
 import com.ipati.dev.castleevent.R
-import com.ipati.dev.castleevent.fragment.loading.DialogConfirmFragment
-import com.ipati.dev.castleevent.fragment.loading.LoadingDialogFragment
 import com.ipati.dev.castleevent.model.Glide.loadLogo
 import com.ipati.dev.castleevent.model.Glide.loadPhotoAdvertise
 import com.ipati.dev.castleevent.model.Glide.loadPhotoDetail
@@ -44,6 +42,7 @@ import com.ipati.dev.castleevent.model.gmsLocation.GooglePlayServiceMapManager
 import com.ipati.dev.castleevent.model.modelListEvent.ItemListEvent
 import com.ipati.dev.castleevent.service.FirebaseService.RealTimeDatabaseDetailManager
 import com.ipati.dev.castleevent.service.RecordedEvent.RecordListEvent
+import com.ipati.dev.castleevent.utill.DialogManager
 import com.ipati.dev.castleevent.utill.SharePreferenceGoogleSignInManager
 import kotlinx.android.synthetic.main.activity_detail_event_fragment.*
 import kotlinx.android.synthetic.main.layout_bottom_sheet.*
@@ -66,6 +65,7 @@ class ListDetailEventFragment : Fragment(), LifecycleRegistryOwner, LoadingDetai
     private lateinit var mGoogleApiAvailability: GoogleApiAvailability
     private lateinit var mBottomSheetBehavior: BottomSheetBehavior<View>
     private lateinit var mRecorderEvent: RecordListEvent
+    private lateinit var mDialogManager: DialogManager
     private lateinit var mapFragment: MapFragment
     private lateinit var bundle: Bundle
 
@@ -76,8 +76,6 @@ class ListDetailEventFragment : Fragment(), LifecycleRegistryOwner, LoadingDetai
     private var userAccountName: String? = null
     private var statusCodeGoogleApi: Int? = null
     private var mPushEvent: MakePushEvent? = null
-    private var mConfirmDialogFragment: DialogConfirmFragment? = null
-    private var mLoadingDialogFragment: LoadingDialogFragment? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -89,11 +87,11 @@ class ListDetailEventFragment : Fragment(), LifecycleRegistryOwner, LoadingDetai
         realTimeDatabaseDetailManager = RealTimeDatabaseDetailManager(context, lifecycle, eventId!!, this)
         googlePlayServiceMap = GooglePlayServiceMapManager(activity, lifecycle)
         mGoogleSharePreference = SharePreferenceGoogleSignInManager(context)
+        mDialogManager = DialogManager(activity)
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater?.inflate(R.layout.activity_detail_event_fragment, container, false)
-
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
@@ -124,32 +122,6 @@ class ListDetailEventFragment : Fragment(), LifecycleRegistryOwner, LoadingDetai
         toolbar_detail_event_fragment.title = itemListEvent.eventName
     }
 
-    private fun initialDetailEvent(itemListEvent: ItemListEvent) {
-        loadPhotoDetail(context, itemListEvent.eventCover, im_detail_cover)
-        loadPhotoAdvertise(context, itemListEvent.eventAdvertise, im_advertise_detail)
-        loadLogo(context, itemListEvent.eventLogoCredit, im_logo_credit_detail)
-
-        tv_detail_time.text = itemListEvent.eventTime
-        tv_detail_location.text = itemListEvent.eventLocation
-        tv_detail_description.text = itemListEvent.eventDescription
-        tv_detail_number_phone_contact.text = "092-270-7454"
-        tv_detail_mail_description_contact.text = "admin@contact.co.th"
-        tv_Start_price.text = "STARTING FROM ฿" + itemListEvent.eventPrice
-
-        idEvent = itemListEvent.eventId.toString()
-        nameEvent = itemListEvent.eventName
-        logoEvent = itemListEvent.eventCover
-        startEvent = itemListEvent.eventCalendarStart
-        endEvent = itemListEvent.eventCalendarEnd
-        startCalendar = itemListEvent.eventCalendarStart
-        endCalendar = itemListEvent.eventCalendarEnd
-        descriptionEvent = itemListEvent.eventDescription
-        priceEvent = itemListEvent.eventPrice
-        locationEvent = itemListEvent.eventLocation
-        attendee = defaultAccountGoogleCalendar()
-
-        mRecorderEvent = RecordListEvent(context)
-    }
 
     private fun initialGoogleCredentialAccount() {
         mGoogleCredentialAccount = GoogleAccountCredential
@@ -178,7 +150,7 @@ class ListDetailEventFragment : Fragment(), LifecycleRegistryOwner, LoadingDetai
         mBottomSheetBehavior = BottomSheetBehavior.from(view?.findViewById(R.id.bottom_sheet))
         mBottomSheetBehavior.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
-//                floating_bt_close.animate().scaleX(1 - slideOffset).scaleY(1 - slideOffset).setDuration(0).start()
+
             }
 
             override fun onStateChanged(bottomSheet: View, newState: Int) {
@@ -230,18 +202,41 @@ class ListDetailEventFragment : Fragment(), LifecycleRegistryOwner, LoadingDetai
     private fun setUIClickable() {
         tv_receive_tickets.setOnClickListener {
             mCalendarTimeStamp.timeZone = TimeZone.getDefault()
-
             val msg = "คุณต้องการจองบัตร จำนวน " + number_picker.value.toString() + " ใบ" + "\n" + " ใช่ / ไม่"
-            mConfirmDialogFragment = DialogConfirmFragment.newInstance(msg)
-            mConfirmDialogFragment!!.isCancelable = false
-            mConfirmDialogFragment!!.show(activity.supportFragmentManager, "DialogConfirmFragment")
+            mDialogManager.onShowConfirmDialog(msg)
         }
-
     }
 
     override fun onLoadingUpdateData(itemListEvent: ItemListEvent) {
         initialDetailEvent(itemListEvent)
         initialToolbar(itemListEvent = itemListEvent)
+    }
+
+    private fun initialDetailEvent(itemListEvent: ItemListEvent) {
+        loadPhotoDetail(context, itemListEvent.eventCover, im_detail_cover)
+        loadPhotoAdvertise(context, itemListEvent.eventAdvertise, im_advertise_detail)
+        loadLogo(context, itemListEvent.eventLogoCredit, im_logo_credit_detail)
+
+        tv_detail_time.text = itemListEvent.eventTime
+        tv_detail_location.text = itemListEvent.eventLocation
+        tv_detail_description.text = itemListEvent.eventDescription
+        tv_detail_number_phone_contact.text = "092-270-7454"
+        tv_detail_mail_description_contact.text = "admin@contact.co.th"
+        tv_Start_price.text = "STARTING FROM ฿" + itemListEvent.eventPrice
+
+        idEvent = itemListEvent.eventId.toString()
+        nameEvent = itemListEvent.eventName
+        logoEvent = itemListEvent.eventCover
+        startEvent = itemListEvent.eventCalendarStart
+        endEvent = itemListEvent.eventCalendarEnd
+        startCalendar = itemListEvent.eventCalendarStart
+        endCalendar = itemListEvent.eventCalendarEnd
+        descriptionEvent = itemListEvent.eventDescription
+        priceEvent = itemListEvent.eventPrice
+        locationEvent = itemListEvent.eventLocation
+        attendee = defaultAccountGoogleCalendar()
+
+        mRecorderEvent = RecordListEvent(context)
     }
 
 
@@ -314,16 +309,12 @@ class ListDetailEventFragment : Fragment(), LifecycleRegistryOwner, LoadingDetai
             Toast.makeText(context, exception.message.toString(), Toast.LENGTH_SHORT).show()
         }
 
-        mConfirmDialogFragment?.let {
-            mConfirmDialogFragment!!.dismiss()
-        }
+        mDialogManager.onDismissConfirmDialog()
     }
 
     //Todo : DialogConfirmFragment
     fun onNegativeConfirmFragment() {
-        mConfirmDialogFragment?.let {
-            mConfirmDialogFragment!!.dismiss()
-        }
+        mDialogManager.onDismissConfirmDialog()
     }
 
     //Todo: Method Override
@@ -416,9 +407,7 @@ class ListDetailEventFragment : Fragment(), LifecycleRegistryOwner, LoadingDetai
 
         override fun onPreExecute() {
             super.onPreExecute()
-            mLoadingDialogFragment = LoadingDialogFragment.newInstance()
-            mLoadingDialogFragment!!.isCancelable = false
-            mLoadingDialogFragment!!.show(activity.supportFragmentManager, "LoadingDialogFragment")
+            mDialogManager.onShowLoadingDialog()
         }
 
         override fun doInBackground(vararg p0: Void?): Event? {
@@ -437,7 +426,7 @@ class ListDetailEventFragment : Fragment(), LifecycleRegistryOwner, LoadingDetai
             Log.d("resultTaskInsertEvent", result?.htmlLink)
             mBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
             floating_bt_close.setImageResource(R.mipmap.ic_keyboard_arrow_up)
-            mLoadingDialogFragment!!.dismiss()
+            mDialogManager.onDismissLoadingDialog()
         }
 
         override fun onCancelled() {
@@ -445,11 +434,11 @@ class ListDetailEventFragment : Fragment(), LifecycleRegistryOwner, LoadingDetai
             if (mListError != null) {
                 when (mListError) {
                     is UserRecoverableAuthIOException -> {
-                        mLoadingDialogFragment!!.dismiss()
+                        mDialogManager.onDismissLoadingDialog()
                         startActivityForResult((mListError as UserRecoverableAuthIOException).intent, REQUEST_CALENDAR_PERMISSION)
                     }
                     else -> {
-                        mLoadingDialogFragment!!.dismiss()
+                        mDialogManager.onDismissLoadingDialog()
                         Log.d("errorAsyncTaskPushEvent", mListError?.toString())
                     }
                 }
