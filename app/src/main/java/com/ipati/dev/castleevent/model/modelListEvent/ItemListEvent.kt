@@ -1,6 +1,7 @@
 package com.ipati.dev.castleevent.model.modelListEvent
 
-data class ItemListEvent(var eventId: Long
+data class ItemListEvent(var updateKey: String
+                         , var eventId: Long
                          , var eventName: String
                          , var eventCover: String
                          , var eventAdvertise: String
@@ -15,6 +16,7 @@ data class ItemListEvent(var eventId: Long
                          , var eventTime: String
                          , var eventCalendarStart: String
                          , var eventCalendarEnd: String
+                         , var eventPrice: String
 )
 
 

@@ -65,6 +65,7 @@ class RealTimeDatabaseDetailManager(context: Context, lifecycle: Lifecycle, even
                 mapEventId = (hasMapData["eventId"] as Long)
                 if (mapEventId!! == mEventId) {
                     itemListEvent = ItemListEvent(
+                            p0.key.toString(),
                             hasMapData["eventId"] as Long,
                             hasMapData["eventName"].toString(),
                             hasMapData["eventCover"].toString(),
@@ -79,7 +80,8 @@ class RealTimeDatabaseDetailManager(context: Context, lifecycle: Lifecycle, even
                             hasMapData["eventStatus"] as Boolean,
                             hasMapData["eventTime"].toString(),
                             hasMapData["eventCalendarStart"].toString(),
-                            hasMapData["eventCalendarEnd"].toString()
+                            hasMapData["eventCalendarEnd"].toString(),
+                            hasMapData["eventPrice"].toString()
                     )
                     onItemListDataChange = mListDetailEventFragment as LoadingDetailData
                     onItemListDataChange?.onLoadingUpdateData(itemListEvent!!)

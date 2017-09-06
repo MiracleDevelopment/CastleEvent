@@ -72,6 +72,7 @@ class RealTimeDatabaseManager(context: Context, lifeCycle: Lifecycle) : Lifecycl
                 val objectItem: List<ItemListEvent> = arrayItemList.filter { it.eventId == hasMapData!!["eventId"] as Long }
                 if (objectItem.count() != 0) {
                     listItem = ItemListEvent(
+                            p0.key.toString(),
                             hasMapData!!["eventId"] as Long,
                             hasMapData!!["eventName"].toString(),
                             hasMapData!!["eventCover"].toString(),
@@ -86,7 +87,8 @@ class RealTimeDatabaseManager(context: Context, lifeCycle: Lifecycle) : Lifecycl
                             hasMapData!!["eventStatus"] as Boolean,
                             hasMapData!!["eventTime"].toString(),
                             hasMapData!!["eventCalendarStart"].toString(),
-                            hasMapData!!["eventCalendarEnd"].toString()
+                            hasMapData!!["eventCalendarEnd"].toString(),
+                            hasMapData!!["eventPrice"].toString()
                     )
                     arrayItemList.remove(objectItem[0])
                     adapterListEvent?.notifyDataSetChanged()
@@ -95,8 +97,9 @@ class RealTimeDatabaseManager(context: Context, lifeCycle: Lifecycle) : Lifecycl
             }
 
             override fun onChildAdded(p0: DataSnapshot?, p1: String?) {
-                hasMapData = p0?.value as HashMap<*, *>?
+                hasMapData = p0?.value as HashMap<*, *>
                 listItem = ItemListEvent(
+                        p0.key.toString(),
                         hasMapData!!["eventId"] as Long,
                         hasMapData!!["eventName"].toString(),
                         hasMapData!!["eventCover"].toString(),
@@ -111,7 +114,9 @@ class RealTimeDatabaseManager(context: Context, lifeCycle: Lifecycle) : Lifecycl
                         hasMapData!!["eventStatus"] as Boolean,
                         hasMapData!!["eventTime"].toString(),
                         hasMapData!!["eventCalendarStart"].toString(),
-                        hasMapData!!["eventCalendarEnd"].toString()
+                        hasMapData!!["eventCalendarEnd"].toString(),
+                        hasMapData!!["eventPrice"].toString()
+
                 )
                 arrayItemList.add(listItem!!)
                 adapterListEvent?.notifyDataSetChanged()

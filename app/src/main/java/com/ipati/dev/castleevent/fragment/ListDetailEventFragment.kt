@@ -48,6 +48,7 @@ import com.ipati.dev.castleevent.utill.SharePreferenceGoogleSignInManager
 import kotlinx.android.synthetic.main.activity_detail_event_fragment.*
 import kotlinx.android.synthetic.main.layout_bottom_sheet.*
 import kotlinx.android.synthetic.main.layout_get_tickets_submit.*
+import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -133,13 +134,17 @@ class ListDetailEventFragment : Fragment(), LifecycleRegistryOwner, LoadingDetai
         tv_detail_description.text = itemListEvent.eventDescription
         tv_detail_number_phone_contact.text = "092-270-7454"
         tv_detail_mail_description_contact.text = "admin@contact.co.th"
+        tv_Start_price.text = "STARTING FROM ฿" + itemListEvent.eventPrice
 
         idEvent = itemListEvent.eventId.toString()
         nameEvent = itemListEvent.eventName
         logoEvent = itemListEvent.eventCover
         startEvent = itemListEvent.eventCalendarStart
         endEvent = itemListEvent.eventCalendarEnd
+        startCalendar = itemListEvent.eventCalendarStart
+        endCalendar = itemListEvent.eventCalendarEnd
         descriptionEvent = itemListEvent.eventDescription
+        priceEvent = itemListEvent.eventPrice
         locationEvent = itemListEvent.eventLocation
         attendee = defaultAccountGoogleCalendar()
 
@@ -177,7 +182,14 @@ class ListDetailEventFragment : Fragment(), LifecycleRegistryOwner, LoadingDetai
             }
 
             override fun onStateChanged(bottomSheet: View, newState: Int) {
-
+                when (mBottomSheetBehavior.state) {
+                    BottomSheetBehavior.STATE_COLLAPSED -> {
+                        floating_bt_close.setImageResource(R.mipmap.ic_keyboard_arrow_up)
+                    }
+                    BottomSheetBehavior.STATE_EXPANDED -> {
+                        floating_bt_close.setImageResource(R.mipmap.ic_keyboard_arrow_down)
+                    }
+                }
             }
         })
 
@@ -199,8 +211,19 @@ class ListDetailEventFragment : Fragment(), LifecycleRegistryOwner, LoadingDetai
     }
 
     private fun onShowBottomSheet() {
+        val mDateLimitFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale("th"))
+        val limitDate = mDateLimitFormat.parse(startCalendar)
+
+        val mCalendar = java.util.Calendar.getInstance()
+        mCalendar.timeZone = TimeZone.getTimeZone("UTC")
+        mCalendar.timeInMillis = limitDate.time
+
+        val limitTime = (mCalendar.get(java.util.Calendar.DATE) - 1).toString() + " " + mCalendar.getDisplayName(java.util.Calendar.MONTH, java.util.Calendar.LONG, Locale("th")) + " " + mCalendar.get(java.util.Calendar.YEAR).toString()
         tv_bottom_sheet_header_event.text = nameEvent
         tv_bottom_sheet_description_event.text = descriptionEvent
+        tv_bottom_sheet_limit_access.text = "สามารถจองได้ถึงภายในวันที่ " + limitTime
+        tv_receive_tickets.text = priceEvent + " / " + "TICKETS"
+
         setUIClickable()
     }
 
