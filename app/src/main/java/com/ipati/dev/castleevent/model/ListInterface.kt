@@ -3,9 +3,9 @@ package com.ipati.dev.castleevent.model
 import com.ipati.dev.castleevent.model.modelListEvent.ItemListEvent
 
 
-interface LoadingListener {
-    fun onShowLoading(statusLoading: Boolean)
-    fun onHindLoading(statusLoading: Boolean)
+interface LoadingDialogListener {
+    fun onPositiveClickable(statusLoading: Boolean)
+    fun onNegativeClickable(statusLoading: Boolean)
 }
 
 interface ShowListEventFragment {

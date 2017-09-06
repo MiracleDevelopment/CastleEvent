@@ -1,7 +1,8 @@
 package com.ipati.dev.castleevent.model.GoogleCalendar
 
-
+var idEvent: String? = null
 var nameEvent: String? = null
+var logoEvent: String? = null
 var startEvent: String? = null
 var endEvent: String? = null
 var descriptionEvent: String? = null

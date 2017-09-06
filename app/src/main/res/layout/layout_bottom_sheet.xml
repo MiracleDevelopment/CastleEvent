@@ -5,6 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/colorBackgroundBottomSheet"
+    android:clickable="false"
+    android:focusable="true"
     android:orientation="vertical"
     app:behavior_peekHeight="48dp"
     app:layout_behavior="@string/bottom_sheet_behavior">
@@ -70,12 +72,12 @@
                 android:background="@drawable/custom_background_number_pick_up"
                 app:snp_buttonBackgroundTintSelector="@color/white"
                 app:snp_buttonTouchScaleFactor="0.8"
-                app:snp_maxValue="2"
-                app:snp_minValue="0"
+                app:snp_maxValue="5"
+                app:snp_minValue="1"
                 app:snp_orientation="vertical"
                 app:snp_scrollEnabled="true"
                 app:snp_updateInterval="25"
-                app:snp_value="0"
+                app:snp_value="1"
                 app:snp_value_text_color="@color/colorFontSelectorTimePicker"
                 app:snp_value_text_size="20dp">
 
@@ -98,7 +100,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:background="@drawable/custom_background_receive_tickets"
+            android:background="@drawable/background_get_tickets"
             android:fontFamily="@font/circular"
             android:gravity="center"
             android:text="FREE TICKETS"

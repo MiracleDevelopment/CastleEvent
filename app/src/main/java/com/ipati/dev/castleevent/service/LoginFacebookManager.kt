@@ -4,7 +4,6 @@ import android.content.Context
 import com.facebook.login.LoginManager
 import com.ipati.dev.castleevent.fragment.LoginFragment
 
-import com.ipati.dev.castleevent.model.LoadingListener
 import java.util.*
 
 var publicFacebookTag: String = "public_profile"

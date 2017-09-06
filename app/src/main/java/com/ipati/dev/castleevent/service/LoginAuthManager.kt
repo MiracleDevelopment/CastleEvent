@@ -12,9 +12,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.ipati.dev.castleevent.ListEventActivity
 import com.ipati.dev.castleevent.model.userManage.photoUrl
+import com.ipati.dev.castleevent.model.userManage.uid
 import com.ipati.dev.castleevent.model.userManage.userEmail
 import com.ipati.dev.castleevent.model.userManage.username
-import kotlinx.android.synthetic.main.activity_login_fragment.view.*
 
 class LoginAuthManager(context: Context, lifecycle: Lifecycle) : LifecycleObserver {
     private var mContext: Context = context
@@ -31,6 +31,7 @@ class LoginAuthManager(context: Context, lifecycle: Lifecycle) : LifecycleObserv
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 fireBaseUser = FirebaseAuth.getInstance().currentUser!!
+                uid = fireBaseUser.uid
                 username = fireBaseUser.displayName.toString()
                 userEmail = fireBaseUser.email.toString()
                 photoUrl = fireBaseUser.photoUrl.toString()

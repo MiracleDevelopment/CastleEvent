@@ -39,4 +39,5 @@
     <color name="colorReceiveTickets">#00BCD4</color>
     <color name="colorFontReceiveTickets">#FFFFFF</color>
     <color name="colorRippleFab">#FFFFFF</color>
+    <color name="colorButtonAccept">#00BCD4</color>
 </resources>

@@ -10,6 +10,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.firebase.auth.*
 import com.ipati.dev.castleevent.ListEventActivity
 import com.ipati.dev.castleevent.model.userManage.photoUrl
+import com.ipati.dev.castleevent.model.userManage.uid
 import com.ipati.dev.castleevent.model.userManage.username
 import com.ipati.dev.castleevent.utill.SharePreferenceGoogleSignInManager
 import com.twitter.sdk.android.core.TwitterSession
@@ -59,6 +60,7 @@ fun updateUserProfile(activity: Activity, fireBaseUser: FirebaseUser, nameUser: 
 
     fireBaseUser.updateProfile(userProfileUpdate).addOnCompleteListener { task ->
         if (task.isSuccessful) {
+            uid = fireBaseUser.uid
             username = fireBaseUser.displayName
             photoUrl = fireBaseUser.photoUrl.toString()
 

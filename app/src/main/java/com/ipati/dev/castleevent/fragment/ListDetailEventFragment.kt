@@ -1,7 +1,6 @@
 package com.ipati.dev.castleevent.fragment
 
 import android.accounts.AccountManager
-import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.arch.lifecycle.LifecycleRegistry
@@ -34,6 +33,8 @@ import com.google.api.services.calendar.Calendar
 import com.google.api.services.calendar.CalendarScopes
 import com.google.api.services.calendar.model.Event
 import com.ipati.dev.castleevent.R
+import com.ipati.dev.castleevent.fragment.loading.DialogConfirmFragment
+import com.ipati.dev.castleevent.fragment.loading.LoadingDialogFragment
 import com.ipati.dev.castleevent.model.Glide.loadLogo
 import com.ipati.dev.castleevent.model.Glide.loadPhotoAdvertise
 import com.ipati.dev.castleevent.model.Glide.loadPhotoDetail
@@ -42,6 +43,7 @@ import com.ipati.dev.castleevent.model.LoadingDetailData
 import com.ipati.dev.castleevent.model.gmsLocation.GooglePlayServiceMapManager
 import com.ipati.dev.castleevent.model.modelListEvent.ItemListEvent
 import com.ipati.dev.castleevent.service.FirebaseService.RealTimeDatabaseDetailManager
+import com.ipati.dev.castleevent.service.RecordedEvent.RecordListEvent
 import com.ipati.dev.castleevent.utill.SharePreferenceGoogleSignInManager
 import kotlinx.android.synthetic.main.activity_detail_event_fragment.*
 import kotlinx.android.synthetic.main.layout_bottom_sheet.*
@@ -55,21 +57,26 @@ class ListDetailEventFragment : Fragment(), LifecycleRegistryOwner, LoadingDetai
     private var REQUEST_PERMISSION_ACCOUNT: Int = 1111
     private var REQUEST_CALENDAR_PERMISSION: Int = 1101
 
-    private var mRegistry: LifecycleRegistry = LifecycleRegistry(this)
+
     private lateinit var realTimeDatabaseDetailManager: RealTimeDatabaseDetailManager
     private lateinit var mGoogleSharePreference: SharePreferenceGoogleSignInManager
     private lateinit var googlePlayServiceMap: GooglePlayServiceMapManager
     private lateinit var mGoogleCredentialAccount: GoogleAccountCredential
     private lateinit var mGoogleApiAvailability: GoogleApiAvailability
     private lateinit var mBottomSheetBehavior: BottomSheetBehavior<View>
+    private lateinit var mRecorderEvent: RecordListEvent
     private lateinit var mapFragment: MapFragment
     private lateinit var bundle: Bundle
 
+    private var mRegistry: LifecycleRegistry = LifecycleRegistry(this)
+    private val mCalendarTimeStamp = java.util.Calendar.getInstance()
     private var eventId: Long? = null
     private var accountName: String? = null
     private var userAccountName: String? = null
     private var statusCodeGoogleApi: Int? = null
     private var mPushEvent: MakePushEvent? = null
+    private var mConfirmDialogFragment: DialogConfirmFragment? = null
+    private var mLoadingDialogFragment: LoadingDialogFragment? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,12 +88,7 @@ class ListDetailEventFragment : Fragment(), LifecycleRegistryOwner, LoadingDetai
         realTimeDatabaseDetailManager = RealTimeDatabaseDetailManager(context, lifecycle, eventId!!, this)
         googlePlayServiceMap = GooglePlayServiceMapManager(activity, lifecycle)
         mGoogleSharePreference = SharePreferenceGoogleSignInManager(context)
-
-        initialGoogleMapFragment()
-        initialGoogleCredentialAccount()
-
     }
-
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater?.inflate(R.layout.activity_detail_event_fragment, container, false)
@@ -95,7 +97,10 @@ class ListDetailEventFragment : Fragment(), LifecycleRegistryOwner, LoadingDetai
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initialGoogleMapFragment()
+        initialGoogleCredentialAccount()
         initialBottomSheet()
+
         bt_get_tickets.setOnClickListener {
             when (mBottomSheetBehavior.state) {
                 BottomSheetBehavior.STATE_COLLAPSED -> {
@@ -129,12 +134,16 @@ class ListDetailEventFragment : Fragment(), LifecycleRegistryOwner, LoadingDetai
         tv_detail_number_phone_contact.text = "092-270-7454"
         tv_detail_mail_description_contact.text = "admin@contact.co.th"
 
+        idEvent = itemListEvent.eventId.toString()
         nameEvent = itemListEvent.eventName
+        logoEvent = itemListEvent.eventCover
         startEvent = itemListEvent.eventCalendarStart
         endEvent = itemListEvent.eventCalendarEnd
         descriptionEvent = itemListEvent.eventDescription
         locationEvent = itemListEvent.eventLocation
         attendee = defaultAccountGoogleCalendar()
+
+        mRecorderEvent = RecordListEvent(context)
     }
 
     private fun initialGoogleCredentialAccount() {
@@ -186,9 +195,7 @@ class ListDetailEventFragment : Fragment(), LifecycleRegistryOwner, LoadingDetai
                     onShowBottomSheet()
                 }
             }
-
         }
-
     }
 
     private fun onShowBottomSheet() {
@@ -199,8 +206,14 @@ class ListDetailEventFragment : Fragment(), LifecycleRegistryOwner, LoadingDetai
 
     private fun setUIClickable() {
         tv_receive_tickets.setOnClickListener {
-            Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show()
+            mCalendarTimeStamp.timeZone = TimeZone.getDefault()
+
+            val msg = "คุณต้องการจองบัตร จำนวน " + number_picker.value.toString() + " ใบ" + "\n" + " ใช่ / ไม่"
+            mConfirmDialogFragment = DialogConfirmFragment.newInstance(msg)
+            mConfirmDialogFragment!!.isCancelable = false
+            mConfirmDialogFragment!!.show(activity.supportFragmentManager, "DialogConfirmFragment")
         }
+
     }
 
     override fun onLoadingUpdateData(itemListEvent: ItemListEvent) {
@@ -261,6 +274,35 @@ class ListDetailEventFragment : Fragment(), LifecycleRegistryOwner, LoadingDetai
         return statusCodeGoogleApi == ConnectionResult.SUCCESS
     }
 
+    //Todo: DialogConfirmFragment
+    fun onPositiveConfirmFragment() {
+        val day = mCalendarTimeStamp.get(java.util.Calendar.DATE)
+        val month = mCalendarTimeStamp.getDisplayName(java.util.Calendar.MONTH, java.util.Calendar.LONG, Locale("th"))
+        val year = mCalendarTimeStamp.get(java.util.Calendar.YEAR)
+
+        val dateStamp = day.toString() + "-" + month.toString() + "-" + year.toString()
+        val timeStamp = System.currentTimeMillis()
+
+        mRecorderEvent.pushEventRealTime(eventId.toString(), nameEvent.toString(), logoEvent!!, number_picker.value.toLong(), dateStamp, timeStamp)?.addOnCompleteListener { task ->
+            if (task.isComplete) {
+                onCheckStatusCredentialGoogleCalendar()
+            }
+        }?.addOnFailureListener { exception ->
+            Toast.makeText(context, exception.message.toString(), Toast.LENGTH_SHORT).show()
+        }
+
+        mConfirmDialogFragment?.let {
+            mConfirmDialogFragment!!.dismiss()
+        }
+    }
+
+    //Todo : DialogConfirmFragment
+    fun onNegativeConfirmFragment() {
+        mConfirmDialogFragment?.let {
+            mConfirmDialogFragment!!.dismiss()
+        }
+    }
+
     //Todo: Method Override
     override fun onMapReady(p0: GoogleMap?) {
 
@@ -318,6 +360,7 @@ class ListDetailEventFragment : Fragment(), LifecycleRegistryOwner, LoadingDetai
         }
     }
 
+
     companion object {
         var listEventObject: String = "ListDetailEventFragment"
         fun newInstance(nameObject: Long): ListDetailEventFragment {
@@ -348,6 +391,13 @@ class ListDetailEventFragment : Fragment(), LifecycleRegistryOwner, LoadingDetai
                     .build()
         }
 
+        override fun onPreExecute() {
+            super.onPreExecute()
+            mLoadingDialogFragment = LoadingDialogFragment.newInstance()
+            mLoadingDialogFragment!!.isCancelable = false
+            mLoadingDialogFragment!!.show(activity.supportFragmentManager, "LoadingDialogFragment")
+        }
+
         override fun doInBackground(vararg p0: Void?): Event? {
             return try {
                 mService?.events()?.insert("primary", mGoogleCalendarInsertEvent.requestEvent())?.execute()
@@ -362,7 +412,9 @@ class ListDetailEventFragment : Fragment(), LifecycleRegistryOwner, LoadingDetai
         override fun onPostExecute(result: Event?) {
             super.onPostExecute(result)
             Log.d("resultTaskInsertEvent", result?.htmlLink)
-
+            mBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+            floating_bt_close.setImageResource(R.mipmap.ic_keyboard_arrow_up)
+            mLoadingDialogFragment!!.dismiss()
         }
 
         override fun onCancelled() {
@@ -370,10 +422,12 @@ class ListDetailEventFragment : Fragment(), LifecycleRegistryOwner, LoadingDetai
             if (mListError != null) {
                 when (mListError) {
                     is UserRecoverableAuthIOException -> {
+                        mLoadingDialogFragment!!.dismiss()
                         startActivityForResult((mListError as UserRecoverableAuthIOException).intent, REQUEST_CALENDAR_PERMISSION)
                     }
                     else -> {
-                        Log.d("errorPushEvent", mListError?.message.toString())
+                        mLoadingDialogFragment!!.dismiss()
+                        Log.d("errorAsyncTaskPushEvent", mListError?.toString())
                     }
                 }
             }

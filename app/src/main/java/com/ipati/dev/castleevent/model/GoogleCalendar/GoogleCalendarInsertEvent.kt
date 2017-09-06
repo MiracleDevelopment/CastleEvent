@@ -24,6 +24,7 @@ class GoogleCalendarInsertEvent(summary: String?, location: String?, description
     private lateinit var mDate: Date
     private lateinit var simpleDateStart: String
     private lateinit var simpleDateEnd: String
+
     private var event: Event = Event()
     private var mCalendar: Calendar = Calendar.getInstance()
     private var mTimeZone: TimeZone = mCalendar.timeZone
@@ -40,7 +41,7 @@ class GoogleCalendarInsertEvent(summary: String?, location: String?, description
     }
 
     private fun setDateTimeStart(): EventDateTime {
-        simpleDateStart = "05-9-2017T07:00:00-10:00"
+        simpleDateStart = "08-9-2017T07:00:00-10:00"
         mSimpleDateFormat = SimpleDateFormat("dd-MM-yyyy'T'HH:mm:ss", Locale("th"))
         mDate = mSimpleDateFormat.parse(simpleDateStart)
         Log.d("DateTimeFormatStart", mDate.toString())
@@ -51,7 +52,7 @@ class GoogleCalendarInsertEvent(summary: String?, location: String?, description
     }
 
     private fun setDateTimeEnd(): EventDateTime {
-        simpleDateEnd = "05-9-2017T10:00:00-17:00"
+        simpleDateEnd = "08-9-2017T10:00:00-17:00"
         mSimpleDateFormat = SimpleDateFormat("dd-MM-yyyy'T'HH:mm:ss", Locale("th"))
         mDate = mSimpleDateFormat.parse(simpleDateEnd)
         Log.d("DateTimeFormatEnd", mDate.toString())
@@ -77,7 +78,7 @@ class GoogleCalendarInsertEvent(summary: String?, location: String?, description
     }
 
     private fun setEventListReminder(): List<EventReminder> {
-        listEventReminder = ArrayList(Arrays.asList(EventReminder().setMethod("userEmail").setMinutes(24 * 60)
+        listEventReminder = ArrayList(Arrays.asList(EventReminder().setMethod("email").setMinutes(24 * 60)
                 , EventReminder().setMethod("popup").setMinutes(24 * 60)))
         return listEventReminder
     }

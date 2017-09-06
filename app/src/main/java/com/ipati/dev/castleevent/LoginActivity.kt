@@ -5,10 +5,7 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import com.ipati.dev.castleevent.fragment.loading.LoadingFragment
 import com.ipati.dev.castleevent.fragment.LoginFragment
-import com.ipati.dev.castleevent.model.LoadingListener
-import com.ipati.dev.castleevent.model.ShowListEventFragment
 import android.content.pm.PackageManager
 import android.util.Base64
 import android.util.Log
