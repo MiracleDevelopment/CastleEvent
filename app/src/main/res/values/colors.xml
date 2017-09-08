@@ -41,4 +41,6 @@
     <color name="colorRippleFab">#FFFFFF</color>
     <color name="colorButtonAccept">#00BCD4</color>
     <color name="colorFontTextOrder">#000000</color>
+    <color name="colorSelectorMyOrder">#FFF8E1</color>
+    <color name="colorStrokeTickets">#00BCD4</color>
 </resources>

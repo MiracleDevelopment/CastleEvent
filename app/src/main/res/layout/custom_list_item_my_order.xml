@@ -1,142 +1,202 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/custom_back_ground_selector_my_order"
-    android:clickable="true"
-    android:focusable="true">
+    android:background="@color/colorBackgroundResource"
+    tools:layout_editor_absoluteX="0dp"
+    tools:layout_editor_absoluteY="25dp">
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/custom_back_ground_selector_my_order"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/imageView"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/title_list_my_order_event"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
     <com.ipati.dev.castleevent.customize.CustomVerticalTextView
         android:id="@+id/title_list_my_order_event"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginBottom="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="0dp"
         android:background="@drawable/custom_back_ground_title_my_order_event"
         android:fontFamily="@font/circular"
         android:text="Event Pass #1"
         android:textColor="@color/colorFontTextOrder"
         android:textSize="25sp"
-        android:translationX="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/over_corner_top"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/custom_oval_item_small" />
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/custom_oval_item_small"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/oval_item"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="8dp"
+        android:adjustViewBounds="false"
         android:background="@drawable/custom_oval_item_my_order"
+        android:cropToPadding="false"
+        android:rotation="270"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="spread_inside" />
 
     <ImageView
         android:id="@+id/over_corner_bottom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="0dp"
+        android:layout_marginEnd="40dp"
+        android:adjustViewBounds="false"
         android:background="@drawable/custom_oval_item_small"
+        android:cropToPadding="false"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintVertical_chainStyle="spread_inside" />
-
-    <android.support.constraint.ConstraintLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:background="#FFF8E1"
-        android:paddingBottom="20dp"
-        android:paddingTop="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toRightOf="@+id/title_list_my_order_event"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_goneMarginBottom="0dp"
-        app:layout_goneMarginTop="0dp">
-
-        <LinearLayout
-            android:id="@+id/detail_list_tickets"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#FFF8E1"
-            android:gravity="bottom"
-            android:orientation="vertical">
-
-            <ImageView
-                android:id="@+id/im_photo_order_event"
-                android:layout_width="80dp"
-                android:layout_height="60dp"
-                android:src="@mipmap/ic_launcher" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/list_detail_event_order"
-            android:layout_width="163dp"
-            android:layout_height="wrap_content"
-            android:background="#FFF8E1"
-            android:orientation="vertical"
-            android:paddingEnd="2dp"
-            android:paddingStart="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@+id/tv_title_order_name_event"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <TextView
-                android:id="@+id/tv_order_date_time_buy"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/circular"
-                android:gravity="center"
-                android:lines="1"
-                android:padding="2dp"
-                android:text=" 26 ตุลาคม 2559"
-                android:textColor="@color/colorFontTextOrder"
-                android:textSize="20sp" />
-
-            <TextView
-                android:id="@+id/tv_order_location"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/circular"
-                android:gravity="center_horizontal"
-                android:text="AIA Capital Center Building"
-                android:textColor="@color/colorFontTextOrder"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/tv_get_qr_code"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/circular"
-                android:gravity="center"
-                android:text="Tickets"
-                android:textColor="@color/colorFontTextOrder"
-                android:textSize="30sp" />
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/tv_title_order_name_event"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="#FFF8E1"
-            android:fontFamily="@font/circular"
-            android:padding="5dp"
-            android:text="Tickets Title #1"
-            android:textColor="@color/colorFontTextOrder"
-            android:textSize="20sp" />
-
-
-    </android.support.constraint.ConstraintLayout>
+        app:layout_constraintEnd_toEndOf="@+id/title_list_my_order_event" />
 
     <ImageView
+        android:id="@+id/oval_corner_top_right"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="12dp"
+        android:src="@drawable/custom_oval_item_small"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="parent" />
+
+    <ImageView
+        android:id="@+id/oval_corner_top_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/custom_oval_item_small"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <ImageView
+        android:id="@+id/im_photo_order_event"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="12dp"
+        android:adjustViewBounds="true"
+        android:src="@mipmap/ic_launcher"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.2"
+        app:layout_constraintLeft_toRightOf="@+id/title_list_my_order_event"
+        app:layout_constraintRight_toRightOf="@+id/tv_order_date_time_buy"
+        app:layout_constraintTop_toTopOf="@+id/tv_title_order_name_event" />
+
+
+    <TextView
+        android:id="@+id/tv_order_date_time_buy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/circular"
+        android:gravity="center"
+        android:lines="1"
+        android:padding="2dp"
+        android:text=" 26 ตุลาคม 2559"
+        android:textColor="@color/colorFontTextOrder"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.57"
+        app:layout_constraintStart_toEndOf="@+id/title_list_my_order_event"
+        app:layout_constraintTop_toBottomOf="@+id/tv_order_location" />
+
+    <TextView
+        android:id="@+id/tv_order_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/circular"
+        android:gravity="center_horizontal"
+        android:lines="1"
+        android:maxLength="25"
+        android:text="AIA Capital Center"
+        android:textColor="@color/colorFontTextOrder"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.6"
+        app:layout_constraintLeft_toRightOf="@+id/title_list_my_order_event"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title_order_name_event" />
+
+
+    <TextView
+        android:id="@+id/tv_title_order_name_event"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/circular"
+        android:padding="5dp"
+        android:text="Tickets Title #1"
+        android:textColor="@color/colorFontTextOrder"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toRightOf="@+id/title_list_my_order_event"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/tv_get_qr_code"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/custom_ripple_tickets"
+        android:clickable="true"
+        android:focusable="true"
+        android:fontFamily="@font/circular"
+        android:gravity="center"
+        android:text="Tickets"
+        android:textColor="@color/colorFontTextOrder"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.58"
+        app:layout_constraintLeft_toRightOf="@+id/title_list_my_order_event"
+        app:layout_constraintTop_toBottomOf="@+id/tv_order_date_time_buy"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginTop="8dp"
         android:background="@drawable/custom_oval_item_my_order"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 </android.support.constraint.ConstraintLayout>

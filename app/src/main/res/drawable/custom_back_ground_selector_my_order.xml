@@ -4,8 +4,10 @@
     <item>
         <selector>
             <item
-                android:drawable="@color/colorBackgroundResource"
-                android:state_pressed="false" />
+                android:drawable="@color/colorSelectorMyOrder"
+                android:state_pressed="false">
+
+            </item>
         </selector>
     </item>
 </ripple>
