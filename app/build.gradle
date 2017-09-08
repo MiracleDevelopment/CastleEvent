@@ -20,6 +20,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    sourceSets { main { assets.srcDirs = ['src/main/assets', 'src/main/assets/'] } }
 }
 
 def fireBaseVersion = "11.2.0"
@@ -37,6 +38,7 @@ dependencies {
     implementation('com.android.support:appcompat-v7:26.0.1') {
         exclude group: 'com.android.support', module: 'animated-vector-drawable'
     }
+
 
     implementation('com.android.support:design:26.0.1') {
         exclude group: 'com.android.support', module: 'animated-vector-drawable'

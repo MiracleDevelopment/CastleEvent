@@ -57,7 +57,6 @@ class ListDetailEventFragment : Fragment(), LifecycleRegistryOwner, LoadingDetai
     private var REQUEST_PERMISSION_ACCOUNT: Int = 1111
     private var REQUEST_CALENDAR_PERMISSION: Int = 1101
 
-
     private lateinit var realTimeDatabaseDetailManager: RealTimeDatabaseDetailManager
     private lateinit var mGoogleSharePreference: SharePreferenceGoogleSignInManager
     private lateinit var googlePlayServiceMap: GooglePlayServiceMapManager

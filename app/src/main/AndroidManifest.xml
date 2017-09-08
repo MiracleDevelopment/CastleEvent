@@ -66,7 +66,9 @@
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity android:name=".fragment.UserProfileFragment" />
         <activity android:name=".fragment.loading.LoadingDialogFragment" />
-        <activity android:name=".fragment.loading.DialogConfirmFragment"></activity>
+        <activity android:name=".fragment.loading.DialogConfirmFragment" />
+        <activity android:name=".MyOrderActivity" />
+        <activity android:name=".fragment.MyOrderFragment"></activity>
     </application>
 
 </manifest>
