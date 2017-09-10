@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
@@ -15,7 +16,12 @@ import com.ipati.dev.castleevent.adapter.ListMyOrderAdapter
 import kotlinx.android.synthetic.main.activity_my_order_fragment.*
 
 class MyOrderFragment : Fragment() {
-    lateinit var mListMyOrderAdapter: ListMyOrderAdapter
+    private lateinit var mListMyOrderAdapter: ListMyOrderAdapter
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater?.inflate(R.layout.activity_my_order_fragment, container, false)
     }
@@ -35,6 +41,15 @@ class MyOrderFragment : Fragment() {
                 setDisplayShowHomeEnabled(true)
             }
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            android.R.id.home -> {
+                activity.finish()
+            }
+        }
+        return true
     }
 
     private fun initialRecyclerView() {
