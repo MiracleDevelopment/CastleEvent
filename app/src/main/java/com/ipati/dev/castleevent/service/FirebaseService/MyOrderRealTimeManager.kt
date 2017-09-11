@@ -37,6 +37,7 @@ class MyOrderRealTimeManager(context: Context, lifecycle: Lifecycle) : Lifecycle
 
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
     private fun onStop() {
+        mListOrder.clear()
         mRef.removeEventListener(mChildEvent)
     }
 

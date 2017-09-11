@@ -51,5 +51,8 @@
     <color name="colorFriday">#26C6DA</color>
     <color name="colorStaturday">#7E57C2</color>
     <color name="colorSunday">#EF5350</color>
-
+    <color name="colorBackgroundQrCode">#FFFFFF</color>
+    <color name="colorContentQrCode">#000000</color>
+    <color name="colorFontCloseDialog">#FFFFFF</color>
+    <color name="colorButtonCancelDialog">#00BCD4</color>
 </resources>

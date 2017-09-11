@@ -4,11 +4,12 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Rect
 import android.graphics.Typeface
+import android.support.v7.widget.AppCompatTextView
 import android.text.TextPaint
 import android.util.AttributeSet
 import android.widget.TextView
 
-class CustomVerticalTextView : TextView {
+class CustomVerticalTextView : AppCompatTextView {
     private var mReact: Rect = Rect()
     private var mPaint: TextPaint = paint
 
@@ -28,7 +29,6 @@ class CustomVerticalTextView : TextView {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
         setMeasuredDimension(measuredHeight, measuredWidth)
         includeFontPadding = false
-
     }
 
     private fun setUpTypeFace(mContext: Context) {

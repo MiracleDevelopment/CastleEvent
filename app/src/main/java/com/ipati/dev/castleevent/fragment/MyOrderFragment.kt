@@ -15,12 +15,14 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import com.ipati.dev.castleevent.R
 import com.ipati.dev.castleevent.adapter.ListMyOrderAdapter
+import com.ipati.dev.castleevent.fragment.loading.TicketsEventDialogFragment
 import com.ipati.dev.castleevent.service.FirebaseService.MyOrderRealTimeManager
 import kotlinx.android.synthetic.main.activity_my_order_fragment.*
 
 class MyOrderFragment : Fragment(), LifecycleRegistryOwner {
-    private lateinit var mMyOrderRealTimeManager: MyOrderRealTimeManager
     private var mRegistry: LifecycleRegistry = LifecycleRegistry(this)
+    private lateinit var mMyOrderRealTimeManager: MyOrderRealTimeManager
+    private lateinit var mTicketsEventDialog: TicketsEventDialogFragment
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -46,6 +48,12 @@ class MyOrderFragment : Fragment(), LifecycleRegistryOwner {
                 setDisplayShowHomeEnabled(true)
             }
         }
+    }
+
+    fun onShowTicketsUserDialog(eventId: String, userPhoto: String?, eventName: String, eventLogo: String, userAccount: String, eventLocation: String, count: Long) {
+        mTicketsEventDialog = TicketsEventDialogFragment.newInstance(eventId, userPhoto, eventName, eventLogo, userAccount, eventLocation, count)
+        mTicketsEventDialog.isCancelable = false
+        mTicketsEventDialog.show(activity.supportFragmentManager, "TicketsDialog")
     }
 
     override fun getLifecycle(): LifecycleRegistry {

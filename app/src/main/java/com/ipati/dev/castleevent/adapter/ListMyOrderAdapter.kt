@@ -4,14 +4,18 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.ipati.dev.castleevent.MyOrderActivity
 import com.ipati.dev.castleevent.R
 import com.ipati.dev.castleevent.model.Glide.loadPhotoTickets
+import com.ipati.dev.castleevent.model.LoadingTicketsEvent
 import com.ipati.dev.castleevent.model.history.RecorderTickets
+import com.ipati.dev.castleevent.model.userManage.photoUrl
 import kotlinx.android.synthetic.main.custom_list_item_my_order.view.*
 import java.util.*
 
 class ListMyOrderAdapter(mListOrder: ArrayList<RecorderTickets>) : RecyclerView.Adapter<ListMyOrderAdapter.ListMyOderHolder>() {
     var mListItem: ArrayList<RecorderTickets> = mListOrder
+    lateinit var onShowTicketsDialog: LoadingTicketsEvent
     lateinit var mCalendar: Calendar
 
     override fun onBindViewHolder(holder: ListMyOderHolder?, position: Int) {
@@ -27,13 +31,29 @@ class ListMyOrderAdapter(mListOrder: ArrayList<RecorderTickets>) : RecyclerView.
         return mListItem.count()
     }
 
-    inner class ListMyOderHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class ListMyOderHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
+        override fun onClick(p0: View?) {
+            when (p0?.id) {
+                R.id.tv_get_qr_code -> {
+                    onShowTicketsDialog = itemView.context as MyOrderActivity
+                    onShowTicketsDialog.onShowTicketsUser(mListItem[adapterPosition].eventId
+                            , photoUrl
+                            , mListItem[adapterPosition].eventName
+                            , mListItem[adapterPosition].eventLogo
+                            , mListItem[adapterPosition].userAccount
+                            , mListItem[adapterPosition].eventLocation
+                            , mListItem[adapterPosition].count)
+                }
+            }
+        }
+
         fun onBind() {
             itemView.title_list_my_order_event.text = "Castle Event" + " #" + (adapterPosition + 1).toString()
             itemView.tv_title_order_name_event.text = mListItem[adapterPosition].eventName
             itemView.tv_order_location.text = mListItem[adapterPosition].eventLocation
             itemView.tv_order_date_time_buy.text = mListItem[adapterPosition].dateStamp
             itemView.tv_count_people_tickets.text = mListItem[adapterPosition].count.toString()
+            itemView.tv_get_qr_code.setOnClickListener { view -> onClick(view) }
 
             loadPhotoTickets(itemView.context, mListItem[adapterPosition].eventLogo, itemView.im_photo_order_event)
             onDateConfig(itemView)

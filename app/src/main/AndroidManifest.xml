@@ -68,7 +68,8 @@
         <activity android:name=".fragment.loading.LoadingDialogFragment" />
         <activity android:name=".fragment.loading.DialogConfirmFragment" />
         <activity android:name=".MyOrderActivity" />
-        <activity android:name=".fragment.MyOrderFragment"></activity>
+        <activity android:name=".fragment.MyOrderFragment" />
+        <activity android:name=".fragment.loading.TicketsEventDialogFragment"></activity>
     </application>
 
 </manifest>
