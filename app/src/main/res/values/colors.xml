@@ -44,4 +44,12 @@
     <color name="colorSelectorMyOrder">#FFF8E1</color>
     <color name="colorStrokeTickets">#00BCD4</color>
     <color name="colorHeaderMyOrder">#FFFFFF</color>
+    <color name="colorMonday">#FFEE58</color>
+    <color name="colorTuesday">#EC407A</color>
+    <color name="colorWednesday">#26A69A</color>
+    <color name="colorThursday">#FFCA28</color>
+    <color name="colorFriday">#26C6DA</color>
+    <color name="colorStaturday">#7E57C2</color>
+    <color name="colorSunday">#EF5350</color>
+
 </resources>

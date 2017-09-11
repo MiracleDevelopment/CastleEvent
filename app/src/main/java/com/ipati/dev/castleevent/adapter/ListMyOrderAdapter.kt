@@ -1,14 +1,19 @@
 package com.ipati.dev.castleevent.adapter
 
-import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.ipati.dev.castleevent.R
+import com.ipati.dev.castleevent.model.Glide.loadPhotoTickets
+import com.ipati.dev.castleevent.model.history.RecorderTickets
 import kotlinx.android.synthetic.main.custom_list_item_my_order.view.*
+import java.util.*
 
-class ListMyOrderAdapter(context: Context) : RecyclerView.Adapter<ListMyOrderAdapter.ListMyOderHolder>() {
+class ListMyOrderAdapter(mListOrder: ArrayList<RecorderTickets>) : RecyclerView.Adapter<ListMyOrderAdapter.ListMyOderHolder>() {
+    var mListItem: ArrayList<RecorderTickets> = mListOrder
+    lateinit var mCalendar: Calendar
+
     override fun onBindViewHolder(holder: ListMyOderHolder?, position: Int) {
         holder?.onBind()
     }
@@ -19,12 +24,49 @@ class ListMyOrderAdapter(context: Context) : RecyclerView.Adapter<ListMyOrderAda
     }
 
     override fun getItemCount(): Int {
-        return 5
+        return mListItem.count()
     }
 
     inner class ListMyOderHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun onBind() {
-            itemView.title_list_my_order_event.text = "Castle Pass" + " #" + (adapterPosition + 1).toString()
+            itemView.title_list_my_order_event.text = "Castle Event" + " #" + (adapterPosition + 1).toString()
+            itemView.tv_title_order_name_event.text = mListItem[adapterPosition].eventName
+            itemView.tv_order_location.text = mListItem[adapterPosition].eventLocation
+            itemView.tv_order_date_time_buy.text = mListItem[adapterPosition].dateStamp
+            itemView.tv_count_people_tickets.text = mListItem[adapterPosition].count.toString()
+
+            loadPhotoTickets(itemView.context, mListItem[adapterPosition].eventLogo, itemView.im_photo_order_event)
+            onDateConfig(itemView)
+        }
+
+        private fun onDateConfig(itemView: View) {
+            mCalendar = Calendar.getInstance()
+            mCalendar.timeInMillis = mListItem[adapterPosition].timeStamp
+            val displayDay = mCalendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale("th"))
+            when (displayDay) {
+                "วันจันทร์" -> {
+                    itemView.title_list_my_order_event.setBackgroundResource(R.drawable.custom_back_ground_title_my_order_monday)
+                }
+                "วันอังคาร" -> {
+                    itemView.title_list_my_order_event.setBackgroundResource(R.drawable.custom_back_ground_title_my_order_tuesday)
+                }
+                "วันพุธ" -> {
+                    itemView.title_list_my_order_event.setBackgroundResource(R.drawable.custom_back_ground_title_my_order_wednesday)
+                }
+                "วันพฤหัสบดี" -> {
+                    itemView.title_list_my_order_event.setBackgroundResource(R.drawable.custom_back_ground_title_my_order_thuesday)
+                }
+                "วันศุกร์" -> {
+                    itemView.title_list_my_order_event.setBackgroundResource(R.drawable.custom_back_ground_title_my_order_friday)
+                }
+                "วันเสาร์" -> {
+                    itemView.title_list_my_order_event.setBackgroundResource(R.drawable.custom_back_ground_title_my_order_saturday)
+                }
+                "วันอาทิตย์" -> {
+                    itemView.title_list_my_order_event.setBackgroundResource(R.drawable.custom_back_ground_title_my_order_sunday)
+                }
+            }
         }
     }
+
 }

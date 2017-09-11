@@ -40,6 +40,7 @@ import com.ipati.dev.castleevent.model.GoogleCalendar.*
 import com.ipati.dev.castleevent.model.LoadingDetailData
 import com.ipati.dev.castleevent.model.gmsLocation.GooglePlayServiceMapManager
 import com.ipati.dev.castleevent.model.modelListEvent.ItemListEvent
+import com.ipati.dev.castleevent.model.userManage.username
 import com.ipati.dev.castleevent.service.FirebaseService.RealTimeDatabaseDetailManager
 import com.ipati.dev.castleevent.service.RecordedEvent.RecordListEvent
 import com.ipati.dev.castleevent.utill.DialogManager
@@ -300,7 +301,7 @@ class ListDetailEventFragment : Fragment(), LifecycleRegistryOwner, LoadingDetai
         val dateStamp = day.toString() + "-" + month.toString() + "-" + year.toString()
         val timeStamp = System.currentTimeMillis()
 
-        mRecorderEvent.pushEventRealTime(eventId.toString(), nameEvent.toString(), logoEvent!!, number_picker.value.toLong(), dateStamp, timeStamp)?.addOnCompleteListener { task ->
+        mRecorderEvent.pushEventRealTime(username.toString(), eventId.toString(), nameEvent.toString(), locationEvent.toString(), logoEvent!!, number_picker.value.toLong(), dateStamp, timeStamp)?.addOnCompleteListener { task ->
             if (task.isComplete) {
                 onCheckStatusCredentialGoogleCalendar()
             }

@@ -105,7 +105,8 @@
         android:adjustViewBounds="true"
         android:src="@mipmap/ic_launcher"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.15"
+        app:layout_constraintHorizontal_bias="0.08"
+        app:layout_constraintVertical_bias="0.3"
         app:layout_constraintLeft_toRightOf="@+id/title_list_my_order_event"
         app:layout_constraintRight_toRightOf="@+id/tv_order_date_time_buy"
         app:layout_constraintTop_toTopOf="@+id/tv_title_order_name_event" />
