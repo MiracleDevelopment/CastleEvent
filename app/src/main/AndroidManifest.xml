@@ -64,12 +64,12 @@
         <activity
             android:name=".RegisterActivity"
             android:windowSoftInputMode="stateHidden|adjustResize" />
-        <activity android:name=".fragment.UserProfileFragment" />
-        <activity android:name=".fragment.loading.LoadingDialogFragment" />
-        <activity android:name=".fragment.loading.DialogConfirmFragment" />
         <activity android:name=".MyOrderActivity" />
-        <activity android:name=".fragment.MyOrderFragment" />
-        <activity android:name=".fragment.loading.TicketsEventDialogFragment"></activity>
+        <activity
+            android:name=".ProfileUserActivity"
+            android:windowSoftInputMode="adjustResize|stateHidden">
+
+        </activity>
     </application>
 
 </manifest>

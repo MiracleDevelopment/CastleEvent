@@ -55,4 +55,5 @@
     <color name="colorContentQrCode">#000000</color>
     <color name="colorFontCloseDialog">#FFFFFF</color>
     <color name="colorButtonCancelDialog">#00BCD4</color>
+    <color name="colorFontProfile">#FFFFFF</color>
 </resources>

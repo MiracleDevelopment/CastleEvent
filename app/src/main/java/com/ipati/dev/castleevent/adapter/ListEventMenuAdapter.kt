@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.ipati.dev.castleevent.CalendarActivity
 import com.ipati.dev.castleevent.MyOrderActivity
+import com.ipati.dev.castleevent.ProfileUserActivity
 import com.ipati.dev.castleevent.R
 import com.ipati.dev.castleevent.model.Glide.loadPhotoItemMenu
 import kotlinx.android.synthetic.main.custom_layout_menu_event_adapter.view.*
@@ -59,7 +60,8 @@ class ListEventMenuAdapter(listItemMenu: ArrayList<String>) : RecyclerView.Adapt
         override fun onClick(p0: View?) {
             when {
                 itemView.tv_item_menu_event.text == "My Profile" -> {
-                    Toast.makeText(itemView.context, mListItemMenu[adapterPosition], Toast.LENGTH_SHORT).show()
+                    val intentProfile = Intent(p0?.context, ProfileUserActivity::class.java)
+                    p0?.context?.startActivity(intentProfile)
                 }
                 itemView.tv_item_menu_event.text == "My Order" -> {
                     val intentMyOrder = Intent(p0?.context, MyOrderActivity::class.java)

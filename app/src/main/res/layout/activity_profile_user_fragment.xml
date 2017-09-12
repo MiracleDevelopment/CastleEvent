@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackgroundResource"
+    android:orientation="vertical"
+    tools:context="com.ipati.dev.castleevent.fragment.ProfileUserFragment">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_user_profile"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@android:color/transparent"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+    </android.support.v7.widget.Toolbar>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="5dp">
+
+            <ImageView
+                android:id="@+id/im_edit_photo_profile"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center_horizontal"
+                android:adjustViewBounds="true"
+                android:padding="10dp"
+                android:src="@mipmap/ic_launcher" />
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColorHint="@color/colorFontProfile">
+
+                <EditText
+                    android:id="@+id/ed_account_name_profile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableEnd="@mipmap/ic_mode_edit"
+                    android:fontFamily="@font/circular"
+                    android:hint="Username"
+                    android:inputType="text"
+                    android:textColor="@color/colorFontProfile"
+                    android:textSize="25sp" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColorHint="@color/colorFontProfile">
+
+                <EditText
+                    android:id="@+id/ed_password_profile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableEnd="@mipmap/ic_mode_edit"
+                    android:fontFamily="@font/circular"
+                    android:hint="Password"
+                    android:inputType="text"
+                    android:textColor="@color/colorFontProfile"
+                    android:textSize="25sp" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColorHint="@color/colorFontProfile">
+
+                <EditText
+                    android:id="@+id/ed_re_password_profile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableEnd="@mipmap/ic_mode_edit"
+                    android:fontFamily="@font/circular"
+                    android:hint="Re-password"
+                    android:inputType="text"
+                    android:textColor="@color/colorFontProfile"
+                    android:textSize="25sp" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColorHint="@color/colorFontProfile">
+
+                <EditText
+                    android:id="@+id/ed_email_profile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableEnd="@mipmap/ic_mode_edit"
+                    android:fontFamily="@font/circular"
+                    android:hint="E-mail"
+                    android:inputType="textEmailAddress"
+                    android:textColor="@color/colorFontProfile"
+                    android:textSize="25sp" />
+            </android.support.design.widget.TextInputLayout>
+
+            <TextView
+                android:id="@+id/tv_record_profile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="5dp"
+                android:background="@drawable/custom_back_ground_accept"
+                android:clickable="true"
+                android:focusable="true"
+                android:fontFamily="@font/circular"
+                android:text="บันทึก"
+                android:textColor="@color/colorFontProfile"
+                android:textSize="25sp" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

@@ -51,3 +51,8 @@ fun loadPhotoUserTickets(context: Context, url: String, im: ImageView) {
     val requestOption: RequestOptions = RequestOptions().placeholder(R.mipmap.ic_launcher).circleCrop().override(120, 120)
     Glide.with(context).load(url).apply(requestOption).into(im)
 }
+
+fun loadPhotoUserProfile(context: Context, url: String, im: ImageView) {
+    val requestOption: RequestOptions = RequestOptions().placeholder(R.mipmap.ic_launcher).circleCrop().override(200, 200)
+    Glide.with(context).load(url).apply(requestOption).into(im)
+}
