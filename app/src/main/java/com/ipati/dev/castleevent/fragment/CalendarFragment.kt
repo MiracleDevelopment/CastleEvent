@@ -163,7 +163,7 @@ class CalendarFragment : Fragment(), View.OnClickListener {
                         tv_calendar_select_date.text = mCalendarManager.initialCalendar().get(Calendar.DATE).toString()
                         tv_calendar_year.text = mCalendarManager.initialCalendar().get(Calendar.YEAR).toString()
 
-                        for ((title, timeEvent, timeEventEnd, timeDayOfYear, timeMonthDate, timeDateEvent) in mListItemShow) {
+                        for ((title, timeEvent, timeEventEnd, timeDateEvent) in mListItemShow) {
                             if (dateTimeStamp == timeDateEvent) {
                                 tv_calendar_detail_event.text = title
                                 tv_calendar_time_ticket.text = "$timeEvent น. - $timeEventEnd น."

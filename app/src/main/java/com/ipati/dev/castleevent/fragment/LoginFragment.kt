@@ -109,7 +109,7 @@ class LoginFragment : Fragment(), View.OnClickListener, LifecycleRegistryOwner {
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.im_facebook -> LoginFacebook(context, this)
+            R.id.im_facebook -> LoginFacebook(this)
             R.id.im_twitter -> TwitterLoginManager()
             R.id.im_google_plus -> loginGoogleSignInOption(activity)
             R.id.tv_create_account_login -> {

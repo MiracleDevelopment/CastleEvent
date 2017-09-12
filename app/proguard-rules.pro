@@ -23,3 +23,29 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+-keep public class com.google.android.gms.common.internal.safeparcel.SafeParcelable {
+    public static final *** NULL;
+}
+
+-keepnames class * implements android.os.Parcelable
+-keepclassmembers class * implements android.os.Parcelable {
+  public static final *** CREATOR;
+}
+
+-keep @interface android.support.annotation.Keep
+-keep @android.support.annotation.Keep class *
+-keepclasseswithmembers class * {
+  @android.support.annotation.Keep <fields>;
+}
+-keepclasseswithmembers class * {
+  @android.support.annotation.Keep <methods>;
+}
+
+-dontwarn com.google.common.**
+-dontwarn com.google.api.client.**
+-dontwarn com.google.protobuf.**
+-dontwarn io.grpc.**
+-dontwarn okio.**
+-dontwarn com.google.errorprone.annotations.**
+-keep class io.grpc.internal.DnsNameResolveProvider
+-keep class io.grpc.okhttp.OkHttpChannelProvider

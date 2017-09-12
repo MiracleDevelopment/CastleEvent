@@ -2,13 +2,20 @@ package com.ipati.dev.castleevent.fragment.loading
 
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import android.widget.Toast
+import com.google.firebase.database.ChildEventListener
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
 import com.ipati.dev.castleevent.R
 import com.ipati.dev.castleevent.model.GenerateQrCode
 import com.ipati.dev.castleevent.model.Glide.loadPhotoUserTickets
+import com.ipati.dev.castleevent.model.testModel
 import kotlinx.android.synthetic.main.activity_tickets_event_dialog_fragment.*
 
 class TicketsEventDialogFragment : DialogFragment() {

@@ -236,7 +236,7 @@ class ListDetailEventFragment : Fragment(), LifecycleRegistryOwner, LoadingDetai
         locationEvent = itemListEvent.eventLocation
         attendee = defaultAccountGoogleCalendar()
 
-        mRecorderEvent = RecordListEvent(context)
+        mRecorderEvent = RecordListEvent()
     }
 
 

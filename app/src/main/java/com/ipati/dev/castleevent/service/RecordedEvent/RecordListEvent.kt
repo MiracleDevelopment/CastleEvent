@@ -9,7 +9,7 @@ import com.ipati.dev.castleevent.model.history.RecorderTickets
 import com.ipati.dev.castleevent.model.userManage.uid
 
 
-class RecordListEvent(context: Context) {
+class RecordListEvent {
     private var Ref: DatabaseReference = FirebaseDatabase.getInstance().reference
     private var mRef: DatabaseReference = Ref.child("eventUser").child(uid).child(idEvent)
     private lateinit var mRecorderTickets: RecorderTickets
