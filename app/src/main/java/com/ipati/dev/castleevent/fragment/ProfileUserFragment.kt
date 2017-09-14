@@ -1,26 +1,32 @@
 package com.ipati.dev.castleevent.fragment
 
+import android.content.Context
+import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
-import android.text.Editable
-import android.view.LayoutInflater
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.view.inputmethod.InputMethodManager
 import com.ipati.dev.castleevent.R
 import com.ipati.dev.castleevent.model.Glide.loadPhotoUserProfile
+import com.ipati.dev.castleevent.model.UserProfileUpdate
 import com.ipati.dev.castleevent.model.userManage.photoUrl
 import com.ipati.dev.castleevent.model.userManage.userEmail
 import com.ipati.dev.castleevent.model.userManage.username
 import kotlinx.android.synthetic.main.activity_profile_user_fragment.*
 
-class ProfileUserFragment : Fragment() {
+class ProfileUserFragment : Fragment(), View.OnClickListener {
+    private var mRequestUsername: Int = 1001
+    private var mRequestPassword: Int = 1002
+    private var mRequestEmail: Int = 1003
 
-
+    private lateinit var mInputMethodManager: InputMethodManager
+    private lateinit var mUserProfileChange: UserProfileUpdate
+    private lateinit var mChangeCustomProfile: ChangeCustomProfileDialogFragment
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+        mUserProfileChange = UserProfileUpdate(context)
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -32,6 +38,12 @@ class ProfileUserFragment : Fragment() {
         initialToolbar()
         initialEditText()
     }
+
+    private fun openKeyBoard() {
+        mInputMethodManager = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        mInputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
+    }
+
 
     private fun initialToolbar() {
         (activity as AppCompatActivity).apply {
@@ -50,8 +62,43 @@ class ProfileUserFragment : Fragment() {
         ed_account_name_profile.setText(username)
         ed_email_profile.setText(userEmail)
 
-        ed_account_name_profile.isEnabled = false
-        ed_email_profile.isEnabled = false
+        edit_username.setOnClickListener { view -> onClick(view) }
+        edit_pass.setOnClickListener { view -> onClick(view) }
+        edit_re_password.setOnClickListener { view -> onClick(view) }
+        edit_email_profile.setOnClickListener { view -> onClick(view) }
+
+        tv_record_profile.setOnClickListener { view -> onClick(view) }
+    }
+
+
+    override fun onClick(p0: View?) {
+        when (p0?.id) {
+            R.id.edit_username -> {
+                mChangeCustomProfile = ChangeCustomProfileDialogFragment.newInstance("Username", username.toString(), mRequestUsername)
+                mChangeCustomProfile.isCancelable = false
+                mChangeCustomProfile.show(activity.supportFragmentManager, "ChangeProfile")
+            }
+
+            R.id.edit_pass -> {
+                mChangeCustomProfile = ChangeCustomProfileDialogFragment.newInstance("Password", "", mRequestPassword)
+                mChangeCustomProfile.isCancelable = false
+                mChangeCustomProfile.show(activity.supportFragmentManager, "ChangeProfile")
+            }
+
+            R.id.edit_re_password -> {
+
+            }
+
+            R.id.edit_email_profile -> {
+                mChangeCustomProfile = ChangeCustomProfileDialogFragment.newInstance("userEmail", userEmail.toString(), mRequestEmail)
+                mChangeCustomProfile.isCancelable = false
+                mChangeCustomProfile.show(activity.supportFragmentManager, "ChangeProfile")
+            }
+
+            R.id.tv_record_profile -> {
+                activity.finish()
+            }
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {

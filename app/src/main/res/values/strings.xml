@@ -41,5 +41,10 @@
     <string name="menu_user">User</string>
     <string name="menu_category">Category</string>
     <string name="menu_event">Event</string>
+    <string name="header_profile">My Profile</string>
+    <string name="hint_ed_user_name_profile">Username</string>
+    <string name="hint_phone_profile">Password</string>
+    <string name="hint_email_profile">E-mail</string>
+    <string name="text_button_edit_profile">แก้ไข</string>
 
 </resources>

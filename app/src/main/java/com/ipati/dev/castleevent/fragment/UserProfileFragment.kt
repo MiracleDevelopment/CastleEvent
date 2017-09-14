@@ -85,7 +85,7 @@ class UserProfileFragment : Fragment(), LifecycleRegistryOwner {
     }
 
     companion object {
-        var objectUserProfile: String = "UserProfileFragment"
+        private var objectUserProfile: String = "UserProfileFragment"
         fun newInstance(objectEvent: String): UserProfileFragment {
             return UserProfileFragment().apply {
                 arguments = Bundle().apply {

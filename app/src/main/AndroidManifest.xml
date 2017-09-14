@@ -67,9 +67,8 @@
         <activity android:name=".MyOrderActivity" />
         <activity
             android:name=".ProfileUserActivity"
-            android:windowSoftInputMode="adjustResize|stateHidden">
-
-        </activity>
+            android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".fragment.ChangeCustomProfileDialogFragment"></activity>
     </application>
 
 </manifest>
