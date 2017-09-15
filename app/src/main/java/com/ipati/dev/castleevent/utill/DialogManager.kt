@@ -9,8 +9,8 @@ class DialogManager(activity: FragmentActivity) {
     private lateinit var mLoadingDialog: LoadingDialogFragment
     private lateinit var mConfirmDialog: DialogConfirmFragment
 
-    fun onShowLoadingDialog(): LoadingDialogFragment {
-        mLoadingDialog = LoadingDialogFragment.newInstance()
+    fun onShowLoadingDialog(title: String): LoadingDialogFragment {
+        mLoadingDialog = LoadingDialogFragment.newInstance(title)
         return mLoadingDialog.apply {
             show(mActivity.supportFragmentManager, "LoadingFragment")
         }

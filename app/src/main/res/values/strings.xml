@@ -45,6 +45,6 @@
     <string name="hint_ed_user_name_profile">Username</string>
     <string name="hint_phone_profile">Password</string>
     <string name="hint_email_profile">E-mail</string>
-    <string name="text_button_edit_profile">แก้ไข</string>
+    <string name="text_button_edit_profile">กลับสู่หน้าหลัก</string>
 
 </resources>

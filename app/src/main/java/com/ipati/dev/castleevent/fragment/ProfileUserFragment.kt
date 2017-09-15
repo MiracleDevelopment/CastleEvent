@@ -20,13 +20,12 @@ class ProfileUserFragment : Fragment(), View.OnClickListener {
     private var mRequestPassword: Int = 1002
     private var mRequestEmail: Int = 1003
 
-    private lateinit var mInputMethodManager: InputMethodManager
     private lateinit var mUserProfileChange: UserProfileUpdate
     private lateinit var mChangeCustomProfile: ChangeCustomProfileDialogFragment
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-        mUserProfileChange = UserProfileUpdate(context)
+        mUserProfileChange = UserProfileUpdate(context, activity)
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -39,10 +38,6 @@ class ProfileUserFragment : Fragment(), View.OnClickListener {
         initialEditText()
     }
 
-    private fun openKeyBoard() {
-        mInputMethodManager = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        mInputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
-    }
 
 
     private fun initialToolbar() {

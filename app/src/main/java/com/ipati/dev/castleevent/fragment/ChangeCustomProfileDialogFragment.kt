@@ -16,10 +16,9 @@ class ChangeCustomProfileDialogFragment : DialogFragment(), View.OnClickListener
     private var RequestEmail: Int = 1003
 
     private lateinit var mUserChangeProfile: UserProfileUpdate
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mUserChangeProfile = UserProfileUpdate(context)
+        mUserChangeProfile = UserProfileUpdate(context, activity)
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -40,7 +39,8 @@ class ChangeCustomProfileDialogFragment : DialogFragment(), View.OnClickListener
             RequestUsername -> {
                 tv_input_confirm_password.visibility = View.GONE
 
-                initialEdiText(arguments.getString(titleObject), arguments.getString(msgObject)
+                initialEdiText(arguments.getString(titleObject)
+                        , arguments.getString(msgObject)
                         , InputType.TYPE_CLASS_TEXT)
             }
 
@@ -48,14 +48,16 @@ class ChangeCustomProfileDialogFragment : DialogFragment(), View.OnClickListener
                 tv_input_confirm_password.visibility = View.VISIBLE
                 ed_confirm_password.hint = "Re-Password"
 
-                initialEdiText(arguments.getString(titleObject), arguments.getString(msgObject)
+                initialEdiText(arguments.getString(titleObject)
+                        , arguments.getString(msgObject)
                         , InputType.TYPE_TEXT_VARIATION_PASSWORD)
             }
 
             RequestEmail -> {
                 tv_input_confirm_password.visibility = View.GONE
 
-                initialEdiText(arguments.getString(titleObject), arguments.getString(msgObject)
+                initialEdiText(arguments.getString(titleObject)
+                        , arguments.getString(msgObject)
                         , InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS)
 
             }

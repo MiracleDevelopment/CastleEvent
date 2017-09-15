@@ -407,7 +407,7 @@ class ListDetailEventFragment : Fragment(), LifecycleRegistryOwner, LoadingDetai
 
         override fun onPreExecute() {
             super.onPreExecute()
-            mDialogManager.onShowLoadingDialog()
+            mDialogManager.onShowLoadingDialog("ระบบกำลังดำเนินงาน")
         }
 
         override fun doInBackground(vararg p0: Void?): Event? {

@@ -40,7 +40,7 @@ class TicketsEventDialogFragment : DialogFragment() {
             dialog.dismiss()
         }
 
-        im_qr_code.setImageBitmap(mGenerateQrCode.bitMapQrCode(arguments.getString("userAccount"), arguments.getString("eventId")))
+        im_qr_code.setImageBitmap(mGenerateQrCode.bitMapQrCode(arguments.getString("userAccount"), arguments.getLong("count").toString()))
     }
 
     companion object {
