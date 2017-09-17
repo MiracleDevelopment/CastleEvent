@@ -11,17 +11,24 @@ import com.bumptech.glide.request.RequestOptions
 import com.ipati.dev.castleevent.R
 
 fun loadPhoto(context: Context, url: String, im: ImageView) {
-    val requestOption: RequestOptions = RequestOptions().placeholder(R.mipmap.ic_launcher).override(200, 200)
+    val requestOption: RequestOptions = RequestOptions()
+            .placeholder(R.mipmap.ic_launcher)
+            .override(200, 200)
+
     Glide.with(context).load(url).apply(requestOption).into(im)
 }
 
 fun loadLogo(context: Context, url: String, im: ImageView) {
-    val requestOption: RequestOptions = RequestOptions().placeholder(R.mipmap.ic_launcher).override(150, 150)
+    val requestOption: RequestOptions = RequestOptions()
+            .placeholder(R.mipmap.ic_launcher)
+            .override(150, 150)
+
     Glide.with(context).load(url).apply(requestOption).into(im)
 }
 
 fun loadPhotoDetail(context: Context, url: String, im: ImageView) {
-    val requestOption: RequestOptions = RequestOptions().placeholder(R.mipmap.ic_launcher)
+    val requestOption: RequestOptions = RequestOptions()
+            .placeholder(R.mipmap.ic_launcher)
     Glide.with(context).load(url).apply(requestOption).into(im)
 }
 
@@ -31,28 +38,44 @@ fun loadPhotoAdvertise(context: Context, url: String, im: ImageView) {
 }
 
 fun loadPhotoProfileUser(context: Context, url: String?, im: ImageView) {
-    val requestOption: RequestOptions = RequestOptions().placeholder(R.mipmap.ic_launcher)
-            .transform(CircleCrop()).override(350, 350)
+    val requestOption: RequestOptions = RequestOptions()
+            .placeholder(R.mipmap.ic_launcher)
+            .transform(CircleCrop())
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .override(350, 350)
 
     Glide.with(context).load(url).apply(requestOption).into(im)
 }
 
 fun loadPhotoItemMenu(context: Context, resource: Int, im: ImageView) {
-    val requestOption: RequestOptions = RequestOptions().placeholder(R.mipmap.ic_launcher).override(50, 50)
+    val requestOption: RequestOptions = RequestOptions()
+            .placeholder(R.mipmap.ic_launcher)
+            .override(50, 50)
     Glide.with(context).load(resource).apply(requestOption).into(im)
 }
 
 fun loadPhotoTickets(context: Context, url: String, im: ImageView) {
-    val requestOption: RequestOptions = RequestOptions().placeholder(R.mipmap.ic_launcher).override(140, 140)
+    val requestOption: RequestOptions = RequestOptions()
+            .placeholder(R.mipmap.ic_launcher)
+            .override(140, 140)
+
     Glide.with(context).load(url).apply(requestOption).into(im)
 }
 
 fun loadPhotoUserTickets(context: Context, url: String, im: ImageView) {
-    val requestOption: RequestOptions = RequestOptions().placeholder(R.mipmap.ic_launcher).circleCrop().override(120, 120)
+    val requestOption: RequestOptions = RequestOptions().placeholder(R.mipmap.ic_launcher)
+            .circleCrop()
+            .override(120, 120)
+
     Glide.with(context).load(url).apply(requestOption).into(im)
 }
 
 fun loadPhotoUserProfile(context: Context, url: String, im: ImageView) {
-    val requestOption: RequestOptions = RequestOptions().placeholder(R.mipmap.ic_launcher).circleCrop().override(200, 200)
+    val requestOption: RequestOptions = RequestOptions()
+            .placeholder(R.mipmap.ic_launcher)
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .circleCrop()
+            .override(350, 350)
+
     Glide.with(context).load(url).apply(requestOption).into(im)
 }

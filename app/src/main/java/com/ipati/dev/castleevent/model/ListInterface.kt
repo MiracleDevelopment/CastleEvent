@@ -15,3 +15,7 @@ interface LoadingTicketsEvent {
 interface LoadingDetailData {
     fun onLoadingUpdateData(itemListEvent: ItemListEvent)
 }
+
+interface DismissDialogFragment {
+    fun onChangeProfile(msg: String, requestCode: Int)
+}

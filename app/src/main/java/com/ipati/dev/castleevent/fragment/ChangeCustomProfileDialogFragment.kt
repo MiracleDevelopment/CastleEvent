@@ -128,6 +128,9 @@ class ChangeCustomProfileDialogFragment : DialogFragment(), View.OnClickListener
                             mUserChangeProfile.statusEmail() == "isEmpty" -> {
                                 ed_input_edit.error = mUserChangeProfile.statusEmail()
                             }
+                            else -> {
+                                ed_input_edit.error = mUserChangeProfile.statusEmail()
+                            }
                         }
                     }
                 }

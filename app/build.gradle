@@ -32,6 +32,7 @@ def fireBaseVersion = "11.2.0"
 def gmsVersion = "11.2.0"
 
 dependencies {
+
     compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
@@ -55,6 +56,13 @@ dependencies {
     implementation("com.google.firebase:firebase-auth:$fireBaseVersion") {
         exclude group: 'com.google.android.gms', module: 'play-services-location'
     }
+
+    implementation("com.google.firebase:firebase-storage:$fireBaseVersion") {
+        exclude group: 'com.google.android.gms', module: 'play-services-auth'
+        exclude group: 'com.google.firebase', module: 'firebase-analytics'
+    }
+
+
     implementation 'com.facebook.android:facebook-android-sdk:4.25.0'
     implementation("com.google.android.gms:play-services-maps:$gmsVersion") {
         exclude group: 'com.google.android.gms', module: 'play-services-base'

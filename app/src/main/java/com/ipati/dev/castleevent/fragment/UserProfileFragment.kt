@@ -2,6 +2,7 @@ package com.ipati.dev.castleevent.fragment
 
 import android.arch.lifecycle.LifecycleRegistry
 import android.arch.lifecycle.LifecycleRegistryOwner
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.DefaultItemAnimator
@@ -10,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.Toast
 import com.ipati.dev.castleevent.R
 import com.ipati.dev.castleevent.model.Glide.loadPhotoProfileUser
 import com.ipati.dev.castleevent.model.userManage.photoUrl
@@ -20,9 +22,10 @@ import com.ipati.dev.castleevent.utill.SharePreferenceSettingManager
 import kotlinx.android.synthetic.main.activity_user_profile_fragment.*
 
 class UserProfileFragment : Fragment(), LifecycleRegistryOwner {
+
+    private var mRegistry: LifecycleRegistry = LifecycleRegistry(this)
     private lateinit var realTimeDatabaseMenuListItem: RealTimeDatabaseMenuListItem
     private lateinit var mSharePreferenceSettingMenuList: SharePreferenceSettingManager
-    private var mRegistry: LifecycleRegistry = LifecycleRegistry(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,7 +39,7 @@ class UserProfileFragment : Fragment(), LifecycleRegistryOwner {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initialUserProfile()
+
         initialRecyclerMenu()
         initialSwitchSetting()
     }
@@ -78,6 +81,11 @@ class UserProfileFragment : Fragment(), LifecycleRegistryOwner {
                 mSharePreferenceSettingMenuList.sharePreferenceNotificationManager(b)
             }
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        initialUserProfile()
     }
 
     override fun getLifecycle(): LifecycleRegistry {

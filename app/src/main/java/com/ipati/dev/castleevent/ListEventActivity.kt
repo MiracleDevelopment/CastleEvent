@@ -15,6 +15,7 @@ import com.ipati.dev.castleevent.service.FirebaseService.RealTimeDatabaseMenuLis
 import com.ipati.dev.castleevent.service.googleApiClient
 import com.ipati.dev.castleevent.utill.SharePreferenceSettingManager
 import kotlinx.android.synthetic.main.activity_list_event.*
+import kotlinx.android.synthetic.main.activity_user_profile_fragment.view.*
 import kotlinx.android.synthetic.main.bottom_navigation_layout.*
 
 class ListEventActivity : AppCompatActivity(), LifecycleRegistryOwner, View.OnClickListener {
@@ -87,6 +88,11 @@ class ListEventActivity : AppCompatActivity(), LifecycleRegistryOwner, View.OnCl
             }
             return@setOnNavigationItemSelectedListener false
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+
     }
 
     override fun onClick(p0: View?) {
