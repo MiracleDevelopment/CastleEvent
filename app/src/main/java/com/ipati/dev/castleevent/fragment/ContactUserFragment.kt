@@ -28,7 +28,7 @@ class ContactUserFragment : Fragment() {
 
     private fun initialToolbar() {
         (activity as AppCompatActivity).apply {
-            title = "Contact"
+            title = ""
             setSupportActionBar(toolbar_contact).apply {
                 supportActionBar?.apply {
                     setDisplayShowHomeEnabled(true)

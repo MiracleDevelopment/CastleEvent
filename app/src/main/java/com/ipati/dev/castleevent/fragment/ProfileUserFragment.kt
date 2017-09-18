@@ -109,6 +109,7 @@ class ProfileUserFragment : Fragment(), View.OnClickListener {
     //Todo: Calling From Dialog
     fun onChangePassword(mPassword: String) {
         ed_account_pass_profile.setText(mPassword)
+        ed_re_account_password_profile.setText(mPassword)
     }
 
     //Todo: Calling From Dialog

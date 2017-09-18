@@ -44,7 +44,10 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/user_profile_list_menu"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:clipToPadding="true"
+            android:nestedScrollingEnabled="false"
+            android:overScrollMode="never">
 
         </android.support.v7.widget.RecyclerView>
 

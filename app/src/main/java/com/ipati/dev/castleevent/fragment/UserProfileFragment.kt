@@ -22,7 +22,6 @@ import com.ipati.dev.castleevent.utill.SharePreferenceSettingManager
 import kotlinx.android.synthetic.main.activity_user_profile_fragment.*
 
 class UserProfileFragment : Fragment(), LifecycleRegistryOwner {
-
     private var mRegistry: LifecycleRegistry = LifecycleRegistry(this)
     private lateinit var realTimeDatabaseMenuListItem: RealTimeDatabaseMenuListItem
     private lateinit var mSharePreferenceSettingMenuList: SharePreferenceSettingManager
@@ -39,7 +38,6 @@ class UserProfileFragment : Fragment(), LifecycleRegistryOwner {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         initialRecyclerMenu()
         initialSwitchSetting()
     }
