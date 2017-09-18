@@ -8,10 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import com.ipati.dev.castleevent.CalendarActivity
-import com.ipati.dev.castleevent.MyOrderActivity
-import com.ipati.dev.castleevent.ProfileUserActivity
-import com.ipati.dev.castleevent.R
+import com.ipati.dev.castleevent.*
 import com.ipati.dev.castleevent.model.Glide.loadPhotoItemMenu
 import kotlinx.android.synthetic.main.custom_layout_menu_event_adapter.view.*
 
@@ -72,7 +69,8 @@ class ListEventMenuAdapter(listItemMenu: ArrayList<String>) : RecyclerView.Adapt
                     p0?.context?.startActivity(intentCalendar)
                 }
                 else -> {
-                    Toast.makeText(itemView.context, mListItemMenu[adapterPosition], Toast.LENGTH_SHORT).show()
+                    val intentContact = Intent(p0?.context, ContactUserActivity::class.java)
+                    p0?.context?.startActivity(intentContact)
                 }
             }
         }

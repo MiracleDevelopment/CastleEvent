@@ -56,4 +56,5 @@
     <color name="colorFontCloseDialog">#FFFFFF</color>
     <color name="colorButtonCancelDialog">#00BCD4</color>
     <color name="colorFontProfile">#FFFFFF</color>
+    <color name="colorFontContact">#FFFFFF</color>
 </resources>

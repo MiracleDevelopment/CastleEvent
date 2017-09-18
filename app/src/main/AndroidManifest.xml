@@ -68,7 +68,9 @@
         <activity
             android:name=".ProfileUserActivity"
             android:windowSoftInputMode="adjustResize" />
-        <activity android:name=".fragment.ChangeCustomProfileDialogFragment"></activity>
+        <activity android:name=".fragment.ChangeCustomProfileDialogFragment" />
+        <activity android:name=".ContactUserActivity" />
+        <activity android:name=".fragment.ContactUserFragment"></activity>
     </application>
 
 </manifest>
