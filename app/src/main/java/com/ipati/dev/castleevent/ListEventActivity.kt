@@ -75,7 +75,8 @@ class ListEventActivity : AppCompatActivity(), View.OnClickListener {
                 }
 
                 R.id.itemCategory -> {
-                    Toast.makeText(applicationContext, "Category", Toast.LENGTH_SHORT).show()
+                    vp_list_event.currentItem = 0
+
                     return@setOnNavigationItemSelectedListener true
                 }
 

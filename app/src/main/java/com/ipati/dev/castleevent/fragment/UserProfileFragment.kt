@@ -18,7 +18,6 @@ import com.ipati.dev.castleevent.utill.SharePreferenceSettingManager
 import kotlinx.android.synthetic.main.activity_user_profile_fragment.*
 
 class UserProfileFragment : BaseFragment() {
-    //    private var mRegistry: LifecycleRegistry = LifecycleRegistry(this)
     private lateinit var realTimeDatabaseMenuListItem: RealTimeDatabaseMenuListItem
     private lateinit var mSharePreferenceSettingMenuList: SharePreferenceSettingManager
 
