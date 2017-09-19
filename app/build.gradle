@@ -41,12 +41,12 @@ dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 
-    implementation('com.android.support:appcompat-v7:26.0.1') {
+    implementation('com.android.support:appcompat-v7:26.1.0') {
         exclude group: 'com.android.support', module: 'animated-vector-drawable'
     }
 
 
-    implementation('com.android.support:design:26.0.1') {
+    implementation('com.android.support:design:26.1.0') {
         exclude group: 'com.android.support', module: 'animated-vector-drawable'
     }
     implementation("com.google.firebase:firebase-database:$fireBaseVersion") {
@@ -92,10 +92,10 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.0.0'
     implementation 'com.michaelmuenzer.android:ScrollableNumberPicker:0.2.2'
     implementation 'com.github.sundeepk:compact-calendar-view:2.0.2.2'
-    implementation 'android.arch.lifecycle:runtime:1.0.0-alpha9'
-    implementation 'android.arch.lifecycle:extensions:1.0.0-alpha9'
+    implementation 'android.arch.lifecycle:runtime:1.0.0'
+    implementation 'android.arch.lifecycle:extensions:1.0.0-alpha9-1'
     testCompile 'junit:junit:4.12'
-    annotationProcessor 'android.arch.lifecycle:compiler:1.0.0-alpha9'
+    annotationProcessor 'android.arch.lifecycle:compiler:1.0.0-alpha9-1'
 }
 apply plugin: 'com.google.gms.google-services'
 

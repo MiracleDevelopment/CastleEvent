@@ -1,24 +1,19 @@
 package com.ipati.dev.castleevent.fragment
 
-import android.arch.lifecycle.LifecycleRegistry
-import android.arch.lifecycle.LifecycleRegistryOwner
-import android.content.res.Configuration
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.app.ActionBarDrawerToggle
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.ipati.dev.castleevent.base.BaseFragment
 import com.ipati.dev.castleevent.R
 import com.ipati.dev.castleevent.service.FirebaseService.RealTimeDatabaseManager
 import kotlinx.android.synthetic.main.activity_list_event_fragment.*
 
-class ListEventFragment : Fragment(), LifecycleRegistryOwner {
-    private var mRegistry: LifecycleRegistry = LifecycleRegistry(this)
+class ListEventFragment : BaseFragment() {
     private lateinit var realTimeDatabaseManager: RealTimeDatabaseManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         realTimeDatabaseManager = RealTimeDatabaseManager(context, lifecycle)
@@ -38,10 +33,6 @@ class ListEventFragment : Fragment(), LifecycleRegistryOwner {
         recycler_list_event.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
         recycler_list_event.itemAnimator = DefaultItemAnimator()
         recycler_list_event.adapter = realTimeDatabaseManager.adapterListEvent
-    }
-
-    override fun getLifecycle(): LifecycleRegistry {
-        return this.mRegistry
     }
 
     companion object {

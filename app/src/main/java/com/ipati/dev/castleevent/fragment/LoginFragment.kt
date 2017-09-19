@@ -1,11 +1,8 @@
 package com.ipati.dev.castleevent.fragment
 
-import android.arch.lifecycle.LifecycleRegistry
-import android.arch.lifecycle.LifecycleRegistryOwner
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
@@ -20,7 +17,7 @@ import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInResult
-import com.ipati.dev.castleevent.LoginActivity
+import com.ipati.dev.castleevent.base.BaseFragment
 import com.ipati.dev.castleevent.R
 import com.ipati.dev.castleevent.RegisterActivity
 import com.ipati.dev.castleevent.authCredential.facebookAuthCredential
@@ -32,15 +29,13 @@ import com.twitter.sdk.android.core.identity.TwitterAuthClient
 import kotlinx.android.synthetic.main.activity_login_fragment.*
 
 
-class LoginFragment : Fragment(), View.OnClickListener, LifecycleRegistryOwner {
-
+class LoginFragment : BaseFragment(), View.OnClickListener {
     private lateinit var callbackManager: CallbackManager
     private lateinit var loginTwitterAuthentication: TwitterAuthClient
     private lateinit var twitterConfig: TwitterConfig
     private lateinit var mGoogleSharePreference: SharePreferenceGoogleSignInManager
     private lateinit var mLoginAuthManager: LoginAuthManager
 
-    private var mRegistry: LifecycleRegistry = LifecycleRegistry(this)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mGoogleSharePreference = SharePreferenceGoogleSignInManager(context)
@@ -172,9 +167,6 @@ class LoginFragment : Fragment(), View.OnClickListener, LifecycleRegistryOwner {
         }
     }
 
-    override fun getLifecycle(): LifecycleRegistry {
-        return mRegistry
-    }
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)

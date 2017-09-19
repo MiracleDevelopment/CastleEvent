@@ -3,15 +3,12 @@ package com.ipati.dev.castleevent.fragment
 import android.accounts.AccountManager
 import android.annotation.SuppressLint
 import android.app.Dialog
-import android.arch.lifecycle.LifecycleRegistry
-import android.arch.lifecycle.LifecycleRegistryOwner
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
 import android.support.design.widget.BottomSheetBehavior
-import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 
@@ -32,6 +29,7 @@ import com.google.api.client.util.ExponentialBackOff
 import com.google.api.services.calendar.Calendar
 import com.google.api.services.calendar.CalendarScopes
 import com.google.api.services.calendar.model.Event
+import com.ipati.dev.castleevent.base.BaseFragment
 import com.ipati.dev.castleevent.R
 import com.ipati.dev.castleevent.model.Glide.loadLogo
 import com.ipati.dev.castleevent.model.Glide.loadPhotoAdvertise
@@ -52,7 +50,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class ListDetailEventFragment : Fragment(), LifecycleRegistryOwner, LoadingDetailData, OnMapReadyCallback {
+class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnMapReadyCallback {
     private var REQUEST_ACCOUNT: Int = 1112
     private var REQUEST_GOOGLE_PLAY: Int = 1121
     private var REQUEST_PERMISSION_ACCOUNT: Int = 1111
@@ -69,7 +67,6 @@ class ListDetailEventFragment : Fragment(), LifecycleRegistryOwner, LoadingDetai
     private lateinit var mapFragment: MapFragment
     private lateinit var bundle: Bundle
 
-    private var mRegistry: LifecycleRegistry = LifecycleRegistry(this)
     private val mCalendarTimeStamp = java.util.Calendar.getInstance()
     private var eventId: Long? = null
     private var accountName: String? = null
@@ -329,11 +326,6 @@ class ListDetailEventFragment : Fragment(), LifecycleRegistryOwner, LoadingDetai
             }
         }
         return super.onOptionsItemSelected(item)
-    }
-
-
-    override fun getLifecycle(): LifecycleRegistry {
-        return mRegistry
     }
 
 

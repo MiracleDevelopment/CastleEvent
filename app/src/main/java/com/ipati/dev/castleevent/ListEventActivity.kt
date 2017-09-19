@@ -1,7 +1,6 @@
 package com.ipati.dev.castleevent
 
 import android.arch.lifecycle.LifecycleRegistry
-import android.arch.lifecycle.LifecycleRegistryOwner
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -15,10 +14,9 @@ import com.ipati.dev.castleevent.service.FirebaseService.RealTimeDatabaseMenuLis
 import com.ipati.dev.castleevent.service.googleApiClient
 import com.ipati.dev.castleevent.utill.SharePreferenceSettingManager
 import kotlinx.android.synthetic.main.activity_list_event.*
-import kotlinx.android.synthetic.main.activity_user_profile_fragment.view.*
 import kotlinx.android.synthetic.main.bottom_navigation_layout.*
 
-class ListEventActivity : AppCompatActivity(), LifecycleRegistryOwner, View.OnClickListener {
+class ListEventActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var realTimeDatabaseMenuList: RealTimeDatabaseMenuListItem
     private lateinit var mItemViewPagerAdapter: ItemViewPagerAdapter
     private lateinit var sharePreferenceManager: SharePreferenceSettingManager

@@ -1,10 +1,7 @@
 package com.ipati.dev.castleevent.fragment
 
 
-import android.arch.lifecycle.LifecycleRegistry
-import android.arch.lifecycle.LifecycleRegistryOwner
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
@@ -13,14 +10,14 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import com.ipati.dev.castleevent.base.BaseFragment
 import com.ipati.dev.castleevent.R
-import com.ipati.dev.castleevent.adapter.ListMyOrderAdapter
 import com.ipati.dev.castleevent.fragment.loading.TicketsEventDialogFragment
 import com.ipati.dev.castleevent.service.FirebaseService.MyOrderRealTimeManager
 import kotlinx.android.synthetic.main.activity_my_order_fragment.*
 
-class MyOrderFragment : Fragment(), LifecycleRegistryOwner {
-    private var mRegistry: LifecycleRegistry = LifecycleRegistry(this)
+class MyOrderFragment : BaseFragment() {
+    //    private var mRegistry: LifecycleRegistry = LifecycleRegistry(this)
     private lateinit var mMyOrderRealTimeManager: MyOrderRealTimeManager
     private lateinit var mTicketsEventDialog: TicketsEventDialogFragment
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,10 +51,6 @@ class MyOrderFragment : Fragment(), LifecycleRegistryOwner {
         mTicketsEventDialog = TicketsEventDialogFragment.newInstance(eventId, userPhoto, eventName, eventLogo, userAccount, eventLocation, count)
         mTicketsEventDialog.isCancelable = false
         mTicketsEventDialog.show(activity.supportFragmentManager, "TicketsDialog")
-    }
-
-    override fun getLifecycle(): LifecycleRegistry {
-        return mRegistry
     }
 
 

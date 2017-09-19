@@ -20,10 +20,10 @@ import kotlinx.android.synthetic.main.activity_register_fragment.*
 import java.lang.Exception
 
 class RegisterFragment : Fragment() {
-    lateinit var registerManager: RegisterManager
-    lateinit var mAuth: FirebaseAuth
-    lateinit var fireBaseUser: FirebaseUser
-    lateinit var fireBaseUpdateProfile: UserProfileChangeRequest
+    private lateinit var registerManager: RegisterManager
+    private lateinit var mAuth: FirebaseAuth
+    private lateinit var fireBaseUser: FirebaseUser
+    private lateinit var fireBaseUpdateProfile: UserProfileChangeRequest
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
