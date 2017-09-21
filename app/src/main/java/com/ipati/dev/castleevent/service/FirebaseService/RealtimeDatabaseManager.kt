@@ -5,22 +5,26 @@ import android.arch.lifecycle.LifecycleObserver
 import android.arch.lifecycle.OnLifecycleEvent
 import android.content.Context
 import android.util.Log
-import android.widget.Toast
 import com.google.firebase.database.*
+import com.ipati.dev.castleevent.adapter.ListCategoryMenuAdapter
 import com.ipati.dev.castleevent.adapter.ListEventAdapter
 import com.ipati.dev.castleevent.model.modelListEvent.ItemListEvent
 
 class RealTimeDatabaseManager(context: Context, lifeCycle: Lifecycle) : LifecycleObserver {
-    var tagChild = "eventItem/eventContinue"
-    var refDatabase: DatabaseReference = FirebaseDatabase.getInstance().reference
-    var refDatabaseChild: DatabaseReference = refDatabase.child(tagChild)
+    private var tagChild = "eventItem/eventContinue"
+    private var refDatabase: DatabaseReference = FirebaseDatabase.getInstance().reference
+    private var refDatabaseChild: DatabaseReference = refDatabase.child(tagChild)
     var listItem: ItemListEvent? = null
     var hasMapData: HashMap<*, *>? = null
     var mContext: Context? = null
     var mLifeCycle: Lifecycle? = null
     var arrayItemList: ArrayList<ItemListEvent> = ArrayList()
+    var mListCategory: ArrayList<String> = ArrayList()
     var adapterListEvent: ListEventAdapter? = ListEventAdapter(listItem = arrayItemList)
         get() = field
+    var adapterCategory: ListCategoryMenuAdapter = ListCategoryMenuAdapter(mListCategory)
+        get() = field
+
     lateinit var listItemEvent: List<ItemListEvent>
 
     //Todo:init Class Constructor
@@ -33,13 +37,20 @@ class RealTimeDatabaseManager(context: Context, lifeCycle: Lifecycle) : Lifecycl
     //Todo:Handling Life Cycle
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     fun onStart() {
-//        Toast.makeText(mContext, "onStart", Toast.LENGTH_SHORT).show()
+        mListCategory.apply {
+            add("ALL")
+            add("Education")
+            add("Technology")
+            add("Sport")
+        }
+
+        adapterCategory.notifyDataSetChanged()
         registerChildEvent()
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
     fun onStop() {
-//        Toast.makeText(mContext, "onStop", Toast.LENGTH_SHORT).show()
+        mListCategory.clear()
         removeChildEvent()
     }
 

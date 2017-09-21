@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.Toast
 import com.ipati.dev.castleevent.base.BaseFragment
 import com.ipati.dev.castleevent.R
@@ -43,17 +44,17 @@ class ListEventFragment : BaseFragment() {
         mBottomSheetBehavior = BottomSheetBehavior.from(view?.findViewById(R.id.bottom_sheet_category))
         mBottomSheetBehavior.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                recycler_list_event.isClickable = false
+
             }
 
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 when (newState) {
                     BottomSheetBehavior.STATE_EXPANDED -> {
-                        recycler_list_event.isClickable = false
+
                     }
 
                     BottomSheetBehavior.STATE_COLLAPSED -> {
-                        recycler_list_event.isClickable = true
+
                     }
                 }
             }
@@ -69,6 +70,32 @@ class ListEventFragment : BaseFragment() {
                 }
             }
         }
+
+        initialBottomSheetCategory()
+    }
+
+    private fun initialBottomSheetCategory() {
+        recycler_bottom_sheet.layoutManager = LinearLayoutManager(context, LinearLayout.VERTICAL, false)
+        recycler_bottom_sheet.itemAnimator = DefaultItemAnimator()
+        recycler_bottom_sheet.adapter = realTimeDatabaseManager.adapterCategory
+    }
+
+    //Todo: Calling From Activity
+    fun onShowBottomSheetCategory() {
+        when (mBottomSheetBehavior.state) {
+            BottomSheetBehavior.STATE_EXPANDED -> {
+                mBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+            }
+
+            BottomSheetBehavior.STATE_COLLAPSED -> {
+                mBottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+            }
+        }
+    }
+
+    //Todo: Calling From Activity
+    fun onDisableBottomSheetCategory() {
+        mBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
     }
 
     companion object {

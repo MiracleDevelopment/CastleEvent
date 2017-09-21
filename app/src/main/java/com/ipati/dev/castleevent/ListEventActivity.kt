@@ -4,12 +4,14 @@ import android.arch.lifecycle.LifecycleRegistry
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
 import android.view.*
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.ipati.dev.castleevent.adapter.ItemViewPagerAdapter
+import com.ipati.dev.castleevent.fragment.ListEventFragment
 import com.ipati.dev.castleevent.service.FirebaseService.RealTimeDatabaseMenuListItem
 import com.ipati.dev.castleevent.service.googleApiClient
 import com.ipati.dev.castleevent.utill.SharePreferenceSettingManager
@@ -77,11 +79,24 @@ class ListEventActivity : AppCompatActivity(), View.OnClickListener {
                 R.id.itemCategory -> {
                     vp_list_event.currentItem = 0
 
+                    val mListEventFragment: Fragment? = mItemViewPagerAdapter.getRegisteredFragment(vp_list_event.currentItem)
+                    mListEventFragment?.let {
+                        (mListEventFragment as ListEventFragment).apply {
+                            onShowBottomSheetCategory()
+                        }
+                    }
                     return@setOnNavigationItemSelectedListener true
                 }
 
                 R.id.itemUser -> {
                     vp_list_event.currentItem = 1
+
+                    val mListEventFragment: Fragment? = mItemViewPagerAdapter.getRegisteredFragment(0)
+                    mListEventFragment?.let {
+                        (mListEventFragment as ListEventFragment).apply {
+                            onDisableBottomSheetCategory()
+                        }
+                    }
                     return@setOnNavigationItemSelectedListener true
                 }
             }
