@@ -79,3 +79,12 @@ fun loadPhotoUserProfile(context: Context, url: String, im: ImageView) {
 
     Glide.with(context).load(url).apply(requestOption).into(im)
 }
+
+fun loadGoogleMapStatic(context: Context, latitude: Double, longitude: Double, im: ImageView) {
+    val queryMapStatic = "https://maps.googleapis.com/maps/api/staticmap?" +
+            "center=$latitude,$longitude&zoom=14&size=500x200&markers=color:red%7Clabel:C%7C$latitude,$longitude" +
+            "&key=AIzaSyBLaTYxYbFsvRkJg3_ayOjZ8-v2kN4qb9o"
+
+    val requestOption: RequestOptions = RequestOptions().placeholder(R.mipmap.ic_launcher).diskCacheStrategy(DiskCacheStrategy.ALL)
+    Glide.with(context).load(queryMapStatic).apply(requestOption).into(im)
+}

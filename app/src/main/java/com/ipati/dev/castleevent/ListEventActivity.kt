@@ -27,8 +27,10 @@ class ListEventActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list_event)
+
         setSupportActionBar(toolbar_list_event)
         supportActionBar?.setLogo(R.mipmap.ic_launcher_event)
+
         realTimeDatabaseMenuList = RealTimeDatabaseMenuListItem(applicationContext, lifecycle)
         sharePreferenceManager = SharePreferenceSettingManager(context = applicationContext)
         initialViewPager()

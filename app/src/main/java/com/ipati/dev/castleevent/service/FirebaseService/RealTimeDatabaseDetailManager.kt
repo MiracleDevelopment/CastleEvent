@@ -75,6 +75,8 @@ class RealTimeDatabaseDetailManager(context: Context, lifecycle: Lifecycle, even
                             hasMapData["eventDescription"].toString(),
                             hasMapData["eventLocation"].toString(),
                             hasMapData["eventLogoCredit"].toString(),
+                            hasMapData["eventLatitude"] as Double,
+                            hasMapData["eventLongitude"] as Double,
                             hasMapData["eventMax"] as Long,
                             hasMapData["eventRest"] as Long,
                             hasMapData["eventStatus"] as Boolean,

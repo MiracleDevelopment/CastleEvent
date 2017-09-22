@@ -10,6 +10,8 @@ data class ItemListEvent(var updateKey: String
                          , var eventDescription: String
                          , var eventLocation: String
                          , var eventLogoCredit: String
+                         , var eventLatitude: Double
+                         , var eventLongitude: Double
                          , var eventMax: Long
                          , var eventRest: Long
                          , var eventStatus: Boolean

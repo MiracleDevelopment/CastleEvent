@@ -31,6 +31,7 @@ import com.google.api.services.calendar.CalendarScopes
 import com.google.api.services.calendar.model.Event
 import com.ipati.dev.castleevent.base.BaseFragment
 import com.ipati.dev.castleevent.R
+import com.ipati.dev.castleevent.model.Glide.loadGoogleMapStatic
 import com.ipati.dev.castleevent.model.Glide.loadLogo
 import com.ipati.dev.castleevent.model.Glide.loadPhotoAdvertise
 import com.ipati.dev.castleevent.model.Glide.loadPhotoDetail
@@ -64,7 +65,6 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnMapReadyCal
     private lateinit var mBottomSheetBehavior: BottomSheetBehavior<View>
     private lateinit var mRecorderEvent: RecordListEvent
     private lateinit var mDialogManager: DialogManager
-    private lateinit var mapFragment: MapFragment
     private lateinit var bundle: Bundle
 
     private val mCalendarTimeStamp = java.util.Calendar.getInstance()
@@ -93,7 +93,6 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnMapReadyCal
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initialGoogleMapFragment()
         initialGoogleCredentialAccount()
         initialBottomSheet()
 
@@ -132,15 +131,6 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnMapReadyCal
         return mGoogleSharePreference.defaultSharePreferenceManager()
     }
 
-    private fun initialGoogleMapFragment() {
-        mapFragment = MapFragment.newInstance()
-
-        activity.fragmentManager.beginTransaction()
-                .replace(R.id.frame_google_map_api, mapFragment)
-                .commit()
-
-        mapFragment.getMapAsync(this)
-    }
 
     @SuppressLint("InflateParams", "ResourceType")
     private fun initialBottomSheet() {
@@ -213,6 +203,7 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnMapReadyCal
         loadPhotoDetail(context, itemListEvent.eventCover, im_detail_cover)
         loadPhotoAdvertise(context, itemListEvent.eventAdvertise, im_advertise_detail)
         loadLogo(context, itemListEvent.eventLogoCredit, im_logo_credit_detail)
+        loadGoogleMapStatic(context, itemListEvent.eventLatitude, itemListEvent.eventLongitude, im_static_map)
 
         tv_detail_time.text = itemListEvent.eventTime
         tv_detail_location.text = itemListEvent.eventLocation
