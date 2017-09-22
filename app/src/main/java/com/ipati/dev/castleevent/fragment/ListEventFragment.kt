@@ -8,9 +8,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import android.widget.Toast
 import com.ipati.dev.castleevent.base.BaseFragment
 import com.ipati.dev.castleevent.R
+import com.ipati.dev.castleevent.model.LoadingCategory
 import com.ipati.dev.castleevent.service.FirebaseService.RealTimeDatabaseManager
 import kotlinx.android.synthetic.main.activity_list_event_fragment.*
 import kotlinx.android.synthetic.main.custom_bottom_sheet_category.*
@@ -32,6 +32,7 @@ class ListEventFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         initialRecyclerView()
         initialBottomSheet()
+        initialBottomSheetCategory()
     }
 
     private fun initialRecyclerView() {
@@ -50,7 +51,7 @@ class ListEventFragment : BaseFragment() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 when (newState) {
                     BottomSheetBehavior.STATE_EXPANDED -> {
-
+                        realTimeDatabaseManager.adapterCategory.notifyDataSetChanged()
                     }
 
                     BottomSheetBehavior.STATE_COLLAPSED -> {
@@ -70,14 +71,24 @@ class ListEventFragment : BaseFragment() {
                 }
             }
         }
-
-        initialBottomSheetCategory()
     }
 
     private fun initialBottomSheetCategory() {
         recycler_bottom_sheet.layoutManager = LinearLayoutManager(context, LinearLayout.VERTICAL, false)
         recycler_bottom_sheet.itemAnimator = DefaultItemAnimator()
         recycler_bottom_sheet.adapter = realTimeDatabaseManager.adapterCategory
+        realTimeDatabaseManager.adapterCategory.setOnChangeCategory(object : LoadingCategory {
+            override fun setOnChangeCategory(selectCategory: String) {
+                realTimeDatabaseManager.mCategory = selectCategory
+                onRefreshItemList()
+            }
+        })
+    }
+
+    private fun onRefreshItemList() {
+        realTimeDatabaseManager.onChangeCategory()
+        realTimeDatabaseManager.adapterListEvent?.notifyDataSetChanged()
+        mBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
     }
 
     //Todo: Calling From Activity

@@ -19,3 +19,11 @@ interface LoadingDetailData {
 interface DismissDialogFragment {
     fun onChangeProfile(msg: String, requestCode: Int)
 }
+
+interface LoadingCategory {
+    fun setOnChangeCategory(selectCategory: String)
+}
+
+
+
+

@@ -17,8 +17,10 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_list_event"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:nestedScrollingEnabled="true">
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:nestedScrollingEnabled="true"
+            android:paddingBottom="98dp">
 
         </android.support.v7.widget.RecyclerView>
 

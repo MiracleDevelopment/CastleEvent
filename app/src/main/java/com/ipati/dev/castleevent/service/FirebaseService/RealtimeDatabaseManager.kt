@@ -8,6 +8,10 @@ import android.util.Log
 import com.google.firebase.database.*
 import com.ipati.dev.castleevent.adapter.ListCategoryMenuAdapter
 import com.ipati.dev.castleevent.adapter.ListEventAdapter
+import com.ipati.dev.castleevent.model.category.ALL
+import com.ipati.dev.castleevent.model.category.Education
+import com.ipati.dev.castleevent.model.category.Sport
+import com.ipati.dev.castleevent.model.category.Technology
 import com.ipati.dev.castleevent.model.modelListEvent.ItemListEvent
 
 class RealTimeDatabaseManager(context: Context, lifeCycle: Lifecycle) : LifecycleObserver {
@@ -24,7 +28,7 @@ class RealTimeDatabaseManager(context: Context, lifeCycle: Lifecycle) : Lifecycl
         get() = field
     var adapterCategory: ListCategoryMenuAdapter = ListCategoryMenuAdapter(mListCategory)
         get() = field
-
+    var mCategory: String = "ALL"
     lateinit var listItemEvent: List<ItemListEvent>
 
     //Todo:init Class Constructor
@@ -52,7 +56,9 @@ class RealTimeDatabaseManager(context: Context, lifeCycle: Lifecycle) : Lifecycl
     fun onStop() {
         mListCategory.clear()
         removeChildEvent()
+        removeValueCategory()
     }
+
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     fun onDestroy() {
@@ -66,6 +72,12 @@ class RealTimeDatabaseManager(context: Context, lifeCycle: Lifecycle) : Lifecycl
     private fun removeChildEvent() {
         refDatabaseChild.removeEventListener(childEventListener())
         arrayItemList.clear()
+    }
+
+    fun onChangeCategory() {
+        removeValueCategory()
+        arrayItemList.clear()
+        refDatabaseChild.addChildEventListener(childEventListener())
     }
 
     private fun childEventListener(): ChildEventListener {
@@ -129,9 +141,18 @@ class RealTimeDatabaseManager(context: Context, lifeCycle: Lifecycle) : Lifecycl
                         hasMapData!!["eventPrice"].toString()
 
                 )
-                arrayItemList.add(listItem!!)
-                adapterListEvent?.notifyDataSetChanged()
+                onCountItemCategory(listItem!!)
 
+                if (mCategory != "ALL") {
+                    if (listItem?.categoryName == mCategory) {
+                        arrayItemList.add(listItem!!)
+                        adapterListEvent?.notifyDataSetChanged()
+                    }
+
+                } else if (mCategory == "ALL") {
+                    arrayItemList.add(listItem!!)
+                    adapterListEvent?.notifyDataSetChanged()
+                }
             }
 
             override fun onChildRemoved(p0: DataSnapshot?) {
@@ -144,6 +165,24 @@ class RealTimeDatabaseManager(context: Context, lifeCycle: Lifecycle) : Lifecycl
                 }
             }
         }
+    }
+
+
+    fun onCountItemCategory(listItem: ItemListEvent) {
+        ALL += 1
+
+        when {
+            listItem.categoryName == "Education" -> Education += 1
+            listItem.categoryName == "Technology" -> Technology += 1
+            else -> Sport += 1
+        }
+    }
+
+    private fun removeValueCategory() {
+        ALL = 0
+        Education = 0
+        Sport = 0
+        Technology = 0
     }
 
 
