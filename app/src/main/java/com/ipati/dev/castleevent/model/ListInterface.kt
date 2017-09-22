@@ -24,6 +24,10 @@ interface LoadingCategory {
     fun setOnChangeCategory(selectCategory: String)
 }
 
+interface LoadingDetailEvent {
+    fun setOnLoadingDetailEvent(eventId: Long)
+}
+
 
 
 

@@ -1,5 +1,6 @@
 package com.ipati.dev.castleevent.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.BottomSheetBehavior
 import android.support.v7.widget.DefaultItemAnimator
@@ -8,9 +9,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import com.ipati.dev.castleevent.ListDetailEventActivity
 import com.ipati.dev.castleevent.base.BaseFragment
 import com.ipati.dev.castleevent.R
 import com.ipati.dev.castleevent.model.LoadingCategory
+import com.ipati.dev.castleevent.model.LoadingDetailEvent
 import com.ipati.dev.castleevent.service.FirebaseService.RealTimeDatabaseManager
 import kotlinx.android.synthetic.main.activity_list_event_fragment.*
 import kotlinx.android.synthetic.main.custom_bottom_sheet_category.*
@@ -18,6 +21,7 @@ import kotlinx.android.synthetic.main.custom_bottom_sheet_category.*
 class ListEventFragment : BaseFragment() {
     private lateinit var realTimeDatabaseManager: RealTimeDatabaseManager
     private lateinit var mBottomSheetBehavior: BottomSheetBehavior<View>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         realTimeDatabaseManager = RealTimeDatabaseManager(context, lifecycle)
@@ -39,6 +43,16 @@ class ListEventFragment : BaseFragment() {
         recycler_list_event.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
         recycler_list_event.itemAnimator = DefaultItemAnimator()
         recycler_list_event.adapter = realTimeDatabaseManager.adapterListEvent
+        realTimeDatabaseManager.adapterListEvent?.setOnClickItemEvent(object : LoadingDetailEvent {
+            override fun setOnLoadingDetailEvent(eventId: Long) {
+                mBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+
+                val intentDetailFragment = Intent(context, ListDetailEventActivity::class.java)
+                intentDetailFragment.putExtra("eventId", eventId)
+                startActivity(intentDetailFragment)
+
+            }
+        })
     }
 
     private fun initialBottomSheet() {

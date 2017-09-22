@@ -11,6 +11,7 @@ import android.view.animation.AnimationUtils
 import com.ipati.dev.castleevent.ListDetailEventActivity
 import com.ipati.dev.castleevent.R
 import com.ipati.dev.castleevent.model.Glide.loadPhoto
+import com.ipati.dev.castleevent.model.LoadingDetailEvent
 import com.ipati.dev.castleevent.model.modelListEvent.ItemListEvent
 import kotlinx.android.synthetic.main.custom_layout_menu_event_adapter.view.*
 import kotlinx.android.synthetic.main.custom_list_event_adapter_layout.view.*
@@ -19,7 +20,8 @@ import kotlinx.android.synthetic.main.custom_list_event_adapter_layout.view.*
 class ListEventAdapter(listItem: ArrayList<ItemListEvent>) : RecyclerView.Adapter<ListEventAdapter.ListEventHolder>() {
     var itemList: ArrayList<ItemListEvent> = listItem
     lateinit var animatorListItem: Animation
-    lateinit var intentDetailFragment: Intent
+    lateinit var mOnLoadingDetailEvent: LoadingDetailEvent
+
     override fun getItemCount(): Int {
         return itemList.count()
     }
@@ -33,11 +35,13 @@ class ListEventAdapter(listItem: ArrayList<ItemListEvent>) : RecyclerView.Adapte
         return ListEventHolder(view)
     }
 
+    fun setOnClickItemEvent(loadingDetailEvent: LoadingDetailEvent) {
+        this.mOnLoadingDetailEvent = loadingDetailEvent
+    }
+
     inner class ListEventHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
         override fun onClick(p0: View?) {
-            intentDetailFragment = Intent(itemView.context, ListDetailEventActivity::class.java)
-            intentDetailFragment.putExtra("eventId", itemList[adapterPosition].eventId)
-            itemView.context.startActivity(intentDetailFragment)
+            mOnLoadingDetailEvent.setOnLoadingDetailEvent(itemList[adapterPosition].eventId)
         }
 
         @SuppressLint("SetTextI18n")
