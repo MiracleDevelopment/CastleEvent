@@ -15,9 +15,13 @@ import kotlinx.android.synthetic.main.custom_list_category.view.*
 
 
 class ListCategoryMenuAdapter(mListCategory: ArrayList<String>) : RecyclerView.Adapter<ListCategoryMenuAdapter.CategoryHolder>() {
-    private lateinit var mOnChangeCategory: LoadingCategory
-    var listCategory: ArrayList<String> = mListCategory
+    var CATEGORY_ALL: String = "ALL"
+    var CATEGORY_EDUCATION: String = "Education"
+    var CATEGORY_TECHNOLOGY: String = "Technology"
+    var CATEGORY_SPORT: String = "Sport"
 
+    var listCategory: ArrayList<String> = mListCategory
+    private lateinit var mOnChangeCategory: LoadingCategory
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): CategoryHolder {
         val view: View = LayoutInflater.from(parent?.context).inflate(R.layout.custom_list_category, parent, false)
         return CategoryHolder(view)
@@ -55,16 +59,16 @@ class ListCategoryMenuAdapter(mListCategory: ArrayList<String>) : RecyclerView.A
         @SuppressLint("SetTextI18n")
         private fun onSetCountCategoryItem() {
             when (itemView.tv_category_bottom_sheet.text) {
-                "ALL" -> {
+                CATEGORY_ALL -> {
                     itemView.tv_category_bottom_sheet.text = listCategory[adapterPosition] + " (" + ALL.toString() + ")"
                 }
-                "Education" -> {
+                CATEGORY_EDUCATION -> {
                     itemView.tv_category_bottom_sheet.text = listCategory[adapterPosition] + " (" + Education.toString() + ")"
                 }
-                "Technology" -> {
+                CATEGORY_TECHNOLOGY -> {
                     itemView.tv_category_bottom_sheet.text = listCategory[adapterPosition] + " (" + Technology.toString() + ")"
                 }
-                else -> {
+                CATEGORY_SPORT -> {
                     itemView.tv_category_bottom_sheet.text = listCategory[adapterPosition] + " (" + Sport.toString() + ")"
                 }
             }

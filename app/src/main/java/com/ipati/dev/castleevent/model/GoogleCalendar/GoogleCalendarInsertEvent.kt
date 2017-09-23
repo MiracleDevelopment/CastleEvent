@@ -41,7 +41,7 @@ class GoogleCalendarInsertEvent(summary: String?, location: String?, description
     }
 
     private fun setDateTimeStart(): EventDateTime {
-        simpleDateStart = "08-9-2017T07:00:00-10:00"
+        simpleDateStart = startEvent!!
         mSimpleDateFormat = SimpleDateFormat("dd-MM-yyyy'T'HH:mm:ss", Locale("th"))
         mDate = mSimpleDateFormat.parse(simpleDateStart)
         Log.d("DateTimeFormatStart", mDate.toString())
@@ -52,7 +52,7 @@ class GoogleCalendarInsertEvent(summary: String?, location: String?, description
     }
 
     private fun setDateTimeEnd(): EventDateTime {
-        simpleDateEnd = "08-9-2017T10:00:00-17:00"
+        simpleDateEnd = endEvent!!
         mSimpleDateFormat = SimpleDateFormat("dd-MM-yyyy'T'HH:mm:ss", Locale("th"))
         mDate = mSimpleDateFormat.parse(simpleDateEnd)
         Log.d("DateTimeFormatEnd", mDate.toString())

@@ -148,6 +148,9 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnMapReadyCal
                     BottomSheetBehavior.STATE_EXPANDED -> {
                         floating_bt_close.setImageResource(R.mipmap.ic_keyboard_arrow_down)
                     }
+                    BottomSheetBehavior.STATE_DRAGGING -> {
+                        onShowBottomSheet()
+                    }
                 }
             }
         })
@@ -170,20 +173,27 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnMapReadyCal
     }
 
     private fun onShowBottomSheet() {
-        val mDateLimitFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale("th"))
+        val mDateLimitFormat = SimpleDateFormat("dd-MM-yyyy'T'HH:mm:ss", Locale("th"))
         val limitDate = mDateLimitFormat.parse(startCalendar)
 
         val mCalendar = java.util.Calendar.getInstance()
         mCalendar.timeZone = TimeZone.getTimeZone("UTC")
         mCalendar.timeInMillis = limitDate.time
 
-        val limitTime = (mCalendar.get(java.util.Calendar.DATE) - 1).toString() + " " + mCalendar.getDisplayName(java.util.Calendar.MONTH, java.util.Calendar.LONG, Locale("th")) + " " + mCalendar.get(java.util.Calendar.YEAR).toString()
+        val limitTime = (mCalendar.get(java.util.Calendar.DATE)).toString() + " " + mCalendar.getDisplayName(java.util.Calendar.MONTH, java.util.Calendar.LONG, Locale("th")) + " " + mCalendar.get(java.util.Calendar.YEAR).toString()
         tv_bottom_sheet_header_event.text = nameEvent
         tv_bottom_sheet_description_event.text = descriptionEvent
         tv_bottom_sheet_limit_access.text = "สามารถจองได้ถึงภายในวันที่ " + limitTime
-        tv_receive_tickets.text = priceEvent + " / " + "TICKETS"
 
-        setUIClickable()
+        if (Date().after(mCalendar.time)) {
+            tv_receive_tickets.setBackgroundResource(R.drawable.custom_background_close_event_ripple)
+            tv_receive_tickets.text = "บัตรหมดแล้ว"
+        } else {
+            tv_receive_tickets.setBackgroundResource(R.drawable.background_get_tickets)
+            tv_receive_tickets.text = priceEvent + " / " + "TICKETS"
+            setUIClickable()
+        }
+
     }
 
     private fun setUIClickable() {
@@ -225,6 +235,7 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnMapReadyCal
         attendee = defaultAccountGoogleCalendar()
 
         mRecorderEvent = RecordListEvent()
+        Log.d("timeDate", startEvent.toString() + " : " + endEvent.toString())
     }
 
 
@@ -237,7 +248,7 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnMapReadyCal
         } else if (mGoogleCredentialAccount.selectedAccountName == null) {
             permissionGoogleAccount()
         } else {
-            Toast.makeText(context, "addEvent", Toast.LENGTH_LONG).show()
+            Toast.makeText(context, "จองอีเว้นเรียบร้อยแล้ว", Toast.LENGTH_LONG).show()
             MakePushEvent(mGoogleCredentialAccount).execute()
         }
     }

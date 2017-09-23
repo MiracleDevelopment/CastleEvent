@@ -33,9 +33,9 @@ class ListEventActivity : AppCompatActivity(), View.OnClickListener {
 
         realTimeDatabaseMenuList = RealTimeDatabaseMenuListItem(applicationContext, lifecycle)
         sharePreferenceManager = SharePreferenceSettingManager(context = applicationContext)
+
         initialViewPager()
         initialBottomNavigationBar()
-
     }
 
 

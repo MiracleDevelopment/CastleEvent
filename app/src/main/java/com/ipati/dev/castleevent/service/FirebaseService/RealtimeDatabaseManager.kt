@@ -5,6 +5,7 @@ import android.arch.lifecycle.LifecycleObserver
 import android.arch.lifecycle.OnLifecycleEvent
 import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import com.google.firebase.database.*
 import com.ipati.dev.castleevent.adapter.ListCategoryMenuAdapter
 import com.ipati.dev.castleevent.adapter.ListEventAdapter
@@ -15,20 +16,18 @@ import com.ipati.dev.castleevent.model.category.Technology
 import com.ipati.dev.castleevent.model.modelListEvent.ItemListEvent
 
 class RealTimeDatabaseManager(context: Context, lifeCycle: Lifecycle) : LifecycleObserver {
+    var mCategory: String = "ALL"
     private var tagChild = "eventItem/eventContinue"
     private var refDatabase: DatabaseReference = FirebaseDatabase.getInstance().reference
-    private var refDatabaseChild: DatabaseReference = refDatabase.child(tagChild)
+    private var refDatabaseChild: DatabaseReference? = refDatabase.child(tagChild)
     var listItem: ItemListEvent? = null
     var hasMapData: HashMap<*, *>? = null
     var mContext: Context? = null
     var mLifeCycle: Lifecycle? = null
     var arrayItemList: ArrayList<ItemListEvent> = ArrayList()
-    var mListCategory: ArrayList<String> = ArrayList()
     var adapterListEvent: ListEventAdapter? = ListEventAdapter(listItem = arrayItemList)
         get() = field
-    var adapterCategory: ListCategoryMenuAdapter = ListCategoryMenuAdapter(mListCategory)
-        get() = field
-    var mCategory: String = "ALL"
+
     lateinit var listItemEvent: List<ItemListEvent>
 
     //Todo:init Class Constructor
@@ -41,22 +40,12 @@ class RealTimeDatabaseManager(context: Context, lifeCycle: Lifecycle) : Lifecycl
     //Todo:Handling Life Cycle
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     fun onStart() {
-        mListCategory.apply {
-            add("ALL")
-            add("Education")
-            add("Technology")
-            add("Sport")
-        }
-
-        adapterCategory.notifyDataSetChanged()
         registerChildEvent()
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
     fun onStop() {
-        mListCategory.clear()
         removeChildEvent()
-        removeValueCategory()
     }
 
 
@@ -66,18 +55,21 @@ class RealTimeDatabaseManager(context: Context, lifeCycle: Lifecycle) : Lifecycl
     }
 
     private fun registerChildEvent() {
-        refDatabaseChild.addChildEventListener(childEventListener())
+        refDatabaseChild?.addChildEventListener(childEventListener())
     }
 
     private fun removeChildEvent() {
-        refDatabaseChild.removeEventListener(childEventListener())
+        refDatabaseChild?.removeEventListener(childEventListener())
         arrayItemList.clear()
     }
 
     fun onChangeCategory() {
-        removeValueCategory()
         arrayItemList.clear()
-        refDatabaseChild.addChildEventListener(childEventListener())
+        refDatabaseChild?.let {
+            refDatabaseChild?.removeEventListener(childEventListener())
+        }
+
+        refDatabaseChild?.addChildEventListener(childEventListener())
     }
 
     private fun childEventListener(): ChildEventListener {
@@ -145,18 +137,7 @@ class RealTimeDatabaseManager(context: Context, lifeCycle: Lifecycle) : Lifecycl
                         hasMapData!!["eventPrice"].toString()
 
                 )
-                onCountItemCategory(listItem!!)
-
-                if (mCategory != "ALL") {
-                    if (listItem?.categoryName == mCategory) {
-                        arrayItemList.add(listItem!!)
-                        adapterListEvent?.notifyDataSetChanged()
-                    }
-
-                } else if (mCategory == "ALL") {
-                    arrayItemList.add(listItem!!)
-                    adapterListEvent?.notifyDataSetChanged()
-                }
+                onFilter(hasMapData!!["categoryName"].toString(), listItem!!)
             }
 
             override fun onChildRemoved(p0: DataSnapshot?) {
@@ -171,23 +152,13 @@ class RealTimeDatabaseManager(context: Context, lifeCycle: Lifecycle) : Lifecycl
         }
     }
 
-
-    fun onCountItemCategory(listItem: ItemListEvent) {
-        ALL += 1
-
-        when {
-            listItem.categoryName == "Education" -> Education += 1
-            listItem.categoryName == "Technology" -> Technology += 1
-            else -> Sport += 1
+    private fun onFilter(category: String, listItem: ItemListEvent) {
+        if (mCategory == category) {
+            arrayItemList.add(listItem)
+            adapterListEvent?.notifyDataSetChanged()
+        } else if (mCategory == "ALL") {
+            arrayItemList.add(listItem)
+            adapterListEvent?.notifyDataSetChanged()
         }
     }
-
-    private fun removeValueCategory() {
-        ALL = 0
-        Education = 0
-        Sport = 0
-        Technology = 0
-    }
-
-
 }

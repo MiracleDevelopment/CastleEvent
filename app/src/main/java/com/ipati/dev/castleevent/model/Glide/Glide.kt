@@ -29,6 +29,7 @@ fun loadLogo(context: Context, url: String, im: ImageView) {
 fun loadPhotoDetail(context: Context, url: String, im: ImageView) {
     val requestOption: RequestOptions = RequestOptions()
             .placeholder(R.mipmap.ic_launcher)
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
     Glide.with(context).load(url).apply(requestOption).into(im)
 }
 

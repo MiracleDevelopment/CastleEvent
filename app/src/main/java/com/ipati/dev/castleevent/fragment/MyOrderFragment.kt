@@ -17,7 +17,6 @@ import com.ipati.dev.castleevent.service.FirebaseService.MyOrderRealTimeManager
 import kotlinx.android.synthetic.main.activity_my_order_fragment.*
 
 class MyOrderFragment : BaseFragment() {
-    //    private var mRegistry: LifecycleRegistry = LifecycleRegistry(this)
     private lateinit var mMyOrderRealTimeManager: MyOrderRealTimeManager
     private lateinit var mTicketsEventDialog: TicketsEventDialogFragment
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,7 +52,6 @@ class MyOrderFragment : BaseFragment() {
         mTicketsEventDialog.show(activity.supportFragmentManager, "TicketsDialog")
     }
 
-
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             android.R.id.home -> {
@@ -68,6 +66,7 @@ class MyOrderFragment : BaseFragment() {
             layoutManager = LinearLayoutManager(context, LinearLayout.VERTICAL, false)
             itemAnimator = DefaultItemAnimator()
         }
+
         recycler_view_my_order.adapter = mMyOrderRealTimeManager.mAdapterMyOrder
     }
 
