@@ -119,6 +119,7 @@ class CalendarFragment : Fragment(), View.OnClickListener {
             override fun onDayClick(dateClicked: Date?) {
                 mListEventDateClick = compat_calendar_view.getEvents(dateClicked)
                 mCalendarManager.initialCalendar().time = dateClicked
+
                 if (mListEventDateClick.count() == 0) {
                     mCalendarManager.animationHeaderExpanded(calendar_bar_app, maxHeaderCalendar, calendar_bar_app.height)
                     mCalendarManager.animationCalendarExpanded(compat_calendar_view, maxCalendarHeight, compat_calendar_view.height)
@@ -133,12 +134,15 @@ class CalendarFragment : Fragment(), View.OnClickListener {
 
                     mListItemEvent.clear()
                     mListEventCalendarAdapter.notifyDataSetChanged()
+
                 } else {
                     if (mListEventDateClick.count() > 1) {
+                        mListItemEvent.clear()
                         dayOfYear = mCalendarManager.initialCalendar().get(Calendar.DATE)
                         monthOfYear = mCalendarManager.initialCalendar().get(Calendar.MONTH) + 1
                         yearOfYear = mCalendarManager.initialCalendar().get(Calendar.YEAR)
-                        dateTimeStamp = "0$dayOfYear/0$monthOfYear/$yearOfYear"
+
+                        dateTimeStamp = "$dayOfYear/0$monthOfYear/$yearOfYear"
 
                         tv_calendar_select_date.text = ""
                         tv_calendar_year.text = ""
@@ -146,29 +150,41 @@ class CalendarFragment : Fragment(), View.OnClickListener {
                         tv_calendar_time_ticket.text = ""
                         tv_header_month.text = "EventList " + yearOfYear
                         tv_hind_bt.visibility = View.VISIBLE
-                        mListItemEvent.clear()
+
                         for ((title, timeEventStart, timeEventEnd, timeDayOfYear, timeMonthDate, timeDateEvent) in mListItemShow) {
+
                             if (dateTimeStamp == timeDateEvent) {
                                 eventDetailModel = EventDetailModel(title, timeEventStart, timeEventEnd, timeDayOfYear, timeMonthDate, timeDateEvent)
                                 mListItemEvent.add(eventDetailModel)
                                 mListEventCalendarAdapter.notifyDataSetChanged()
+                            } else {
+                                Log.d("dateTimeMoreOnce", dateTimeStamp + " : " + timeDateEvent)
                             }
                         }
 
                         mCalendarManager.animationHeaderCollapse(calendar_bar_app, minHeaderCalendar, calendar_bar_app.height)
                         mCalendarManager.animationCalendarCollapse(compat_calendar_view, minCalendarHeight, compat_calendar_view.height)
+
                     } else if (mListEventDateClick.count() == 1) {
-                        Toast.makeText(context, "1", Toast.LENGTH_SHORT).show()
                         tv_header_month.text = mCalendarManager.initialCalendar().getDisplayName(Calendar.MONTH, Calendar.LONG, Locale("th"))
                         tv_calendar_select_date.text = mCalendarManager.initialCalendar().get(Calendar.DATE).toString()
                         tv_calendar_year.text = mCalendarManager.initialCalendar().get(Calendar.YEAR).toString()
 
-                        for ((title, timeEvent, timeEventEnd, timeDateEvent) in mListItemShow) {
+                        val dateOfYear = mCalendarManager.initialCalendar().get(Calendar.DAY_OF_MONTH)
+                        val mothOfYear = mCalendarManager.initialCalendar().get(Calendar.MONTH) + 1
+                        val yearsOfYear = mCalendarManager.initialCalendar().get(Calendar.YEAR)
+
+                        dateTimeStamp = "$dateOfYear/0$mothOfYear/$yearsOfYear"
+
+                        for ((title, timeEventStart, timeEventEnd, timeDayOfYear, timeMonthDate, timeDateEvent) in mListItemShow) {
                             if (dateTimeStamp == timeDateEvent) {
                                 tv_calendar_detail_event.text = title
-                                tv_calendar_time_ticket.text = "$timeEvent น. - $timeEventEnd น."
+                                tv_calendar_time_ticket.text = "$timeEventStart น. - $timeEventEnd น."
+                            } else {
+                                Log.d("dateTimeOnce", dateTimeStamp + " : " + timeDateEvent)
                             }
                         }
+
                         mCalendarManager.animationHeaderExpanded(calendar_bar_app, maxHeaderCalendar, calendar_bar_app.height)
                         mCalendarManager.animationCalendarExpanded(compat_calendar_view, maxCalendarHeight, compat_calendar_view.height)
                     }

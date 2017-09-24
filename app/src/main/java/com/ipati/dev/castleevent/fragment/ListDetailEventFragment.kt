@@ -17,7 +17,6 @@ import android.widget.Toast
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.MapFragment
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.api.client.extensions.android.http.AndroidHttp
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential
@@ -36,6 +35,7 @@ import com.ipati.dev.castleevent.model.Glide.loadLogo
 import com.ipati.dev.castleevent.model.Glide.loadPhotoAdvertise
 import com.ipati.dev.castleevent.model.Glide.loadPhotoDetail
 import com.ipati.dev.castleevent.model.GoogleCalendar.*
+import com.ipati.dev.castleevent.model.GoogleCalendar.CalendarFragment.CalendarManager
 import com.ipati.dev.castleevent.model.LoadingDetailData
 import com.ipati.dev.castleevent.model.gmsLocation.GooglePlayServiceMapManager
 import com.ipati.dev.castleevent.model.modelListEvent.ItemListEvent
@@ -63,6 +63,7 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnMapReadyCal
     private lateinit var mGoogleCredentialAccount: GoogleAccountCredential
     private lateinit var mGoogleApiAvailability: GoogleApiAvailability
     private lateinit var mBottomSheetBehavior: BottomSheetBehavior<View>
+    private lateinit var mCalendarManager: CalendarManager
     private lateinit var mRecorderEvent: RecordListEvent
     private lateinit var mDialogManager: DialogManager
     private lateinit var bundle: Bundle
@@ -84,6 +85,7 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnMapReadyCal
         realTimeDatabaseDetailManager = RealTimeDatabaseDetailManager(context, lifecycle, eventId!!, this)
         googlePlayServiceMap = GooglePlayServiceMapManager(activity, lifecycle)
         mGoogleSharePreference = SharePreferenceGoogleSignInManager(context)
+        mCalendarManager = CalendarManager(context)
         mDialogManager = DialogManager(activity)
     }
 
@@ -93,20 +95,16 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnMapReadyCal
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initialGoogleCredentialAccount()
-        initialBottomSheet()
-
         bt_get_tickets.setOnClickListener {
             when (mBottomSheetBehavior.state) {
                 BottomSheetBehavior.STATE_COLLAPSED -> {
                     floating_bt_close.setImageResource(R.mipmap.ic_keyboard_arrow_down)
                     mBottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-                    onShowBottomSheet()
+
                 }
                 BottomSheetBehavior.STATE_EXPANDED -> {
                     floating_bt_close.setImageResource(R.mipmap.ic_keyboard_arrow_up)
                     mBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-                    onShowBottomSheet()
                 }
             }
         }
@@ -148,9 +146,6 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnMapReadyCal
                     BottomSheetBehavior.STATE_EXPANDED -> {
                         floating_bt_close.setImageResource(R.mipmap.ic_keyboard_arrow_down)
                     }
-                    BottomSheetBehavior.STATE_DRAGGING -> {
-                        onShowBottomSheet()
-                    }
                 }
             }
         })
@@ -160,16 +155,17 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnMapReadyCal
                 BottomSheetBehavior.STATE_EXPANDED -> {
                     floating_bt_close.setImageResource(R.mipmap.ic_keyboard_arrow_up)
                     mBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-                    onShowBottomSheet()
                 }
 
                 BottomSheetBehavior.STATE_COLLAPSED -> {
                     mBottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
                     floating_bt_close.setImageResource(R.mipmap.ic_keyboard_arrow_down)
-                    onShowBottomSheet()
                 }
             }
         }
+
+        onShowBottomSheet()
+        setUIClickable()
     }
 
     private fun onShowBottomSheet() {
@@ -185,28 +181,36 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnMapReadyCal
         tv_bottom_sheet_description_event.text = descriptionEvent
         tv_bottom_sheet_limit_access.text = "สามารถจองได้ถึงภายในวันที่ " + limitTime
 
-        if (Date().after(mCalendar.time)) {
+        if (Date().after(mCalendarManager.formatDateTimeStartEvent(startCalendar!!))) {
             tv_receive_tickets.setBackgroundResource(R.drawable.custom_background_close_event_ripple)
+            tv_receive_tickets.isClickable = true
+            tv_receive_tickets.isFocusable = true
             tv_receive_tickets.text = "บัตรหมดแล้ว"
         } else {
             tv_receive_tickets.setBackgroundResource(R.drawable.background_get_tickets)
             tv_receive_tickets.text = priceEvent + " / " + "TICKETS"
-            setUIClickable()
         }
-
     }
 
     private fun setUIClickable() {
         tv_receive_tickets.setOnClickListener {
-            mCalendarTimeStamp.timeZone = TimeZone.getDefault()
-            val msg = "คุณต้องการจองบัตร จำนวน " + number_picker.value.toString() + " ใบ" + "\n" + " ใช่ / ไม่"
-            mDialogManager.onShowConfirmDialog(msg)
+
+            if (Date().after(mCalendarManager.formatDateTimeStartEvent(startCalendar!!))) {
+                Toast.makeText(context, "ขออภัยที่จองได้เต็มแล้วค่ะ", Toast.LENGTH_SHORT).show()
+            } else {
+                mCalendarTimeStamp.timeZone = TimeZone.getDefault()
+                val msg = "คุณต้องการจองบัตร จำนวน " + number_picker.value.toString() + " ใบ" + "\n" + " ใช่ / ไม่"
+                mDialogManager.onShowConfirmDialog(msg)
+            }
         }
     }
 
+    //Todo: Calling First When Clickable
     override fun onLoadingUpdateData(itemListEvent: ItemListEvent) {
         initialDetailEvent(itemListEvent)
         initialToolbar(itemListEvent = itemListEvent)
+        initialGoogleCredentialAccount()
+        initialBottomSheet()
     }
 
     private fun initialDetailEvent(itemListEvent: ItemListEvent) {

@@ -14,10 +14,12 @@ import com.google.api.client.util.DateTime
 import com.google.api.client.util.ExponentialBackOff
 import com.google.api.services.calendar.CalendarScopes
 import com.ipati.dev.castleevent.R
+import com.ipati.dev.castleevent.model.GoogleCalendar.startCalendar
 import com.ipati.dev.castleevent.utill.CustomHeightViewCollapse
 import com.ipati.dev.castleevent.utill.CustomHeightViewCollapseCalendar
 import com.ipati.dev.castleevent.utill.CustomHeightViewExpanded
 import com.ipati.dev.castleevent.utill.CustomHeightViewExpandedCalendar
+import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -109,5 +111,14 @@ class CalendarManager(context: Context) {
         view.animation = mCustomHeightViewCalendarExpanded
         view.startAnimation(mCustomHeightViewCalendarExpanded)
         return mCustomHeightViewCalendarExpanded
+    }
+
+    fun formatDateTimeStartEvent(date: String): Date {
+        val formatDate = SimpleDateFormat("dd-MM-yyyy'T'HH:mm:ss", Locale("th"))
+        val dateTime = formatDate.parse(date)
+
+        val calendarStartDateEvent = Calendar.getInstance()
+        calendarStartDateEvent.timeInMillis = dateTime.time
+        return calendarStartDateEvent.time
     }
 }
