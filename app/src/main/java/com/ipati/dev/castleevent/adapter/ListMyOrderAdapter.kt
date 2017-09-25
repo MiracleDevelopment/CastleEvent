@@ -1,10 +1,10 @@
 package com.ipati.dev.castleevent.adapter
 
+import android.annotation.SuppressLint
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import com.ipati.dev.castleevent.MyOrderActivity
 import com.ipati.dev.castleevent.R
 import com.ipati.dev.castleevent.model.Glide.loadPhotoTickets
@@ -36,18 +36,16 @@ class ListMyOrderAdapter(mListOrder: ArrayList<RecorderTickets>) : RecyclerView.
         override fun onClick(p0: View?) {
             when (p0?.id) {
                 R.id.tv_get_qr_code -> {
-                    onShowTicketsDialog = itemView.context as MyOrderActivity
-                    onShowTicketsDialog.onShowTicketsUser(mListItem[adapterPosition].eventId
-                            , photoUrl
-                            , mListItem[adapterPosition].eventName
-                            , mListItem[adapterPosition].eventLogo
-                            , mListItem[adapterPosition].userAccount
-                            , mListItem[adapterPosition].eventLocation
-                            , mListItem[adapterPosition].count)
+                    onQrInformationSend()
+                }
+
+                R.id.my_order_view_list -> {
+                    onQrInformationSend()
                 }
             }
         }
 
+        @SuppressLint("SetTextI18n")
         fun onBind() {
             itemView.title_list_my_order_event.text = "Castle Event" + " #" + (adapterPosition + 1).toString()
             itemView.tv_title_order_name_event.text = mListItem[adapterPosition].eventName
@@ -55,6 +53,7 @@ class ListMyOrderAdapter(mListOrder: ArrayList<RecorderTickets>) : RecyclerView.
             itemView.tv_order_date_time_buy.text = mListItem[adapterPosition].dateStamp
             itemView.tv_count_people_tickets.text = mListItem[adapterPosition].count.toString()
             itemView.tv_get_qr_code.setOnClickListener { view -> onClick(view) }
+            itemView.my_order_view_list.setOnClickListener { view -> onClick(view) }
 
             loadPhotoTickets(itemView.context, mListItem[adapterPosition].eventLogo, itemView.im_photo_order_event)
             onDateConfig(itemView)
@@ -87,6 +86,17 @@ class ListMyOrderAdapter(mListOrder: ArrayList<RecorderTickets>) : RecyclerView.
                     itemView.title_list_my_order_event.setBackgroundResource(R.drawable.custom_back_ground_title_my_order_sunday)
                 }
             }
+        }
+
+        private fun onQrInformationSend() {
+            onShowTicketsDialog = itemView.context as MyOrderActivity
+            onShowTicketsDialog.onShowTicketsUser(mListItem[adapterPosition].eventId
+                    , photoUrl
+                    , mListItem[adapterPosition].eventName
+                    , mListItem[adapterPosition].eventLogo
+                    , mListItem[adapterPosition].userAccount
+                    , mListItem[adapterPosition].eventLocation
+                    , mListItem[adapterPosition].count)
         }
     }
 

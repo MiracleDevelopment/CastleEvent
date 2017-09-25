@@ -10,6 +10,7 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import com.ipati.dev.castleevent.ListDetailEventActivity
 import com.ipati.dev.castleevent.R
+import com.ipati.dev.castleevent.extension.getStringResource
 import com.ipati.dev.castleevent.model.Glide.loadPhoto
 import com.ipati.dev.castleevent.model.LoadingDetailEvent
 import com.ipati.dev.castleevent.model.modelListEvent.ItemListEvent
@@ -53,16 +54,16 @@ class ListEventAdapter(listItem: ArrayList<ItemListEvent>) : RecyclerView.Adapte
             itemView.custom_tv_location_list_event.text = itemList[adapterPosition].eventLocation
             itemView.custom_tv_time_list_event.text = itemList[adapterPosition].eventTime
 
-            itemView.custom_tv_people_count_list_event.text = itemView.resources.getString(R.string.tv_count_people) +
-                    " " + itemList[adapterPosition].eventMax.toString() +
-                    " " + itemView.context.resources.getString(R.string.tv_people)
+            itemView.custom_tv_people_count_list_event.text = itemView.getStringResource(R.string.tv_count_people) +
+                    " " + itemList[adapterPosition].eventRest.toString() +
+                    " " + itemView.getStringResource(R.string.tv_people)
 
             animationListItem().start()
 
             if (itemList[adapterPosition].eventStatus) {
-                itemView.custom_tv_status_list_event.text = itemView.context.resources.getString(R.string.tv_status_open)
+                itemView.custom_tv_status_list_event.text = itemView.getStringResource(R.string.tv_status_open)
             } else {
-                itemView.custom_tv_status_list_event.text = itemView.context.resources.getString(R.string.tv_status_close)
+                itemView.custom_tv_status_list_event.text = itemView.getStringResource(R.string.tv_status_close)
             }
 
             itemView.setOnClickListener { view -> onClick(view) }

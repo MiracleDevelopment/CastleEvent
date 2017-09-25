@@ -28,6 +28,7 @@ import com.google.api.client.util.ExponentialBackOff
 import com.google.api.services.calendar.Calendar
 import com.google.api.services.calendar.CalendarScopes
 import com.google.api.services.calendar.model.Event
+import com.google.firebase.database.*
 import com.ipati.dev.castleevent.base.BaseFragment
 import com.ipati.dev.castleevent.R
 import com.ipati.dev.castleevent.model.Glide.loadGoogleMapStatic
@@ -65,15 +66,20 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnMapReadyCal
     private lateinit var mBottomSheetBehavior: BottomSheetBehavior<View>
     private lateinit var mCalendarManager: CalendarManager
     private lateinit var mRecorderEvent: RecordListEvent
+
     private lateinit var mDialogManager: DialogManager
     private lateinit var bundle: Bundle
 
-    private val mCalendarTimeStamp = java.util.Calendar.getInstance()
+
+    private var mCalendarTimeStamp = java.util.Calendar.getInstance()
+    private var Ref: DatabaseReference = FirebaseDatabase.getInstance().reference
     private var eventId: Long? = null
-    private var accountName: String? = null
+    private var accountBank: String? = null
     private var userAccountName: String? = null
     private var statusCodeGoogleApi: Int? = null
     private var mPushEvent: MakePushEvent? = null
+    private var mItemListEvent: ItemListEvent? = null
+    private var mCheckRest: DatabaseReference? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -181,28 +187,42 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnMapReadyCal
         tv_bottom_sheet_description_event.text = descriptionEvent
         tv_bottom_sheet_limit_access.text = "สามารถจองได้ถึงภายในวันที่ " + limitTime
 
-        if (Date().after(mCalendarManager.formatDateTimeStartEvent(startCalendar!!))) {
-            tv_receive_tickets.setBackgroundResource(R.drawable.custom_background_close_event_ripple)
-            tv_receive_tickets.isClickable = true
-            tv_receive_tickets.isFocusable = true
-            tv_receive_tickets.text = "บัตรหมดแล้ว"
+
+
+        if (restEvent!! > 0) {
+            if (Date().after(mCalendarManager.formatDateTimeStartEvent(startCalendar!!))) {
+                setReceiveTicketsDisable()
+            } else {
+                tv_receive_tickets.setBackgroundResource(R.drawable.background_get_tickets)
+                tv_receive_tickets.text = priceEvent + " / " + "TICKETS"
+            }
         } else {
-            tv_receive_tickets.setBackgroundResource(R.drawable.background_get_tickets)
-            tv_receive_tickets.text = priceEvent + " / " + "TICKETS"
+            setReceiveTicketsDisable()
         }
     }
 
     private fun setUIClickable() {
         tv_receive_tickets.setOnClickListener {
-
-            if (Date().after(mCalendarManager.formatDateTimeStartEvent(startCalendar!!))) {
-                Toast.makeText(context, "ขออภัยที่จองได้เต็มแล้วค่ะ", Toast.LENGTH_SHORT).show()
+            if (restEvent!! > 0) {
+                if (Date().after(mCalendarManager.formatDateTimeStartEvent(startCalendar!!))) {
+                    Toast.makeText(context, "ขออภัยเลยกำหนดการจองบัตรแล้วค่ะ", Toast.LENGTH_SHORT).show()
+                } else {
+                    mCalendarTimeStamp.timeZone = TimeZone.getDefault()
+                    val msg = "คุณต้องการจองบัตร จำนวน " + number_picker.value.toString() + " ใบ" + "\n" + " ใช่ / ไม่"
+                    mDialogManager.onShowConfirmDialog(msg)
+                }
             } else {
-                mCalendarTimeStamp.timeZone = TimeZone.getDefault()
-                val msg = "คุณต้องการจองบัตร จำนวน " + number_picker.value.toString() + " ใบ" + "\n" + " ใช่ / ไม่"
-                mDialogManager.onShowConfirmDialog(msg)
+                setReceiveTicketsDisable()
+                Toast.makeText(context, "ขออภัยบัตรหมดแล้วค่ะ", Toast.LENGTH_SHORT).show()
             }
         }
+    }
+
+    private fun setReceiveTicketsDisable() {
+        tv_receive_tickets.setBackgroundResource(R.drawable.custom_background_close_event_ripple)
+        tv_receive_tickets.isClickable = true
+        tv_receive_tickets.isFocusable = true
+        tv_receive_tickets.text = "บัตรหมดแล้ว"
     }
 
     //Todo: Calling First When Clickable
@@ -226,11 +246,15 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnMapReadyCal
         tv_detail_mail_description_contact.text = "admin@contact.co.th"
         tv_Start_price.text = "STARTING FROM ฿" + itemListEvent.eventPrice
 
+        mAccountBank = itemListEvent.accountBank
+        keyEvent = itemListEvent.eventKey
         idEvent = itemListEvent.eventId.toString()
         nameEvent = itemListEvent.eventName
         logoEvent = itemListEvent.eventCover
         startEvent = itemListEvent.eventCalendarStart
         endEvent = itemListEvent.eventCalendarEnd
+        maxEvent = itemListEvent.eventMax
+        restEvent = itemListEvent.eventRest
         startCalendar = itemListEvent.eventCalendarStart
         endCalendar = itemListEvent.eventCalendarEnd
         descriptionEvent = itemListEvent.eventDescription
@@ -239,9 +263,10 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnMapReadyCal
         attendee = defaultAccountGoogleCalendar()
 
         mRecorderEvent = RecordListEvent()
+        mCheckRest = Ref.child("eventItem").child("eventContinue").child(keyEvent)
+
         Log.d("timeDate", startEvent.toString() + " : " + endEvent.toString())
     }
-
 
     private fun onCheckStatusCredentialGoogleCalendar() {
         if (!onCheckGoogleApiService()) {
@@ -304,15 +329,53 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnMapReadyCal
         val dateStamp = day.toString() + "-" + month.toString() + "-" + year.toString()
         val timeStamp = System.currentTimeMillis()
 
-        mRecorderEvent.pushEventRealTime(username.toString(), eventId.toString(), nameEvent.toString(), locationEvent.toString(), logoEvent!!, number_picker.value.toLong(), dateStamp, timeStamp)?.addOnCompleteListener { task ->
-            if (task.isComplete) {
-                onCheckStatusCredentialGoogleCalendar()
-            }
-        }?.addOnFailureListener { exception ->
-            Toast.makeText(context, exception.message.toString(), Toast.LENGTH_SHORT).show()
-        }
 
-        mDialogManager.onDismissConfirmDialog()
+        mCheckRest?.runTransaction(object : Transaction.Handler {
+            override fun onComplete(p0: DatabaseError?, p1: Boolean, p2: DataSnapshot?) {
+                if (p0 != null) {
+                    Log.d("TransactionStatus", p0.message.toString())
+                } else {
+                    Log.d("TransactionStatus", "Success")
+                }
+            }
+
+            override fun doTransaction(p0: MutableData?): Transaction.Result {
+                mItemListEvent = p0?.getValue(ItemListEvent::class.java)!!
+
+                if (mItemListEvent == null) {
+                    return Transaction.success(p0)
+                }
+
+                if (restEvent!! - number_picker.value >= 0) {
+                    mItemListEvent?.apply {
+                        accountBank = mAccountBank.toString()
+                        eventKey = keyEvent.toString()
+                        eventMax = maxEvent!!
+                        eventRest = (restEvent?.toInt()!! - number_picker.value).toLong()
+                        restEvent = eventRest
+
+                    }
+
+                    mRecorderEvent.pushEventRealTime(username.toString(), eventId.toString(), nameEvent.toString(), locationEvent.toString(), logoEvent!!, number_picker.value.toLong(), dateStamp, timeStamp)?.addOnCompleteListener { task ->
+                        if (task.isComplete) {
+                            onCheckStatusCredentialGoogleCalendar()
+
+                        }
+                    }?.addOnFailureListener { exception ->
+                        Toast.makeText(context, exception.message.toString(), Toast.LENGTH_SHORT).show()
+                    }
+
+                    mDialogManager.onDismissConfirmDialog()
+                } else {
+                    activity.runOnUiThread {
+                        Toast.makeText(context, "ขออภัยจำนวนบัตรเหลือ $restEvent ใบ", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                p0.value = mItemListEvent
+                return Transaction.success(p0)
+            }
+        }, true)
     }
 
     //Todo : DialogConfirmFragment
@@ -340,10 +403,10 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnMapReadyCal
         when (requestCode) {
             REQUEST_ACCOUNT -> {
                 data?.let {
-                    accountName = data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME)
-                    accountName.let {
-                        mGoogleSharePreference.sharePreferenceManager(accountName)
-                        mGoogleCredentialAccount.selectedAccountName = accountName
+                    accountBank = data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME)
+                    accountBank.let {
+                        mGoogleSharePreference.sharePreferenceManager(accountBank)
+                        mGoogleCredentialAccount.selectedAccountName = accountBank
                         onCheckStatusCredentialGoogleCalendar()
                     }
                 }

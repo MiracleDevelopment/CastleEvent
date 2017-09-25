@@ -2,7 +2,7 @@ package com.ipati.dev.castleevent.model.modelListEvent
 
 import java.lang.reflect.Constructor
 
-data class ItemListEvent(var updateKey: String = ""
+data class ItemListEvent(var eventKey: String = ""
                          , var eventId: Long = 0
                          , var eventName: String = ""
                          , var eventCover: String = ""

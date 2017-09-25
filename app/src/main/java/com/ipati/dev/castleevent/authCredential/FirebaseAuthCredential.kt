@@ -11,6 +11,7 @@ import com.google.firebase.auth.*
 import com.ipati.dev.castleevent.ListEventActivity
 import com.ipati.dev.castleevent.model.userManage.photoUrl
 import com.ipati.dev.castleevent.model.userManage.uid
+import com.ipati.dev.castleevent.model.userManage.userEmail
 import com.ipati.dev.castleevent.model.userManage.username
 import com.ipati.dev.castleevent.utill.SharePreferenceGoogleSignInManager
 import com.twitter.sdk.android.core.TwitterSession
@@ -51,7 +52,7 @@ fun googleAuthCredential(activity: Activity, account: GoogleSignInAccount, mGoog
     })
 }
 
-fun updateUserProfile(activity: Activity, fireBaseUser: FirebaseUser, nameUser: String?, photoUserUrl: Uri?, userEmail: String?) {
+fun updateUserProfile(activity: Activity, fireBaseUser: FirebaseUser, nameUser: String?, photoUserUrl: Uri?, mUserEmail: String?) {
     val userProfileUpdate: UserProfileChangeRequest = UserProfileChangeRequest
             .Builder()
             .setDisplayName(nameUser)
@@ -64,10 +65,9 @@ fun updateUserProfile(activity: Activity, fireBaseUser: FirebaseUser, nameUser: 
             username = fireBaseUser.displayName
             photoUrl = fireBaseUser.photoUrl.toString()
 
-            fireBaseUser.updateEmail(userEmail.toString()).addOnCompleteListener { fireBaseResult ->
+            fireBaseUser.updateEmail(mUserEmail.toString()).addOnCompleteListener { fireBaseResult ->
                 if (fireBaseResult.isSuccessful) {
-                    com.ipati.dev.castleevent.model.userManage.userEmail = fireBaseUser.email
-
+                    userEmail = mUserEmail
                     val listEventIntent = Intent(activity, ListEventActivity::class.java)
                     activity.startActivity(listEventIntent)
                 }

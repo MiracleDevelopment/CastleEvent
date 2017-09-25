@@ -1,6 +1,9 @@
 package com.ipati.dev.castleevent.extension
 
+import android.content.Context
 import android.support.v4.app.FragmentActivity
+import android.support.v4.content.ContextCompat
+import android.view.View
 import android.widget.EditText
 import com.ipati.dev.castleevent.fragment.loading.LoadingDialogFragment
 
@@ -16,4 +19,12 @@ fun LoadingDialogFragment.onShowDialog(activity: FragmentActivity) {
 
 fun LoadingDialogFragment.onDismissDialog() {
     dismiss()
+}
+
+fun ContextCompat.getColor(context: Context, resource: Int) {
+    getColor(context, resource)
+}
+
+fun View.getStringResource(resource: Int) : String {
+    return  resources.getString(resource)
 }

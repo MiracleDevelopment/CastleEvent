@@ -10,7 +10,7 @@ var publicFacebookTag: String = "public_profile"
 var cancelMsg: String = "Cancel"
 
 fun LoginFacebook(activity: LoginFragment) {
-    LoginManager.getInstance().logInWithReadPermissions(activity, Arrays.asList(publicFacebookTag, "userEmail"))
+    LoginManager.getInstance().logInWithReadPermissions(activity, Arrays.asList(publicFacebookTag, "email"))
 }
 
 
