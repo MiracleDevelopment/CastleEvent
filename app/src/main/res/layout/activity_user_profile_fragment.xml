@@ -4,7 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackgroundResource"
+    android:clipToPadding="false"
     android:orientation="vertical"
+    android:paddingBottom="48dp"
     tools:context="com.ipati.dev.castleevent.fragment.UserProfileFragment">
 
     <LinearLayout
@@ -57,7 +59,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:fontFamily="@font/circular"
-
             android:text="@string/header_setting"
             android:textColor="@color/colorMenuList"
             android:textSize="35sp" />
@@ -122,5 +123,18 @@
                     android:layout_height="wrap_content" />
             </LinearLayout>
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_logout_system"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/custom_ripple_back_ground_button_logout"
+            android:clickable="true"
+            android:focusable="true"
+            android:fontFamily="@font/circular"
+            android:text="ออกจากระบบ"
+            android:textColor="@color/colorFontProfile"
+            android:textSize="25sp" />
     </LinearLayout>
 </LinearLayout>
