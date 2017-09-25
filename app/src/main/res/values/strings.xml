@@ -46,5 +46,7 @@
     <string name="hint_phone_profile">Password</string>
     <string name="hint_email_profile">E-mail</string>
     <string name="text_button_edit_profile">กลับสู่หน้าหลัก</string>
+    <string name="cancel_dialog_logout">ยกเลิก</string>
+    <string name="accept_diaog_logout">ตกลง</string>
 
 </resources>

@@ -128,10 +128,7 @@ class ListEventActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
-            R.id.item_login -> {
-                FirebaseAuth.getInstance().signOut()
-                finish()
-            }
+
         }
         return true
     }

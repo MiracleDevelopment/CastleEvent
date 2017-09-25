@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import com.ipati.dev.castleevent.base.BaseFragment
 import com.ipati.dev.castleevent.R
+import com.ipati.dev.castleevent.fragment.loading.LogOutFragmentDialog
 import com.ipati.dev.castleevent.model.Glide.loadPhotoProfileUser
 import com.ipati.dev.castleevent.model.userManage.photoUrl
 import com.ipati.dev.castleevent.model.userManage.userEmail
@@ -20,6 +21,7 @@ import kotlinx.android.synthetic.main.activity_user_profile_fragment.*
 class UserProfileFragment : BaseFragment() {
     private lateinit var realTimeDatabaseMenuListItem: RealTimeDatabaseMenuListItem
     private lateinit var mSharePreferenceSettingMenuList: SharePreferenceSettingManager
+    private lateinit var mLogOutDialogFragment: LogOutFragmentDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +37,15 @@ class UserProfileFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         initialRecyclerMenu()
         initialSwitchSetting()
+        initialLogOutBt()
+    }
+
+    private fun initialLogOutBt() {
+        tv_logout_system.setOnClickListener {
+            mLogOutDialogFragment = LogOutFragmentDialog.newInstance("กรุณายืนยัน", "คุณต้องการออกจากระบบ ใช่ / ไม่")
+            mLogOutDialogFragment.isCancelable = false
+            mLogOutDialogFragment.show(activity.supportFragmentManager, "LogOutDialogFragment")
+        }
     }
 
     private fun initialUserProfile() {

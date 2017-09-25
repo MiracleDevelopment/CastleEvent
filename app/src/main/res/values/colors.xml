@@ -59,4 +59,8 @@
     <color name="colorFontContact">#FFFFFF</color>
     <color name="colorBackgroundClosePrice">#BDBDBD</color>
     <color name="colorBackgroundLogOut">#00BCD4</color>
+    <color name="colorFontDialogLogOut">#000000</color>
+    <color name="colorBackgroundButtonDialogLogOut">#00BCD4</color>
+    <color name="colorCancelButton">#FFFFFF</color>
+    <color name="colorAcceptButton">#FFFFFF</color>
 </resources>
