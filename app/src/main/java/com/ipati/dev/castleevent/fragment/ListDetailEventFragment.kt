@@ -359,8 +359,8 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnMapReadyCal
                     mRecorderEvent.pushEventRealTime(username.toString(), eventId.toString(), nameEvent.toString(), locationEvent.toString(), logoEvent!!, number_picker.value.toLong(), dateStamp, timeStamp)?.addOnCompleteListener { task ->
                         if (task.isComplete) {
                             onCheckStatusCredentialGoogleCalendar()
-
                         }
+
                     }?.addOnFailureListener { exception ->
                         Toast.makeText(context, exception.message.toString(), Toast.LENGTH_SHORT).show()
                     }

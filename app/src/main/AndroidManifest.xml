@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.ipati.dev.castleevent">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -20,6 +21,22 @@
         android:roundIcon="@mipmap/ic_launcher_round_corner"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <service
+            android:name=".service.FirebaseNotification.FirebaseInstanceService"
+            tools:ignore="InnerclassSeparator">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".service.FirebaseNotification.FirebaseMessagingService"
+            tools:ignore="InnerclassSeparator">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
         <meta-data
             android:name="com.ipati.dev.castleevent.model.Glide.GlideConfig"
             android:value="AppGlideModule" />
@@ -68,10 +85,7 @@
         <activity
             android:name=".ProfileUserActivity"
             android:windowSoftInputMode="adjustResize" />
-        <activity android:name=".fragment.ChangeCustomProfileDialogFragment" />
         <activity android:name=".ContactUserActivity" />
-        <activity android:name=".fragment.ContactUserFragment" />
-        <activity android:name=".fragment.loading.LogOutFragmentDialog"></activity>
     </application>
 
 </manifest>
