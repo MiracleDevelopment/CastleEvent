@@ -29,6 +29,7 @@ import com.google.api.services.calendar.Calendar
 import com.google.api.services.calendar.CalendarScopes
 import com.google.api.services.calendar.model.Event
 import com.google.firebase.database.*
+import com.google.firebase.messaging.FirebaseMessaging
 import com.ipati.dev.castleevent.base.BaseFragment
 import com.ipati.dev.castleevent.R
 import com.ipati.dev.castleevent.model.Glide.loadGoogleMapStatic
@@ -52,7 +53,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnMapReadyCallback {
+class ListDetailEventFragment : BaseFragment(), LoadingDetailData {
     private var REQUEST_ACCOUNT: Int = 1112
     private var REQUEST_GOOGLE_PLAY: Int = 1121
     private var REQUEST_PERMISSION_ACCOUNT: Int = 1111
@@ -69,7 +70,6 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnMapReadyCal
 
     private lateinit var mDialogManager: DialogManager
     private lateinit var bundle: Bundle
-
 
     private var mCalendarTimeStamp = java.util.Calendar.getInstance()
     private var Ref: DatabaseReference = FirebaseDatabase.getInstance().reference
@@ -272,7 +272,7 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnMapReadyCal
         if (!onCheckGoogleApiService()) {
             statusCodeGoogleApi = mGoogleApiAvailability.isGooglePlayServicesAvailable(context)
             if (mGoogleApiAvailability.isUserResolvableError(statusCodeGoogleApi!!)) {
-                ShowDialogErrorGoogleSCalendarService(statusCodeGoogleApi!!)
+                showDialogErrorGoogleCalendarService(statusCodeGoogleApi!!)
             }
         } else if (mGoogleCredentialAccount.selectedAccountName == null) {
             permissionGoogleAccount()
@@ -307,7 +307,7 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnMapReadyCal
     }
 
 
-    private fun ShowDialogErrorGoogleSCalendarService(connectionCode: Int): Dialog {
+    private fun showDialogErrorGoogleCalendarService(connectionCode: Int): Dialog {
         val dialog: Dialog = mGoogleApiAvailability.getErrorDialog(activity, connectionCode, REQUEST_GOOGLE_PLAY)
         dialog.setCancelable(false)
         dialog.show()
@@ -353,11 +353,11 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnMapReadyCal
                         eventMax = maxEvent!!
                         eventRest = (restEvent?.toInt()!! - number_picker.value).toLong()
                         restEvent = eventRest
-
                     }
 
                     mRecorderEvent.pushEventRealTime(username.toString(), eventId.toString(), nameEvent.toString(), locationEvent.toString(), logoEvent!!, number_picker.value.toLong(), dateStamp, timeStamp)?.addOnCompleteListener { task ->
                         if (task.isComplete) {
+                            FirebaseMessaging.getInstance().subscribeToTopic("news")
                             onCheckStatusCredentialGoogleCalendar()
                         }
 
@@ -383,10 +383,6 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnMapReadyCal
         mDialogManager.onDismissConfirmDialog()
     }
 
-    //Todo: Method Override
-    override fun onMapReady(p0: GoogleMap?) {
-
-    }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
