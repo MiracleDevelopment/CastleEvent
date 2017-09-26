@@ -14,24 +14,23 @@ import com.ipati.dev.castleevent.ListEventActivity
 import com.ipati.dev.castleevent.R
 
 class NotificationManager(context: Context) {
-    var mContext: Context = context
-    var mNotificationId: Int = 0
-    var mChannelGroupId: String = "Castle_Event"
-    var mChannelGroupName: String = "FCM"
-    var mChannelId: String = "Castle_FCM"
-    var mChannelName: String = "CastleEvent Notification"
-    lateinit var mNotificationChannelGroup: NotificationChannelGroup
-    lateinit var mNotificationChannel: NotificationChannel
-    lateinit var mNotificationManager: NotificationManager
-    lateinit var mNotification: Notification
+    private var mContext: Context = context
+    private var mNotificationId: Int = 0
+    private var mChannelGroupId: String = "Castle_Event"
+    private var mChannelGroupName: String = "FCM"
+    private var mChannelId: String = "Castle_FCM"
+    private var mChannelName: String = "CastleEvent Notification"
+    private lateinit var mNotificationChannelGroup: NotificationChannelGroup
+    private lateinit var mNotificationChannel: NotificationChannel
+    private lateinit var mNotificationManager: NotificationManager
+    private lateinit var mNotification: NotificationCompat.Builder
 
-    lateinit var mNotificationCompat: NotificationCompat.Builder
-    lateinit var mIntent: Intent
-    lateinit var mIntentPadding: PendingIntent
-
+    private lateinit var mNotificationCompat: NotificationCompat.Builder
+    private lateinit var mIntent: Intent
+    private lateinit var mIntentPadding: PendingIntent
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun createNotificationManager(mRemoteMessage: RemoteMessage.Notification, iconLarge: Bitmap, badgeCount: Int) {
+    fun createNotificationManager(mRemoteMessage: RemoteMessage.Notification, iconLarge: Bitmap?, badgeCount: Int) {
         mNotificationManager = mContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         mNotificationManager.createNotificationChannelGroup(createNotificationGroup())
         mNotificationManager.createNotificationChannel(createNotificationChannel())
@@ -42,26 +41,35 @@ class NotificationManager(context: Context) {
                 .setChannelId(mChannelId)
                 .setContentTitle(mRemoteMessage.title)
                 .setContentText(mRemoteMessage.body)
-                .setLargeIcon(iconLarge)
                 .setNumber(badgeCount)
-                .build()
+
+
+        iconLarge.let {
+            mNotification.setStyle(NotificationCompat
+                    .BigPictureStyle()
+                    .bigPicture(iconLarge)
+                    .setSummaryText(mRemoteMessage.body))
+        }
 
         mIntent = Intent(mContext, ListEventActivity::class.java)
         mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         mIntentPadding = PendingIntent.getActivity(mContext, 0, mIntent, PendingIntent.FLAG_ONE_SHOT)
 
-        mNotificationManager.notify(mNotificationId, mNotification)
+        mNotificationManager.notify(mNotificationId, mNotification.build())
     }
 
-    fun createNotificationLess(mRemoteMessage: RemoteMessage.Notification, iconLarge: Bitmap) {
+    fun createNotificationLess(mRemoteMessage: RemoteMessage.Notification, iconLarge: Bitmap?) {
         mNotificationManager = mContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         mNotificationCompat = NotificationCompat.Builder(mContext, mChannelId)
                 .setAutoCancel(true)
                 .setContentTitle(mRemoteMessage.title)
                 .setContentText(mRemoteMessage.body)
-                .setLargeIcon(iconLarge)
                 .setSmallIcon(R.mipmap.event_logo)
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+
+        iconLarge?.let {
+            mNotificationCompat.setStyle(NotificationCompat.BigPictureStyle().bigPicture(iconLarge).setSummaryText(mRemoteMessage.body))
+        }
 
         mIntent = Intent(mContext, ListEventActivity::class.java)
         mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)

@@ -33,12 +33,6 @@ class FirebaseMessagingService : FirebaseMessagingService() {
 
     private fun sendNotificationLess(mRemoteMessage: RemoteMessage.Notification) {
         mNotificationManager.createNotificationLess(mRemoteMessage, iconLarge(mMapData))
-
-        mNotificationManager.mNotificationCompat
-                .setStyle(NotificationCompat
-                .BigPictureStyle()
-                .bigPicture(iconLarge(mMapData))
-                .setSummaryText(mRemoteMessage.body))
     }
 
     private fun iconLarge(mMapData: Map<String, String>): Bitmap {

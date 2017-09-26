@@ -63,4 +63,5 @@
     <color name="colorBackgroundButtonDialogLogOut">#00BCD4</color>
     <color name="colorCancelButton">#FFFFFF</color>
     <color name="colorAcceptButton">#FFFFFF</color>
+    <color name="colorLogoNotification">#E0F7FA</color>
 </resources>
