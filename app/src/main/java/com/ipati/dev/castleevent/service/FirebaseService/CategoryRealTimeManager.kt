@@ -42,6 +42,7 @@ class CategoryRealTimeManager(context: Context, lifecycle: Lifecycle) : Lifecycl
             add(CATEGORY_SPORT)
         }
 
+        defaultCategoryItemCount()
         mRef.addValueEventListener(ValueEventListener())
     }
 

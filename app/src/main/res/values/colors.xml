@@ -64,4 +64,5 @@
     <color name="colorCancelButton">#FFFFFF</color>
     <color name="colorAcceptButton">#FFFFFF</color>
     <color name="colorLogoNotification">#E0F7FA</color>
+    <color name="colorRipple">#FFFFFF</color>
 </resources>

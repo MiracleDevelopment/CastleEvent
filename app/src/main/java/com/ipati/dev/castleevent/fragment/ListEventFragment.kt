@@ -1,21 +1,19 @@
 package com.ipati.dev.castleevent.fragment
 
-import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.BottomSheetBehavior
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.LinearLayout
-import com.ipati.dev.castleevent.ListDetailEventActivity
 import com.ipati.dev.castleevent.base.BaseFragment
 import com.ipati.dev.castleevent.R
 import com.ipati.dev.castleevent.model.LoadingCategory
 import com.ipati.dev.castleevent.model.LoadingDetailEvent
+import com.ipati.dev.castleevent.model.OnCancelAnimationTouch
 import com.ipati.dev.castleevent.service.FirebaseService.CategoryRealTimeManager
 import com.ipati.dev.castleevent.service.FirebaseService.RealTimeDatabaseManager
+import com.ipati.dev.castleevent.utill.animation.AnimationManager
 import kotlinx.android.synthetic.main.activity_list_event_fragment.*
 import kotlinx.android.synthetic.main.custom_bottom_sheet_category.*
 
@@ -23,12 +21,12 @@ class ListEventFragment : BaseFragment() {
     private lateinit var realTimeDatabaseManager: RealTimeDatabaseManager
     private lateinit var mCategoryRealTimeDatabaseManager: CategoryRealTimeManager
     private lateinit var mBottomSheetBehavior: BottomSheetBehavior<View>
-
+    private lateinit var mAnimationManager: AnimationManager
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         realTimeDatabaseManager = RealTimeDatabaseManager(context, lifecycle)
         mCategoryRealTimeDatabaseManager = CategoryRealTimeManager(context, lifecycle)
-
+        mAnimationManager = AnimationManager(context)
         activity.invalidateOptionsMenu()
     }
 
@@ -48,12 +46,22 @@ class ListEventFragment : BaseFragment() {
         recycler_list_event.itemAnimator = DefaultItemAnimator()
         recycler_list_event.adapter = realTimeDatabaseManager.adapterListEvent
         realTimeDatabaseManager.adapterListEvent?.setOnClickItemEvent(object : LoadingDetailEvent {
-            override fun setOnLoadingDetailEvent(eventId: Long) {
-                mBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+            override fun setOnLoadingDetailEvent(target: View?, eventId: Long) {
 
-                val intentDetailFragment = Intent(context, ListDetailEventActivity::class.java)
-                intentDetailFragment.putExtra("eventId", eventId)
-                startActivity(intentDetailFragment)
+            }
+        })
+
+        realTimeDatabaseManager.adapterListEvent?.setOnCancelTouchItemEvent(object : OnCancelAnimationTouch {
+            override fun setOnCancelTouch(target: View?, eventId: Long) {
+                mAnimationManager.setEventId(eventId = eventId)
+                mAnimationManager.onLoadingTranslateZ().addUpdateListener { valueAnimator ->
+                    target?.translationZ = valueAnimator.animatedValue as Float
+                }
+
+                mAnimationManager.onLoadingTranslateY().addUpdateListener { valueAnimator ->
+                    target?.translationY = valueAnimator.animatedValue as Float
+                }
+
 
             }
         })
@@ -130,6 +138,7 @@ class ListEventFragment : BaseFragment() {
     fun onDisableBottomSheetCategory() {
         mBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
     }
+
 
     companion object {
         private var listEventObject: String = "ListEventFragment"

@@ -2,19 +2,21 @@ package com.ipati.dev.castleevent.adapter
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.res.ColorStateList
+import android.graphics.drawable.RippleDrawable
+import android.os.Build
+import android.os.Handler
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import com.ipati.dev.castleevent.ListDetailEventActivity
 import com.ipati.dev.castleevent.R
 import com.ipati.dev.castleevent.extension.getStringResource
 import com.ipati.dev.castleevent.model.Glide.loadPhoto
 import com.ipati.dev.castleevent.model.LoadingDetailEvent
+import com.ipati.dev.castleevent.model.OnCancelAnimationTouch
 import com.ipati.dev.castleevent.model.modelListEvent.ItemListEvent
-import kotlinx.android.synthetic.main.custom_layout_menu_event_adapter.view.*
 import kotlinx.android.synthetic.main.custom_list_event_adapter_layout.view.*
 
 
@@ -22,6 +24,8 @@ class ListEventAdapter(listItem: ArrayList<ItemListEvent>) : RecyclerView.Adapte
     var itemList: ArrayList<ItemListEvent> = listItem
     lateinit var animatorListItem: Animation
     lateinit var mOnLoadingDetailEvent: LoadingDetailEvent
+    lateinit var mOnCancelAnimation: OnCancelAnimationTouch
+    lateinit var mRippleDrawable: RippleDrawable
 
     override fun getItemCount(): Int {
         return itemList.count()
@@ -40,10 +44,36 @@ class ListEventAdapter(listItem: ArrayList<ItemListEvent>) : RecyclerView.Adapte
         this.mOnLoadingDetailEvent = loadingDetailEvent
     }
 
-    inner class ListEventHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
-        override fun onClick(p0: View?) {
-            mOnLoadingDetailEvent.setOnLoadingDetailEvent(itemList[adapterPosition].eventId)
+
+    fun setOnCancelTouchItemEvent(onCancelAnimationTouch: OnCancelAnimationTouch) {
+        this.mOnCancelAnimation = onCancelAnimationTouch
+    }
+
+    inner class ListEventHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+            , View.OnTouchListener {
+
+        override fun onTouch(p0: View?, p1: MotionEvent?): Boolean {
+            p0?.performClick()
+            if (p0?.id == R.id.ripple_background) {
+                mRippleDrawable = p0.background as RippleDrawable
+                mRippleDrawable.setHotspot(p1?.x!!, p1.y)
+                mRippleDrawable.setColor(ColorStateList.valueOf(ContextCompat.getColor(itemView.context, R.color.colorRipple)))
+
+                when (p1.action) {
+                    MotionEvent.ACTION_UP -> {
+                        mOnCancelAnimation.setOnCancelTouch(p0, itemList[adapterPosition].eventId)
+                    }
+
+                    MotionEvent.ACTION_DOWN -> {
+                        if (p1.pointerCount == 1) {
+                            mOnLoadingDetailEvent.setOnLoadingDetailEvent(p0, itemList[adapterPosition].eventId)
+                        }
+                    }
+                }
+            }
+            return false
         }
+
 
         @SuppressLint("SetTextI18n")
         fun onBind(itemList: ArrayList<ItemListEvent>) {
@@ -66,7 +96,9 @@ class ListEventAdapter(listItem: ArrayList<ItemListEvent>) : RecyclerView.Adapte
                 itemView.custom_tv_status_list_event.text = itemView.getStringResource(R.string.tv_status_close)
             }
 
-            itemView.setOnClickListener { view -> onClick(view) }
+            itemView.ripple_background.translationY = 0.0F
+            itemView.ripple_background.translationZ = 0.0F
+            itemView.ripple_background.setOnTouchListener { view, motionEvent -> onTouch(view, motionEvent) }
         }
 
 

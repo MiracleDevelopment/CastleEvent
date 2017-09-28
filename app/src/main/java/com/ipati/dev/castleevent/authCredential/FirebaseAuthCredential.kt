@@ -70,6 +70,7 @@ fun updateUserProfile(activity: Activity, fireBaseUser: FirebaseUser, nameUser: 
                     userEmail = mUserEmail
                     val listEventIntent = Intent(activity, ListEventActivity::class.java)
                     activity.startActivity(listEventIntent)
+                    activity.finish()
                 }
             }
         }

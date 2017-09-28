@@ -1,5 +1,7 @@
 package com.ipati.dev.castleevent.model
 
+import android.view.MotionEvent
+import android.view.View
 import com.ipati.dev.castleevent.model.modelListEvent.ItemListEvent
 
 interface LoadingDialogListener {
@@ -25,7 +27,11 @@ interface LoadingCategory {
 }
 
 interface LoadingDetailEvent {
-    fun setOnLoadingDetailEvent(eventId: Long)
+    fun setOnLoadingDetailEvent(target: View?, eventId: Long)
+}
+
+interface OnCancelAnimationTouch {
+    fun setOnCancelTouch(target: View?, eventId: Long)
 }
 
 

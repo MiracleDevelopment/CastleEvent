@@ -137,7 +137,7 @@ class RegisterFragment : Fragment() {
 
                         fireBaseUser.updateProfile(fireBaseUpdateProfile).addOnCompleteListener { resultPassword ->
                             if (resultPassword.isSuccessful) {
-
+                                activity.finish()
                             } else {
                                 Toast.makeText(context, "fail Update Profile User", Toast.LENGTH_SHORT).show()
                             }
@@ -166,14 +166,6 @@ class RegisterFragment : Fragment() {
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onStart() {
-        super.onStart()
-
-    }
-
-    override fun onStop() {
-        super.onStop()
-    }
 
     companion object {
         fun newInstance(): RegisterFragment {

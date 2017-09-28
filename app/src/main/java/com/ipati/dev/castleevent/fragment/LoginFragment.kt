@@ -87,7 +87,7 @@ class LoginFragment : BaseFragment(), View.OnClickListener {
     }
 
 
-    private fun TwitterLoginManager() {
+    private fun twitterLoginManager() {
         loginTwitterAuthentication.authorize(this.activity, object : Callback<TwitterSession>() {
             override fun success(result: Result<TwitterSession>?) {
                 result?.let {
@@ -105,7 +105,7 @@ class LoginFragment : BaseFragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.im_facebook -> LoginFacebook(this)
-            R.id.im_twitter -> TwitterLoginManager()
+            R.id.im_twitter -> twitterLoginManager()
             R.id.im_google_plus -> loginGoogleSignInOption(activity)
             R.id.tv_create_account_login -> {
                 val registerIntent = Intent(context, RegisterActivity::class.java)
@@ -167,11 +167,6 @@ class LoginFragment : BaseFragment(), View.OnClickListener {
         }
     }
 
-
-    override fun onAttach(context: Context?) {
-        super.onAttach(context)
-
-    }
 
     override fun onStart() {
         super.onStart()

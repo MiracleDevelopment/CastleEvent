@@ -16,8 +16,6 @@ import android.view.*
 import android.widget.Toast
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.api.client.extensions.android.http.AndroidHttp
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential
 import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException
@@ -29,7 +27,6 @@ import com.google.api.services.calendar.Calendar
 import com.google.api.services.calendar.CalendarScopes
 import com.google.api.services.calendar.model.Event
 import com.google.firebase.database.*
-import com.google.firebase.messaging.FirebaseMessaging
 import com.ipati.dev.castleevent.base.BaseFragment
 import com.ipati.dev.castleevent.R
 import com.ipati.dev.castleevent.model.Glide.loadGoogleMapStatic
@@ -42,6 +39,7 @@ import com.ipati.dev.castleevent.model.LoadingDetailData
 import com.ipati.dev.castleevent.model.gmsLocation.GooglePlayServiceMapManager
 import com.ipati.dev.castleevent.model.modelListEvent.ItemListEvent
 import com.ipati.dev.castleevent.model.userManage.username
+import com.ipati.dev.castleevent.service.AuthenticationStatus
 import com.ipati.dev.castleevent.service.FirebaseService.RealTimeDatabaseDetailManager
 import com.ipati.dev.castleevent.service.RecordedEvent.RecordListEvent
 import com.ipati.dev.castleevent.utill.DialogManager
@@ -67,6 +65,7 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData {
     private lateinit var mBottomSheetBehavior: BottomSheetBehavior<View>
     private lateinit var mCalendarManager: CalendarManager
     private lateinit var mRecorderEvent: RecordListEvent
+    private lateinit var mAuthenticationStatus: AuthenticationStatus
 
     private lateinit var mDialogManager: DialogManager
     private lateinit var bundle: Bundle
@@ -87,6 +86,7 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData {
         bundle = arguments
         eventId = bundle.getLong(listEventObject)
 
+        mAuthenticationStatus = AuthenticationStatus()
         mGoogleApiAvailability = GoogleApiAvailability.getInstance()
         realTimeDatabaseDetailManager = RealTimeDatabaseDetailManager(context, lifecycle, eventId!!, this)
         googlePlayServiceMap = GooglePlayServiceMapManager(activity, lifecycle)
@@ -188,16 +188,19 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData {
         tv_bottom_sheet_limit_access.text = "สามารถจองได้ถึงภายในวันที่ " + limitTime
 
 
-
         if (restEvent!! > 0) {
             if (Date().after(mCalendarManager.formatDateTimeStartEvent(startCalendar!!))) {
-                setReceiveTicketsDisable()
+                setReceiveTicketsDisable("ขออภัยเลยกำหนดในการจองบัตรแล้วค่ะ")
             } else {
-                tv_receive_tickets.setBackgroundResource(R.drawable.background_get_tickets)
-                tv_receive_tickets.text = priceEvent + " / " + "TICKETS"
+                if (mAuthenticationStatus.getCurrentUser() != null) {
+                    tv_receive_tickets.setBackgroundResource(R.drawable.background_get_tickets)
+                    tv_receive_tickets.text = priceEvent + " / " + "TICKETS"
+                } else {
+                    setReceiveTicketsDisable("กรุณาทำการ Login")
+                }
             }
         } else {
-            setReceiveTicketsDisable()
+            setReceiveTicketsDisable("ขออภัยบัตรหมดแล้วค่ะ")
         }
     }
 
@@ -207,22 +210,26 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData {
                 if (Date().after(mCalendarManager.formatDateTimeStartEvent(startCalendar!!))) {
                     Toast.makeText(context, "ขออภัยเลยกำหนดการจองบัตรแล้วค่ะ", Toast.LENGTH_SHORT).show()
                 } else {
-                    mCalendarTimeStamp.timeZone = TimeZone.getDefault()
-                    val msg = "คุณต้องการจองบัตร จำนวน " + number_picker.value.toString() + " ใบ" + "\n" + " ใช่ / ไม่"
-                    mDialogManager.onShowConfirmDialog(msg)
+                    if (mAuthenticationStatus.getCurrentUser() != null) {
+                        mCalendarTimeStamp.timeZone = TimeZone.getDefault()
+                        val msg = "คุณต้องการจองบัตร จำนวน " + number_picker.value.toString() + " ใบ" + "\n" + " ใช่ / ไม่"
+                        mDialogManager.onShowConfirmDialog(msg)
+                    } else {
+                        Toast.makeText(context, "กรุณาทำการ Login", Toast.LENGTH_SHORT).show()
+                    }
                 }
             } else {
-                setReceiveTicketsDisable()
+                setReceiveTicketsDisable("บัตรหมดแล้ว")
                 Toast.makeText(context, "ขออภัยบัตรหมดแล้วค่ะ", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
-    private fun setReceiveTicketsDisable() {
+    private fun setReceiveTicketsDisable(stringButton: String) {
         tv_receive_tickets.setBackgroundResource(R.drawable.custom_background_close_event_ripple)
         tv_receive_tickets.isClickable = true
         tv_receive_tickets.isFocusable = true
-        tv_receive_tickets.text = "บัตรหมดแล้ว"
+        tv_receive_tickets.text = stringButton
     }
 
     //Todo: Calling First When Clickable
@@ -306,7 +313,6 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData {
         }
     }
 
-
     private fun showDialogErrorGoogleCalendarService(connectionCode: Int): Dialog {
         val dialog: Dialog = mGoogleApiAvailability.getErrorDialog(activity, connectionCode, REQUEST_GOOGLE_PLAY)
         dialog.setCancelable(false)
@@ -322,14 +328,13 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData {
 
     //Todo: DialogConfirmFragment
     fun onPositiveConfirmFragment() {
+
         val day = mCalendarTimeStamp.get(java.util.Calendar.DATE)
         val month = mCalendarTimeStamp.getDisplayName(java.util.Calendar.MONTH, java.util.Calendar.LONG, Locale("th"))
         val year = mCalendarTimeStamp.get(java.util.Calendar.YEAR)
 
         val dateStamp = day.toString() + "-" + month.toString() + "-" + year.toString()
         val timeStamp = System.currentTimeMillis()
-
-
         mCheckRest?.runTransaction(object : Transaction.Handler {
             override fun onComplete(p0: DatabaseError?, p1: Boolean, p2: DataSnapshot?) {
                 if (p0 != null) {
@@ -355,15 +360,18 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData {
                         restEvent = eventRest
                     }
 
-                    mRecorderEvent.pushEventRealTime(username.toString(), eventId.toString(), nameEvent.toString(), locationEvent.toString(), logoEvent!!, number_picker.value.toLong(), dateStamp, timeStamp)?.addOnCompleteListener { task ->
-                        if (task.isComplete) {
-                            FirebaseMessaging.getInstance().subscribeToTopic("news")
-                            onCheckStatusCredentialGoogleCalendar()
+                    mRecorderEvent.pushEventRealTime(username.toString(), eventId.toString(), nameEvent.toString(), locationEvent.toString(), logoEvent!!, number_picker.value.toLong(), dateStamp, timeStamp)?.apply {
+                        addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+                                onCheckStatusCredentialGoogleCalendar()
+                            }
                         }
 
-                    }?.addOnFailureListener { exception ->
-                        Toast.makeText(context, exception.message.toString(), Toast.LENGTH_SHORT).show()
+                        addOnFailureListener { exception ->
+                            Toast.makeText(context, exception.message.toString(), Toast.LENGTH_SHORT).show()
+                        }
                     }
+
 
                     mDialogManager.onDismissConfirmDialog()
                 } else {
@@ -376,6 +384,7 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData {
                 return Transaction.success(p0)
             }
         }, true)
+
     }
 
     //Todo : DialogConfirmFragment

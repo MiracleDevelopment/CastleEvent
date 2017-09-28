@@ -4,12 +4,16 @@ import android.arch.lifecycle.LifecycleRegistry
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
+import android.util.Log
 import android.view.*
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.iid.FirebaseInstanceId
+import com.google.firebase.messaging.FirebaseMessaging
 import com.ipati.dev.castleevent.adapter.ItemViewPagerAdapter
 import com.ipati.dev.castleevent.fragment.ListEventFragment
 import com.ipati.dev.castleevent.service.FirebaseService.RealTimeDatabaseMenuListItem
@@ -23,7 +27,7 @@ class ListEventActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var mItemViewPagerAdapter: ItemViewPagerAdapter
     private lateinit var sharePreferenceManager: SharePreferenceSettingManager
     private var mLifeCycleRegistry: LifecycleRegistry = LifecycleRegistry(this)
-
+    private var doubleTwiceBackPress: Boolean = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list_event)
@@ -36,6 +40,8 @@ class ListEventActivity : AppCompatActivity(), View.OnClickListener {
 
         initialViewPager()
         initialBottomNavigationBar()
+
+        Log.d("tokenFireBase", FirebaseInstanceId.getInstance().token)
     }
 
 
@@ -106,10 +112,15 @@ class ListEventActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    override fun onStart() {
-        super.onStart()
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
 
+        val fragment: Fragment? = mItemViewPagerAdapter.getRegisteredFragment(vp_list_event.currentItem)
+        fragment?.let {
+            fragment.onActivityResult(requestCode, resultCode, data)
+        }
     }
+
 
     override fun onClick(p0: View?) {
         when (p0?.id) {
@@ -121,10 +132,6 @@ class ListEventActivity : AppCompatActivity(), View.OnClickListener {
         return mLifeCycleRegistry
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-    }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
@@ -139,8 +146,19 @@ class ListEventActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onBackPressed() {
-        super.onBackPressed()
-        FirebaseAuth.getInstance().signOut()
-        googleApiClient?.disconnect()
+        if (doubleTwiceBackPress) {
+            super.onBackPressed()
+            FirebaseAuth.getInstance().signOut()
+            googleApiClient?.disconnect()
+            return
+        }
+
+        doubleTwiceBackPress = true
+        Toast.makeText(applicationContext, "Press Back Once Again", Toast.LENGTH_SHORT).show()
+
+        Handler().postDelayed({
+            doubleTwiceBackPress = false
+        }, 2000)
+
     }
 }

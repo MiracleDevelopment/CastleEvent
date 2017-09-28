@@ -3,6 +3,8 @@ package com.ipati.dev.castleevent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.widget.Toast
+import com.google.firebase.auth.FirebaseAuth
 import com.ipati.dev.castleevent.fragment.ListDetailEventFragment
 import com.ipati.dev.castleevent.model.LoadingDialogListener
 
