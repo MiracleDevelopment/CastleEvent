@@ -294,13 +294,14 @@ class CalendarFragment : Fragment(), View.OnClickListener {
         private lateinit var mDateTimeNow: DateTime
         private lateinit var eventListString: ArrayList<String>
         private lateinit var mEvents: Events
-        private lateinit var mEventCalendar: com.github.sundeepk.compactcalendarview.domain.Event
+
         private lateinit var mListEvent: List<Event>
         private lateinit var mItemEvent: EventDetailModel
         private lateinit var mDateMonth: Date
 
         private var mDateStart: Date? = null
         private var mDateEnd: Date? = null
+        private var mEventCalendar: com.github.sundeepk.compactcalendarview.domain.Event? = null
         private var transport: HttpTransport = AndroidHttp.newCompatibleTransport()
         private var jsonFactory: JsonFactory = JacksonFactory.getDefaultInstance()
 
@@ -341,29 +342,37 @@ class CalendarFragment : Fragment(), View.OnClickListener {
 
         override fun onPostExecute(result: List<Event>?) {
             super.onPostExecute(result)
-            for (items in result!!) {
-                //Todo: Convert Start Or End Time
-                mSimpleDateFormat = SimpleDateFormat("HH.mm", Locale("th"))
-                mSimpleDateFormatDateTime = SimpleDateFormat("dd/MM/yyyy", Locale("th"))
-                mSimpleDateFormatNickNameDate = SimpleDateFormat("MMM", Locale("th"))
-                mSimpleDateFormatDateOfYear = SimpleDateFormat("d", Locale("th"))
+            result?.let {
+                for (items in result) {
+                    //Todo: Convert Start Or End Time
+                    mSimpleDateFormat = SimpleDateFormat("HH.mm", Locale("th"))
+                    mSimpleDateFormatDateTime = SimpleDateFormat("dd/MM/yyyy", Locale("th"))
+                    mSimpleDateFormatNickNameDate = SimpleDateFormat("MMM", Locale("th"))
+                    mSimpleDateFormatDateOfYear = SimpleDateFormat("d", Locale("th"))
 
-                mDateStart = Date(items.start.dateTime.value)
-                mDateEnd = Date(items.end.dateTime.value)
+                    mDateStart = Date(items.start.dateTime.value)
+                    mDateEnd = Date(items.end.dateTime.value)
 
-                mDateMonth = Date(items.start.dateTime.value)
-                if (items.start != null) {
-                    mItemEvent = EventDetailModel(items.summary
-                            , mSimpleDateFormat.format(mDateStart)
-                            , mSimpleDateFormat.format(mDateEnd)
-                            , mSimpleDateFormatDateOfYear.format(mDateMonth)
-                            , mSimpleDateFormatNickNameDate.format(mDateMonth)
-                            , mSimpleDateFormatDateTime.format(mDateMonth))
-                    mListItemShow.add(mItemEvent)
+                    mDateMonth = Date(items.start.dateTime.value)
 
-                    //Todo: AddEvent To Calendar
-                    mEventCalendar = mCalendarManager.addEvent(items.start.dateTime, items)
-                    compat_calendar_view.addEvent(mEventCalendar, true)
+                    if (items.start != null) {
+                        mItemEvent = EventDetailModel(items.summary
+                                , mSimpleDateFormat.format(mDateStart)
+                                , mSimpleDateFormat.format(mDateEnd)
+                                , mSimpleDateFormatDateOfYear.format(mDateMonth)
+                                , mSimpleDateFormatNickNameDate.format(mDateMonth)
+                                , mSimpleDateFormatDateTime.format(mDateMonth))
+                        mListItemShow.add(mItemEvent)
+
+                        //Todo: AddEvent To Calendar
+                        mEventCalendar = mCalendarManager.addEvent(items.start.dateTime, items)
+
+                        compat_calendar_view?.let {
+                            compat_calendar_view.apply {
+                                addEvent(mEventCalendar, true)
+                            }
+                        }
+                    }
                 }
             }
         }
