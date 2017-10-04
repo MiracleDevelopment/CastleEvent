@@ -5,6 +5,8 @@ import android.support.v4.app.FragmentManager
 import android.view.ViewGroup
 import android.util.SparseArray
 import android.support.v4.app.FragmentStatePagerAdapter
+import com.ipati.dev.castleevent.fragment.ListEventFragment
+import com.ipati.dev.castleevent.fragment.UserProfileFragment
 
 abstract class SmartFragmentStatePagerAdapter(fragmentManager: FragmentManager) : FragmentStatePagerAdapter(fragmentManager) {
     private val registeredFragments = SparseArray<Fragment>()
@@ -21,7 +23,7 @@ abstract class SmartFragmentStatePagerAdapter(fragmentManager: FragmentManager) 
         super.destroyItem(container, position, `object`)
     }
 
-    fun getRegisteredFragment(position: Int): Fragment {
-        return registeredFragments.get(position)
+    fun getRegisteredFragment(position: Int): Fragment? {
+        return registeredFragments[position]
     }
 }

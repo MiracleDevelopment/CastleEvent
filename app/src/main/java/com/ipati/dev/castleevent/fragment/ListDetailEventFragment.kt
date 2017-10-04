@@ -3,17 +3,25 @@ package com.ipati.dev.castleevent.fragment
 import android.accounts.AccountManager
 import android.annotation.SuppressLint
 import android.app.Dialog
+import android.app.SharedElementCallback
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
 import android.support.design.widget.BottomSheetBehavior
+import android.support.v4.view.ViewCompat
 import android.support.v7.app.AppCompatActivity
+import android.transition.Transition
+import android.transition.TransitionInflater
 import android.util.Log
 
 import android.view.*
+import android.view.animation.AccelerateDecelerateInterpolator
+import android.view.animation.BounceInterpolator
 import android.widget.Toast
+import com.facebook.drawee.drawable.ScalingUtils
+import com.facebook.drawee.view.DraweeTransition
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.api.client.extensions.android.http.AndroidHttp
@@ -29,6 +37,8 @@ import com.google.api.services.calendar.model.Event
 import com.google.firebase.database.*
 import com.ipati.dev.castleevent.base.BaseFragment
 import com.ipati.dev.castleevent.R
+import com.ipati.dev.castleevent.extension.matrixHeightPx
+import com.ipati.dev.castleevent.extension.matrixWidthPx
 import com.ipati.dev.castleevent.model.Glide.loadGoogleMapStatic
 import com.ipati.dev.castleevent.model.Glide.loadLogo
 import com.ipati.dev.castleevent.model.Glide.loadPhotoAdvertise
@@ -51,7 +61,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class ListDetailEventFragment : BaseFragment(), LoadingDetailData {
+class ListDetailEventFragment : BaseFragment(), LoadingDetailData, View.OnClickListener {
     private var REQUEST_ACCOUNT: Int = 1112
     private var REQUEST_GOOGLE_PLAY: Int = 1121
     private var REQUEST_PERMISSION_ACCOUNT: Int = 1111
@@ -66,9 +76,7 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData {
     private lateinit var mCalendarManager: CalendarManager
     private lateinit var mRecorderEvent: RecordListEvent
     private lateinit var mAuthenticationStatus: AuthenticationStatus
-
     private lateinit var mDialogManager: DialogManager
-    private lateinit var bundle: Bundle
 
     private var mCalendarTimeStamp = java.util.Calendar.getInstance()
     private var Ref: DatabaseReference = FirebaseDatabase.getInstance().reference
@@ -79,16 +87,34 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData {
     private var mPushEvent: MakePushEvent? = null
     private var mItemListEvent: ItemListEvent? = null
     private var mCheckRest: DatabaseReference? = null
-
+    private var bundle: Bundle? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-        bundle = arguments
-        eventId = bundle.getLong(listEventObject)
+        postponeEnterTransition()
+        startPostponedEnterTransition()
+
+        activity.window.sharedElementEnterTransition = DraweeTransition
+                .createTransitionSet(ScalingUtils.ScaleType.CENTER_CROP, ScalingUtils.ScaleType.CENTER_CROP)
+                .setDuration(200)
+                .addTarget(R.id.im_detail_cover)
+                .excludeChildren(android.R.id.statusBarBackground, true)
+
+        activity.window.sharedElementReturnTransition = DraweeTransition
+                .createTransitionSet(ScalingUtils.ScaleType.CENTER_CROP, ScalingUtils.ScaleType.CENTER_CROP)
+                .setDuration(400)
+                .addTarget(R.id.im_detail_cover)
+                .excludeChildren(android.R.id.statusBarBackground, true)
+
+        activity.window.exitTransition = DraweeTransition
+                .createTransitionSet(ScalingUtils.ScaleType.CENTER_CROP, ScalingUtils.ScaleType.CENTER_CROP)
+                .setDuration(400)
+                .addTarget(R.id.im_detail_cover)
+                .excludeChildren(android.R.id.statusBarBackground, true)
+
 
         mAuthenticationStatus = AuthenticationStatus()
         mGoogleApiAvailability = GoogleApiAvailability.getInstance()
-        realTimeDatabaseDetailManager = RealTimeDatabaseDetailManager(context, lifecycle, eventId!!, this)
         googlePlayServiceMap = GooglePlayServiceMapManager(activity, lifecycle)
         mGoogleSharePreference = SharePreferenceGoogleSignInManager(context)
         mCalendarManager = CalendarManager(context)
@@ -101,20 +127,16 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        bt_get_tickets.setOnClickListener {
-            when (mBottomSheetBehavior.state) {
-                BottomSheetBehavior.STATE_COLLAPSED -> {
-                    floating_bt_close.setImageResource(R.mipmap.ic_keyboard_arrow_down)
-                    mBottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-
-                }
-                BottomSheetBehavior.STATE_EXPANDED -> {
-                    floating_bt_close.setImageResource(R.mipmap.ic_keyboard_arrow_up)
-                    mBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-                }
-            }
+        bundle = arguments
+        bundle?.let {
+            ViewCompat.setTransitionName(im_detail_cover, bundle?.getString(transition))
+            eventId = bundle!!.getLong(listEventObject)
+            realTimeDatabaseDetailManager = RealTimeDatabaseDetailManager(context, lifecycle, eventId!!, this)
         }
+
+        bt_get_tickets.setOnClickListener { btView -> onClick(btView) }
     }
+
 
     private fun initialToolbar(itemListEvent: ItemListEvent) {
         (activity as AppCompatActivity).setSupportActionBar(toolbar_detail_event_fragment)
@@ -241,6 +263,9 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData {
     }
 
     private fun initialDetailEvent(itemListEvent: ItemListEvent) {
+        im_detail_cover.layoutParams.width = context.matrixWidthPx(resources.displayMetrics.widthPixels)
+        im_detail_cover.layoutParams.height = context.matrixHeightPx(512)
+
         loadPhotoDetail(context, itemListEvent.eventCover, im_detail_cover)
         loadPhotoAdvertise(context, itemListEvent.eventAdvertise, im_advertise_detail)
         loadLogo(context, itemListEvent.eventLogoCredit, im_logo_credit_detail)
@@ -271,6 +296,7 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData {
 
         mRecorderEvent = RecordListEvent()
         mCheckRest = Ref.child("eventItem").child("eventContinue").child(keyEvent)
+
 
         Log.d("timeDate", startEvent.toString() + " : " + endEvent.toString())
     }
@@ -328,7 +354,6 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData {
 
     //Todo: DialogConfirmFragment
     fun onPositiveConfirmFragment() {
-
         val day = mCalendarTimeStamp.get(java.util.Calendar.DATE)
         val month = mCalendarTimeStamp.getDisplayName(java.util.Calendar.MONTH, java.util.Calendar.LONG, Locale("th"))
         val year = mCalendarTimeStamp.get(java.util.Calendar.YEAR)
@@ -396,10 +421,28 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             android.R.id.home -> {
-                activity.finish()
+                activity.supportFinishAfterTransition()
             }
         }
-        return super.onOptionsItemSelected(item)
+        return false
+    }
+
+    override fun onClick(p0: View?) {
+        when (p0?.id) {
+            R.id.bt_get_tickets -> {
+                when (mBottomSheetBehavior.state) {
+                    BottomSheetBehavior.STATE_COLLAPSED -> {
+                        floating_bt_close.setImageResource(R.mipmap.ic_keyboard_arrow_down)
+                        mBottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+
+                    }
+                    BottomSheetBehavior.STATE_EXPANDED -> {
+                        floating_bt_close.setImageResource(R.mipmap.ic_keyboard_arrow_up)
+                        mBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                    }
+                }
+            }
+        }
     }
 
 
@@ -443,10 +486,16 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData {
 
     companion object {
         var listEventObject: String = "ListDetailEventFragment"
-        fun newInstance(nameObject: Long): ListDetailEventFragment {
+        var widthObject: String = "width"
+        var heightObject: String = "height"
+        var transition: String = "transition"
+        fun newInstance(width: Int, height: Int, transitionName: String, nameObject: Long): ListDetailEventFragment {
             val listDetailEventFragment = ListDetailEventFragment()
             val bundle = Bundle()
             bundle.putLong(listEventObject, nameObject)
+            bundle.putInt(widthObject, width)
+            bundle.putInt(heightObject, height)
+            bundle.putString(transition, transitionName)
             listDetailEventFragment.arguments = bundle
             return listDetailEventFragment
         }

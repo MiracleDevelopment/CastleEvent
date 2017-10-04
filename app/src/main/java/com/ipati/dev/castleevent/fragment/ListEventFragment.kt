@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.support.design.widget.BottomSheetBehavior
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
+import android.transition.TransitionInflater
 import android.view.*
 import android.widget.LinearLayout
 import com.ipati.dev.castleevent.base.BaseFragment
@@ -14,8 +15,10 @@ import com.ipati.dev.castleevent.model.OnCancelAnimationTouch
 import com.ipati.dev.castleevent.service.FirebaseService.CategoryRealTimeManager
 import com.ipati.dev.castleevent.service.FirebaseService.RealTimeDatabaseManager
 import com.ipati.dev.castleevent.utill.animation.AnimationManager
+import kotlinx.android.synthetic.main.activity_detail_event_fragment.*
 import kotlinx.android.synthetic.main.activity_list_event_fragment.*
 import kotlinx.android.synthetic.main.custom_bottom_sheet_category.*
+import kotlinx.android.synthetic.main.custom_list_event_adapter_layout.*
 
 class ListEventFragment : BaseFragment() {
     private lateinit var realTimeDatabaseManager: RealTimeDatabaseManager
@@ -26,7 +29,7 @@ class ListEventFragment : BaseFragment() {
         super.onCreate(savedInstanceState)
         realTimeDatabaseManager = RealTimeDatabaseManager(context, lifecycle)
         mCategoryRealTimeDatabaseManager = CategoryRealTimeManager(context, lifecycle)
-        mAnimationManager = AnimationManager(context)
+        mAnimationManager = AnimationManager(context, activity)
         activity.invalidateOptionsMenu()
     }
 
@@ -39,6 +42,7 @@ class ListEventFragment : BaseFragment() {
         initialRecyclerView()
         initialBottomSheet()
         initialBottomSheetCategory()
+
     }
 
     private fun initialRecyclerView() {
@@ -52,8 +56,13 @@ class ListEventFragment : BaseFragment() {
         })
 
         realTimeDatabaseManager.adapterListEvent?.setOnCancelTouchItemEvent(object : OnCancelAnimationTouch {
-            override fun setOnCancelTouch(target: View?, eventId: Long) {
+            override fun setOnCancelTouch(target: View?, widthView: Int, heightView: Int, transitionName: String, eventId: Long) {
                 mAnimationManager.setEventId(eventId = eventId)
+                mAnimationManager.setViewAnimationTransitions(target)
+                mAnimationManager.setWidthView(widthView)
+                mAnimationManager.setHeightView(heightView)
+                mAnimationManager.setTransitionName(transitionName)
+
                 mAnimationManager.onLoadingTranslateZ().addUpdateListener { valueAnimator ->
                     target?.translationZ = valueAnimator.animatedValue as Float
                 }
@@ -61,8 +70,6 @@ class ListEventFragment : BaseFragment() {
                 mAnimationManager.onLoadingTranslateY().addUpdateListener { valueAnimator ->
                     target?.translationY = valueAnimator.animatedValue as Float
                 }
-
-
             }
         })
     }

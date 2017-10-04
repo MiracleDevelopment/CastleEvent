@@ -160,7 +160,7 @@ class RegisterFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             android.R.id.home -> {
-                activity.finish()
+                activity.supportFinishAfterTransition()
             }
         }
         return super.onOptionsItemSelected(item)

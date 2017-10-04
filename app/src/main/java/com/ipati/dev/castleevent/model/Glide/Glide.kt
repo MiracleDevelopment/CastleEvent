@@ -1,21 +1,33 @@
 package com.ipati.dev.castleevent.model.Glide
 
 import android.content.Context
-import android.media.Image
 import android.net.Uri
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.request.RequestOptions
+import com.facebook.drawee.backends.pipeline.Fresco
+import com.facebook.drawee.interfaces.DraweeController
+import com.facebook.drawee.view.SimpleDraweeView
+import com.facebook.imagepipeline.request.ImageRequest
+import com.facebook.imagepipeline.request.ImageRequestBuilder
 import com.ipati.dev.castleevent.R
 
-fun loadPhoto(context: Context, url: String, im: ImageView) {
-    val requestOption: RequestOptions = RequestOptions()
-            .placeholder(R.mipmap.ic_launcher)
-            .override(200, 200)
 
-    Glide.with(context).load(url).apply(requestOption).into(im)
+fun loadPhoto(context: Context, url: String, im: SimpleDraweeView) {
+    val mImageRequest: ImageRequest = ImageRequestBuilder
+            .newBuilderWithSource(Uri.parse(url))
+            .setLocalThumbnailPreviewsEnabled(true)
+            .build()
+
+    val mDrawerController: DraweeController = Fresco.newDraweeControllerBuilder()
+            .setImageRequest(mImageRequest)
+            .setOldController(im.controller)
+            .build()
+
+    im.controller = mDrawerController
+    im.setImageURI(url, context)
 }
 
 fun loadLogo(context: Context, url: String, im: ImageView) {
@@ -26,11 +38,19 @@ fun loadLogo(context: Context, url: String, im: ImageView) {
     Glide.with(context).load(url).apply(requestOption).into(im)
 }
 
-fun loadPhotoDetail(context: Context, url: String, im: ImageView) {
-    val requestOption: RequestOptions = RequestOptions()
-            .placeholder(R.mipmap.ic_launcher)
-            .diskCacheStrategy(DiskCacheStrategy.ALL)
-    Glide.with(context).load(url).apply(requestOption).into(im)
+
+fun loadPhotoDetail(context: Context, url: String, im: SimpleDraweeView) {
+    val imageRequest: ImageRequest = ImageRequestBuilder
+            .newBuilderWithSource(Uri.parse(url))
+            .setLocalThumbnailPreviewsEnabled(true)
+            .build()
+
+    val mDrawerController: DraweeController = Fresco.newDraweeControllerBuilder()
+            .setImageRequest(imageRequest)
+            .setOldController(im.controller)
+            .build()
+    im.controller = mDrawerController
+    im.setImageURI(Uri.parse(url), context)
 }
 
 fun loadPhotoAdvertise(context: Context, url: String, im: ImageView) {
@@ -50,8 +70,9 @@ fun loadPhotoProfileUser(context: Context, url: String?, im: ImageView) {
 
 fun loadPhotoItemMenu(context: Context, resource: Int, im: ImageView) {
     val requestOption: RequestOptions = RequestOptions()
-            .placeholder(R.mipmap.ic_launcher)
+            .placeholder(R.mipmap.ic_launcher).centerCrop()
             .override(50, 50)
+
     Glide.with(context).load(resource).apply(requestOption).into(im)
 }
 

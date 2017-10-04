@@ -6,11 +6,15 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.support.v4.app.Fragment
+import android.support.v4.app.SharedElementCallback
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
+import android.transition.Transition
 import android.util.Log
 import android.view.*
 import android.widget.Toast
+import com.facebook.drawee.drawable.ScalingUtils
+import com.facebook.drawee.view.DraweeTransition
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.messaging.FirebaseMessaging
@@ -31,7 +35,6 @@ class ListEventActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list_event)
-
         setSupportActionBar(toolbar_list_event)
         supportActionBar?.setLogo(R.mipmap.ic_launcher_event)
 
@@ -150,6 +153,7 @@ class ListEventActivity : AppCompatActivity(), View.OnClickListener {
             super.onBackPressed()
             FirebaseAuth.getInstance().signOut()
             googleApiClient?.disconnect()
+            supportFinishAfterTransition()
             return
         }
 

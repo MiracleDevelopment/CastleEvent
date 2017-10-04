@@ -14,11 +14,12 @@ class GlideConfig : AppGlideModule() {
     private var decodeFormat: DecodeFormat = DecodeFormat.PREFER_ARGB_8888
     override fun applyOptions(context: Context?, builder: GlideBuilder?) {
         super.applyOptions(context, builder)
-        val defaultRequestOption: RequestOptions = RequestOptions.formatOf(decodeFormat).diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+        val defaultRequestOption: RequestOptions = RequestOptions.formatOf(decodeFormat)
         builder?.setDefaultRequestOptions(defaultRequestOption)
     }
 
     override fun registerComponents(context: Context?, glide: Glide?, registry: Registry?) {
         super.registerComponents(context, glide, registry)
+
     }
 }

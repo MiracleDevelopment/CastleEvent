@@ -31,7 +31,7 @@ interface LoadingDetailEvent {
 }
 
 interface OnCancelAnimationTouch {
-    fun setOnCancelTouch(target: View?, eventId: Long)
+    fun setOnCancelTouch(target: View?, widthView: Int, heightView: Int, transitionName: String, eventId: Long)
 }
 
 

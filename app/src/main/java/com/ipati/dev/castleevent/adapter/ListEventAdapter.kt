@@ -4,13 +4,16 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.drawable.RippleDrawable
+import android.net.Uri
 import android.os.Build
 import android.os.Handler
 import android.support.v4.content.ContextCompat
+import android.support.v4.view.ViewCompat
 import android.support.v7.widget.RecyclerView
 import android.view.*
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import android.widget.Toast
 import com.ipati.dev.castleevent.R
 import com.ipati.dev.castleevent.extension.getStringResource
 import com.ipati.dev.castleevent.model.Glide.loadPhoto
@@ -36,7 +39,10 @@ class ListEventAdapter(listItem: ArrayList<ItemListEvent>) : RecyclerView.Adapte
     }
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ListEventHolder {
-        val view: View = LayoutInflater.from(parent?.context).inflate(R.layout.custom_list_event_adapter_layout, parent, false)
+        val view: View = LayoutInflater.from(parent?.context)
+                .inflate(R.layout.custom_list_event_adapter_layout
+                        , parent, false)
+
         return ListEventHolder(view)
     }
 
@@ -61,12 +67,20 @@ class ListEventAdapter(listItem: ArrayList<ItemListEvent>) : RecyclerView.Adapte
 
                 when (p1.action) {
                     MotionEvent.ACTION_UP -> {
-                        mOnCancelAnimation.setOnCancelTouch(p0, itemList[adapterPosition].eventId)
+                        val widthOriginal: Int = itemView.custom_im_cover_list_event.measuredWidth
+                        val heightOriginal: Int = itemView.custom_im_cover_list_event.measuredHeight
+
+                        ViewCompat.setTransitionName(p0.custom_im_cover_list_event, "${p0.id}$adapterPosition")
+                        mOnCancelAnimation.setOnCancelTouch(p0.custom_im_cover_list_event
+                                , widthOriginal
+                                , heightOriginal
+                                , ViewCompat.getTransitionName(p0.custom_im_cover_list_event)
+                                , itemList[adapterPosition].eventId)
                     }
 
                     MotionEvent.ACTION_DOWN -> {
                         if (p1.pointerCount == 1) {
-                            mOnLoadingDetailEvent.setOnLoadingDetailEvent(p0, itemList[adapterPosition].eventId)
+                            mOnLoadingDetailEvent.setOnLoadingDetailEvent(p0.custom_im_cover_list_event, itemList[adapterPosition].eventId)
                         }
                     }
                 }
@@ -88,7 +102,7 @@ class ListEventAdapter(listItem: ArrayList<ItemListEvent>) : RecyclerView.Adapte
                     " " + itemList[adapterPosition].eventRest.toString() +
                     " " + itemView.getStringResource(R.string.tv_people)
 
-            animationListItem().start()
+//            animationListItem().start()
 
             if (itemList[adapterPosition].eventStatus) {
                 itemView.custom_tv_status_list_event.text = itemView.getStringResource(R.string.tv_status_open)
@@ -99,6 +113,11 @@ class ListEventAdapter(listItem: ArrayList<ItemListEvent>) : RecyclerView.Adapte
             itemView.ripple_background.translationY = 0.0F
             itemView.ripple_background.translationZ = 0.0F
             itemView.ripple_background.setOnTouchListener { view, motionEvent -> onTouch(view, motionEvent) }
+
+            if (itemView.custom_im_cover_list_event.visibility == View.INVISIBLE) {
+                itemView.custom_im_cover_list_event.visibility = View.VISIBLE
+            }
+
         }
 
 

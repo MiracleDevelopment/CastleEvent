@@ -89,7 +89,7 @@ class ProfileUserFragment : Fragment(), View.OnClickListener {
             }
 
             R.id.tv_record_profile -> {
-                activity.finish()
+                activity.supportFinishAfterTransition()
             }
 
             R.id.im_edit_photo_profile -> {
@@ -136,7 +136,7 @@ class ProfileUserFragment : Fragment(), View.OnClickListener {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             android.R.id.home -> {
-                activity.finish()
+                activity.supportFinishAfterTransition()
             }
         }
         return true
