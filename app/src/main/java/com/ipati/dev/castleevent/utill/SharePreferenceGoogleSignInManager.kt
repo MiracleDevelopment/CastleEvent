@@ -21,7 +21,7 @@ class SharePreferenceGoogleSignInManager(context: Context) {
 
     fun defaultSharePreferenceManager(): String? {
         sharePreference = mContext.getSharedPreferences(mGoogleSignIn, Context.MODE_PRIVATE)
-        return sharePreference.getString(mGoogleSignIn, "defaultUsername")
+        return sharePreference.getString(mGoogleSignIn, null)
     }
 
     fun sharePreferenceManagerIgonre(username: String?) {

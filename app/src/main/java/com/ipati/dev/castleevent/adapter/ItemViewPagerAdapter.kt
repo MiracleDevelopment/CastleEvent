@@ -16,7 +16,6 @@ class ItemViewPagerAdapter(supportFragmentManager: FragmentManager) : SmartFragm
                 return ListEventFragment.newInstance("")
             }
 
-
             1 -> {
                 return if (mAuthentication.getCurrentUser() != null) {
                     UserProfileFragment.newInstance("")

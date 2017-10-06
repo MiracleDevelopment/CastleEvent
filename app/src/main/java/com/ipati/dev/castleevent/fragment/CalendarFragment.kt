@@ -1,12 +1,17 @@
 package com.ipati.dev.castleevent.fragment
 
+import android.Manifest
 import android.accounts.AccountManager
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Paint
 import android.os.AsyncTask
+import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
@@ -33,6 +38,7 @@ import com.ipati.dev.castleevent.R
 import com.ipati.dev.castleevent.adapter.ListEventCalendarAdapter
 import com.ipati.dev.castleevent.model.EventDetailModel
 import com.ipati.dev.castleevent.model.GoogleCalendar.CalendarFragment.CalendarManager
+import com.ipati.dev.castleevent.model.RequstPermission.showDialogRequestSetting
 import com.ipati.dev.castleevent.utill.*
 import kotlinx.android.synthetic.main.activity_calendar_fragment.*
 import java.text.SimpleDateFormat
@@ -45,6 +51,7 @@ class CalendarFragment : Fragment(), View.OnClickListener {
     private var maxHeaderCalendar: Int = 312
     private var minCalendarHeight: Int = 256
     private var minHeaderCalendar: Int = 50
+    private var REQUEST_MULTI_PERMISSION: Int = 1001
 
     private lateinit var mCalendarManager: CalendarManager
     private lateinit var mSharePreferenceManager: SharePreferenceGoogleSignInManager
@@ -120,6 +127,14 @@ class CalendarFragment : Fragment(), View.OnClickListener {
                 mListEventDateClick = compat_calendar_view.getEvents(dateClicked)
                 mCalendarManager.initialCalendar().time = dateClicked
 
+                //Todo: Check Date This
+//                val dateOfYear = mCalendarManager.initialCalendar().get(Calendar.DAY_OF_MONTH)
+//                val mothOfYear = mCalendarManager.initialCalendar().get(Calendar.MONTH) + 1
+//                val yearsOfYear = mCalendarManager.initialCalendar().get(Calendar.YEAR)
+//
+//                val dateTimeStampM = "$dateOfYear/$mothOfYear/$yearsOfYear"
+//                Toast.makeText(context, dateTimeStampM, Toast.LENGTH_SHORT).show()
+//
                 if (mListEventDateClick.count() == 0) {
                     mCalendarManager.animationHeaderExpanded(calendar_bar_app, maxHeaderCalendar, calendar_bar_app.height)
                     mCalendarManager.animationCalendarExpanded(compat_calendar_view, maxCalendarHeight, compat_calendar_view.height)
@@ -142,7 +157,7 @@ class CalendarFragment : Fragment(), View.OnClickListener {
                         monthOfYear = mCalendarManager.initialCalendar().get(Calendar.MONTH) + 1
                         yearOfYear = mCalendarManager.initialCalendar().get(Calendar.YEAR)
 
-                        dateTimeStamp = "$dayOfYear/0$monthOfYear/$yearOfYear"
+                        dateTimeStamp = "$dayOfYear/$monthOfYear/$yearOfYear"
 
                         tv_calendar_select_date.text = ""
                         tv_calendar_year.text = ""
@@ -174,14 +189,14 @@ class CalendarFragment : Fragment(), View.OnClickListener {
                         val mothOfYear = mCalendarManager.initialCalendar().get(Calendar.MONTH) + 1
                         val yearsOfYear = mCalendarManager.initialCalendar().get(Calendar.YEAR)
 
-                        dateTimeStamp = "$dateOfYear/0$mothOfYear/$yearsOfYear"
+                        dateTimeStamp = "$dateOfYear/$mothOfYear/$yearsOfYear"
 
                         for ((title, timeEventStart, timeEventEnd, timeDayOfYear, timeMonthDate, timeDateEvent) in mListItemShow) {
                             if (dateTimeStamp == timeDateEvent) {
                                 tv_calendar_detail_event.text = title
                                 tv_calendar_time_ticket.text = "$timeEventStart น. - $timeEventEnd น."
                             } else {
-                                Log.d("dateTimeOnce", dateTimeStamp + " : " + timeDateEvent)
+                                Log.d("dateTimeOnce", dateTimeStamp.toString())
                             }
                         }
 
@@ -259,6 +274,34 @@ class CalendarFragment : Fragment(), View.OnClickListener {
         return mCalendarManager.initialGoogleApiAvailability().isGooglePlayServicesAvailable(context) == ConnectionResult.SUCCESS
     }
 
+    override fun onStart() {
+        super.onStart()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
+                if (!shouldShowRequestPermissionRationale(Manifest.permission.WRITE_CALENDAR)) {
+                    requestPermissions(arrayOf(Manifest.permission.WRITE_CALENDAR), REQUEST_MULTI_PERMISSION)
+                } else {
+                    requestPermissions(arrayOf(Manifest.permission.WRITE_CALENDAR), REQUEST_MULTI_PERMISSION)
+                }
+            }
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            REQUEST_MULTI_PERMISSION -> {
+                if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+
+                } else {
+                    if (!shouldShowRequestPermissionRationale(Manifest.permission.GET_ACCOUNTS)) {
+
+                    }
+                }
+            }
+        }
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
@@ -277,6 +320,13 @@ class CalendarFragment : Fragment(), View.OnClickListener {
             }
         }
         return true
+    }
+
+    fun setOnClickPositiveRequestPermission() {
+
+    }
+
+    fun setOnClickNegativePermission() {
 
     }
 

@@ -1,24 +1,25 @@
 package com.ipati.dev.castleevent.fragment
 
+import android.Manifest
 import android.accounts.AccountManager
 import android.annotation.SuppressLint
 import android.app.Dialog
-import android.app.SharedElementCallback
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.support.design.widget.BottomSheetBehavior
+import android.support.v4.app.ActivityCompat
+import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewCompat
 import android.support.v7.app.AppCompatActivity
-import android.transition.Transition
-import android.transition.TransitionInflater
 import android.util.Log
 
 import android.view.*
-import android.view.animation.AccelerateDecelerateInterpolator
-import android.view.animation.BounceInterpolator
 import android.widget.Toast
 import com.facebook.drawee.drawable.ScalingUtils
 import com.facebook.drawee.view.DraweeTransition
@@ -35,6 +36,7 @@ import com.google.api.services.calendar.Calendar
 import com.google.api.services.calendar.CalendarScopes
 import com.google.api.services.calendar.model.Event
 import com.google.firebase.database.*
+import com.ipati.dev.castleevent.BuildConfig
 import com.ipati.dev.castleevent.base.BaseFragment
 import com.ipati.dev.castleevent.R
 import com.ipati.dev.castleevent.extension.matrixHeightPx
@@ -46,6 +48,8 @@ import com.ipati.dev.castleevent.model.Glide.loadPhotoDetail
 import com.ipati.dev.castleevent.model.GoogleCalendar.*
 import com.ipati.dev.castleevent.model.GoogleCalendar.CalendarFragment.CalendarManager
 import com.ipati.dev.castleevent.model.LoadingDetailData
+import com.ipati.dev.castleevent.model.OnClickConfirmDialog
+import com.ipati.dev.castleevent.model.RequstPermission.showDialogRequestSetting
 import com.ipati.dev.castleevent.model.gmsLocation.GooglePlayServiceMapManager
 import com.ipati.dev.castleevent.model.modelListEvent.ItemListEvent
 import com.ipati.dev.castleevent.model.userManage.username
@@ -66,6 +70,7 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, View.OnClickL
     private var REQUEST_GOOGLE_PLAY: Int = 1121
     private var REQUEST_PERMISSION_ACCOUNT: Int = 1111
     private var REQUEST_CALENDAR_PERMISSION: Int = 1101
+    private var REQUEST_ACCOUNT_RECORD: Int = 1000
 
     private lateinit var realTimeDatabaseDetailManager: RealTimeDatabaseDetailManager
     private lateinit var mGoogleSharePreference: SharePreferenceGoogleSignInManager
@@ -82,12 +87,12 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, View.OnClickL
     private var Ref: DatabaseReference = FirebaseDatabase.getInstance().reference
     private var eventId: Long? = null
     private var accountBank: String? = null
-    private var userAccountName: String? = null
     private var statusCodeGoogleApi: Int? = null
     private var mPushEvent: MakePushEvent? = null
     private var mItemListEvent: ItemListEvent? = null
     private var mCheckRest: DatabaseReference? = null
     private var bundle: Bundle? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -111,7 +116,6 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, View.OnClickL
                 .setDuration(400)
                 .addTarget(R.id.im_detail_cover)
                 .excludeChildren(android.R.id.statusBarBackground, true)
-
 
         mAuthenticationStatus = AuthenticationStatus()
         mGoogleApiAvailability = GoogleApiAvailability.getInstance()
@@ -150,11 +154,7 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, View.OnClickL
                 .usingOAuth2(activity, Arrays.asList(CalendarScopes.CALENDAR))
                 .setBackOff(ExponentialBackOff())
 
-        mGoogleCredentialAccount.selectedAccountName = defaultAccountGoogleCalendar()
-    }
-
-    private fun defaultAccountGoogleCalendar(): String? {
-        return mGoogleSharePreference.defaultSharePreferenceManager()
+        mGoogleCredentialAccount.selectedAccountName = mGoogleSharePreference.defaultSharePreferenceManager()
     }
 
 
@@ -264,7 +264,7 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, View.OnClickL
 
     private fun initialDetailEvent(itemListEvent: ItemListEvent) {
         im_detail_cover.layoutParams.width = context.matrixWidthPx(resources.displayMetrics.widthPixels)
-        im_detail_cover.layoutParams.height = context.matrixHeightPx(512)
+        im_detail_cover.layoutParams.height = context.matrixHeightPx(app_bar_detail_event.layoutParams.height)
 
         loadPhotoDetail(context, itemListEvent.eventCover, im_detail_cover)
         loadPhotoAdvertise(context, itemListEvent.eventAdvertise, im_advertise_detail)
@@ -292,7 +292,6 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, View.OnClickL
         descriptionEvent = itemListEvent.eventDescription
         priceEvent = itemListEvent.eventPrice
         locationEvent = itemListEvent.eventLocation
-        attendee = defaultAccountGoogleCalendar()
 
         mRecorderEvent = RecordListEvent()
         mCheckRest = Ref.child("eventItem").child("eventContinue").child(keyEvent)
@@ -302,40 +301,23 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, View.OnClickL
     }
 
     private fun onCheckStatusCredentialGoogleCalendar() {
-        if (!onCheckGoogleApiService()) {
+        if (onCheckGoogleApiService()) {
+            onSetUserAccount()
+        } else {
             statusCodeGoogleApi = mGoogleApiAvailability.isGooglePlayServicesAvailable(context)
             if (mGoogleApiAvailability.isUserResolvableError(statusCodeGoogleApi!!)) {
                 showDialogErrorGoogleCalendarService(statusCodeGoogleApi!!)
             }
-        } else if (mGoogleCredentialAccount.selectedAccountName == null) {
-            permissionGoogleAccount()
-        } else {
-            Toast.makeText(context, "จองอีเว้นเรียบร้อยแล้ว", Toast.LENGTH_LONG).show()
-            MakePushEvent(mGoogleCredentialAccount).execute()
         }
     }
 
-    private fun permissionGoogleAccount() {
-        if (Build.VERSION.SDK_INT >= 23) {
-            if (activity.checkSelfPermission(android.Manifest.permission.GET_ACCOUNTS) != PackageManager.PERMISSION_GRANTED) {
-                activity.requestPermissions(Array(0, { android.Manifest.permission.GET_ACCOUNTS }), REQUEST_PERMISSION_ACCOUNT)
-            } else {
-                onSetUserAccount()
-            }
-        } else {
-            onSetUserAccount()
-        }
-    }
 
     private fun onSetUserAccount() {
-        userAccountName = mGoogleSharePreference.defaultSharePreferenceManager()
-        if (userAccountName != null) {
-            mGoogleCredentialAccount.selectedAccountName = userAccountName
-            onCheckStatusCredentialGoogleCalendar()
+        if (mGoogleSharePreference.defaultSharePreferenceManager() != null) {
+            attendee = mGoogleSharePreference.defaultSharePreferenceManager()
+            mGoogleCredentialAccount.selectedAccountName = mGoogleSharePreference.defaultSharePreferenceManager()
         } else {
-            if (mGoogleCredentialAccount.selectedAccountName == null) {
-                startActivityForResult(mGoogleCredentialAccount.newChooseAccountIntent(), REQUEST_ACCOUNT)
-            }
+            startActivityForResult(mGoogleCredentialAccount.newChooseAccountIntent(), REQUEST_ACCOUNT)
         }
     }
 
@@ -354,15 +336,59 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, View.OnClickL
 
     //Todo: DialogConfirmFragment
     fun onPositiveConfirmFragment() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(context, Manifest.permission.GET_ACCOUNTS) == PackageManager.PERMISSION_GRANTED) {
+                addEvent()
+            } else {
+                requestPermissionGetAccounts()
+            }
+        } else {
+            addEvent()
+        }
+    }
+
+    private fun addEvent() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(context, Manifest.permission.GET_ACCOUNTS) != PackageManager.PERMISSION_GRANTED) {
+                verifyGoogleAccounts()
+            } else {
+                verifyGoogleAccounts()
+            }
+        } else {
+            verifyGoogleAccounts()
+        }
+    }
+
+    private fun verifyGoogleAccounts() {
+        if (mGoogleCredentialAccount.selectedAccountName == null) {
+            if (mGoogleSharePreference.defaultSharePreferenceManager() != null) {
+                mGoogleCredentialAccount.selectedAccountName = mGoogleSharePreference.defaultSharePreferenceManager()
+                attendee = mGoogleSharePreference.defaultSharePreferenceManager()
+                recordMyTickets()
+            } else {
+                startActivityForResult(mGoogleCredentialAccount.newChooseAccountIntent(), REQUEST_ACCOUNT_RECORD)
+            }
+        } else {
+            attendee = mGoogleCredentialAccount.selectedAccountName
+            recordMyTickets()
+        }
+    }
+
+    private fun recordMyTickets() {
+        mDialogManager.onShowLoadingDialog("ระบบกำลังดำเนินงาน")
+
         val day = mCalendarTimeStamp.get(java.util.Calendar.DATE)
         val month = mCalendarTimeStamp.getDisplayName(java.util.Calendar.MONTH, java.util.Calendar.LONG, Locale("th"))
         val year = mCalendarTimeStamp.get(java.util.Calendar.YEAR)
 
         val dateStamp = day.toString() + "-" + month.toString() + "-" + year.toString()
         val timeStamp = System.currentTimeMillis()
+
         mCheckRest?.runTransaction(object : Transaction.Handler {
             override fun onComplete(p0: DatabaseError?, p1: Boolean, p2: DataSnapshot?) {
                 if (p0 != null) {
+                    mDialogManager.onDismissLoadingDialog()
+//                    mDialogManager.onDismissConfirmDialog()
                     Log.d("TransactionStatus", p0.message.toString())
                 } else {
                     Log.d("TransactionStatus", "Success")
@@ -388,7 +414,12 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, View.OnClickL
                     mRecorderEvent.pushEventRealTime(username.toString(), eventId.toString(), nameEvent.toString(), locationEvent.toString(), logoEvent!!, number_picker.value.toLong(), dateStamp, timeStamp)?.apply {
                         addOnCompleteListener { task ->
                             if (task.isSuccessful) {
-                                onCheckStatusCredentialGoogleCalendar()
+                                if (ContextCompat.checkSelfPermission(context, Manifest.permission.GET_ACCOUNTS) == PackageManager.PERMISSION_GRANTED) {
+                                    MakePushEvent(mGoogleCredentialAccount).execute()
+                                } else {
+                                    mDialogManager.onDismissLoadingDialog()
+                                    mBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                                }
                             }
                         }
 
@@ -396,8 +427,6 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, View.OnClickL
                             Toast.makeText(context, exception.message.toString(), Toast.LENGTH_SHORT).show()
                         }
                     }
-
-
                     mDialogManager.onDismissConfirmDialog()
                 } else {
                     activity.runOnUiThread {
@@ -409,7 +438,6 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, View.OnClickL
                 return Transaction.success(p0)
             }
         }, true)
-
     }
 
     //Todo : DialogConfirmFragment
@@ -434,14 +462,22 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, View.OnClickL
                     BottomSheetBehavior.STATE_COLLAPSED -> {
                         floating_bt_close.setImageResource(R.mipmap.ic_keyboard_arrow_down)
                         mBottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-
                     }
+
                     BottomSheetBehavior.STATE_EXPANDED -> {
                         floating_bt_close.setImageResource(R.mipmap.ic_keyboard_arrow_up)
                         mBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
                     }
                 }
             }
+        }
+    }
+
+    private fun requestPermissionGetAccounts() {
+        if (!shouldShowRequestPermissionRationale(Manifest.permission.GET_ACCOUNTS)) {
+            requestPermissions(arrayOf(Manifest.permission.GET_ACCOUNTS), REQUEST_PERMISSION_ACCOUNT)
+        } else {
+            requestPermissions(arrayOf(Manifest.permission.GET_ACCOUNTS), REQUEST_PERMISSION_ACCOUNT)
         }
     }
 
@@ -455,7 +491,7 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, View.OnClickL
                     accountBank.let {
                         mGoogleSharePreference.sharePreferenceManager(accountBank)
                         mGoogleCredentialAccount.selectedAccountName = accountBank
-                        onCheckStatusCredentialGoogleCalendar()
+                        attendee = accountBank
                     }
                 }
             }
@@ -468,6 +504,18 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, View.OnClickL
                 mPushEvent = MakePushEvent(mGoogleCredentialAccount)
                 mPushEvent?.execute()
             }
+
+            REQUEST_ACCOUNT_RECORD -> {
+                data?.let {
+                    accountBank = data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME)
+                    accountBank?.let {
+                        mGoogleSharePreference.sharePreferenceManager(accountBank)
+                        mGoogleCredentialAccount.selectedAccountName = accountBank
+                        attendee = accountBank
+                        onPositiveConfirmFragment()
+                    }
+                }
+            }
         }
     }
 
@@ -478,17 +526,34 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, View.OnClickL
             REQUEST_PERMISSION_ACCOUNT -> {
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     onCheckStatusCredentialGoogleCalendar()
+                    mBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                } else {
+                    if (!shouldShowRequestPermissionRationale(Manifest.permission.GET_ACCOUNTS)) {
+                        recordMyTickets()
+                    }
+                    mDialogManager.onDismissConfirmDialog()
                 }
             }
         }
     }
 
+    fun setOnPositiveListener() {
+        val intentSettingPermission = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+                , Uri.parse("package:${BuildConfig.APPLICATION_ID}"))
+        startActivity(intentSettingPermission)
+        mDialogManager.onDismissConfirmDialog()
+    }
+
+    fun setOnNegativeListener() {
+        mDialogManager.onDismissConfirmDialog()
+    }
+
 
     companion object {
-        var listEventObject: String = "ListDetailEventFragment"
-        var widthObject: String = "width"
-        var heightObject: String = "height"
-        var transition: String = "transition"
+        private var listEventObject: String = "ListDetailEventFragment"
+        private var widthObject: String = "width"
+        private var heightObject: String = "height"
+        private var transition: String = "transition"
         fun newInstance(width: Int, height: Int, transitionName: String, nameObject: Long): ListDetailEventFragment {
             val listDetailEventFragment = ListDetailEventFragment()
             val bundle = Bundle()
@@ -520,10 +585,6 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, View.OnClickL
                     .build()
         }
 
-        override fun onPreExecute() {
-            super.onPreExecute()
-            mDialogManager.onShowLoadingDialog("ระบบกำลังดำเนินงาน")
-        }
 
         override fun doInBackground(vararg p0: Void?): Event? {
             return try {

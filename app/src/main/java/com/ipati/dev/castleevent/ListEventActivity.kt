@@ -20,13 +20,14 @@ import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.messaging.FirebaseMessaging
 import com.ipati.dev.castleevent.adapter.ItemViewPagerAdapter
 import com.ipati.dev.castleevent.fragment.ListEventFragment
+import com.ipati.dev.castleevent.model.OnLogOutSystem
 import com.ipati.dev.castleevent.service.FirebaseService.RealTimeDatabaseMenuListItem
 import com.ipati.dev.castleevent.service.googleApiClient
 import com.ipati.dev.castleevent.utill.SharePreferenceSettingManager
 import kotlinx.android.synthetic.main.activity_list_event.*
 import kotlinx.android.synthetic.main.bottom_navigation_layout.*
 
-class ListEventActivity : AppCompatActivity(), View.OnClickListener {
+class ListEventActivity : AppCompatActivity(), View.OnClickListener, OnLogOutSystem {
     private lateinit var realTimeDatabaseMenuList: RealTimeDatabaseMenuListItem
     private lateinit var mItemViewPagerAdapter: ItemViewPagerAdapter
     private lateinit var sharePreferenceManager: SharePreferenceSettingManager
@@ -44,7 +45,7 @@ class ListEventActivity : AppCompatActivity(), View.OnClickListener {
         initialViewPager()
         initialBottomNavigationBar()
 
-        Log.d("tokenFireBase", FirebaseInstanceId.getInstance().token)
+        Log.d("tokenFireBase", FirebaseInstanceId.getInstance().token.toString())
     }
 
 
@@ -113,6 +114,11 @@ class ListEventActivity : AppCompatActivity(), View.OnClickListener {
             }
             return@setOnNavigationItemSelectedListener false
         }
+    }
+
+    override fun logOutApplication() {
+        FirebaseAuth.getInstance().signOut()
+        initialViewPager()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

@@ -34,6 +34,15 @@ interface OnCancelAnimationTouch {
     fun setOnCancelTouch(target: View?, widthView: Int, heightView: Int, transitionName: String, eventId: Long)
 }
 
+interface OnClickConfirmDialog {
+    fun setOnPositiveListener()
+    fun setOnNegativeListener()
+}
+
+interface OnLogOutSystem{
+    fun logOutApplication()
+}
+
 
 
 

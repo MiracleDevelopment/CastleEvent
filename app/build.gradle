@@ -9,11 +9,11 @@ repositories {
 
 android {
     compileSdkVersion 26
-    buildToolsVersion "25.0.3"
+
     defaultConfig {
         applicationId "com.ipati.dev.castleevent"
         minSdkVersion 21
-        targetSdkVersion 25
+        targetSdkVersion 26
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
