@@ -48,5 +48,7 @@
     <string name="text_button_edit_profile">กลับสู่หน้าหลัก</string>
     <string name="cancel_dialog_logout">ยกเลิก</string>
     <string name="accept_diaog_logout">ตกลง</string>
-
+    <string name="expiredTickets">ขออภัยบัตรหมดแล้วค่ะ</string>
+    <string name="lessAfterDate">ขออภัยเลยกำหนดในการจองแล้วค่ะ</string>
+    <string name="pleaseLogin">กรุณาเข้าสู่ระบบ</string>
 </resources>

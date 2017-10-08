@@ -15,14 +15,13 @@ import com.ipati.dev.castleevent.model.userManage.uid
 class MyOrderRealTimeManager(context: Context, lifecycle: Lifecycle) : LifecycleObserver {
     var mContext: Context = context
     var Ref: DatabaseReference = FirebaseDatabase.getInstance().reference
-    var mRef: DatabaseReference = Ref.child("eventUser").child(uid)
+    var mRef: DatabaseReference? = Ref.child("eventUser").child(uid)
     var mLifecycle: Lifecycle? = null
 
     var mListOrder: ArrayList<RecorderTickets> = ArrayList()
     var mAdapterMyOrder: ListMyOrderAdapter = ListMyOrderAdapter(mListOrder)
+    var mRefChild: DatabaseReference? = null
 
-    lateinit var mRefChild: DatabaseReference
-    lateinit var mHasMap: HashMap<*, *>
     lateinit var mChildEvent: ChildEventListener
     lateinit var mChildValueEvent: ChildEventListener
 
@@ -33,14 +32,23 @@ class MyOrderRealTimeManager(context: Context, lifecycle: Lifecycle) : Lifecycle
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     private fun onStart() {
-        mRef.addChildEventListener(onChildMyOrderListener())
+        mRef?.let {
+            mRef!!.addChildEventListener(onChildMyOrderListener())
+        }
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
     private fun onStop() {
         mListOrder.clear()
-        mRef.removeEventListener(mChildEvent)
+        mRef?.let {
+            mRef!!.removeEventListener(mChildEvent)
+        }
+
+        mRefChild?.let {
+            mRefChild!!.removeEventListener(mChildValueEvent)
+        }
     }
+
 
     private fun onChildMyOrderListener(): ChildEventListener {
         mChildEvent = object : ChildEventListener {
@@ -58,7 +66,7 @@ class MyOrderRealTimeManager(context: Context, lifecycle: Lifecycle) : Lifecycle
 
             override fun onChildAdded(p0: DataSnapshot?, p1: String?) {
                 mRefChild = Ref.child("eventUser").child(uid).child(p0?.key.toString())
-                mRefChild.addChildEventListener(onChildValueListener())
+                mRefChild?.addChildEventListener(onChildValueListener())
             }
 
             override fun onChildRemoved(p0: DataSnapshot?) {
@@ -83,18 +91,11 @@ class MyOrderRealTimeManager(context: Context, lifecycle: Lifecycle) : Lifecycle
             }
 
             override fun onChildAdded(p0: DataSnapshot?, p1: String?) {
-                mHasMap = p0?.value as HashMap<*, *>
-                val recorderTickets = RecorderTickets(mHasMap["userAccount"].toString()
-                        , mHasMap["eventId"].toString()
-                        , mHasMap["eventName"].toString()
-                        , mHasMap["eventLocation"].toString()
-                        , mHasMap["eventLogo"].toString()
-                        , mHasMap["count"] as Long
-                        , mHasMap["dateStamp"].toString()
-                        , mHasMap["timeStamp"] as Long)
-
-                mListOrder.add(recorderTickets)
-                mAdapterMyOrder.notifyDataSetChanged()
+                val mItemRecordTickets: RecorderTickets? = p0?.getValue(RecorderTickets::class.java)
+                mItemRecordTickets?.let {
+                    mListOrder.add(mItemRecordTickets)
+                    mAdapterMyOrder.notifyDataSetChanged()
+                }
             }
 
             override fun onChildRemoved(p0: DataSnapshot?) {

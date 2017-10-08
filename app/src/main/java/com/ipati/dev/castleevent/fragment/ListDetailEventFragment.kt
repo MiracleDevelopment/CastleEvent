@@ -4,7 +4,6 @@ import android.Manifest
 import android.accounts.AccountManager
 import android.annotation.SuppressLint
 import android.app.Dialog
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -13,7 +12,6 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.support.design.widget.BottomSheetBehavior
-import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewCompat
 import android.support.v7.app.AppCompatActivity
@@ -31,10 +29,12 @@ import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecovera
 import com.google.api.client.http.HttpTransport
 import com.google.api.client.json.JsonFactory
 import com.google.api.client.json.jackson2.JacksonFactory
+import com.google.api.client.util.Data
 import com.google.api.client.util.ExponentialBackOff
 import com.google.api.services.calendar.Calendar
 import com.google.api.services.calendar.CalendarScopes
 import com.google.api.services.calendar.model.Event
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.ipati.dev.castleevent.BuildConfig
 import com.ipati.dev.castleevent.base.BaseFragment
@@ -48,8 +48,7 @@ import com.ipati.dev.castleevent.model.Glide.loadPhotoDetail
 import com.ipati.dev.castleevent.model.GoogleCalendar.*
 import com.ipati.dev.castleevent.model.GoogleCalendar.CalendarFragment.CalendarManager
 import com.ipati.dev.castleevent.model.LoadingDetailData
-import com.ipati.dev.castleevent.model.OnClickConfirmDialog
-import com.ipati.dev.castleevent.model.RequstPermission.showDialogRequestSetting
+import com.ipati.dev.castleevent.model.OnUpdateInfomation
 import com.ipati.dev.castleevent.model.gmsLocation.GooglePlayServiceMapManager
 import com.ipati.dev.castleevent.model.modelListEvent.ItemListEvent
 import com.ipati.dev.castleevent.model.userManage.username
@@ -65,7 +64,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class ListDetailEventFragment : BaseFragment(), LoadingDetailData, View.OnClickListener {
+class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfomation, View.OnClickListener {
     private var REQUEST_ACCOUNT: Int = 1112
     private var REQUEST_GOOGLE_PLAY: Int = 1121
     private var REQUEST_PERMISSION_ACCOUNT: Int = 1111
@@ -134,6 +133,9 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, View.OnClickL
         bundle = arguments
         bundle?.let {
             ViewCompat.setTransitionName(im_detail_cover, bundle?.getString(transition))
+            im_detail_cover.layoutParams.width = context.matrixWidthPx(resources.displayMetrics.widthPixels)
+            im_detail_cover.layoutParams.height = context.matrixHeightPx(app_bar_detail_event.layoutParams.height)
+
             eventId = bundle!!.getLong(listEventObject)
             realTimeDatabaseDetailManager = RealTimeDatabaseDetailManager(context, lifecycle, eventId!!, this)
         }
@@ -207,44 +209,38 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, View.OnClickL
         val limitTime = (mCalendar.get(java.util.Calendar.DATE)).toString() + " " + mCalendar.getDisplayName(java.util.Calendar.MONTH, java.util.Calendar.LONG, Locale("th")) + " " + mCalendar.get(java.util.Calendar.YEAR).toString()
         tv_bottom_sheet_header_event.text = nameEvent
         tv_bottom_sheet_description_event.text = descriptionEvent
-        tv_bottom_sheet_limit_access.text = "สามารถจองได้ถึงภายในวันที่ " + limitTime
-
-
-        if (restEvent!! > 0) {
-            if (Date().after(mCalendarManager.formatDateTimeStartEvent(startCalendar!!))) {
-                setReceiveTicketsDisable("ขออภัยเลยกำหนดในการจองบัตรแล้วค่ะ")
-            } else {
-                if (mAuthenticationStatus.getCurrentUser() != null) {
-                    tv_receive_tickets.setBackgroundResource(R.drawable.background_get_tickets)
-                    tv_receive_tickets.text = priceEvent + " / " + "TICKETS"
-                } else {
-                    setReceiveTicketsDisable("กรุณาทำการ Login")
-                }
-            }
-        } else {
-            setReceiveTicketsDisable("ขออภัยบัตรหมดแล้วค่ะ")
-        }
+        tv_bottom_sheet_limit_access.text = "สามารถจองได้ถึงภายในวันที่ $limitTime"
     }
 
     private fun setUIClickable() {
         tv_receive_tickets.setOnClickListener {
-            if (restEvent!! > 0) {
-                if (Date().after(mCalendarManager.formatDateTimeStartEvent(startCalendar!!))) {
-                    Toast.makeText(context, "ขออภัยเลยกำหนดการจองบัตรแล้วค่ะ", Toast.LENGTH_SHORT).show()
-                } else {
-                    if (mAuthenticationStatus.getCurrentUser() != null) {
-                        mCalendarTimeStamp.timeZone = TimeZone.getDefault()
-                        val msg = "คุณต้องการจองบัตร จำนวน " + number_picker.value.toString() + " ใบ" + "\n" + " ใช่ / ไม่"
-                        mDialogManager.onShowConfirmDialog(msg)
-                    } else {
-                        Toast.makeText(context, "กรุณาทำการ Login", Toast.LENGTH_SHORT).show()
-                    }
+            when (tv_receive_tickets.text) {
+                resources.getText(R.string.expiredTickets) -> {
+                    Toast.makeText(context, tv_receive_tickets.text, Toast.LENGTH_SHORT).show()
                 }
-            } else {
-                setReceiveTicketsDisable("บัตรหมดแล้ว")
-                Toast.makeText(context, "ขออภัยบัตรหมดแล้วค่ะ", Toast.LENGTH_SHORT).show()
+
+                resources.getText(R.string.pleaseLogin) -> {
+                    Toast.makeText(context, tv_receive_tickets.text, Toast.LENGTH_SHORT).show()
+                }
+
+                resources.getText(R.string.lessAfterDate) -> {
+                    Toast.makeText(context,tv_receive_tickets.text,Toast.LENGTH_SHORT).show()
+                }
+
+                else -> {
+                    mCalendarTimeStamp.timeZone = TimeZone.getDefault()
+                    val msg = "คุณต้องการจองบัตร จำนวน " + number_picker.value.toString() + " ใบ" + "\n" + " ใช่ / ไม่"
+                    mDialogManager.onShowConfirmDialog(msg)
+                }
             }
         }
+    }
+
+    private fun setReceiveTicketEnable(stringButton: String) {
+        tv_receive_tickets.setBackgroundResource(R.drawable.custom_background_receive_tickets)
+        tv_receive_tickets.isFocusable = true
+        tv_receive_tickets.isClickable = true
+        tv_receive_tickets.text = stringButton
     }
 
     private fun setReceiveTicketsDisable(stringButton: String) {
@@ -256,16 +252,46 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, View.OnClickL
 
     //Todo: Calling First When Clickable
     override fun onLoadingUpdateData(itemListEvent: ItemListEvent) {
-        initialDetailEvent(itemListEvent)
+        setOnDetailEvent(itemListEvent)
         initialToolbar(itemListEvent = itemListEvent)
         initialGoogleCredentialAccount()
         initialBottomSheet()
     }
 
-    private fun initialDetailEvent(itemListEvent: ItemListEvent) {
-        im_detail_cover.layoutParams.width = context.matrixWidthPx(resources.displayMetrics.widthPixels)
-        im_detail_cover.layoutParams.height = context.matrixHeightPx(app_bar_detail_event.layoutParams.height)
+    //Todo: Direction Update
+    override fun setDataChange(mItemListEvent: ItemListEvent) {
+        loadPhotoDetail(context, mItemListEvent.eventCover, im_detail_cover)
+        loadPhotoAdvertise(context, mItemListEvent.eventAdvertise, im_advertise_detail)
+        loadLogo(context, mItemListEvent.eventLogoCredit, im_logo_credit_detail)
+        loadGoogleMapStatic(context, mItemListEvent.eventLatitude, mItemListEvent.eventLongitude, im_static_map)
 
+        tv_detail_time.text = mItemListEvent.eventTime
+        tv_detail_location.text = mItemListEvent.eventLocation
+        tv_detail_description.text = mItemListEvent.eventDescription
+        tv_detail_number_phone_contact.text = "092-270-7454"
+        tv_detail_mail_description_contact.text = "admin@contact.co.th"
+        tv_Start_price.text = "STARTING FROM ฿" + mItemListEvent.eventPrice
+
+
+        mAccountBank = mItemListEvent.accountBank
+        keyEvent = mItemListEvent.eventKey
+        idEvent = mItemListEvent.eventId.toString()
+        nameEvent = mItemListEvent.eventName
+        logoEvent = mItemListEvent.eventCover
+        startEvent = mItemListEvent.eventCalendarStart
+        endEvent = mItemListEvent.eventCalendarEnd
+        maxEvent = mItemListEvent.eventMax
+        restEvent = mItemListEvent.eventRest
+        startCalendar = mItemListEvent.eventCalendarStart
+        endCalendar = mItemListEvent.eventCalendarEnd
+        descriptionEvent = mItemListEvent.eventDescription
+        priceEvent = mItemListEvent.eventPrice
+        locationEvent = mItemListEvent.eventLocation
+
+        checkedDateEvent(mItemListEvent)
+    }
+
+    private fun setOnDetailEvent(itemListEvent: ItemListEvent) {
         loadPhotoDetail(context, itemListEvent.eventCover, im_detail_cover)
         loadPhotoAdvertise(context, itemListEvent.eventAdvertise, im_advertise_detail)
         loadLogo(context, itemListEvent.eventLogoCredit, im_logo_credit_detail)
@@ -296,8 +322,27 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, View.OnClickL
         mRecorderEvent = RecordListEvent()
         mCheckRest = Ref.child("eventItem").child("eventContinue").child(keyEvent)
 
+        checkedDateEvent(itemListEvent)
+    }
 
-        Log.d("timeDate", startEvent.toString() + " : " + endEvent.toString())
+    private fun checkedDateEvent(mItemListEvent: ItemListEvent) {
+        if (mAuthenticationStatus.getCurrentUser() != null) {
+            if (Date().before(mCalendarManager.formatDateTimeStartEvent(startCalendar!!))) {
+                if (restEvent!! > 0) {
+                    setReceiveTicketEnable("${mItemListEvent.eventPrice}/Tickets")
+                } else {
+                    setReceiveTicketsDisable(resources.getString(R.string.expiredTickets))
+                }
+            } else if (Date().after(mCalendarManager.formatDateTimeStartEvent(endCalendar!!))) {
+                setReceiveTicketsDisable(resources.getString(R.string.lessAfterDate))
+            }
+        } else {
+            setReceiveTicketsDisable(resources.getString(R.string.pleaseLogin))
+        }
+    }
+
+    private fun setRestJoinEvent(count: Int): Int {
+        return (restEvent!! - count).toInt()
     }
 
     private fun onCheckStatusCredentialGoogleCalendar() {
@@ -402,24 +447,27 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, View.OnClickL
                     return Transaction.success(p0)
                 }
 
-                if (restEvent!! - number_picker.value >= 0) {
+                if (setRestJoinEvent(number_picker.value) >= 0) {
+
                     mItemListEvent?.apply {
                         accountBank = mAccountBank.toString()
                         eventKey = keyEvent.toString()
                         eventMax = maxEvent!!
-                        eventRest = (restEvent?.toInt()!! - number_picker.value).toLong()
-                        restEvent = eventRest
+                        eventRest = setRestJoinEvent(number_picker.value).toLong()
                     }
 
                     mRecorderEvent.pushEventRealTime(username.toString(), eventId.toString(), nameEvent.toString(), locationEvent.toString(), logoEvent!!, number_picker.value.toLong(), dateStamp, timeStamp)?.apply {
                         addOnCompleteListener { task ->
                             if (task.isSuccessful) {
+
                                 if (ContextCompat.checkSelfPermission(context, Manifest.permission.GET_ACCOUNTS) == PackageManager.PERMISSION_GRANTED) {
                                     MakePushEvent(mGoogleCredentialAccount).execute()
                                 } else {
-                                    mDialogManager.onDismissLoadingDialog()
                                     mBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
                                 }
+
+                                mDialogManager.onDismissLoadingDialog()
+                                Toast.makeText(context, "คุณทำการจองบัตรเรียบร้อยแล้ว", Toast.LENGTH_SHORT).show()
                             }
                         }
 
@@ -429,7 +477,10 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, View.OnClickL
                     }
                     mDialogManager.onDismissConfirmDialog()
                 } else {
+
                     activity.runOnUiThread {
+                        mDialogManager.onDismissConfirmDialog()
+                        mDialogManager.onDismissLoadingDialog()
                         Toast.makeText(context, "ขออภัยจำนวนบัตรเหลือ $restEvent ใบ", Toast.LENGTH_SHORT).show()
                     }
                 }
@@ -437,7 +488,7 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, View.OnClickL
                 p0.value = mItemListEvent
                 return Transaction.success(p0)
             }
-        }, true)
+        })
     }
 
     //Todo : DialogConfirmFragment
@@ -526,7 +577,8 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, View.OnClickL
             REQUEST_PERMISSION_ACCOUNT -> {
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     onCheckStatusCredentialGoogleCalendar()
-                    mBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                    mDialogManager.onDismissConfirmDialog()
+                    recordMyTickets()
                 } else {
                     if (!shouldShowRequestPermissionRationale(Manifest.permission.GET_ACCOUNTS)) {
                         recordMyTickets()

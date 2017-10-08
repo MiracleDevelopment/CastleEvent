@@ -9,6 +9,7 @@ import android.widget.Toast
 import com.google.firebase.database.*
 import com.ipati.dev.castleevent.fragment.ListDetailEventFragment
 import com.ipati.dev.castleevent.model.LoadingDetailData
+import com.ipati.dev.castleevent.model.OnUpdateInfomation
 import com.ipati.dev.castleevent.model.modelListEvent.ItemListEvent
 
 
@@ -16,17 +17,14 @@ class RealTimeDatabaseDetailManager(context: Context, lifecycle: Lifecycle, even
     private var mContext: Context? = null
     private var mLifecycle: Lifecycle? = null
     private var mEventId: Long? = null
-    private var mapEventId: Long? = null
     var mListDetailEventFragment: ListDetailEventFragment? = null
     var onItemListDataChange: LoadingDetailData? = null
-    var itemListEvent: ItemListEvent? = null
-        get() = field
+    var onItemUpdateDataChange: OnUpdateInfomation? = null
 
-    lateinit var hasMapData: HashMap<*, *>
     lateinit var mChildEvent: ChildEventListener
-
     private var realTimeDataDetail: DatabaseReference = FirebaseDatabase.getInstance().reference
-    private var realTimeDataDetailRef: DatabaseReference = realTimeDataDetail.child("eventItem").child("eventContinue")
+    private var realTimeDataDetailRef: DatabaseReference = realTimeDataDetail.child("eventItem")
+            .child("eventContinue")
 
     init {
         mEventId = eventId
@@ -49,7 +47,8 @@ class RealTimeDatabaseDetailManager(context: Context, lifecycle: Lifecycle, even
     private fun onChildEvent(): ChildEventListener {
         mChildEvent = object : ChildEventListener {
             override fun onCancelled(p0: DatabaseError?) {
-                Log.d("onCancelled", p0?.message.toString())
+//                Log.d("onCancelled", p0?.message.toString())
+                Toast.makeText(mContext, p0?.message.toString(), Toast.LENGTH_SHORT).show()
             }
 
             override fun onChildMoved(p0: DataSnapshot?, p1: String?) {
@@ -57,36 +56,21 @@ class RealTimeDatabaseDetailManager(context: Context, lifecycle: Lifecycle, even
             }
 
             override fun onChildChanged(p0: DataSnapshot?, p1: String?) {
+                val mItemListEvent: ItemListEvent? = p0?.getValue(ItemListEvent::class.java)
+                mItemListEvent?.let {
+                    onItemUpdateDataChange = mListDetailEventFragment as OnUpdateInfomation
+                    onItemUpdateDataChange?.setDataChange(mItemListEvent)
 
+                }
             }
 
             override fun onChildAdded(p0: DataSnapshot, p1: String?) {
-                hasMapData = p0.value as HashMap<*, *>
-                mapEventId = (hasMapData["eventId"] as Long)
-                if (mapEventId!! == mEventId) {
-                    itemListEvent = ItemListEvent(
-                            p0.key.toString(),
-                            hasMapData["eventId"] as Long,
-                            hasMapData["eventName"].toString(),
-                            hasMapData["eventCover"].toString(),
-                            hasMapData["eventAdvertise"].toString(),
-                            hasMapData["categoryName"].toString(),
-                            hasMapData["accountBank"].toString(),
-                            hasMapData["eventDescription"].toString(),
-                            hasMapData["eventLocation"].toString(),
-                            hasMapData["eventLogoCredit"].toString(),
-                            hasMapData["eventLatitude"] as Double,
-                            hasMapData["eventLongitude"] as Double,
-                            hasMapData["eventMax"] as Long,
-                            hasMapData["eventRest"] as Long,
-                            hasMapData["eventStatus"] as Boolean,
-                            hasMapData["eventTime"].toString(),
-                            hasMapData["eventCalendarStart"].toString(),
-                            hasMapData["eventCalendarEnd"].toString(),
-                            hasMapData["eventPrice"].toString()
-                    )
-                    onItemListDataChange = mListDetailEventFragment as LoadingDetailData
-                    onItemListDataChange?.onLoadingUpdateData(itemListEvent!!)
+                val mItemListEvent: ItemListEvent? = p0.getValue(ItemListEvent::class.java)
+                mItemListEvent?.let {
+                    if (mItemListEvent.eventId == mEventId) {
+                        onItemListDataChange = mListDetailEventFragment as LoadingDetailData
+                        onItemListDataChange?.onLoadingUpdateData(mItemListEvent)
+                    }
                 }
             }
 
