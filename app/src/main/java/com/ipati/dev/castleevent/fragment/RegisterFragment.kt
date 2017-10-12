@@ -1,6 +1,7 @@
 package com.ipati.dev.castleevent.fragment
 
 
+import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -11,10 +12,13 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.airbnb.lottie.LottieComposition
+import com.airbnb.lottie.LottieDrawable
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.ipati.dev.castleevent.R
+import com.ipati.dev.castleevent.extension.matrixHeightPx
 import com.ipati.dev.castleevent.model.register.RegisterManager
 import kotlinx.android.synthetic.main.activity_register_fragment.*
 import java.lang.Exception
@@ -24,6 +28,7 @@ class RegisterFragment : Fragment() {
     private lateinit var mAuth: FirebaseAuth
     private lateinit var fireBaseUser: FirebaseUser
     private lateinit var fireBaseUpdateProfile: UserProfileChangeRequest
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -38,9 +43,22 @@ class RegisterFragment : Fragment() {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initialToolbar()
+        initialLottieAnimation()
+
         tv_success_register.setOnClickListener {
             initialValidateAccount()
         }
+    }
+
+    private fun initialLottieAnimation() {
+        lottie_view_animation_register.layoutParams.height = context.matrixHeightPx(450)
+
+        val lottieDrawable = LottieDrawable()
+        LottieComposition.Factory.fromAssetFileName(context, "login_animation.json", { composition ->
+            lottieDrawable.composition = composition
+            lottie_view_animation_register.setImageDrawable(lottieDrawable)
+        })
+
     }
 
     private fun initialToolbar() {
@@ -165,6 +183,7 @@ class RegisterFragment : Fragment() {
         }
         return super.onOptionsItemSelected(item)
     }
+
 
 
     companion object {

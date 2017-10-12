@@ -8,137 +8,165 @@
     android:orientation="vertical"
     tools:context="com.ipati.dev.castleevent.fragment.RegisterFragment">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar_register"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@android:color/transparent"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
-
-    </android.support.v7.widget.Toolbar>
-
-    <android.support.v4.widget.NestedScrollView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:orientation="vertical">
 
-        <LinearLayout
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar_register"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@android:color/transparent"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+        </android.support.v7.widget.Toolbar>
+
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:adjustViewBounds="true"
-                android:src="@mipmap/event_logo" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/circular"
-                android:padding="5dp"
-                android:text="@string/register"
-                android:textColor="@color/colorEditTextResource"
-                android:textSize="30sp"
-                android:textStyle="bold" />
+            android:fillViewport="true">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center"
                 android:orientation="vertical">
 
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColorHint="@color/colorHintResource">
-
-                    <EditText
-                        android:id="@+id/register_ed_username"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/register_username"
-                        android:inputType="text"
-                        android:textColor="@color/colorEditTextResource"
-                        android:textColorHint="@color/colorHintResource"
-                        android:textSize="18sp" />
-                </android.support.design.widget.TextInputLayout>
-
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColorHint="@color/colorHintResource">
-
-                    <EditText
-                        android:id="@+id/register_ed_email"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/register_email"
-                        android:inputType="textEmailAddress"
-                        android:textColor="@color/colorEditTextResource"
-                        android:textSize="18sp" />
-                </android.support.design.widget.TextInputLayout>
-
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColorHint="@color/colorHintResource">
-
-                    <EditText
-                        android:id="@+id/register_ed_password"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="sans-serif"
-                        android:hint="@string/register_password"
-                        android:inputType="textPassword"
-                        android:textColor="@color/colorEditTextResource"
-                        android:textSize="18sp" />
-                </android.support.design.widget.TextInputLayout>
-
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColorHint="@color/colorHintResource"
-                    app:hintAnimationEnabled="true">
-
-                    <EditText
-                        android:id="@+id/register_ed_re_password"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/register_re_password"
-                        android:inputType="textPassword"
-                        android:textColor="@color/colorEditTextResource"
-                        android:textSize="18sp" />
-                </android.support.design.widget.TextInputLayout>
-
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColorHint="@color/colorHintResource">
-
-                    <EditText
-                        android:id="@+id/register_ed_phone"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/register_phone"
-                        android:inputType="phone"
-                        android:textColor="@color/colorEditTextResource"
-                        android:textSize="18sp" />
-                </android.support.design.widget.TextInputLayout>
-
-                <TextView
-                    android:id="@+id/tv_success_register"
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/lottie_view_animation_register"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
+                    android:layout_gravity="center_horizontal" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:fontFamily="@font/circular"
-                    android:text="@string/register_confirm_register"
+                    android:padding="5dp"
+                    android:text="@string/register"
                     android:textColor="@color/colorEditTextResource"
-                    android:textSize="25sp" />
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/tv_input_register_username"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColorHint="@color/colorHintResource">
+
+                        <com.ipati.dev.castleevent.customize.CustomFontEditText
+                            android:id="@+id/register_ed_username"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/circular"
+                            android:hint="@string/register_username"
+                            android:inputType="text"
+                            android:textColor="@color/colorEditTextResource"
+                            android:textColorHint="@color/colorHintResource"
+                            android:textSize="@dimen/sizeFontRegister" />
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/tv_input_register_email"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColorHint="@color/colorHintResource">
+
+                        <com.ipati.dev.castleevent.customize.CustomFontEditText
+                            android:id="@+id/register_ed_email"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/circular"
+                            android:hint="@string/register_email"
+                            android:inputType="textEmailAddress"
+                            android:textColor="@color/colorEditTextResource"
+                            android:textSize="@dimen/sizeFontRegister" />
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/tv_input_register_password"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColorHint="@color/colorHintResource">
+
+                        <com.ipati.dev.castleevent.customize.CustomFontEditText
+                            android:id="@+id/register_ed_password"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/circular"
+                            android:hint="@string/register_password"
+                            android:inputType="textPassword"
+                            android:textColor="@color/colorEditTextResource"
+                            android:textSize="@dimen/sizeFontRegister" />
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColorHint="@color/colorHintResource"
+                        app:hintAnimationEnabled="true">
+
+                        <com.ipati.dev.castleevent.customize.CustomFontEditText
+                            android:id="@+id/register_ed_re_password"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/register_re_password"
+                            android:inputType="textPassword"
+                            android:textColor="@color/colorEditTextResource"
+                            android:textSize="@dimen/sizeFontRegister" />
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/tv_input_register_phone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColorHint="@color/colorHintResource">
+
+                        <com.ipati.dev.castleevent.customize.CustomFontEditText
+                            android:id="@+id/register_ed_phone"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/circular"
+                            android:hint="@string/register_phone"
+                            android:inputType="phone"
+                            android:textColor="@color/colorEditTextResource"
+                            android:textSize="@dimen/sizeFontRegister" />
+                    </android.support.design.widget.TextInputLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <android.support.v7.widget.CardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:cardBackgroundColor="@color/colorBackgroundResource"
+                        app:cardElevation="10dp">
+
+                        <TextView
+                            android:id="@+id/tv_success_register"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="5dp"
+                            android:background="@drawable/custom_ripple_login_button"
+                            android:fontFamily="@font/circular"
+                            android:text="@string/register_confirm_register"
+                            android:textColor="@color/colorEditTextResource"
+                            android:textSize="@dimen/sizeFontButtonRegister" />
+                    </android.support.v7.widget.CardView>
+                </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
-    </android.support.v4.widget.NestedScrollView>
+        </ScrollView>
+    </LinearLayout>
 </LinearLayout>

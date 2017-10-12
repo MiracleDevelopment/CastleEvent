@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorPrimaryDark">#263238</color>
     <color name="colorAccent">#B2EBF2</color>
     <color name="colorBackgroundResource">#263238</color>
     <color name="colorBackgroundDetailResource">#FFFFFF</color>
@@ -66,4 +66,10 @@
     <color name="colorLogoNotification">#E0F7FA</color>
     <color name="colorRipple">#FFFFFF</color>
     <color name="colorConfirmButton">#00BCD4</color>
+    <color name="colorBorderEdiText">#00BCD4</color>
+    <color name="colorSelectorItem">#FFFFFF</color>
+    <color name="colorUnSelectorItem">#B2EBF2</color>
+    <color name="colorIconTintNavigationBottom">#FFFFFF</color>
+    <color name="colorTextNavigationBottom">#FFFFFF</color>
+
 </resources>

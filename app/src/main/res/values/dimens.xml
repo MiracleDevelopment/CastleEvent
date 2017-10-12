@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="sizeCollapsingToolbar">512</dimen>
+    <dimen name="sizeFontRegister">18sp</dimen>
+    <dimen name="sizeFontButtonRegister">25sp</dimen>
+    <dimen name="sizeFontLogin">18sp</dimen>
+    <dimen name="sizeFontCreateAccount">22sp</dimen>
 </resources>

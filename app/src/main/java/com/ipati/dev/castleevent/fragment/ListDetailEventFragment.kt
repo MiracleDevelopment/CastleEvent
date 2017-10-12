@@ -163,6 +163,7 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfom
     @SuppressLint("InflateParams", "ResourceType")
     private fun initialBottomSheet() {
         mBottomSheetBehavior = BottomSheetBehavior.from(view?.findViewById(R.id.bottom_sheet))
+        mBottomSheetBehavior.peekHeight = li_header_bottom_sheet.height
         mBottomSheetBehavior.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
 
@@ -207,6 +208,7 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfom
         mCalendar.timeInMillis = limitDate.time
 
         val limitTime = (mCalendar.get(java.util.Calendar.DATE)).toString() + " " + mCalendar.getDisplayName(java.util.Calendar.MONTH, java.util.Calendar.LONG, Locale("th")) + " " + mCalendar.get(java.util.Calendar.YEAR).toString()
+
         tv_bottom_sheet_header_event.text = nameEvent
         tv_bottom_sheet_description_event.text = descriptionEvent
         tv_bottom_sheet_limit_access.text = "สามารถจองได้ถึงภายในวันที่ $limitTime"
@@ -224,7 +226,7 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfom
                 }
 
                 resources.getText(R.string.lessAfterDate) -> {
-                    Toast.makeText(context,tv_receive_tickets.text,Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, tv_receive_tickets.text, Toast.LENGTH_SHORT).show()
                 }
 
                 else -> {
@@ -436,26 +438,6 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfom
 //                    mDialogManager.onDismissConfirmDialog()
                     Log.d("TransactionStatus", p0.message.toString())
                 } else {
-                    Log.d("TransactionStatus", "Success")
-                }
-            }
-
-            override fun doTransaction(p0: MutableData?): Transaction.Result {
-                mItemListEvent = p0?.getValue(ItemListEvent::class.java)!!
-
-                if (mItemListEvent == null) {
-                    return Transaction.success(p0)
-                }
-
-                if (setRestJoinEvent(number_picker.value) >= 0) {
-
-                    mItemListEvent?.apply {
-                        accountBank = mAccountBank.toString()
-                        eventKey = keyEvent.toString()
-                        eventMax = maxEvent!!
-                        eventRest = setRestJoinEvent(number_picker.value).toLong()
-                    }
-
                     mRecorderEvent.pushEventRealTime(username.toString(), eventId.toString(), nameEvent.toString(), locationEvent.toString(), logoEvent!!, number_picker.value.toLong(), dateStamp, timeStamp)?.apply {
                         addOnCompleteListener { task ->
                             if (task.isSuccessful) {
@@ -476,8 +458,26 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfom
                         }
                     }
                     mDialogManager.onDismissConfirmDialog()
-                } else {
+                    Log.d("TransactionStatus", "Success")
+                }
+            }
 
+            override fun doTransaction(p0: MutableData?): Transaction.Result {
+                mItemListEvent = p0?.getValue(ItemListEvent::class.java)!!
+
+                if (mItemListEvent == null) {
+                    return Transaction.success(p0)
+                }
+
+                if (setRestJoinEvent(number_picker.value) >= 0) {
+                    mItemListEvent?.apply {
+                        accountBank = mAccountBank.toString()
+                        eventKey = keyEvent.toString()
+                        eventMax = maxEvent!!
+                        eventRest = setRestJoinEvent(number_picker.value).toLong()
+                    }
+
+                } else {
                     activity.runOnUiThread {
                         mDialogManager.onDismissConfirmDialog()
                         mDialogManager.onDismissLoadingDialog()
@@ -504,6 +504,10 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfom
             }
         }
         return false
+    }
+
+    override fun onStart() {
+        super.onStart()
     }
 
     override fun onClick(p0: View?) {

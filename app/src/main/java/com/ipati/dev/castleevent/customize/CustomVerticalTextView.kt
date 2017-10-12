@@ -4,10 +4,12 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Rect
 import android.graphics.Typeface
+import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.widget.AppCompatTextView
 import android.text.TextPaint
 import android.util.AttributeSet
 import android.widget.TextView
+import com.ipati.dev.castleevent.R
 
 class CustomVerticalTextView : AppCompatTextView {
     private var mReact: Rect = Rect()
@@ -32,8 +34,7 @@ class CustomVerticalTextView : AppCompatTextView {
     }
 
     private fun setUpTypeFace(mContext: Context) {
-        val typeface: Typeface = Typeface.createFromAsset(mContext.assets, "fonts/circular.ttf")
-        setTypeface(typeface)
+        typeface = ResourcesCompat.getFont(mContext, R.font.circular)
     }
 
     override fun onDraw(canvas: Canvas) {

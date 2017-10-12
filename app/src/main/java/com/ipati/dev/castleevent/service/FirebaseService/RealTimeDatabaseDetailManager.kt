@@ -2,6 +2,7 @@ package com.ipati.dev.castleevent.service.FirebaseService
 
 import android.arch.lifecycle.Lifecycle
 import android.arch.lifecycle.LifecycleObserver
+import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.OnLifecycleEvent
 import android.content.Context
 import android.util.Log

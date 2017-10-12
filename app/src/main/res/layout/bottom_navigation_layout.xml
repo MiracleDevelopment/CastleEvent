@@ -14,7 +14,8 @@
             android:id="@+id/bottom_navigation_list_event"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            app:itemBackground="@color/colorBackgroundBottomNavigation">
+            android:background="@color/colorBackgroundBottomNavigation"
+            app:itemTextColor="@color/custom_selector_navigation_bottom">
 
         </android.support.design.widget.BottomNavigationView>
 

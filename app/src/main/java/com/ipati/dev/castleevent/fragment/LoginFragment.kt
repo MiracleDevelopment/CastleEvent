@@ -9,6 +9,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.airbnb.lottie.Cancellable
+import com.airbnb.lottie.LottieAnimationView
+import com.airbnb.lottie.LottieComposition
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
 import com.facebook.FacebookException
@@ -22,6 +25,7 @@ import com.ipati.dev.castleevent.R
 import com.ipati.dev.castleevent.RegisterActivity
 import com.ipati.dev.castleevent.authCredential.facebookAuthCredential
 import com.ipati.dev.castleevent.authCredential.twitterAuthCredential
+import com.ipati.dev.castleevent.extension.matrixHeightPx
 import com.ipati.dev.castleevent.service.*
 import com.ipati.dev.castleevent.utill.SharePreferenceGoogleSignInManager
 import com.twitter.sdk.android.core.*
@@ -44,6 +48,7 @@ class LoginFragment : BaseFragment(), View.OnClickListener {
 
         twitterConfig()
         facebookLoginManager()
+
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -57,6 +62,8 @@ class LoginFragment : BaseFragment(), View.OnClickListener {
         im_google_plus.setOnClickListener { v -> onClick(v) }
         tv_create_account_login.setOnClickListener { v -> onClick(v) }
         tv_login_fragment.setOnClickListener { v -> onClick(v) }
+
+        initialLottieAnimation()
     }
 
     private fun facebookLoginManager() {
@@ -101,6 +108,13 @@ class LoginFragment : BaseFragment(), View.OnClickListener {
         })
     }
 
+    private fun initialLottieAnimation() {
+        lottie_view_animation_login.layoutParams.height = context.matrixHeightPx(450)
+        lottie_view_animation_login.setAnimation("login_animation.json")
+        lottie_view_animation_login.loop(true)
+        lottie_view_animation_login.enableMergePathsForKitKatAndAbove(true)
+        lottie_view_animation_login.playAnimation()
+    }
 
     override fun onClick(v: View?) {
         when (v?.id) {

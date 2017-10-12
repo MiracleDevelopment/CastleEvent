@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentActivity
 import android.support.v4.content.ContextCompat
 import android.view.View
 import android.widget.EditText
+import com.airbnb.lottie.LottieComposition
 import com.bumptech.glide.load.engine.Resource
 import com.ipati.dev.castleevent.fragment.loading.LoadingDialogFragment
 

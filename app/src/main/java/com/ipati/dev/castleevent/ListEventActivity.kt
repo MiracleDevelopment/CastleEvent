@@ -36,8 +36,6 @@ class ListEventActivity : AppCompatActivity(), View.OnClickListener, OnLogOutSys
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list_event)
-        setSupportActionBar(toolbar_list_event)
-        supportActionBar?.setLogo(R.mipmap.ic_launcher_event)
 
         realTimeDatabaseMenuList = RealTimeDatabaseMenuListItem(applicationContext, lifecycle)
         sharePreferenceManager = SharePreferenceSettingManager(context = applicationContext)
@@ -77,8 +75,8 @@ class ListEventActivity : AppCompatActivity(), View.OnClickListener, OnLogOutSys
 
     private fun initialBottomNavigationBar() {
         bottom_navigation_list_event.inflateMenu(R.menu.menu_bottom_navigation_layout)
-        bottom_navigation_list_event.itemTextColor = ContextCompat.getColorStateList(applicationContext, R.color.colorItemTextBottomNavigation)
-        bottom_navigation_list_event.itemIconTintList = ContextCompat.getColorStateList(applicationContext, R.color.colorItemIconBottomNavigation)
+        bottom_navigation_list_event.itemTextColor = ContextCompat.getColorStateList(applicationContext, R.color.custom_selector_navigation_bottom)
+        bottom_navigation_list_event.itemIconTintList = ContextCompat.getColorStateList(applicationContext, R.color.custom_selector_navigation_bottom)
         bottom_navigation_list_event.selectedItemId = R.id.itemListEvent
 
         bottom_navigation_list_event.setOnNavigationItemSelectedListener { item ->
@@ -90,6 +88,7 @@ class ListEventActivity : AppCompatActivity(), View.OnClickListener, OnLogOutSys
 
                 R.id.itemCategory -> {
                     vp_list_event.currentItem = 0
+                    bottom_navigation_list_event.menu.getItem(vp_list_event.currentItem).isChecked = true
 
                     val mListEventFragment: Fragment? = mItemViewPagerAdapter.getRegisteredFragment(vp_list_event.currentItem)
                     mListEventFragment?.let {
@@ -102,6 +101,7 @@ class ListEventActivity : AppCompatActivity(), View.OnClickListener, OnLogOutSys
 
                 R.id.itemUser -> {
                     vp_list_event.currentItem = 1
+                    bottom_navigation_list_event.menu.getItem(vp_list_event.currentItem).isChecked = true
 
                     val mListEventFragment: Fragment? = mItemViewPagerAdapter.getRegisteredFragment(0)
                     mListEventFragment?.let {
@@ -114,6 +114,8 @@ class ListEventActivity : AppCompatActivity(), View.OnClickListener, OnLogOutSys
             }
             return@setOnNavigationItemSelectedListener false
         }
+
+
     }
 
     override fun logOutApplication() {
