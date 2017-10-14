@@ -63,7 +63,7 @@ fun loadPhotoProfileUser(context: Context, url: String?, im: ImageView) {
             .placeholder(R.mipmap.ic_launcher)
             .transform(CircleCrop())
             .diskCacheStrategy(DiskCacheStrategy.ALL)
-            .override(300, 300)
+            .override(350, 350)
 
     Glide.with(context).load(url).apply(requestOption).into(im)
 }

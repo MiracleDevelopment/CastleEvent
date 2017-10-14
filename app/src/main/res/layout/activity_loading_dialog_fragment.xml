@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
     tools:context="com.ipati.dev.castleevent.fragment.loading.LoadingDialogFragment">
 
     <LinearLayout
@@ -17,19 +19,25 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/circular"
             android:gravity="center_horizontal"
-            android:padding="10dp"
+            android:padding="5dp"
             android:text="ระบบกำลังดำเนินการ"
-            android:textColor="#000"
+            android:textColor="#FFF"
             android:textSize="30sp" />
 
-        <ProgressBar
-            android:id="@+id/pb_loading_progressbar"
-            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        <TextView
+            android:id="@+id/tv_loading_progress_dialog_fragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:indeterminate="true"
-            android:padding="10dp"
-            android:progress="50" />
+            android:fontFamily="@font/circular"
+            android:gravity="center_horizontal"
+            android:textColor="#FFF"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lottie_view_animation_loading_dialog"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
     </LinearLayout>
 </LinearLayout>

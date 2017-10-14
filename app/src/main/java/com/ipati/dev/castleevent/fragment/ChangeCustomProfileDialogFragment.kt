@@ -19,6 +19,7 @@ class ChangeCustomProfileDialogFragment : DialogFragment(), View.OnClickListener
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mUserChangeProfile = UserProfileUpdate(context, activity)
+
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -28,6 +29,7 @@ class ChangeCustomProfileDialogFragment : DialogFragment(), View.OnClickListener
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+
         requestCodeObject()
 
         ed_record_profile.setOnClickListener { viewRecord -> onClick(viewRecord) }
@@ -83,8 +85,11 @@ class ChangeCustomProfileDialogFragment : DialogFragment(), View.OnClickListener
                 when (arguments.getInt(codeObject)) {
                     RequestUsername -> {
                         mUserChangeProfile.onValidateUsername(ed_input_edit.toStrEditText())
+
                         when {
-                            mUserChangeProfile.statusUsername() == "Success" -> dialog.dismiss()
+                            mUserChangeProfile.statusUsername() == "Success" -> {
+                                dialog.dismiss()
+                            }
                             else -> {
                                 ed_input_edit.error = mUserChangeProfile.statusUsername()
                             }
@@ -95,6 +100,7 @@ class ChangeCustomProfileDialogFragment : DialogFragment(), View.OnClickListener
                         mUserChangeProfile.onValidatePassword(ed_input_edit.toStrEditText()
                                 , ed_confirm_password.toStrEditText())
 
+
                         if (mUserChangeProfile.statusPassword() == "Success") {
                             dialog.dismiss()
                         }
@@ -102,6 +108,7 @@ class ChangeCustomProfileDialogFragment : DialogFragment(), View.OnClickListener
                         if (mUserChangeProfile.statusPassword() == "Missing Not Match") {
                             ed_input_edit.error = mUserChangeProfile.statusPassword()
                             ed_confirm_password.error = mUserChangeProfile.statusPasswordConfirm()
+
                         }
 
                         if (mUserChangeProfile.statusPassword() == "isEmpty") {
@@ -123,8 +130,12 @@ class ChangeCustomProfileDialogFragment : DialogFragment(), View.OnClickListener
 
                     RequestEmail -> {
                         mUserChangeProfile.onValidateEmail(ed_input_edit.toStrEditText())
+
                         when {
-                            mUserChangeProfile.statusEmail() == "Success" -> dialog.dismiss()
+                            mUserChangeProfile.statusEmail() == "Success" -> {
+                                dialog.dismiss()
+                            }
+
                             mUserChangeProfile.statusEmail() == "isEmpty" -> {
                                 ed_input_edit.error = mUserChangeProfile.statusEmail()
                             }

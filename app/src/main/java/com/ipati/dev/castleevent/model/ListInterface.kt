@@ -39,8 +39,12 @@ interface OnLogOutSystem {
     fun logOutApplication()
 }
 
-interface OnUpdateInfomation {
+interface OnUpdateInformation {
     fun setDataChange(mItemListEvent: ItemListEvent)
+}
+
+interface OnProgressPhotoUser {
+    fun setProgressUserPhoto(progress: Int)
 }
 
 

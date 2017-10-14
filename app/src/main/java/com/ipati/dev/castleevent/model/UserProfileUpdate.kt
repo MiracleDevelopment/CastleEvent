@@ -26,6 +26,7 @@ class UserProfileUpdate(context: Context, activity: FragmentActivity) {
     private lateinit var mUserRequestChangeProfile: UserProfileChangeRequest
     private lateinit var mLoadingDialogFragment: LoadingDialogFragment
     private lateinit var mOnDismissDialogFragment: DismissDialogFragment
+    private lateinit var onChangeProgressUserPhoto: OnProgressPhotoUser
     private lateinit var mUploadTask: UploadTask
     private lateinit var mStatusUsername: String
     private lateinit var mStatusPassword: String
@@ -94,13 +95,24 @@ class UserProfileUpdate(context: Context, activity: FragmentActivity) {
     }
 
     fun onUpdatePhotoUser(path: Uri) {
+        mLoadingDialogFragment = LoadingDialogFragment.newInstance("กำลังอัพเดทโปรไฟล์ของคุณ...", true)
+        mLoadingDialogFragment.onShowDialog(mActivity)
+
         val storageReference: StorageReference = fireBaseStorage.child("userProfile").child(uid.toString()).child(path.lastPathSegment)
         mUploadTask = storageReference.putFile(path).addOnSuccessListener { taskSnapshot: UploadTask.TaskSnapshot? ->
             taskSnapshot?.let {
                 onUpdateProfile(taskSnapshot.downloadUrl)
             }
+
         }.addOnFailureListener { exception ->
+
+            mLoadingDialogFragment.dismiss()
             Toast.makeText(mContext, exception.message.toString(), Toast.LENGTH_SHORT).show()
+
+        }.addOnProgressListener { taskSnapshot ->
+            onChangeProgressUserPhoto = mContext as ProfileUserActivity
+            onChangeProgressUserPhoto.setProgressUserPhoto(((100 * taskSnapshot.bytesTransferred) / taskSnapshot.totalByteCount).toInt())
+
         } as UploadTask
     }
 
@@ -110,6 +122,7 @@ class UserProfileUpdate(context: Context, activity: FragmentActivity) {
             if (task.isSuccessful) {
                 mOnDismissDialogFragment = mContext as ProfileUserActivity
                 mOnDismissDialogFragment.onChangeProfile(uri.toString(), 1004)
+                mLoadingDialogFragment.dismiss()
 
                 photoUrl = uri.toString()
             }
@@ -121,7 +134,7 @@ class UserProfileUpdate(context: Context, activity: FragmentActivity) {
     fun onValidateUsername(mUsername: String) {
         if (!TextUtils.isEmpty(username)) {
             if (mUsername != username) {
-                mLoadingDialogFragment = LoadingDialogFragment.newInstance(msgAlertDialog)
+                mLoadingDialogFragment = LoadingDialogFragment.newInstance(msgAlertDialog, false)
                 mLoadingDialogFragment.onShowDialog(activity = mActivity)
                 onUpdateUsername(mUsername)
                 mStatusUsername = "Success"
@@ -138,7 +151,7 @@ class UserProfileUpdate(context: Context, activity: FragmentActivity) {
     }
 
     fun onValidatePassword(password: String, mConfirmPassword: String) {
-        mLoadingDialogFragment = LoadingDialogFragment.newInstance(msgAlertDialog)
+        mLoadingDialogFragment = LoadingDialogFragment.newInstance(msgAlertDialog, false)
         if (!TextUtils.isEmpty(password) && !TextUtils.isEmpty(mConfirmPassword)) {
             if (password.length >= 6 && mConfirmPassword.length >= 6) {
                 if (password == mConfirmPassword) {
@@ -190,8 +203,8 @@ class UserProfileUpdate(context: Context, activity: FragmentActivity) {
                 if (email != userEmail) {
                     onUpdateEmail(email)
                     mStatusEmail = "Success"
-                    mLoadingDialogFragment = LoadingDialogFragment.newInstance(msgAlertDialog)
-                    mLoadingDialogFragment.onShowDialog(mActivity)
+                    mLoadingDialogFragment = LoadingDialogFragment.newInstance(msgAlertDialog, false)
+                    mLoadingDialogFragment.onShowDialog(activity = mActivity)
                 } else {
                     mStatusEmail = "This not Change"
                 }

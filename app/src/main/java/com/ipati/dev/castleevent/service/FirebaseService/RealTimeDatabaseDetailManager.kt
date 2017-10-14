@@ -2,15 +2,13 @@ package com.ipati.dev.castleevent.service.FirebaseService
 
 import android.arch.lifecycle.Lifecycle
 import android.arch.lifecycle.LifecycleObserver
-import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.OnLifecycleEvent
 import android.content.Context
-import android.util.Log
 import android.widget.Toast
 import com.google.firebase.database.*
 import com.ipati.dev.castleevent.fragment.ListDetailEventFragment
 import com.ipati.dev.castleevent.model.LoadingDetailData
-import com.ipati.dev.castleevent.model.OnUpdateInfomation
+import com.ipati.dev.castleevent.model.OnUpdateInformation
 import com.ipati.dev.castleevent.model.modelListEvent.ItemListEvent
 
 
@@ -20,7 +18,7 @@ class RealTimeDatabaseDetailManager(context: Context, lifecycle: Lifecycle, even
     private var mEventId: Long? = null
     var mListDetailEventFragment: ListDetailEventFragment? = null
     var onItemListDataChange: LoadingDetailData? = null
-    var onItemUpdateDataChange: OnUpdateInfomation? = null
+    var onItemUpdateDataChange: OnUpdateInformation? = null
 
     lateinit var mChildEvent: ChildEventListener
     private var realTimeDataDetail: DatabaseReference = FirebaseDatabase.getInstance().reference
@@ -59,7 +57,7 @@ class RealTimeDatabaseDetailManager(context: Context, lifecycle: Lifecycle, even
             override fun onChildChanged(p0: DataSnapshot?, p1: String?) {
                 val mItemListEvent: ItemListEvent? = p0?.getValue(ItemListEvent::class.java)
                 mItemListEvent?.let {
-                    onItemUpdateDataChange = mListDetailEventFragment as OnUpdateInfomation
+                    onItemUpdateDataChange = mListDetailEventFragment as OnUpdateInformation
                     onItemUpdateDataChange?.setDataChange(mItemListEvent)
 
                 }

@@ -29,12 +29,10 @@ import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecovera
 import com.google.api.client.http.HttpTransport
 import com.google.api.client.json.JsonFactory
 import com.google.api.client.json.jackson2.JacksonFactory
-import com.google.api.client.util.Data
 import com.google.api.client.util.ExponentialBackOff
 import com.google.api.services.calendar.Calendar
 import com.google.api.services.calendar.CalendarScopes
 import com.google.api.services.calendar.model.Event
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.ipati.dev.castleevent.BuildConfig
 import com.ipati.dev.castleevent.base.BaseFragment
@@ -48,7 +46,7 @@ import com.ipati.dev.castleevent.model.Glide.loadPhotoDetail
 import com.ipati.dev.castleevent.model.GoogleCalendar.*
 import com.ipati.dev.castleevent.model.GoogleCalendar.CalendarFragment.CalendarManager
 import com.ipati.dev.castleevent.model.LoadingDetailData
-import com.ipati.dev.castleevent.model.OnUpdateInfomation
+import com.ipati.dev.castleevent.model.OnUpdateInformation
 import com.ipati.dev.castleevent.model.gmsLocation.GooglePlayServiceMapManager
 import com.ipati.dev.castleevent.model.modelListEvent.ItemListEvent
 import com.ipati.dev.castleevent.model.userManage.username
@@ -64,7 +62,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfomation, View.OnClickListener {
+class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInformation, View.OnClickListener {
     private var REQUEST_ACCOUNT: Int = 1112
     private var REQUEST_GOOGLE_PLAY: Int = 1121
     private var REQUEST_PERMISSION_ACCOUNT: Int = 1111

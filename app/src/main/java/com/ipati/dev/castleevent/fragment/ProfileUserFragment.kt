@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.view.*
 import com.ipati.dev.castleevent.R
+import com.ipati.dev.castleevent.fragment.loading.LoadingDialogFragment
 import com.ipati.dev.castleevent.model.Glide.loadPhotoUserProfile
 import com.ipati.dev.castleevent.model.UserProfileUpdate
 import com.ipati.dev.castleevent.model.userManage.photoUrl
@@ -121,7 +122,6 @@ class ProfileUserFragment : Fragment(), View.OnClickListener {
     fun onChangeUserPhoto(mUserUri: String) {
         loadPhotoUserProfile(context, mUserUri, im_edit_photo_profile)
     }
-
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)

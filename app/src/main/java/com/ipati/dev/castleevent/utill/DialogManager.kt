@@ -12,7 +12,7 @@ class DialogManager(activity: FragmentActivity) {
     private lateinit var mConfirmAddCalendar: ConfigShowSettingPermissionDialogFragment
 
     fun onShowLoadingDialog(title: String): LoadingDialogFragment {
-        mLoadingDialog = LoadingDialogFragment.newInstance(title)
+        mLoadingDialog = LoadingDialogFragment.newInstance(title, false)
         return mLoadingDialog.apply {
             show(mActivity.supportFragmentManager, "LoadingFragment")
         }
@@ -39,6 +39,4 @@ class DialogManager(activity: FragmentActivity) {
             show(mActivity.supportFragmentManager, "ConfirmAddCalendar")
         }
     }
-
-
 }

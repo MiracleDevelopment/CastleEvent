@@ -15,12 +15,18 @@ import android.view.*
 import android.widget.Toast
 import com.facebook.drawee.drawable.ScalingUtils
 import com.facebook.drawee.view.DraweeTransition
+import com.google.android.gms.auth.api.Auth
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.messaging.FirebaseMessaging
 import com.ipati.dev.castleevent.adapter.ItemViewPagerAdapter
 import com.ipati.dev.castleevent.fragment.ListEventFragment
 import com.ipati.dev.castleevent.model.OnLogOutSystem
+import com.ipati.dev.castleevent.model.userManage.photoUrl
+import com.ipati.dev.castleevent.model.userManage.uid
+import com.ipati.dev.castleevent.model.userManage.userEmail
+import com.ipati.dev.castleevent.model.userManage.username
 import com.ipati.dev.castleevent.service.FirebaseService.RealTimeDatabaseMenuListItem
 import com.ipati.dev.castleevent.service.googleApiClient
 import com.ipati.dev.castleevent.utill.SharePreferenceSettingManager
@@ -31,19 +37,41 @@ class ListEventActivity : AppCompatActivity(), View.OnClickListener, OnLogOutSys
     private lateinit var realTimeDatabaseMenuList: RealTimeDatabaseMenuListItem
     private lateinit var mItemViewPagerAdapter: ItemViewPagerAdapter
     private lateinit var sharePreferenceManager: SharePreferenceSettingManager
+    private lateinit var mAuth: FirebaseAuth
+    private lateinit var mAuthListener: FirebaseAuth.AuthStateListener
     private var mLifeCycleRegistry: LifecycleRegistry = LifecycleRegistry(this)
     private var doubleTwiceBackPress: Boolean = false
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list_event)
+        mAuth = FirebaseAuth.getInstance()
+        mAuth.addAuthStateListener(onChangeStateLogin())
 
         realTimeDatabaseMenuList = RealTimeDatabaseMenuListItem(applicationContext, lifecycle)
         sharePreferenceManager = SharePreferenceSettingManager(context = applicationContext)
-
+        onChangeStateLogin()
         initialViewPager()
         initialBottomNavigationBar()
 
         Log.d("tokenFireBase", FirebaseInstanceId.getInstance().token.toString())
+    }
+
+    private fun onChangeStateLogin(): FirebaseAuth.AuthStateListener {
+        mAuthListener = FirebaseAuth.AuthStateListener { firebaseAuth: FirebaseAuth? ->
+            firebaseAuth?.let {
+                val firebaseUser: FirebaseUser? = firebaseAuth.currentUser
+                firebaseUser?.let {
+                    uid = firebaseUser.uid
+                    username = firebaseUser.displayName
+                    userEmail = firebaseUser.email
+                    photoUrl = firebaseUser.photoUrl.toString()
+                }
+            }
+        }
+
+        return mAuthListener
     }
 
 
@@ -141,6 +169,11 @@ class ListEventActivity : AppCompatActivity(), View.OnClickListener, OnLogOutSys
 
     override fun getLifecycle(): LifecycleRegistry {
         return mLifeCycleRegistry
+    }
+
+    override fun onStop() {
+        super.onStop()
+        mAuth.removeAuthStateListener(mAuthListener)
     }
 
 
