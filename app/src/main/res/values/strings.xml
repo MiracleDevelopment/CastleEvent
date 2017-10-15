@@ -51,4 +51,5 @@
     <string name="expiredTickets">ขออภัยบัตรหมดแล้วค่ะ</string>
     <string name="lessAfterDate">ขออภัยเลยกำหนดในการจองแล้วค่ะ</string>
     <string name="pleaseLogin">กรุณาเข้าสู่ระบบ</string>
+    <string name="closeEvent">ปิดการจำหน่ายตั๋วบัตรแล้วค่ะ</string>
 </resources>

@@ -227,6 +227,10 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
                     Toast.makeText(context, tv_receive_tickets.text, Toast.LENGTH_SHORT).show()
                 }
 
+                resources.getString(R.string.closeEvent) -> {
+                    Toast.makeText(context, tv_receive_tickets.text, Toast.LENGTH_SHORT).show()
+                }
+
                 else -> {
                     mCalendarTimeStamp.timeZone = TimeZone.getDefault()
                     val msg = "คุณต้องการจองบัตร จำนวน " + number_picker.value.toString() + " ใบ" + "\n" + " ใช่ / ไม่"
@@ -335,6 +339,8 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
                 }
             } else if (Date().after(mCalendarManager.formatDateTimeStartEvent(endCalendar!!))) {
                 setReceiveTicketsDisable(resources.getString(R.string.lessAfterDate))
+            } else {
+                setReceiveTicketsDisable(resources.getString(R.string.closeEvent))
             }
         } else {
             setReceiveTicketsDisable(resources.getString(R.string.pleaseLogin))

@@ -9,7 +9,7 @@ import java.util.*
 var publicFacebookTag: String = "public_profile"
 var cancelMsg: String = "Cancel"
 
-fun LoginFacebook(activity: LoginFragment) {
+fun loginFacebook(activity: LoginFragment) {
     LoginManager.getInstance().logInWithReadPermissions(activity, Arrays.asList(publicFacebookTag, "email"))
 }
 

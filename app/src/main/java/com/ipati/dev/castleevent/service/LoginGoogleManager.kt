@@ -53,6 +53,6 @@ fun googleApiService(activity: FragmentActivity): GoogleApiClient? {
     return googleApiClient
 }
 
-fun callbackGoogleSignIn(activity: Activity, result: GoogleSignInAccount, mGoogleSharedPreferences: SharePreferenceGoogleSignInManager) {
+fun callbackGoogleSignIn(activity: FragmentActivity, result: GoogleSignInAccount, mGoogleSharedPreferences: SharePreferenceGoogleSignInManager) {
     googleAuthCredential(activity, result, mGoogleSharedPreferences)
 }

@@ -41,7 +41,7 @@
             android:fontFamily="@font/circular"
             android:padding="5dp"
             android:textColor="@color/colorMenuList"
-            android:textSize="18sp" />
+            android:textSize="22sp" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/user_profile_list_menu"

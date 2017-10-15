@@ -3,12 +3,15 @@ package com.ipati.dev.castleevent.authCredential
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
+import android.support.v4.app.FragmentActivity
 import android.util.Log
 import android.widget.Toast
 import com.facebook.AccessToken
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.firebase.auth.*
 import com.ipati.dev.castleevent.ListEventActivity
+import com.ipati.dev.castleevent.extension.onShowDialog
+import com.ipati.dev.castleevent.fragment.loading.LoadingDialogFragment
 import com.ipati.dev.castleevent.model.userManage.photoUrl
 import com.ipati.dev.castleevent.model.userManage.uid
 import com.ipati.dev.castleevent.model.userManage.userEmail
@@ -17,42 +20,54 @@ import com.ipati.dev.castleevent.utill.SharePreferenceGoogleSignInManager
 import com.twitter.sdk.android.core.TwitterSession
 
 var mAuth: FirebaseAuth = FirebaseAuth.getInstance()
-fun facebookAuthCredential(activity: Activity, token: AccessToken) {
+fun facebookAuthCredential(activity: FragmentActivity, token: AccessToken) {
     val authCredential: AuthCredential = FacebookAuthProvider.getCredential(token.token)
+    val loadingDialogFragment: LoadingDialogFragment = LoadingDialogFragment.newInstance("กำลังล๊อคอินผ่าน Facebook...", false)
+    loadingDialogFragment.onShowDialog(activity)
+
     mAuth.signInWithCredential(authCredential).addOnCompleteListener(activity, { task ->
         if (task.isSuccessful) {
             val fireBaseUser: FirebaseUser = mAuth.currentUser!!
-            updateUserProfile(activity, fireBaseUser, fireBaseUser.displayName, fireBaseUser.photoUrl, fireBaseUser.email)
-            Toast.makeText(activity, fireBaseUser.email.toString(), Toast.LENGTH_SHORT).show()
+            updateUserProfile(activity, fireBaseUser, fireBaseUser.displayName, fireBaseUser.photoUrl, fireBaseUser.email, loadingDialogFragment)
+        } else {
+            loadingDialogFragment.dismiss()
         }
     })
 }
 
-fun twitterAuthCredential(activity: Activity, session: TwitterSession) {
+fun twitterAuthCredential(activity: FragmentActivity, session: TwitterSession) {
     val authCredential: AuthCredential = TwitterAuthProvider.getCredential(session.authToken.token, session.authToken.secret)
+    val loadingDialogFragment: LoadingDialogFragment = LoadingDialogFragment.newInstance("กำลังล๊ลอคอินผ่าน Twitter...", false)
+    loadingDialogFragment.onShowDialog(activity)
+
     mAuth.signInWithCredential(authCredential).addOnCompleteListener(activity, { task ->
         if (task.isSuccessful) {
             val fireBaseUser: FirebaseUser = mAuth.currentUser!!
-            updateUserProfile(activity, fireBaseUser, session.userName, fireBaseUser.photoUrl, fireBaseUser.email)
-            Log.d("userTwitterLogin", session.userName.toString() + " : " + fireBaseUser.photoUrl.toString() + " : " + fireBaseUser.email.toString())
-            Toast.makeText(activity, fireBaseUser.email.toString(), Toast.LENGTH_SHORT).show()
+            updateUserProfile(activity, fireBaseUser, session.userName, fireBaseUser.photoUrl, fireBaseUser.email, loadingDialogFragment)
+
+        } else {
+            loadingDialogFragment.dismiss()
         }
     })
 }
 
-fun googleAuthCredential(activity: Activity, account: GoogleSignInAccount, mGoogleSharedPreferences: SharePreferenceGoogleSignInManager) {
+fun googleAuthCredential(activity: FragmentActivity, account: GoogleSignInAccount, mGoogleSharedPreferences: SharePreferenceGoogleSignInManager) {
     val authCredential: AuthCredential = GoogleAuthProvider.getCredential(account.idToken, null)
+    val loadingDialogFragment: LoadingDialogFragment = LoadingDialogFragment.newInstance("กำลังล๊อคอินผ่าน Google...", false)
+    loadingDialogFragment.onShowDialog(activity)
+
     mAuth.signInWithCredential(authCredential).addOnCompleteListener(activity, { task ->
         if (task.isSuccessful) {
             val fireBaseUser: FirebaseUser = mAuth.currentUser!!
             mGoogleSharedPreferences.sharePreferenceManager(fireBaseUser.email)
-            updateUserProfile(activity, fireBaseUser, fireBaseUser.displayName, fireBaseUser.photoUrl, fireBaseUser.email)
-            Toast.makeText(activity, fireBaseUser.email.toString(), Toast.LENGTH_SHORT).show()
+            updateUserProfile(activity, fireBaseUser, fireBaseUser.displayName, fireBaseUser.photoUrl, fireBaseUser.email, loadingDialogFragment)
+        } else {
+            loadingDialogFragment.dismiss()
         }
     })
 }
 
-fun updateUserProfile(activity: Activity, fireBaseUser: FirebaseUser, nameUser: String?, photoUserUrl: Uri?, mUserEmail: String?) {
+fun updateUserProfile(activity: Activity, fireBaseUser: FirebaseUser, nameUser: String?, photoUserUrl: Uri?, mUserEmail: String?, loadingDialogFragment: LoadingDialogFragment) {
     val userProfileUpdate: UserProfileChangeRequest = UserProfileChangeRequest
             .Builder()
             .setDisplayName(nameUser)
@@ -70,9 +85,14 @@ fun updateUserProfile(activity: Activity, fireBaseUser: FirebaseUser, nameUser: 
                     userEmail = mUserEmail
                     val listEventIntent = Intent(activity, ListEventActivity::class.java)
                     activity.startActivity(listEventIntent)
+                    loadingDialogFragment.dismiss()
                     activity.finish()
+                } else {
+                    loadingDialogFragment.dismiss()
                 }
             }
+        } else {
+            loadingDialogFragment.dismiss()
         }
     }
 }

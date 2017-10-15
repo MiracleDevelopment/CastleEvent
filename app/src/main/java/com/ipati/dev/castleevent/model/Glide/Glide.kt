@@ -63,7 +63,7 @@ fun loadPhotoProfileUser(context: Context, url: String?, im: ImageView) {
             .placeholder(R.mipmap.ic_launcher)
             .transform(CircleCrop())
             .diskCacheStrategy(DiskCacheStrategy.ALL)
-            .override(350, 350)
+            .override(450, 450)
 
     Glide.with(context).load(url).apply(requestOption).into(im)
 }
@@ -97,7 +97,7 @@ fun loadPhotoUserProfile(context: Context, url: String, im: ImageView) {
             .placeholder(R.mipmap.ic_launcher)
             .diskCacheStrategy(DiskCacheStrategy.ALL)
             .circleCrop()
-            .override(350, 350)
+            .override(450, 450)
 
     Glide.with(context).load(url).apply(requestOption).into(im)
 }

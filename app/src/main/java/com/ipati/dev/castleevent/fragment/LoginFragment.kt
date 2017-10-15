@@ -1,6 +1,5 @@
 package com.ipati.dev.castleevent.fragment
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
@@ -9,9 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import com.airbnb.lottie.Cancellable
-import com.airbnb.lottie.LottieAnimationView
-import com.airbnb.lottie.LottieComposition
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
 import com.facebook.FacebookException
@@ -43,7 +39,7 @@ class LoginFragment : BaseFragment(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mGoogleSharePreference = SharePreferenceGoogleSignInManager(context)
-        mLoginAuthManager = LoginAuthManager(context, lifecycle)
+        mLoginAuthManager = LoginAuthManager(activity, lifecycle)
         callbackManager = CallbackManager.Factory.create()
 
         twitterConfig()
@@ -118,7 +114,7 @@ class LoginFragment : BaseFragment(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.im_facebook -> LoginFacebook(this)
+            R.id.im_facebook -> loginFacebook(this)
             R.id.im_twitter -> twitterLoginManager()
             R.id.im_google_plus -> loginGoogleSignInOption(activity)
             R.id.tv_create_account_login -> {
