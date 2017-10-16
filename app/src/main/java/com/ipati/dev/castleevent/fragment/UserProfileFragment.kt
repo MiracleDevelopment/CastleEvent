@@ -75,13 +75,13 @@ class UserProfileFragment : BaseFragment() {
                 mSharePreferenceSettingMenuList.sharePreferenceLanguageManager(b)
 
                 onChangeLanguage = activity as ListEventActivity
-                onChangeLanguage.onChangeLanguage(0)
+                onChangeLanguage.onChangeLanguage(1)
             } else {
                 compoundButton.isChecked = b
                 mSharePreferenceSettingMenuList.sharePreferenceLanguageManager(b)
 
                 onChangeLanguage = activity as ListEventActivity
-                onChangeLanguage.onChangeLanguage(1)
+                onChangeLanguage.onChangeLanguage(0)
             }
         }
 
