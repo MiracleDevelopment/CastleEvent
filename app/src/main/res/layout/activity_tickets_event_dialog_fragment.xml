@@ -72,14 +72,14 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <ImageView
+            <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/im_photo_user"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:adjustViewBounds="true"
-                android:padding="5dp"
-                android:src="@mipmap/ic_launcher" />
+                app:actualImageScaleType="centerCrop"
+                app:placeholderImage="@mipmap/ic_launcher"
+                app:roundAsCircle="true" />
 
             <LinearLayout
                 android:layout_width="wrap_content"

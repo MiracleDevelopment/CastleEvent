@@ -94,21 +94,21 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 
-    <ImageView
+    <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/im_photo_order_event"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="12dp"
-        android:adjustViewBounds="true"
-        android:src="@mipmap/ic_launcher"
+        app:actualImageScaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.08"
         app:layout_constraintLeft_toRightOf="@+id/title_list_my_order_event"
         app:layout_constraintRight_toRightOf="@+id/tv_order_date_time_buy"
         app:layout_constraintTop_toTopOf="@+id/tv_title_order_name_event"
-        app:layout_constraintVertical_bias="0.3" />
+        app:layout_constraintVertical_bias="0.3"
+        app:placeholderImage="@mipmap/ic_launcher" />
 
 
     <TextView

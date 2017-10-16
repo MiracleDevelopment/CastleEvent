@@ -56,14 +56,15 @@
                 android:orientation="vertical"
                 android:padding="5dp">
 
-                <ImageView
+                <com.facebook.drawee.view.SimpleDraweeView
                     android:id="@+id/im_edit_photo_profile"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:adjustViewBounds="true"
                     android:padding="10dp"
-                    android:src="@mipmap/ic_launcher" />
+                    app:actualImageScaleType="centerCrop"
+                    app:placeholderImage="@mipmap/ic_launcher"
+                    app:roundAsCircle="true" />
 
                 <LinearLayout
                     android:layout_width="match_parent"

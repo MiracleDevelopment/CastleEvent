@@ -7,10 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import com.ipati.dev.castleevent.ListEventActivity
 import com.ipati.dev.castleevent.base.BaseFragment
 import com.ipati.dev.castleevent.R
 import com.ipati.dev.castleevent.fragment.loading.LogOutFragmentDialog
-import com.ipati.dev.castleevent.model.Glide.loadPhotoProfileUser
+import com.ipati.dev.castleevent.model.fresco.loadPhotoProfileUser
+import com.ipati.dev.castleevent.model.OnCustomLaguage
 import com.ipati.dev.castleevent.model.userManage.photoUrl
 import com.ipati.dev.castleevent.model.userManage.userEmail
 import com.ipati.dev.castleevent.model.userManage.username
@@ -21,6 +23,7 @@ import kotlinx.android.synthetic.main.activity_user_profile_fragment.*
 class UserProfileFragment : BaseFragment() {
     private lateinit var realTimeDatabaseMenuListItem: RealTimeDatabaseMenuListItem
     private lateinit var mSharePreferenceSettingMenuList: SharePreferenceSettingManager
+    private lateinit var onChangeLanguage: OnCustomLaguage
     private lateinit var mLogOutDialogFragment: LogOutFragmentDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,9 +73,15 @@ class UserProfileFragment : BaseFragment() {
             if (b) {
                 compoundButton.isChecked = b
                 mSharePreferenceSettingMenuList.sharePreferenceLanguageManager(b)
+
+                onChangeLanguage = activity as ListEventActivity
+                onChangeLanguage.onChangeLanguage(0)
             } else {
                 compoundButton.isChecked = b
                 mSharePreferenceSettingMenuList.sharePreferenceLanguageManager(b)
+
+                onChangeLanguage = activity as ListEventActivity
+                onChangeLanguage.onChangeLanguage(1)
             }
         }
 

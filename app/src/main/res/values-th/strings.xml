@@ -5,12 +5,12 @@
     <string name="com.twitter.sdk.android.CONSUMER_SECRET">icMqh1zfD9vhs3uRslXaneRMR4zWIHTeXgT4AnB5rqqaCUs3KF</string>
     <string name="server_client_id">816401657226-jq3a7du27lran3okem2j57l6jnl9q210.apps.googleusercontent.com</string>
     <string name="app_name">CastleEvent</string>
-    <string name="ed_text_email">E-mail</string>
-    <string name="ed_text_password">Password</string>
-    <string name="tv_price_start">STARTING FROM ฿2,000.00</string>
-    <string name="tv_get_tickets">GET TICKETS</string>
+    <string name="ed_text_email">อีเมลล์</string>
+    <string name="ed_text_password">รหัสผ่าน</string>
+    <string name="tv_price_start">ราคาบัตร ฿2,000.00</string>
+    <string name="tv_get_tickets">รับบัตร</string>
     <string name="tv_example_credit">Thai Best Shopping 2017</string>
-    <string name="tv_header_contact">Contact</string>
+    <string name="tv_header_contact">ติดต่อ</string>
     <string name="tv_status_open" translatable="false">เปิด</string>
     <string name="tv_status_close" translatable="false">ปิด</string>
     <string name="tv_count_people" translatable="false">จำนวน</string>
@@ -23,28 +23,28 @@
     <string name="LoginReSource" translatable="false">ล๊อคอิน</string>
     <string name="stringTestCalendar" translatable="false">25</string>
     <string name="hind">ซ่อนลิสรายการ</string>
-    <string name="loginPassword">Password</string>
-    <string name="loginUsername">Username</string>
+    <string name="loginPassword">รหัสผ่าน</string>
+    <string name="loginUsername">ชื่อผู้ใช้งาน</string>
     <string name="create_account"><![CDATA[Create Account ->]]></string>
-    <string name="register_phone">Phone</string>
-    <string name="register_re_password">Re-Password</string>
-    <string name="register_password">Password</string>
-    <string name="register_email">Email</string>
-    <string name="register_username">Name - LastName</string>
-    <string name="register_confirm_register">Confirm Register</string>
-    <string name="register">Register</string>
-    <string name="login">Login</string>
-    <string name="language">Language</string>
-    <string name="notification">Notification</string>
-    <string name="header_setting">setting</string>
-    <string name="menu_logout">LogOut</string>
-    <string name="menu_user">User</string>
-    <string name="menu_category">Category</string>
-    <string name="menu_event">Event</string>
-    <string name="header_profile">My Profile</string>
-    <string name="hint_ed_user_name_profile">Username</string>
-    <string name="hint_phone_profile">Password</string>
-    <string name="hint_email_profile">E-mail</string>
+    <string name="register_phone">เบอร์โทรศัพท์</string>
+    <string name="register_re_password">ระบุพาสเวิร์ดอีกครั้ง</string>
+    <string name="register_password">พาสเวิร์ค</string>
+    <string name="register_email">อีเมลล์</string>
+    <string name="register_username">ชื่อ - นามสกุล</string>
+    <string name="register_confirm_register">ยืนยันการสมัครสมาชิก</string>
+    <string name="register">สมัครสมาชิค</string>
+    <string name="login">ล๊อคอิน</string>
+    <string name="language">ภาษา</string>
+    <string name="notification">การแจ้งเตือน</string>
+    <string name="header_setting">ตั้งค่า</string>
+    <string name="menu_logout">ออกจากระบบ</string>
+    <string name="menu_user">ผู้ใช้งาน</string>
+    <string name="menu_category">หมวดหมู่</string>
+    <string name="menu_event">อีเว้น</string>
+    <string name="header_profile">โปรไฟล์ของคุณ</string>
+    <string name="hint_ed_user_name_profile">ชื่อผู้ใช้งาน</string>
+    <string name="hint_phone_profile">พาสเวิร์ค</string>
+    <string name="hint_email_profile">อีเมลล์</string>
     <string name="text_button_edit_profile" translatable="false">กลับสู่หน้าหลัก</string>
     <string name="cancel_dialog_logout" translatable="false">ยกเลิก</string>
     <string name="accept_diaog_logout" translatable="false">ตกลง</string>

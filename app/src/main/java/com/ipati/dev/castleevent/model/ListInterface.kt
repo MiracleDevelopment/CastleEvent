@@ -47,5 +47,9 @@ interface OnProgressPhotoUser {
     fun setProgressUserPhoto(progress: Int)
 }
 
+interface OnCustomLaguage {
+    fun onChangeLanguage(language: Int)
+}
+
 
 

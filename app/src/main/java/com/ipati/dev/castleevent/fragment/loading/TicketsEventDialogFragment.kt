@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.view.Window
 import com.ipati.dev.castleevent.R
 import com.ipati.dev.castleevent.model.GenerateQrCode
-import com.ipati.dev.castleevent.model.Glide.loadPhotoUserTickets
+import com.ipati.dev.castleevent.model.fresco.loadPhotoUserTickets
 import kotlinx.android.synthetic.main.activity_tickets_event_dialog_fragment.*
 
 class TicketsEventDialogFragment : DialogFragment() {

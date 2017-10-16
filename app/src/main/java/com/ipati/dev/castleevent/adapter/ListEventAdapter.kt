@@ -1,22 +1,17 @@
 package com.ipati.dev.castleevent.adapter
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.drawable.RippleDrawable
-import android.net.Uri
-import android.os.Build
-import android.os.Handler
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewCompat
 import android.support.v7.widget.RecyclerView
 import android.view.*
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import android.widget.Toast
 import com.ipati.dev.castleevent.R
 import com.ipati.dev.castleevent.extension.getStringResource
-import com.ipati.dev.castleevent.model.Glide.loadPhoto
+import com.ipati.dev.castleevent.model.fresco.loadPhoto
 import com.ipati.dev.castleevent.model.LoadingDetailEvent
 import com.ipati.dev.castleevent.model.OnCancelAnimationTouch
 import com.ipati.dev.castleevent.model.modelListEvent.ItemListEvent

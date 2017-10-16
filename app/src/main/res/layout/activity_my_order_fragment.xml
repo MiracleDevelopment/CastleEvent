@@ -34,7 +34,7 @@
                 android:layout_centerVertical="true"
                 android:fontFamily="@font/circular"
                 android:gravity="center_vertical"
-                android:text="My Order"
+                android:text="@string/my_order"
                 android:textColor="@color/colorHeaderMyOrder"
                 android:textSize="32sp"
                 android:textStyle="bold" />

@@ -6,22 +6,17 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.support.v4.app.Fragment
-import android.support.v4.app.SharedElementCallback
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
-import android.transition.Transition
 import android.util.Log
 import android.view.*
 import android.widget.Toast
-import com.facebook.drawee.drawable.ScalingUtils
-import com.facebook.drawee.view.DraweeTransition
-import com.google.android.gms.auth.api.Auth
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.iid.FirebaseInstanceId
-import com.google.firebase.messaging.FirebaseMessaging
 import com.ipati.dev.castleevent.adapter.ItemViewPagerAdapter
 import com.ipati.dev.castleevent.fragment.ListEventFragment
+import com.ipati.dev.castleevent.model.OnCustomLaguage
 import com.ipati.dev.castleevent.model.OnLogOutSystem
 import com.ipati.dev.castleevent.model.userManage.photoUrl
 import com.ipati.dev.castleevent.model.userManage.uid
@@ -33,7 +28,9 @@ import com.ipati.dev.castleevent.utill.SharePreferenceSettingManager
 import kotlinx.android.synthetic.main.activity_list_event.*
 import kotlinx.android.synthetic.main.bottom_navigation_layout.*
 
-class ListEventActivity : AppCompatActivity(), View.OnClickListener, OnLogOutSystem {
+class ListEventActivity : AppCompatActivity(), View.OnClickListener, OnLogOutSystem, OnCustomLaguage {
+
+
     private lateinit var realTimeDatabaseMenuList: RealTimeDatabaseMenuListItem
     private lateinit var mItemViewPagerAdapter: ItemViewPagerAdapter
     private lateinit var sharePreferenceManager: SharePreferenceSettingManager
@@ -111,6 +108,12 @@ class ListEventActivity : AppCompatActivity(), View.OnClickListener, OnLogOutSys
             when (item.itemId) {
                 R.id.itemListEvent -> {
                     vp_list_event.currentItem = 0
+                    val listEventFragment: Fragment? = mItemViewPagerAdapter.getRegisteredFragment(vp_list_event.currentItem)
+                    listEventFragment?.let {
+                        (listEventFragment as ListEventFragment).apply {
+                            onDisableBottomSheetCategory()
+                        }
+                    }
                     return@setOnNavigationItemSelectedListener true
                 }
 
@@ -145,6 +148,19 @@ class ListEventActivity : AppCompatActivity(), View.OnClickListener, OnLogOutSys
 
 
     }
+
+    override fun onChangeLanguage(language: Int) {
+        Toast.makeText(applicationContext, language.toString(), Toast.LENGTH_SHORT).show()
+        when (language) {
+            0 -> {
+
+            }
+            1 -> {
+
+            }
+        }
+    }
+
 
     override fun logOutApplication() {
         FirebaseAuth.getInstance().signOut()

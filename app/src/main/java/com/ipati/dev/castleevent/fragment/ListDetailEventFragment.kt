@@ -39,10 +39,10 @@ import com.ipati.dev.castleevent.base.BaseFragment
 import com.ipati.dev.castleevent.R
 import com.ipati.dev.castleevent.extension.matrixHeightPx
 import com.ipati.dev.castleevent.extension.matrixWidthPx
-import com.ipati.dev.castleevent.model.Glide.loadGoogleMapStatic
-import com.ipati.dev.castleevent.model.Glide.loadLogo
-import com.ipati.dev.castleevent.model.Glide.loadPhotoAdvertise
-import com.ipati.dev.castleevent.model.Glide.loadPhotoDetail
+import com.ipati.dev.castleevent.model.fresco.loadGoogleMapStatic
+import com.ipati.dev.castleevent.model.fresco.loadLogo
+import com.ipati.dev.castleevent.model.fresco.loadPhotoAdvertise
+import com.ipati.dev.castleevent.model.fresco.loadPhotoDetail
 import com.ipati.dev.castleevent.model.GoogleCalendar.*
 import com.ipati.dev.castleevent.model.GoogleCalendar.CalendarFragment.CalendarManager
 import com.ipati.dev.castleevent.model.LoadingDetailData
@@ -266,7 +266,7 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
     override fun setDataChange(mItemListEvent: ItemListEvent) {
         loadPhotoDetail(context, mItemListEvent.eventCover, im_detail_cover)
         loadPhotoAdvertise(context, mItemListEvent.eventAdvertise, im_advertise_detail)
-        loadLogo(context, mItemListEvent.eventLogoCredit, im_logo_credit_detail)
+        loadLogo(context, mItemListEvent.eventLogoCredit, im_logo_owner_event)
         loadGoogleMapStatic(context, mItemListEvent.eventLatitude, mItemListEvent.eventLongitude, im_static_map)
 
         tv_detail_time.text = mItemListEvent.eventTime
@@ -298,7 +298,7 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
     private fun setOnDetailEvent(itemListEvent: ItemListEvent) {
         loadPhotoDetail(context, itemListEvent.eventCover, im_detail_cover)
         loadPhotoAdvertise(context, itemListEvent.eventAdvertise, im_advertise_detail)
-        loadLogo(context, itemListEvent.eventLogoCredit, im_logo_credit_detail)
+        loadLogo(context, itemListEvent.eventLogoCredit, im_logo_owner_event)
         loadGoogleMapStatic(context, itemListEvent.eventLatitude, itemListEvent.eventLongitude, im_static_map)
 
         tv_detail_time.text = itemListEvent.eventTime

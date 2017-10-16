@@ -11,18 +11,18 @@
     <string name="tv_get_tickets">GET TICKETS</string>
     <string name="tv_example_credit">Thai Best Shopping 2017</string>
     <string name="tv_header_contact">Contact</string>
-    <string name="tv_status_open" translatable="false">เปิด</string>
-    <string name="tv_status_close" translatable="false">ปิด</string>
-    <string name="tv_count_people" translatable="false">จำนวน</string>
-    <string name="tv_people" translatable="false">คน</string>
-    <string name="tv_location" translatable="false">สถานที่:</string>
-    <string name="tv_time" translatable="false">เวลา:</string>
-    <string name="detail" translatable="false">รายละเอียด</string>
-    <string name="open_drawer_layout" translatable="false">ปิด</string>
-    <string name="close_drawer_layout" translatable="false">เปิด</string>
-    <string name="LoginReSource" translatable="false">ล๊อคอิน</string>
-    <string name="stringTestCalendar" translatable="false">25</string>
-    <string name="hind">ซ่อนลิสรายการ</string>
+    <string name="tv_status_open" translatable="true">Open</string>
+    <string name="tv_status_close" translatable="true">Close</string>
+    <string name="tv_count_people" translatable="true">Count</string>
+    <string name="tv_people" translatable="true">People</string>
+    <string name="tv_location" translatable="true">Location:</string>
+    <string name="tv_time" translatable="true">Time:</string>
+    <string name="detail" translatable="true">Description</string>
+    <string name="open_drawer_layout" translatable="true">Close</string>
+    <string name="close_drawer_layout" translatable="true">Open</string>
+    <string name="LoginReSource" translatable="true">Login</string>
+    <string name="stringTestCalendar" translatable="true">25</string>
+    <string name="hind">hind itemList</string>
     <string name="loginPassword">Password</string>
     <string name="loginUsername">Username</string>
     <string name="create_account"><![CDATA[Create Account ->]]></string>
@@ -45,12 +45,12 @@
     <string name="hint_ed_user_name_profile">Username</string>
     <string name="hint_phone_profile">Password</string>
     <string name="hint_email_profile">E-mail</string>
-    <string name="text_button_edit_profile" translatable="false">กลับสู่หน้าหลัก</string>
-    <string name="cancel_dialog_logout" translatable="false">ยกเลิก</string>
-    <string name="accept_diaog_logout" translatable="false">ตกลง</string>
-    <string name="expiredTickets" translatable="false">ขออภัยบัตรหมดแล้วค่ะ</string>
-    <string name="lessAfterDate" translatable="false">ขออภัยเลยกำหนดในการจองแล้วค่ะ</string>
-    <string name="pleaseLogin" translatable="false">กรุณาเข้าสู่ระบบ</string>
-    <string name="closeEvent" translatable="false">ปิดการจำหน่ายตั๋วบัตรแล้วค่ะ</string>
+    <string name="text_button_edit_profile" translatable="false">Back To Main Menu</string>
+    <string name="cancel_dialog_logout" translatable="false">Cancel</string>
+    <string name="accept_diaog_logout" translatable="false">OK</string>
+    <string name="expiredTickets" translatable="false">tickets expired</string>
+    <string name="lessAfterDate" translatable="false">exceeded the time limit</string>
+    <string name="pleaseLogin" translatable="false">please Login</string>
+    <string name="closeEvent" translatable="false">Close</string>
     <string name="my_order">My Order</string>
 </resources>

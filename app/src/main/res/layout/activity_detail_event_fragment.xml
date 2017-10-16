@@ -86,18 +86,21 @@
                     android:textSize="25sp" />
             </LinearLayout>
 
-            <ImageView
+            <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/im_static_map"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:adjustViewBounds="true" />
+                app:placeholderImage="@mipmap/ic_launcher" />
 
-            <ImageView
+            <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/im_advertise_detail"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:padding="25dp" />
+                android:layout_gravity="center_horizontal"
+                android:padding="5dp"
+                app:actualImageScaleType="center"
+                app:placeholderImage="@mipmap/ic_launcher"
+                app:placeholderImageScaleType="center" />
 
             <TextView
                 android:id="@+id/detail_header"
@@ -122,13 +125,14 @@
                 android:textColor="@color/colorFontDetail"
                 android:textSize="20sp" />
 
-            <ImageView
-                android:id="@+id/im_logo_credit_detail"
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/im_logo_owner_event"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:adjustViewBounds="true"
-                android:src="@mipmap/ic_launcher" />
+                app:actualImageScaleType="centerCrop"
+                app:fadeDuration="200"
+                app:placeholderImage="@mipmap/ic_launcher" />
 
             <TextView
                 android:id="@+id/tv_credit_detail"
