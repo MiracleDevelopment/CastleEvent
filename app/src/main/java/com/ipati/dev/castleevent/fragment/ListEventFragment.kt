@@ -49,11 +49,7 @@ class ListEventFragment : BaseFragment() {
         recycler_list_event.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
         recycler_list_event.itemAnimator = DefaultItemAnimator()
         recycler_list_event.adapter = realTimeDatabaseManager.adapterListEvent
-        realTimeDatabaseManager.adapterListEvent?.setOnClickItemEvent(object : LoadingDetailEvent {
-            override fun setOnLoadingDetailEvent(target: View?, eventId: Long) {
 
-            }
-        })
 
         realTimeDatabaseManager.adapterListEvent?.setOnCancelTouchItemEvent(object : OnCancelAnimationTouch {
             override fun setOnCancelTouch(target: View?, widthView: Int, heightView: Int, transitionName: String, eventId: Long) {

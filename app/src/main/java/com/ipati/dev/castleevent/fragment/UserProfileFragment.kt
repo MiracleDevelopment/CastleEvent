@@ -22,14 +22,14 @@ import kotlinx.android.synthetic.main.activity_user_profile_fragment.*
 
 class UserProfileFragment : BaseFragment() {
     private lateinit var realTimeDatabaseMenuListItem: RealTimeDatabaseMenuListItem
-    private lateinit var mSharePreferenceSettingMenuList: SharePreferenceSettingManager
+    private lateinit var sharePreferenceSettingMenuList: SharePreferenceSettingManager
     private lateinit var onChangeLanguage: OnCustomLaguage
-    private lateinit var mLogOutDialogFragment: LogOutFragmentDialog
+    private lateinit var logOutDialogFragment: LogOutFragmentDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         realTimeDatabaseMenuListItem = RealTimeDatabaseMenuListItem(context, lifecycle)
-        mSharePreferenceSettingMenuList = SharePreferenceSettingManager(context)
+        sharePreferenceSettingMenuList = SharePreferenceSettingManager(context)
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -45,9 +45,9 @@ class UserProfileFragment : BaseFragment() {
 
     private fun initialLogOutBt() {
         tv_logout_system.setOnClickListener {
-            mLogOutDialogFragment = LogOutFragmentDialog.newInstance("กรุณายืนยัน", "คุณต้องการออกจากระบบ ใช่ / ไม่")
-            mLogOutDialogFragment.isCancelable = false
-            mLogOutDialogFragment.show(activity.supportFragmentManager, "LogOutDialogFragment")
+            logOutDialogFragment = LogOutFragmentDialog.newInstance("กรุณายืนยัน", "คุณต้องการออกจากระบบ ใช่ / ไม่")
+            logOutDialogFragment.isCancelable = false
+            logOutDialogFragment.show(activity.supportFragmentManager, "LogOutDialogFragment")
         }
     }
 
@@ -66,20 +66,20 @@ class UserProfileFragment : BaseFragment() {
     }
 
     private fun initialSwitchSetting() {
-        switch_language_user_profile.isChecked = mSharePreferenceSettingMenuList.defaultSharePreferenceLanguageManager()!!
-        switch_notification_user_profile.isChecked = mSharePreferenceSettingMenuList.defaultSharePreferenceNotificationManager()!!
+        switch_language_user_profile.isChecked = sharePreferenceSettingMenuList.defaultSharePreferenceLanguageManager()!!
+        switch_notification_user_profile.isChecked = sharePreferenceSettingMenuList.defaultSharePreferenceNotificationManager()!!
 
         switch_language_user_profile.setOnCheckedChangeListener { compoundButton, b ->
             if (b) {
                 compoundButton.isChecked = b
-                mSharePreferenceSettingMenuList.sharePreferenceLanguageManager(b)
+                sharePreferenceSettingMenuList.sharePreferenceLanguageManager(b)
 
                 onChangeLanguage = activity as ListEventActivity
                 onChangeLanguage.onChangeLanguage(1)
 
             } else {
                 compoundButton.isChecked = b
-                mSharePreferenceSettingMenuList.sharePreferenceLanguageManager(b)
+                sharePreferenceSettingMenuList.sharePreferenceLanguageManager(b)
 
                 onChangeLanguage = activity as ListEventActivity
                 onChangeLanguage.onChangeLanguage(0)
@@ -89,10 +89,10 @@ class UserProfileFragment : BaseFragment() {
         switch_notification_user_profile.setOnCheckedChangeListener { compoundButton, b ->
             if (b) {
                 compoundButton.isChecked = b
-                mSharePreferenceSettingMenuList.sharePreferenceNotificationManager(b)
+                sharePreferenceSettingMenuList.sharePreferenceNotificationManager(b)
             } else {
                 compoundButton.isChecked = b
-                mSharePreferenceSettingMenuList.sharePreferenceNotificationManager(b)
+                sharePreferenceSettingMenuList.sharePreferenceNotificationManager(b)
             }
         }
     }

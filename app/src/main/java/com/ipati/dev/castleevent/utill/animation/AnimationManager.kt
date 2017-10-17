@@ -80,6 +80,7 @@ class AnimationManager(context: Context, activity: FragmentActivity) : Animator.
     override fun onAnimationEnd(p0: Animator?) {
         mEventId?.let {
             mItemView?.let {
+
                 val intentAnimation = Intent(mContext, ListDetailEventActivity::class.java)
 
                 val activityOptionsCompat: ActivityOptionsCompat = ActivityOptionsCompat

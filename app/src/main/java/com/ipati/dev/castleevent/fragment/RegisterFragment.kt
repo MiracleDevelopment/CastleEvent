@@ -1,7 +1,6 @@
 package com.ipati.dev.castleevent.fragment
 
 
-import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -25,14 +24,14 @@ import java.lang.Exception
 
 class RegisterFragment : Fragment() {
     private lateinit var registerManager: RegisterManager
-    private lateinit var mAuth: FirebaseAuth
+    private lateinit var auth: FirebaseAuth
     private lateinit var fireBaseUser: FirebaseUser
     private lateinit var fireBaseUpdateProfile: UserProfileChangeRequest
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-        mAuth = FirebaseAuth.getInstance()
+        auth = FirebaseAuth.getInstance()
         registerManager = RegisterManager(context)
     }
 
@@ -142,7 +141,7 @@ class RegisterFragment : Fragment() {
     }
 
     private fun stateRegisterListener(email: String, password: String) {
-        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { resultLogin ->
+        auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { resultLogin ->
             if (resultLogin.isSuccessful) {
                 //todo: Think miss position this
                 fireBaseUser = FirebaseAuth.getInstance().currentUser!!
@@ -183,7 +182,6 @@ class RegisterFragment : Fragment() {
         }
         return super.onOptionsItemSelected(item)
     }
-
 
 
     companion object {

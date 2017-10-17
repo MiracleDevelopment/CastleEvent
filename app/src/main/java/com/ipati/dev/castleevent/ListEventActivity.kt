@@ -31,19 +31,19 @@ import kotlinx.android.synthetic.main.bottom_navigation_layout.*
 
 class ListEventActivity : BaseAppCompatActivity(), View.OnClickListener, OnLogOutSystem, OnCustomLaguage {
     private lateinit var realTimeDatabaseMenuList: RealTimeDatabaseMenuListItem
-    private lateinit var mItemViewPagerAdapter: ItemViewPagerAdapter
+    private lateinit var itemViewPagerAdapter: ItemViewPagerAdapter
     private lateinit var sharePreferenceManager: SharePreferenceSettingManager
-    private lateinit var mAuth: FirebaseAuth
-    private lateinit var mAuthListener: FirebaseAuth.AuthStateListener
-    private var mLifeCycleRegistry: LifecycleRegistry = LifecycleRegistry(this)
+    private lateinit var auth: FirebaseAuth
+    private lateinit var authListener: FirebaseAuth.AuthStateListener
+    private var lifeCycleRegistry: LifecycleRegistry = LifecycleRegistry(this)
     private var doubleTwiceBackPress: Boolean = false
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list_event)
-        mAuth = FirebaseAuth.getInstance()
-        mAuth.addAuthStateListener(onChangeStateLogin())
+        auth = FirebaseAuth.getInstance()
+        auth.addAuthStateListener(onChangeStateLogin())
 
         realTimeDatabaseMenuList = RealTimeDatabaseMenuListItem(applicationContext, lifecycle)
         sharePreferenceManager = SharePreferenceSettingManager(context = applicationContext)
@@ -55,7 +55,7 @@ class ListEventActivity : BaseAppCompatActivity(), View.OnClickListener, OnLogOu
     }
 
     private fun onChangeStateLogin(): FirebaseAuth.AuthStateListener {
-        mAuthListener = FirebaseAuth.AuthStateListener { firebaseAuth: FirebaseAuth? ->
+        authListener = FirebaseAuth.AuthStateListener { firebaseAuth: FirebaseAuth? ->
             firebaseAuth?.let {
                 val firebaseUser: FirebaseUser? = firebaseAuth.currentUser
                 firebaseUser?.let {
@@ -67,13 +67,13 @@ class ListEventActivity : BaseAppCompatActivity(), View.OnClickListener, OnLogOu
             }
         }
 
-        return mAuthListener
+        return authListener
     }
 
 
     private fun initialViewPager() {
-        mItemViewPagerAdapter = ItemViewPagerAdapter(supportFragmentManager)
-        vp_list_event.adapter = mItemViewPagerAdapter
+        itemViewPagerAdapter = ItemViewPagerAdapter(supportFragmentManager)
+        vp_list_event.adapter = itemViewPagerAdapter
 
         vp_list_event.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {
@@ -107,7 +107,7 @@ class ListEventActivity : BaseAppCompatActivity(), View.OnClickListener, OnLogOu
             when (item.itemId) {
                 R.id.itemListEvent -> {
                     vp_list_event.currentItem = 0
-                    val listEventFragment: Fragment? = mItemViewPagerAdapter.getRegisteredFragment(vp_list_event.currentItem)
+                    val listEventFragment: Fragment? = itemViewPagerAdapter.getRegisteredFragment(vp_list_event.currentItem)
                     listEventFragment?.let {
                         (listEventFragment as ListEventFragment).apply {
                             onDisableBottomSheetCategory()
@@ -120,7 +120,7 @@ class ListEventActivity : BaseAppCompatActivity(), View.OnClickListener, OnLogOu
                     vp_list_event.currentItem = 0
                     bottom_navigation_list_event.menu.getItem(vp_list_event.currentItem).isChecked = true
 
-                    val mListEventFragment: Fragment? = mItemViewPagerAdapter.getRegisteredFragment(vp_list_event.currentItem)
+                    val mListEventFragment: Fragment? = itemViewPagerAdapter.getRegisteredFragment(vp_list_event.currentItem)
                     mListEventFragment?.let {
                         (mListEventFragment as ListEventFragment).apply {
                             onShowBottomSheetCategory()
@@ -133,7 +133,7 @@ class ListEventActivity : BaseAppCompatActivity(), View.OnClickListener, OnLogOu
                     vp_list_event.currentItem = 1
                     bottom_navigation_list_event.menu.getItem(vp_list_event.currentItem).isChecked = true
 
-                    val mListEventFragment: Fragment? = mItemViewPagerAdapter.getRegisteredFragment(0)
+                    val mListEventFragment: Fragment? = itemViewPagerAdapter.getRegisteredFragment(0)
                     mListEventFragment?.let {
                         (mListEventFragment as ListEventFragment).apply {
                             onDisableBottomSheetCategory()
@@ -171,7 +171,7 @@ class ListEventActivity : BaseAppCompatActivity(), View.OnClickListener, OnLogOu
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        val fragment: Fragment? = mItemViewPagerAdapter.getRegisteredFragment(vp_list_event.currentItem)
+        val fragment: Fragment? = itemViewPagerAdapter.getRegisteredFragment(vp_list_event.currentItem)
         fragment?.let {
             fragment.onActivityResult(requestCode, resultCode, data)
         }
@@ -185,12 +185,12 @@ class ListEventActivity : BaseAppCompatActivity(), View.OnClickListener, OnLogOu
     }
 
     override fun getLifecycle(): LifecycleRegistry {
-        return mLifeCycleRegistry
+        return lifeCycleRegistry
     }
 
     override fun onStop() {
         super.onStop()
-        mAuth.removeAuthStateListener(mAuthListener)
+        auth.removeAuthStateListener(authListener)
     }
 
 
