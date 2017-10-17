@@ -171,7 +171,7 @@ fun loadGoogleMapStatic(context: Context, latitude: Double, longitude: Double, i
             "&key=AIzaSyBLaTYxYbFsvRkJg3_ayOjZ8-v2kN4qb9o"
 
 
-    val imageRequest: ImageRequest = ImageRequestBuilder.newBuilderWithSource(Uri.parse(photoUrl))
+    val imageRequest: ImageRequest = ImageRequestBuilder.newBuilderWithSource(Uri.parse(queryMapStatic))
             .setLocalThumbnailPreviewsEnabled(true)
             .build()
 
