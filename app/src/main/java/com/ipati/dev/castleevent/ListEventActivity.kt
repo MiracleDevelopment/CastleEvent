@@ -2,7 +2,6 @@ package com.ipati.dev.castleevent
 
 import android.arch.lifecycle.LifecycleRegistry
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.support.v4.app.Fragment
@@ -15,6 +14,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.iid.FirebaseInstanceId
 import com.ipati.dev.castleevent.adapter.ItemViewPagerAdapter
+import com.ipati.dev.castleevent.base.BaseAppCompatActivity
 import com.ipati.dev.castleevent.fragment.ListEventFragment
 import com.ipati.dev.castleevent.model.OnCustomLaguage
 import com.ipati.dev.castleevent.model.OnLogOutSystem
@@ -27,11 +27,9 @@ import com.ipati.dev.castleevent.service.googleApiClient
 import com.ipati.dev.castleevent.utill.SharePreferenceSettingManager
 import kotlinx.android.synthetic.main.activity_list_event.*
 import kotlinx.android.synthetic.main.bottom_navigation_layout.*
-import java.util.*
-
-class ListEventActivity : AppCompatActivity(), View.OnClickListener, OnLogOutSystem, OnCustomLaguage {
 
 
+class ListEventActivity : BaseAppCompatActivity(), View.OnClickListener, OnLogOutSystem, OnCustomLaguage {
     private lateinit var realTimeDatabaseMenuList: RealTimeDatabaseMenuListItem
     private lateinit var mItemViewPagerAdapter: ItemViewPagerAdapter
     private lateinit var sharePreferenceManager: SharePreferenceSettingManager
@@ -150,14 +148,16 @@ class ListEventActivity : AppCompatActivity(), View.OnClickListener, OnLogOutSys
 
     }
 
+
     override fun onChangeLanguage(language: Int) {
         Toast.makeText(applicationContext, language.toString(), Toast.LENGTH_SHORT).show()
         when (language) {
             0 -> {
-
+                setLanguage("th")
             }
-            1 -> {
 
+            1 -> {
+                setLanguage("en")
             }
         }
     }

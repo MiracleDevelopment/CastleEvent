@@ -3,10 +3,11 @@ package com.ipati.dev.castleevent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import com.ipati.dev.castleevent.base.BaseAppCompatActivity
 import com.ipati.dev.castleevent.fragment.MyOrderFragment
 import com.ipati.dev.castleevent.model.LoadingTicketsEvent
 
-class MyOrderActivity : AppCompatActivity(), LoadingTicketsEvent {
+class MyOrderActivity : BaseAppCompatActivity(), LoadingTicketsEvent {
     private var myOrderFragment: Fragment? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
