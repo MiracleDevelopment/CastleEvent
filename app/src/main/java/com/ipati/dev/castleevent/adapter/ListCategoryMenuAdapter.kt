@@ -31,9 +31,7 @@ class ListCategoryMenuAdapter(mListCategory: ArrayList<String>) : RecyclerView.A
         holder?.onBind()
     }
 
-    override fun getItemCount(): Int {
-        return listCategory.count()
-    }
+    override fun getItemCount(): Int = listCategory.count()
 
     fun setOnChangeCategory(loadingCategory: LoadingCategory) {
         this.mOnChangeCategory = loadingCategory

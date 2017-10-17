@@ -21,9 +21,7 @@ class ListEventCalendarAdapter(mListItemShow: ArrayList<EventDetailModel>) : Rec
         holder.onBind()
     }
 
-    override fun getItemCount(): Int {
-        return mListItem.count()
-    }
+    override fun getItemCount(): Int = mListItem.count()
 
 
     inner class CalendarViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

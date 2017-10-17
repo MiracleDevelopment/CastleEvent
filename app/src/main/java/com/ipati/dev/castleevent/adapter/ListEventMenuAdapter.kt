@@ -15,9 +15,7 @@ class ListEventMenuAdapter(listItemMenu: ArrayList<String>) : RecyclerView.Adapt
         holder?.onBind()
     }
 
-    override fun getItemCount(): Int {
-        return mListItemMenu.count()
-    }
+    override fun getItemCount(): Int = mListItemMenu.count()
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
         val view: View = LayoutInflater.from(parent?.context).inflate(R.layout.custom_layout_menu_event_adapter

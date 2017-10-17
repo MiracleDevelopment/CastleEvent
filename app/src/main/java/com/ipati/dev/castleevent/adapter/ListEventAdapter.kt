@@ -22,9 +22,8 @@ class ListEventAdapter(listItem: ArrayList<ItemListEvent>) : RecyclerView.Adapte
     lateinit var gestureDetector: GestureDetector
     lateinit var mOnCancelAnimation: OnCancelAnimationTouch
     lateinit var mRippleDrawable: RippleDrawable
-    override fun getItemCount(): Int {
-        return itemList.count()
-    }
+
+    override fun getItemCount(): Int = itemList.count()
 
     override fun onBindViewHolder(holder: ListEventHolder?, position: Int) {
         holder?.onBind(itemList)

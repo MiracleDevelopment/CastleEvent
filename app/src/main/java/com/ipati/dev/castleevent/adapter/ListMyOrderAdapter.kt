@@ -28,9 +28,7 @@ class ListMyOrderAdapter(mListOrder: ArrayList<RecorderTickets>) : RecyclerView.
         return ListMyOderHolder(view)
     }
 
-    override fun getItemCount(): Int {
-        return mListItem.count()
-    }
+    override fun getItemCount(): Int = mListItem.count()
 
     inner class ListMyOderHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
         override fun onClick(p0: View?) {

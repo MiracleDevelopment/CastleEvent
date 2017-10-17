@@ -190,12 +190,11 @@ class LoginFragment : BaseFragment(), View.OnClickListener {
 
     companion object {
         private var listEventObject: String = "LoginActivity"
-        fun newInstance(Object: String): LoginFragment {
-            val loginFragment = LoginFragment()
-            val bundle = Bundle()
-            bundle.putString(listEventObject, Object)
-            loginFragment.arguments = bundle
-            return loginFragment
+
+        fun newInstance(objects: String): LoginFragment = LoginFragment().apply {
+            arguments = Bundle().apply {
+                putString(listEventObject, objects)
+            }
         }
     }
 }
