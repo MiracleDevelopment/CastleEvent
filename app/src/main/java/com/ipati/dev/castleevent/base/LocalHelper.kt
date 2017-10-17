@@ -1,9 +1,9 @@
 package com.ipati.dev.castleevent.base
 
 import android.content.Context
-import android.content.ContextWrapper
 import android.content.res.Configuration
 import android.os.Build
+import com.google.firebase.auth.FirebaseAuth
 import com.ipati.dev.castleevent.utill.SharePreferenceSettingManager
 import java.util.*
 
@@ -12,14 +12,17 @@ class LocalHelper {
     private lateinit var sharePreferenceSettingManager: SharePreferenceSettingManager
     fun onAttach(context: Context): Context {
         val language: String = Locale.getDefault().language
-        sharePreferenceSettingManager = SharePreferenceSettingManager(context)
+        return FirebaseAuth.getInstance().currentUser?.let {
+            sharePreferenceSettingManager = SharePreferenceSettingManager(context)
 
-        return sharePreferenceSettingManager.defaultSharePreferenceLanguageManager()?.let {
-            if (sharePreferenceSettingManager.defaultSharePreferenceLanguageManager()!!) {
-                return setLocal(context, "en")
-            }
-            return setLocal(context, "th")
-        } ?: setLocal(context, language)
+            sharePreferenceSettingManager.defaultSharePreferenceLanguageManager()?.let {
+                if (sharePreferenceSettingManager.defaultSharePreferenceLanguageManager()!!) {
+                    return setLocal(context, "en")
+                }
+                return setLocal(context, "th")
+            } ?: setLocal(context, language)
+
+        } ?: setLocal(context, "en")
     }
 
     fun onAttach(context: Context, defaultLanguage: String): Context {

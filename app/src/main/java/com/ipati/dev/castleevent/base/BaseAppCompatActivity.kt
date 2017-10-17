@@ -11,7 +11,6 @@ open class BaseAppCompatActivity : AppCompatActivity() {
         super.attachBaseContext(LocalHelper().onAttach(newBase))
     }
 
-
     fun setLanguage(language: String) {
         LocalHelper().setLocal(this, language)
         this.recreate()
