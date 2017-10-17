@@ -5,38 +5,37 @@ import com.ipati.dev.castleevent.fragment.loading.ConfigShowSettingPermissionDia
 import com.ipati.dev.castleevent.fragment.loading.DialogConfirmFragment
 import com.ipati.dev.castleevent.fragment.loading.LoadingDialogFragment
 
-class DialogManager(activity: FragmentActivity) {
-    private var mActivity: FragmentActivity = activity
-    private lateinit var mLoadingDialog: LoadingDialogFragment
-    private lateinit var mConfirmDialog: DialogConfirmFragment
-    private lateinit var mConfirmAddCalendar: ConfigShowSettingPermissionDialogFragment
+class DialogManager(var activity: FragmentActivity) {
+    private lateinit var loadingDialog: LoadingDialogFragment
+    private lateinit var confirmDialog: DialogConfirmFragment
+    private lateinit var confirmAddCalendar: ConfigShowSettingPermissionDialogFragment
 
     fun onShowLoadingDialog(title: String): LoadingDialogFragment {
-        mLoadingDialog = LoadingDialogFragment.newInstance(title, false)
-        return mLoadingDialog.apply {
-            show(mActivity.supportFragmentManager, "LoadingFragment")
+        loadingDialog = LoadingDialogFragment.newInstance(title, false)
+        return loadingDialog.apply {
+            show(activity.supportFragmentManager, "LoadingFragment")
         }
     }
 
     fun onShowConfirmDialog(msg: String): DialogConfirmFragment {
-        mConfirmDialog = DialogConfirmFragment.newInstance(msg)
-        return mConfirmDialog.apply {
-            show(mActivity.supportFragmentManager, "ConfirmFragment")
+        confirmDialog = DialogConfirmFragment.newInstance(msg)
+        return confirmDialog.apply {
+            show(activity.supportFragmentManager, "ConfirmFragment")
         }
     }
 
     fun onDismissLoadingDialog() {
-        return mLoadingDialog.dismiss()
+        return loadingDialog.dismiss()
     }
 
     fun onDismissConfirmDialog() {
-        return mConfirmDialog.dismiss()
+        return confirmDialog.dismiss()
     }
 
     fun onShowConfirmDialogCalendar(title: String, msg: String): ConfigShowSettingPermissionDialogFragment {
-        mConfirmAddCalendar = ConfigShowSettingPermissionDialogFragment.newInstance(title, msg)
-        return mConfirmAddCalendar.apply {
-            show(mActivity.supportFragmentManager, "ConfirmAddCalendar")
+        confirmAddCalendar = ConfigShowSettingPermissionDialogFragment.newInstance(title, msg)
+        return confirmAddCalendar.apply {
+            show(activity.supportFragmentManager, "ConfirmAddCalendar")
         }
     }
 }

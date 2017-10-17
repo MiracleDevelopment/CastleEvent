@@ -71,10 +71,8 @@ class MyOrderFragment : BaseFragment() {
     }
 
     companion object {
-        fun newInstance(): MyOrderFragment {
-            return MyOrderFragment().apply {
-                arguments = Bundle()
-            }
+        fun newInstance(): MyOrderFragment = MyOrderFragment().apply {
+            arguments = Bundle()
         }
     }
 }
