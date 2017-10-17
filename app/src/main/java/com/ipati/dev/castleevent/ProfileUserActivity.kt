@@ -7,13 +7,14 @@ import android.os.Bundle
 import android.support.v4.app.DialogFragment
 import android.support.v4.app.Fragment
 import android.widget.Toast
+import com.ipati.dev.castleevent.base.BaseAppCompatActivity
 import com.ipati.dev.castleevent.extension.onShowDialog
 import com.ipati.dev.castleevent.fragment.ProfileUserFragment
 import com.ipati.dev.castleevent.fragment.loading.LoadingDialogFragment
 import com.ipati.dev.castleevent.model.DismissDialogFragment
 import com.ipati.dev.castleevent.model.OnProgressPhotoUser
 
-class ProfileUserActivity : AppCompatActivity(), DismissDialogFragment, OnProgressPhotoUser {
+class ProfileUserActivity : BaseAppCompatActivity(), DismissDialogFragment, OnProgressPhotoUser {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

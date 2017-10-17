@@ -31,12 +31,12 @@ class SharePreferenceSettingManager(context: Context) {
         sharePreferenceNotificationEditor.apply()
     }
 
-    fun defaultSharePreferenceNotificationManager(): Boolean {
+    fun defaultSharePreferenceNotificationManager(): Boolean? {
         sharePreferenceNotification = mContext.getSharedPreferences(sharePreferenceNotificationKey, Context.MODE_PRIVATE)
         return sharePreferenceNotification.getBoolean(sharePreferenceNotificationKey, true)
     }
 
-    fun defaultSharePreferenceLanguageManager(): Boolean {
+    fun defaultSharePreferenceLanguageManager(): Boolean? {
         sharePreferenceNotification = mContext.getSharedPreferences(sharePreferenceLanguageKey, Context.MODE_PRIVATE)
         return sharePreferenceNotification.getBoolean(sharePreferenceLanguageKey, true)
     }

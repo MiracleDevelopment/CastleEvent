@@ -9,11 +9,12 @@ import com.ipati.dev.castleevent.fragment.LoginFragment
 import android.content.pm.PackageManager
 import android.util.Base64
 import android.util.Log
+import com.ipati.dev.castleevent.base.BaseAppCompatActivity
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 
 
-class LoginActivity : AppCompatActivity() {
+class LoginActivity : BaseAppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -66,8 +66,8 @@ class UserProfileFragment : BaseFragment() {
     }
 
     private fun initialSwitchSetting() {
-        switch_language_user_profile.isChecked = mSharePreferenceSettingMenuList.defaultSharePreferenceLanguageManager()
-        switch_notification_user_profile.isChecked = mSharePreferenceSettingMenuList.defaultSharePreferenceNotificationManager()
+        switch_language_user_profile.isChecked = mSharePreferenceSettingMenuList.defaultSharePreferenceLanguageManager()!!
+        switch_notification_user_profile.isChecked = mSharePreferenceSettingMenuList.defaultSharePreferenceNotificationManager()!!
 
         switch_language_user_profile.setOnCheckedChangeListener { compoundButton, b ->
             if (b) {
@@ -76,6 +76,7 @@ class UserProfileFragment : BaseFragment() {
 
                 onChangeLanguage = activity as ListEventActivity
                 onChangeLanguage.onChangeLanguage(1)
+
             } else {
                 compoundButton.isChecked = b
                 mSharePreferenceSettingMenuList.sharePreferenceLanguageManager(b)
@@ -99,6 +100,7 @@ class UserProfileFragment : BaseFragment() {
     override fun onStart() {
         super.onStart()
         initialUserProfile()
+
     }
 
 

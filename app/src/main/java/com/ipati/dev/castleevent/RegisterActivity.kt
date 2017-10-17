@@ -2,9 +2,10 @@ package com.ipati.dev.castleevent
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import com.ipati.dev.castleevent.base.BaseAppCompatActivity
 import com.ipati.dev.castleevent.fragment.RegisterFragment
 
-class RegisterActivity : AppCompatActivity() {
+class RegisterActivity : BaseAppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

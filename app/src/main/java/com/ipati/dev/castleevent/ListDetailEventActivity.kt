@@ -5,11 +5,12 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.SharedElementCallback
 import android.view.View
+import com.ipati.dev.castleevent.base.BaseAppCompatActivity
 import com.ipati.dev.castleevent.fragment.ListDetailEventFragment
 import com.ipati.dev.castleevent.model.LoadingDialogListener
 
 
-class ListDetailEventActivity : AppCompatActivity(), LoadingDialogListener {
+class ListDetailEventActivity : BaseAppCompatActivity(), LoadingDialogListener {
     private var bundle: Bundle? = null
     private var eventId: Long? = null
     private var widthView: Int? = null
