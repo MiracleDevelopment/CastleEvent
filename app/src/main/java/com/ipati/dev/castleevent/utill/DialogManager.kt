@@ -6,22 +6,22 @@ import com.ipati.dev.castleevent.fragment.loading.LoadingDialogFragment
 
 
 class DialogManager(activity: FragmentActivity) {
-    private var mActivity: FragmentActivity = activity
-    private lateinit var mLoadingDialog: LoadingDialogFragment
-    private lateinit var mConfirmDialog: DialogConfirmFragment
+    private var activityDialog: FragmentActivity = activity
+    private lateinit var loadingDialog: LoadingDialogFragment
+    private lateinit var confirmDialog: DialogConfirmFragment
 
 
     fun onShowLoadingDialog(title: String): LoadingDialogFragment {
         loadingDialog = LoadingDialogFragment.newInstance(title, false)
         return loadingDialog.apply {
-            show(activity.supportFragmentManager, "LoadingFragment")
+            show(activityDialog.supportFragmentManager, "LoadingFragment")
         }
     }
 
     fun onShowConfirmDialog(msg: String): DialogConfirmFragment {
         confirmDialog = DialogConfirmFragment.newInstance(msg)
         return confirmDialog.apply {
-            show(activity.supportFragmentManager, "ConfirmFragment")
+            show(activityDialog.supportFragmentManager, "ConfirmFragment")
         }
     }
 
