@@ -1,4 +1,4 @@
-package com.ipati.dev.castleevent.model.fresco
+package com.ipati.dev.castleevent.model.Fresco
 
 import android.content.Context
 import android.net.Uri
@@ -10,7 +10,6 @@ import com.facebook.imagepipeline.request.ImageRequest
 import com.facebook.imagepipeline.request.ImageRequestBuilder
 import com.ipati.dev.castleevent.extension.matrixHeightPx
 import com.ipati.dev.castleevent.extension.matrixWidthPx
-import com.ipati.dev.castleevent.model.userManage.photoUrl
 
 
 fun loadPhoto(context: Context, url: String, im: SimpleDraweeView) {
@@ -146,8 +145,8 @@ fun loadPhotoUserTickets(context: Context, url: String, im: SimpleDraweeView) {
 }
 
 fun loadPhotoUserProfile(context: Context, url: String, im: SimpleDraweeView) {
-    im.layoutParams.width = context.matrixWidthPx(450)
-    im.layoutParams.height = context.matrixHeightPx(450)
+    im.layoutParams.width = context.matrixWidthPx(500)
+    im.layoutParams.height = context.matrixHeightPx(500)
 
     val imageRequest: ImageRequest = ImageRequestBuilder.newBuilderWithSource(Uri.parse(url))
             .setLocalThumbnailPreviewsEnabled(true)

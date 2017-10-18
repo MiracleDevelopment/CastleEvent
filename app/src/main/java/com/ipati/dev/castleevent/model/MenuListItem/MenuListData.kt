@@ -1,4 +1,4 @@
-package com.ipati.dev.castleevent.model.menuListItem
+package com.ipati.dev.castleevent.model.MenuListItem
 
 
 data class MenuListData(var menu1: String

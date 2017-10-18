@@ -1,4 +1,4 @@
-package com.ipati.dev.castleevent.model.history
+package com.ipati.dev.castleevent.model.History
 
 
 data class RecorderTickets(var userAccount: String = ""

@@ -34,8 +34,8 @@
     <string name="register_confirm_register">ยืนยันการสมัครสมาชิก</string>
     <string name="register">สมัครสมาชิค</string>
     <string name="login">ล๊อคอิน</string>
-    <string name="language">ภาษา</string>
-    <string name="notification">การแจ้งเตือน</string>
+    <string name="language">ภาษา: </string>
+    <string name="notification">แจ้งเตือน: </string>
     <string name="header_setting">ตั้งค่า</string>
     <string name="menu_logout">ออกจากระบบ</string>
     <string name="menu_user">ผู้ใช้งาน</string>
@@ -52,5 +52,13 @@
     <string name="lessAfterDate" translatable="false">ขออภัยเลยกำหนดในการจองแล้วค่ะ</string>
     <string name="pleaseLogin" translatable="false">กรุณาเข้าสู่ระบบ</string>
     <string name="closeEvent" translatable="false">ปิดการจำหน่ายตั๋วบัตรแล้วค่ะ</string>
-    <string name="my_order">My Order</string>
+    <string name="my_order">รายการจองอีเว้น</string>
+    <string name="contact">ข้อมูลติดต่อ</string>
+    <string name="logout">ออกจากระบบ</string>
+    <string name="eng_language">อังกฤษ (US)</string>
+    <string name="thai_language">ไทย</string>
+    <string name="close_notification">ปิด </string>
+    <string name="open_notification">เปิด</string>
+    <string name="re_password">ยืนยันพาสเวิร์ด</string>
+    <string name="upload_text">อัพโหลดรูปภาพ</string>
 </resources>

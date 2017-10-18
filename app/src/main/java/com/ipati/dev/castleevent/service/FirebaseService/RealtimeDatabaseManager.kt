@@ -5,15 +5,9 @@ import android.arch.lifecycle.LifecycleObserver
 import android.arch.lifecycle.OnLifecycleEvent
 import android.content.Context
 import android.util.Log
-import android.widget.Toast
 import com.google.firebase.database.*
-import com.ipati.dev.castleevent.adapter.ListCategoryMenuAdapter
 import com.ipati.dev.castleevent.adapter.ListEventAdapter
-import com.ipati.dev.castleevent.model.category.ALL
-import com.ipati.dev.castleevent.model.category.Education
-import com.ipati.dev.castleevent.model.category.Sport
-import com.ipati.dev.castleevent.model.category.Technology
-import com.ipati.dev.castleevent.model.modelListEvent.ItemListEvent
+import com.ipati.dev.castleevent.model.ModelListItem.ItemListEvent
 
 class RealTimeDatabaseManager(context: Context, lifeCycle: Lifecycle) : LifecycleObserver {
     var mCategory: String = "ALL"

@@ -3,8 +3,8 @@ package com.ipati.dev.castleevent.service.RecordedEvent
 import com.google.android.gms.tasks.Task
 import com.google.firebase.database.*
 import com.ipati.dev.castleevent.model.GoogleCalendar.*
-import com.ipati.dev.castleevent.model.history.RecorderTickets
-import com.ipati.dev.castleevent.model.userManage.uid
+import com.ipati.dev.castleevent.model.History.RecorderTickets
+import com.ipati.dev.castleevent.model.UserManager.uid
 
 class RecordListEvent {
     private var Ref: DatabaseReference = FirebaseDatabase.getInstance().reference

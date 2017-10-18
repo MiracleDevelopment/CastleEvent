@@ -4,21 +4,18 @@ import android.os.Bundle
 import android.support.design.widget.BottomSheetBehavior
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
-import android.transition.TransitionInflater
 import android.view.*
 import android.widget.LinearLayout
+import android.widget.Toast
 import com.ipati.dev.castleevent.base.BaseFragment
 import com.ipati.dev.castleevent.R
 import com.ipati.dev.castleevent.model.LoadingCategory
-import com.ipati.dev.castleevent.model.LoadingDetailEvent
 import com.ipati.dev.castleevent.model.OnCancelAnimationTouch
 import com.ipati.dev.castleevent.service.FirebaseService.CategoryRealTimeManager
 import com.ipati.dev.castleevent.service.FirebaseService.RealTimeDatabaseManager
 import com.ipati.dev.castleevent.utill.animation.AnimationManager
-import kotlinx.android.synthetic.main.activity_detail_event_fragment.*
 import kotlinx.android.synthetic.main.activity_list_event_fragment.*
 import kotlinx.android.synthetic.main.custom_bottom_sheet_category.*
-import kotlinx.android.synthetic.main.custom_list_event_adapter_layout.*
 
 class ListEventFragment : BaseFragment() {
     private lateinit var realTimeDatabaseManager: RealTimeDatabaseManager
@@ -49,7 +46,6 @@ class ListEventFragment : BaseFragment() {
         recycler_list_event.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
         recycler_list_event.itemAnimator = DefaultItemAnimator()
         recycler_list_event.adapter = realTimeDatabaseManager.adapterListEvent
-
 
         realTimeDatabaseManager.adapterListEvent?.setOnCancelTouchItemEvent(object : OnCancelAnimationTouch {
             override fun setOnCancelTouch(target: View?, widthView: Int, heightView: Int, transitionName: String, eventId: Long) {
@@ -115,8 +111,6 @@ class ListEventFragment : BaseFragment() {
             }
 
         })
-
-
     }
 
     private fun onRefreshItemList() {

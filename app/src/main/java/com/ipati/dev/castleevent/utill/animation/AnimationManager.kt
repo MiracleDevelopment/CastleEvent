@@ -9,8 +9,6 @@ import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.app.FragmentActivity
 import android.support.v4.view.ViewCompat
 import android.view.View
-import android.view.ViewTreeObserver
-import android.view.animation.ScaleAnimation
 import com.ipati.dev.castleevent.ListDetailEventActivity
 import kotlinx.android.synthetic.main.custom_list_event_adapter_layout.view.*
 

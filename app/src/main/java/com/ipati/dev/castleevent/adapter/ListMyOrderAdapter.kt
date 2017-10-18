@@ -7,10 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import com.ipati.dev.castleevent.MyOrderActivity
 import com.ipati.dev.castleevent.R
-import com.ipati.dev.castleevent.model.fresco.loadPhotoTickets
+import com.ipati.dev.castleevent.model.Fresco.loadPhotoTickets
 import com.ipati.dev.castleevent.model.LoadingTicketsEvent
-import com.ipati.dev.castleevent.model.history.RecorderTickets
-import com.ipati.dev.castleevent.model.userManage.photoUrl
+import com.ipati.dev.castleevent.model.History.RecorderTickets
+import com.ipati.dev.castleevent.model.UserManager.photoUrl
 import kotlinx.android.synthetic.main.custom_list_item_my_order.view.*
 import java.util.*
 

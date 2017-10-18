@@ -1,14 +1,15 @@
 package com.ipati.dev.castleevent.utill
 
 import android.support.v4.app.FragmentActivity
-import com.ipati.dev.castleevent.fragment.loading.ConfigShowSettingPermissionDialogFragment
 import com.ipati.dev.castleevent.fragment.loading.DialogConfirmFragment
 import com.ipati.dev.castleevent.fragment.loading.LoadingDialogFragment
 
-class DialogManager(var activity: FragmentActivity) {
-    private lateinit var loadingDialog: LoadingDialogFragment
-    private lateinit var confirmDialog: DialogConfirmFragment
-    private lateinit var confirmAddCalendar: ConfigShowSettingPermissionDialogFragment
+
+class DialogManager(activity: FragmentActivity) {
+    private var mActivity: FragmentActivity = activity
+    private lateinit var mLoadingDialog: LoadingDialogFragment
+    private lateinit var mConfirmDialog: DialogConfirmFragment
+
 
     fun onShowLoadingDialog(title: String): LoadingDialogFragment {
         loadingDialog = LoadingDialogFragment.newInstance(title, false)
@@ -32,10 +33,4 @@ class DialogManager(var activity: FragmentActivity) {
         return confirmDialog.dismiss()
     }
 
-    fun onShowConfirmDialogCalendar(title: String, msg: String): ConfigShowSettingPermissionDialogFragment {
-        confirmAddCalendar = ConfigShowSettingPermissionDialogFragment.newInstance(title, msg)
-        return confirmAddCalendar.apply {
-            show(activity.supportFragmentManager, "ConfirmAddCalendar")
-        }
-    }
 }

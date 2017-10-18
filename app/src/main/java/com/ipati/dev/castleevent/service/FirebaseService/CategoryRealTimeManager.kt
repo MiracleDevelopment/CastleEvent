@@ -7,11 +7,11 @@ import android.content.Context
 import android.widget.Toast
 import com.google.firebase.database.*
 import com.ipati.dev.castleevent.adapter.ListCategoryMenuAdapter
-import com.ipati.dev.castleevent.model.category.ALL
-import com.ipati.dev.castleevent.model.category.Education
-import com.ipati.dev.castleevent.model.category.Sport
-import com.ipati.dev.castleevent.model.category.Technology
-import com.ipati.dev.castleevent.model.modelListEvent.ItemListEvent
+import com.ipati.dev.castleevent.model.Category.ALL
+import com.ipati.dev.castleevent.model.Category.Education
+import com.ipati.dev.castleevent.model.Category.Sport
+import com.ipati.dev.castleevent.model.Category.Technology
+import com.ipati.dev.castleevent.model.ModelListItem.ItemListEvent
 
 class CategoryRealTimeManager(context: Context, lifecycle: Lifecycle) : LifecycleObserver {
     private var CATEGORY_ALL: String = "ALL"

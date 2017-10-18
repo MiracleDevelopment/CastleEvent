@@ -4,18 +4,16 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.support.v4.app.FragmentActivity
-import android.util.Log
-import android.widget.Toast
 import com.facebook.AccessToken
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.firebase.auth.*
 import com.ipati.dev.castleevent.ListEventActivity
 import com.ipati.dev.castleevent.extension.onShowDialog
 import com.ipati.dev.castleevent.fragment.loading.LoadingDialogFragment
-import com.ipati.dev.castleevent.model.userManage.photoUrl
-import com.ipati.dev.castleevent.model.userManage.uid
-import com.ipati.dev.castleevent.model.userManage.userEmail
-import com.ipati.dev.castleevent.model.userManage.username
+import com.ipati.dev.castleevent.model.UserManager.photoUrl
+import com.ipati.dev.castleevent.model.UserManager.uid
+import com.ipati.dev.castleevent.model.UserManager.userEmail
+import com.ipati.dev.castleevent.model.UserManager.username
 import com.ipati.dev.castleevent.utill.SharePreferenceGoogleSignInManager
 import com.twitter.sdk.android.core.TwitterSession
 

@@ -1,8 +1,7 @@
 package com.ipati.dev.castleevent.model
 
-import android.view.MotionEvent
 import android.view.View
-import com.ipati.dev.castleevent.model.modelListEvent.ItemListEvent
+import com.ipati.dev.castleevent.model.ModelListItem.ItemListEvent
 
 interface LoadingDialogListener {
     fun onPositiveClickable(statusLoading: Boolean)
@@ -26,9 +25,6 @@ interface LoadingCategory {
     fun setOnChangeCategory(selectCategory: String)
 }
 
-interface LoadingDetailEvent {
-    fun setOnLoadingDetailEvent(target: View?, eventId: Long)
-}
 
 interface OnCancelAnimationTouch {
     fun setOnCancelTouch(target: View?, widthView: Int, heightView: Int, transitionName: String, eventId: Long)
@@ -40,15 +36,19 @@ interface OnLogOutSystem {
 }
 
 interface OnUpdateInformation {
-    fun setDataChange(mItemListEvent: ItemListEvent)
+    fun setDataChange(itemListEvent: ItemListEvent)
 }
 
 interface OnProgressPhotoUser {
     fun setProgressUserPhoto(progress: Int)
 }
 
-interface OnCustomLaguage {
+interface OnCustomLanguage {
     fun onChangeLanguage(language: Int)
+}
+
+interface OnChangeNotificationChannel {
+    fun onChangeNotification(notification: Int)
 }
 
 

@@ -40,7 +40,7 @@
                     android:layout_centerVertical="true"
                     android:fontFamily="@font/circular"
                     android:gravity="center_vertical"
-                    android:text="Contact"
+                    android:text="@string/contact"
                     android:textColor="@color/colorFontContact"
                     android:textSize="32sp"
                     android:textStyle="bold" />

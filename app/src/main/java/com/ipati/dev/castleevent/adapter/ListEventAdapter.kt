@@ -9,21 +9,21 @@ import android.support.v7.widget.RecyclerView
 import android.view.*
 import com.ipati.dev.castleevent.R
 import com.ipati.dev.castleevent.extension.getStringResource
-import com.ipati.dev.castleevent.model.fresco.loadPhoto
+import com.ipati.dev.castleevent.model.Fresco.loadPhoto
 import com.ipati.dev.castleevent.model.OnCancelAnimationTouch
-import com.ipati.dev.castleevent.model.modelListEvent.ItemListEvent
+import com.ipati.dev.castleevent.model.ModelListItem.ItemListEvent
 import kotlinx.android.synthetic.main.custom_list_event_adapter_layout.view.*
 
 
 class ListEventAdapter(listItem: ArrayList<ItemListEvent>) : RecyclerView.Adapter<ListEventAdapter.ListEventHolder>() {
     var itemList: ArrayList<ItemListEvent> = listItem
     var itemViewTransition: View? = null
-
-    lateinit var gestureDetector: GestureDetector
     lateinit var mOnCancelAnimation: OnCancelAnimationTouch
     lateinit var mRippleDrawable: RippleDrawable
 
+
     override fun getItemCount(): Int = itemList.count()
+
 
     override fun onBindViewHolder(holder: ListEventHolder?, position: Int) {
         holder?.onBind(itemList)
@@ -42,12 +42,40 @@ class ListEventAdapter(listItem: ArrayList<ItemListEvent>) : RecyclerView.Adapte
         this.mOnCancelAnimation = onCancelAnimationTouch
     }
 
+
     inner class ListEventHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
             , View.OnTouchListener {
+
+        private val gestureDetector: GestureDetector by lazy {
+            GestureDetector(itemView.context, object : GestureDetector.SimpleOnGestureListener() {
+                override fun onSingleTapConfirmed(e: MotionEvent?): Boolean {
+                    itemViewTransition?.let {
+                        mRippleDrawable = itemView.background as RippleDrawable
+                        mRippleDrawable.setHotspot(itemView.ripple_background.x, itemView.ripple_background.y)
+                        mRippleDrawable.setColor(ColorStateList.valueOf(ContextCompat.getColor(itemView.context, R.color.colorRipple)))
+
+                        val widthOriginal: Int = itemViewTransition?.custom_im_cover_list_event!!.measuredWidth
+                        val heightOriginal: Int = itemViewTransition?.custom_im_cover_list_event!!.measuredHeight
+
+                        ViewCompat.setTransitionName(itemViewTransition?.custom_im_cover_list_event
+                                , "${itemViewTransition!!.custom_im_cover_list_event.id}$adapterPosition")
+
+
+                        mOnCancelAnimation.setOnCancelTouch(itemViewTransition?.custom_im_cover_list_event
+                                , widthOriginal
+                                , heightOriginal
+                                , ViewCompat.getTransitionName(itemViewTransition?.custom_im_cover_list_event)
+                                , itemList[adapterPosition].eventId)
+
+                    }
+                    return super.onSingleTapConfirmed(e)
+                }
+            })
+        }
+
         override fun onTouch(p0: View?, p1: MotionEvent?): Boolean {
             p0?.performClick()
             getViewSelect(p0!!)
-
             return gestureDetector.onTouchEvent(p1)
         }
 
@@ -81,38 +109,12 @@ class ListEventAdapter(listItem: ArrayList<ItemListEvent>) : RecyclerView.Adapte
             }
 
             itemView.setOnTouchListener(this)
-            initGestureDetector()
         }
 
-        private fun initGestureDetector() {
-            gestureDetector = GestureDetector(itemView.context, object : GestureDetector.SimpleOnGestureListener() {
-                override fun onSingleTapConfirmed(e: MotionEvent?): Boolean {
-                    itemViewTransition?.let {
-                        mRippleDrawable = itemView.background as RippleDrawable
-                        mRippleDrawable.setHotspot(itemView.ripple_background.x, itemView.ripple_background.y)
-                        mRippleDrawable.setColor(ColorStateList.valueOf(ContextCompat.getColor(itemView.context, R.color.colorRipple)))
-
-                        val widthOriginal: Int = itemViewTransition?.custom_im_cover_list_event!!.measuredWidth
-                        val heightOriginal: Int = itemViewTransition?.custom_im_cover_list_event!!.measuredHeight
-
-                        ViewCompat.setTransitionName(itemViewTransition?.custom_im_cover_list_event
-                                , "${itemViewTransition!!.custom_im_cover_list_event.id}$adapterPosition")
-
-                        mOnCancelAnimation.setOnCancelTouch(itemViewTransition?.custom_im_cover_list_event
-                                , widthOriginal
-                                , heightOriginal
-                                , ViewCompat.getTransitionName(itemViewTransition?.custom_im_cover_list_event)
-                                , itemList[adapterPosition].eventId)
-
-                    }
-
-                    return super.onSingleTapConfirmed(e)
-                }
-            })
-        }
 
         private fun getViewSelect(itemView: View) {
             itemViewTransition = itemView
         }
     }
+
 }

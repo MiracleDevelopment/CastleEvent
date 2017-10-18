@@ -16,10 +16,10 @@ import com.ipati.dev.castleevent.ProfileUserActivity
 import com.ipati.dev.castleevent.extension.onDismissDialog
 import com.ipati.dev.castleevent.extension.onShowDialog
 import com.ipati.dev.castleevent.fragment.loading.LoadingDialogFragment
-import com.ipati.dev.castleevent.model.userManage.photoUrl
-import com.ipati.dev.castleevent.model.userManage.uid
-import com.ipati.dev.castleevent.model.userManage.userEmail
-import com.ipati.dev.castleevent.model.userManage.username
+import com.ipati.dev.castleevent.model.UserManager.photoUrl
+import com.ipati.dev.castleevent.model.UserManager.uid
+import com.ipati.dev.castleevent.model.UserManager.userEmail
+import com.ipati.dev.castleevent.model.UserManager.username
 
 
 class UserProfileUpdate(context: Context, activity: FragmentActivity) {

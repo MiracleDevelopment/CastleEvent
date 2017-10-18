@@ -1,4 +1,4 @@
-package com.ipati.dev.castleevent.model.userManage
+package com.ipati.dev.castleevent.model.UserManager
 
 var uid: String? = null
 var username: String? = null
