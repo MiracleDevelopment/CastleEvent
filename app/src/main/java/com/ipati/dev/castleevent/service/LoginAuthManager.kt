@@ -2,11 +2,8 @@ package com.ipati.dev.castleevent.service
 
 import android.arch.lifecycle.Lifecycle
 import android.arch.lifecycle.LifecycleObserver
-import android.content.Context
 import android.content.Intent
 import android.support.v4.app.FragmentActivity
-import android.text.Editable
-import android.view.View
 import android.widget.EditText
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
@@ -14,10 +11,10 @@ import com.google.firebase.auth.FirebaseUser
 import com.ipati.dev.castleevent.ListEventActivity
 import com.ipati.dev.castleevent.extension.onShowDialog
 import com.ipati.dev.castleevent.fragment.loading.LoadingDialogFragment
-import com.ipati.dev.castleevent.model.userManage.photoUrl
-import com.ipati.dev.castleevent.model.userManage.uid
-import com.ipati.dev.castleevent.model.userManage.userEmail
-import com.ipati.dev.castleevent.model.userManage.username
+import com.ipati.dev.castleevent.model.UserManager.photoUrl
+import com.ipati.dev.castleevent.model.UserManager.uid
+import com.ipati.dev.castleevent.model.UserManager.userEmail
+import com.ipati.dev.castleevent.model.UserManager.username
 
 class LoginAuthManager(activity: FragmentActivity, lifecycle: Lifecycle) : LifecycleObserver {
     private var activity: FragmentActivity? = null

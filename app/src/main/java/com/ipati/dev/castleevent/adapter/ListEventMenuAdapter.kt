@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.ipati.dev.castleevent.*
-import com.ipati.dev.castleevent.model.fresco.loadPhotoItemMenu
+import com.ipati.dev.castleevent.model.Fresco.loadPhotoItemMenu
 import kotlinx.android.synthetic.main.custom_layout_menu_event_adapter.view.*
 
 class ListEventMenuAdapter(listItemMenu: ArrayList<String>) : RecyclerView.Adapter<ListEventMenuAdapter.ViewHolder>() {

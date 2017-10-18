@@ -1,4 +1,4 @@
-package com.ipati.dev.castleevent.model.gmsLocation
+package com.ipati.dev.castleevent.model.GmsLocation
 
 import android.app.Activity
 import android.arch.lifecycle.Lifecycle

@@ -56,15 +56,34 @@
                 android:orientation="vertical"
                 android:padding="5dp">
 
-                <com.facebook.drawee.view.SimpleDraweeView
-                    android:id="@+id/im_edit_photo_profile"
+                <FrameLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:padding="10dp"
-                    app:actualImageScaleType="centerCrop"
-                    app:placeholderImage="@mipmap/ic_launcher"
-                    app:roundAsCircle="true" />
+                    android:layout_gravity="center_horizontal">
+
+                    <com.facebook.drawee.view.SimpleDraweeView
+                        android:id="@+id/im_edit_photo_profile"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        app:actualImageScaleType="centerCrop"
+                        app:placeholderImage="@mipmap/ic_launcher"
+                        app:pressedStateOverlayImage="@drawable/shape_circle_press_image"
+                        app:roundAsCircle="true" />
+
+                    <TextView
+                        android:id="@+id/tv_show_upload"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:fontFamily="@font/circular"
+                        android:text="@string/upload_text"
+                        android:textColor="@color/colorMenuList"
+                        android:textSize="25sp"
+                        android:textStyle="bold"
+                        android:visibility="gone" />
+
+                </FrameLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -166,7 +185,7 @@
                             android:focusable="false"
                             android:focusableInTouchMode="false"
                             android:fontFamily="@font/circular"
-                            android:hint="Re-Password"
+                            android:hint="@string/re_password"
                             android:inputType="textPassword"
                             android:text="0000000000"
                             android:textColor="@color/colorFontProfile"

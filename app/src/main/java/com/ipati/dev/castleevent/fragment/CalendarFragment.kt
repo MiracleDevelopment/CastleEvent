@@ -38,7 +38,6 @@ import com.ipati.dev.castleevent.R
 import com.ipati.dev.castleevent.adapter.ListEventCalendarAdapter
 import com.ipati.dev.castleevent.model.EventDetailModel
 import com.ipati.dev.castleevent.model.GoogleCalendar.CalendarFragment.CalendarManager
-import com.ipati.dev.castleevent.model.RequstPermission.showDialogRequestSetting
 import com.ipati.dev.castleevent.utill.*
 import kotlinx.android.synthetic.main.activity_calendar_fragment.*
 import java.text.SimpleDateFormat
@@ -320,14 +319,6 @@ class CalendarFragment : Fragment(), View.OnClickListener {
             }
         }
         return true
-    }
-
-    fun setOnClickPositiveRequestPermission() {
-
-    }
-
-    fun setOnClickNegativePermission() {
-
     }
 
 

@@ -105,6 +105,10 @@
         <activity
             android:name=".ContactUserActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".LoadingChangeLanguage"
+            android:screenOrientation="portrait">
+        </activity>
     </application>
 
 </manifest>

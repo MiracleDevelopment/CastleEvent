@@ -16,12 +16,14 @@ import com.google.firebase.iid.FirebaseInstanceId
 import com.ipati.dev.castleevent.adapter.ItemViewPagerAdapter
 import com.ipati.dev.castleevent.base.BaseAppCompatActivity
 import com.ipati.dev.castleevent.fragment.ListEventFragment
-import com.ipati.dev.castleevent.model.OnCustomLaguage
+import com.ipati.dev.castleevent.model.OnChangeNotificationChannel
+import com.ipati.dev.castleevent.model.OnCustomLanguage
 import com.ipati.dev.castleevent.model.OnLogOutSystem
-import com.ipati.dev.castleevent.model.userManage.photoUrl
-import com.ipati.dev.castleevent.model.userManage.uid
-import com.ipati.dev.castleevent.model.userManage.userEmail
-import com.ipati.dev.castleevent.model.userManage.username
+import com.ipati.dev.castleevent.model.UserManager.photoUrl
+import com.ipati.dev.castleevent.model.UserManager.uid
+import com.ipati.dev.castleevent.model.UserManager.userEmail
+import com.ipati.dev.castleevent.model.UserManager.username
+import com.ipati.dev.castleevent.service.FirebaseNotification.NotificationManager
 import com.ipati.dev.castleevent.service.FirebaseService.RealTimeDatabaseMenuListItem
 import com.ipati.dev.castleevent.service.googleApiClient
 import com.ipati.dev.castleevent.utill.SharePreferenceSettingManager
@@ -29,10 +31,11 @@ import kotlinx.android.synthetic.main.activity_list_event.*
 import kotlinx.android.synthetic.main.bottom_navigation_layout.*
 
 
-class ListEventActivity : BaseAppCompatActivity(), View.OnClickListener, OnLogOutSystem, OnCustomLaguage {
+class ListEventActivity : BaseAppCompatActivity(), View.OnClickListener, OnLogOutSystem, OnCustomLanguage, OnChangeNotificationChannel {
     private lateinit var realTimeDatabaseMenuList: RealTimeDatabaseMenuListItem
     private lateinit var itemViewPagerAdapter: ItemViewPagerAdapter
     private lateinit var sharePreferenceManager: SharePreferenceSettingManager
+    private lateinit var notificationManager: NotificationManager
     private lateinit var auth: FirebaseAuth
     private lateinit var authListener: FirebaseAuth.AuthStateListener
     private var lifeCycleRegistry: LifecycleRegistry = LifecycleRegistry(this)
@@ -47,6 +50,8 @@ class ListEventActivity : BaseAppCompatActivity(), View.OnClickListener, OnLogOu
 
         realTimeDatabaseMenuList = RealTimeDatabaseMenuListItem(applicationContext, lifecycle)
         sharePreferenceManager = SharePreferenceSettingManager(context = applicationContext)
+        notificationManager = NotificationManager(this)
+
         onChangeStateLogin()
         initialViewPager()
         initialBottomNavigationBar()
@@ -150,7 +155,6 @@ class ListEventActivity : BaseAppCompatActivity(), View.OnClickListener, OnLogOu
 
 
     override fun onChangeLanguage(language: Int) {
-        Toast.makeText(applicationContext, language.toString(), Toast.LENGTH_SHORT).show()
         when (language) {
             0 -> {
                 setLanguage("th")
@@ -160,6 +164,19 @@ class ListEventActivity : BaseAppCompatActivity(), View.OnClickListener, OnLogOu
                 setLanguage("en")
             }
         }
+    }
+
+    override fun onChangeNotification(notification: Int) {
+        when (notification) {
+            0 -> {
+                notificationManager.cancelNotification()
+            }
+
+            1 -> {
+                notificationManager.activeNotification()
+            }
+        }
+
     }
 
 

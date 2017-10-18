@@ -9,6 +9,7 @@ import android.media.RingtoneManager
 import android.os.Build
 import android.support.annotation.RequiresApi
 import android.support.v4.app.NotificationCompat
+import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.RemoteMessage
 import com.ipati.dev.castleevent.ListEventActivity
 import com.ipati.dev.castleevent.R
@@ -94,6 +95,14 @@ class NotificationManager(context: Context) {
         mNotificationChannel.group = mChannelGroupId
 
         return mNotificationChannel
+    }
+
+    fun cancelNotification() {
+        FirebaseMessaging.getInstance().unsubscribeFromTopic("news")
+    }
+
+    fun activeNotification() {
+        FirebaseMessaging.getInstance().subscribeToTopic("news")
     }
 
 

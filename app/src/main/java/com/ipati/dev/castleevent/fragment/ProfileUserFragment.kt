@@ -3,15 +3,17 @@ package com.ipati.dev.castleevent.fragment
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.view.*
 import com.ipati.dev.castleevent.R
-import com.ipati.dev.castleevent.model.fresco.loadPhotoUserProfile
+import com.ipati.dev.castleevent.model.Fresco.loadPhotoUserProfile
 import com.ipati.dev.castleevent.model.UserProfileUpdate
-import com.ipati.dev.castleevent.model.userManage.photoUrl
-import com.ipati.dev.castleevent.model.userManage.userEmail
-import com.ipati.dev.castleevent.model.userManage.username
+import com.ipati.dev.castleevent.model.UserManager.photoUrl
+import com.ipati.dev.castleevent.model.UserManager.userEmail
+import com.ipati.dev.castleevent.model.UserManager.username
 import kotlinx.android.synthetic.main.activity_profile_user_fragment.*
+import java.util.*
 
 class ProfileUserFragment : Fragment(), View.OnClickListener {
     private var mRequestUsername: Int = 1001
@@ -35,6 +37,15 @@ class ProfileUserFragment : Fragment(), View.OnClickListener {
         super.onViewCreated(view, savedInstanceState)
         initialToolbar()
         initialEditText()
+        getLanguageDefault()
+    }
+
+    private fun getLanguageDefault() {
+        if (Locale.getDefault().language == "en") {
+            im_edit_photo_profile.hierarchy.setOverlayImage(ContextCompat.getDrawable(context, R.mipmap.crop_image_eng))
+        } else {
+            im_edit_photo_profile.hierarchy.setOverlayImage(ContextCompat.getDrawable(context, R.mipmap.crop_image))
+        }
     }
 
 
@@ -61,9 +72,12 @@ class ProfileUserFragment : Fragment(), View.OnClickListener {
 
         tv_record_profile.setOnClickListener { view -> onClick(view) }
 
-        im_edit_photo_profile.setOnClickListener { view ->
-            onClick(view)
 
+        im_edit_photo_profile.setOnClickListener { view -> onClick(view) }
+
+        im_edit_photo_profile.setOnLongClickListener {
+            tv_show_upload.visibility = View.VISIBLE
+            return@setOnLongClickListener false
         }
     }
 
@@ -93,10 +107,12 @@ class ProfileUserFragment : Fragment(), View.OnClickListener {
             }
 
             R.id.im_edit_photo_profile -> {
+                tv_show_upload.visibility = View.VISIBLE
                 val intentPhoto = Intent(Intent.ACTION_GET_CONTENT)
                 intentPhoto.type = "image/*"
                 startActivityForResult(Intent.createChooser(intentPhoto, "Choose Image Profile"), REQUEST_PHOTO)
             }
+
         }
     }
 
@@ -126,8 +142,11 @@ class ProfileUserFragment : Fragment(), View.OnClickListener {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
             REQUEST_PHOTO ->
-                data?.let {
+                if (data != null) {
                     mUserProfileChange.onUpdatePhotoUser(data.data)
+                    tv_show_upload.visibility = View.GONE
+                } else {
+                    tv_show_upload.visibility = View.GONE
                 }
         }
     }

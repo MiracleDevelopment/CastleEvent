@@ -8,8 +8,8 @@ import android.util.Log
 import android.widget.Toast
 import com.google.firebase.database.*
 import com.ipati.dev.castleevent.adapter.ListMyOrderAdapter
-import com.ipati.dev.castleevent.model.history.RecorderTickets
-import com.ipati.dev.castleevent.model.userManage.uid
+import com.ipati.dev.castleevent.model.History.RecorderTickets
+import com.ipati.dev.castleevent.model.UserManager.uid
 
 
 class MyOrderRealTimeManager(context: Context, lifecycle: Lifecycle) : LifecycleObserver {

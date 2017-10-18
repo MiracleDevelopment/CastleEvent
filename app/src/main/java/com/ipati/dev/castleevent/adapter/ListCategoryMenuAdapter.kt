@@ -7,10 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import com.ipati.dev.castleevent.R
 import com.ipati.dev.castleevent.model.*
-import com.ipati.dev.castleevent.model.category.ALL
-import com.ipati.dev.castleevent.model.category.Education
-import com.ipati.dev.castleevent.model.category.Sport
-import com.ipati.dev.castleevent.model.category.Technology
+import com.ipati.dev.castleevent.model.Category.ALL
+import com.ipati.dev.castleevent.model.Category.Education
+import com.ipati.dev.castleevent.model.Category.Sport
+import com.ipati.dev.castleevent.model.Category.Technology
 import kotlinx.android.synthetic.main.custom_list_category.view.*
 
 

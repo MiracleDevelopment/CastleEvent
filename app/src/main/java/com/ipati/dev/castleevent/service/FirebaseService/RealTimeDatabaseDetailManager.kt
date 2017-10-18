@@ -9,7 +9,7 @@ import com.google.firebase.database.*
 import com.ipati.dev.castleevent.fragment.ListDetailEventFragment
 import com.ipati.dev.castleevent.model.LoadingDetailData
 import com.ipati.dev.castleevent.model.OnUpdateInformation
-import com.ipati.dev.castleevent.model.modelListEvent.ItemListEvent
+import com.ipati.dev.castleevent.model.ModelListItem.ItemListEvent
 
 
 class RealTimeDatabaseDetailManager(context: Context, lifecycle: Lifecycle, eventId: Long, listDetailEventFragment: ListDetailEventFragment) : LifecycleObserver {
@@ -55,20 +55,20 @@ class RealTimeDatabaseDetailManager(context: Context, lifecycle: Lifecycle, even
             }
 
             override fun onChildChanged(p0: DataSnapshot?, p1: String?) {
-                val mItemListEvent: ItemListEvent? = p0?.getValue(ItemListEvent::class.java)
-                mItemListEvent?.let {
+                val itemListEvent: ItemListEvent? = p0?.getValue(ItemListEvent::class.java)
+                itemListEvent?.let {
                     onItemUpdateDataChange = mListDetailEventFragment as OnUpdateInformation
-                    onItemUpdateDataChange?.setDataChange(mItemListEvent)
+                    onItemUpdateDataChange?.setDataChange(itemListEvent)
 
                 }
             }
 
             override fun onChildAdded(p0: DataSnapshot, p1: String?) {
-                val mItemListEvent: ItemListEvent? = p0.getValue(ItemListEvent::class.java)
-                mItemListEvent?.let {
-                    if (mItemListEvent.eventId == mEventId) {
+                val itemListEvent: ItemListEvent? = p0.getValue(ItemListEvent::class.java)
+                itemListEvent?.let {
+                    if (mEventId == itemListEvent.eventId) {
                         onItemListDataChange = mListDetailEventFragment as LoadingDetailData
-                        onItemListDataChange?.onLoadingUpdateData(mItemListEvent)
+                        onItemListDataChange?.onLoadingUpdateData(itemListEvent)
                     }
                 }
             }

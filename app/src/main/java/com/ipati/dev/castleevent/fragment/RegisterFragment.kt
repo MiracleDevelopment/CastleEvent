@@ -18,7 +18,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.ipati.dev.castleevent.R
 import com.ipati.dev.castleevent.extension.matrixHeightPx
-import com.ipati.dev.castleevent.model.register.RegisterManager
+import com.ipati.dev.castleevent.model.Register.RegisterManager
 import kotlinx.android.synthetic.main.activity_register_fragment.*
 import java.lang.Exception
 

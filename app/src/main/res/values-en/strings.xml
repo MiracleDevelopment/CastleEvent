@@ -34,8 +34,8 @@
     <string name="register_confirm_register">Confirm Register</string>
     <string name="register">Register</string>
     <string name="login">Login</string>
-    <string name="language">Language</string>
-    <string name="notification">Notification</string>
+    <string name="language">Language: </string>
+    <string name="notification">Notification: </string>
     <string name="header_setting">setting</string>
     <string name="menu_logout">LogOut</string>
     <string name="menu_user">User</string>
@@ -53,4 +53,12 @@
     <string name="pleaseLogin" translatable="false">please Login</string>
     <string name="closeEvent" translatable="false">Close</string>
     <string name="my_order">My Order</string>
+    <string name="contact">Contact</string>
+    <string name="logout">LogOut</string>
+    <string name="eng_language">Eng</string>
+    <string name="thai_language">Thai</string>
+    <string name="close_notification">Close</string>
+    <string name="open_notification">Open</string>
+    <string name="re_password">Re-Password</string>
+    <string name="upload_text">UploadPhoto</string>
 </resources>

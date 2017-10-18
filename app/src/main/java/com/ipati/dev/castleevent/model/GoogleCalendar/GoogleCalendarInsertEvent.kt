@@ -1,17 +1,21 @@
 package com.ipati.dev.castleevent.model.GoogleCalendar
 
 
+import android.content.Context
 import android.util.Log
 import com.google.api.client.util.DateTime
 import com.google.api.services.calendar.model.Event
 import com.google.api.services.calendar.model.EventAttendee
 import com.google.api.services.calendar.model.EventDateTime
 import com.google.api.services.calendar.model.EventReminder
+import com.ipati.dev.castleevent.model.Date.DateManager
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-class GoogleCalendarInsertEvent(summary: String?, location: String?, description: String?) {
+class GoogleCalendarInsertEvent(context: Context, summary: String?, location: String?, description: String?) {
+    private var contextCalendar: Context = context
+
     private lateinit var startDateTime: DateTime
     private lateinit var endDateTime: DateTime
     private lateinit var eventDateTimeStart: EventDateTime
@@ -25,10 +29,12 @@ class GoogleCalendarInsertEvent(summary: String?, location: String?, description
     private lateinit var simpleDateStart: String
     private lateinit var simpleDateEnd: String
 
+
     private var event: Event = Event()
     private var mCalendar: Calendar = Calendar.getInstance()
     private var mTimeZone: TimeZone = mCalendar.timeZone
 
+    private var dateManager: DateManager
     init {
         event.summary = summary
         event.location = location
@@ -38,6 +44,7 @@ class GoogleCalendarInsertEvent(summary: String?, location: String?, description
         event.recurrence = setRecurrence()
         event.attendees = setEventAttendee()
         event.reminders = setEventReminder()
+        dateManager = DateManager(contextCalendar)
     }
 
     private fun setDateTimeStart(): EventDateTime {
