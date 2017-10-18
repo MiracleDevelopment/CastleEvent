@@ -6,7 +6,6 @@ import com.google.firebase.auth.FirebaseUser
 
 
 class AuthenticationStatus {
-    fun getCurrentUser(): FirebaseUser? {
-        return FirebaseAuth.getInstance().currentUser
-    }
+
+    fun getCurrentUser(): FirebaseUser? = FirebaseAuth.getInstance().currentUser
 }

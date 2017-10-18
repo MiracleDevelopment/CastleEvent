@@ -185,8 +185,8 @@ class RegisterFragment : Fragment() {
 
 
     companion object {
-        fun newInstance(): RegisterFragment {
-            return RegisterFragment().apply { arguments = Bundle() }
+        fun newInstance(): RegisterFragment = RegisterFragment().apply {
+            arguments = Bundle()
         }
     }
 }

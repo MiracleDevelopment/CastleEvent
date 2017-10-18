@@ -27,9 +27,7 @@ class ItemViewPagerAdapter(supportFragmentManager: FragmentManager) : SmartFragm
         return null
     }
 
-    override fun getCount(): Int {
-        return 2
-    }
+    override fun getCount(): Int = 2
 
 
 }

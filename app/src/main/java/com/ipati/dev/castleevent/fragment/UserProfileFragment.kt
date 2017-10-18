@@ -128,11 +128,10 @@ class UserProfileFragment : BaseFragment() {
 
     companion object {
         private var objectUserProfile: String = "UserProfileFragment"
-        fun newInstance(objectEvent: String): UserProfileFragment {
-            return UserProfileFragment().apply {
-                arguments = Bundle().apply {
-                    putString(objectUserProfile, objectEvent)
-                }
+
+        fun newInstance(objectEvent: String): UserProfileFragment = UserProfileFragment().apply {
+            arguments = Bundle().apply {
+                putString(objectUserProfile, objectEvent)
             }
         }
     }

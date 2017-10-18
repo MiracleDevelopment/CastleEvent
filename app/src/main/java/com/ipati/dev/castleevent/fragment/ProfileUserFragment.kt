@@ -161,10 +161,8 @@ class ProfileUserFragment : Fragment(), View.OnClickListener {
     }
 
     companion object {
-        fun newInstance(): ProfileUserFragment {
-            return ProfileUserFragment().apply {
-                arguments = Bundle()
-            }
+        fun newInstance(): ProfileUserFragment = ProfileUserFragment().apply {
+            arguments = Bundle()
         }
     }
 }

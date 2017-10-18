@@ -4,31 +4,33 @@ import android.support.v4.app.FragmentActivity
 import com.ipati.dev.castleevent.fragment.loading.DialogConfirmFragment
 import com.ipati.dev.castleevent.fragment.loading.LoadingDialogFragment
 
+
 class DialogManager(activity: FragmentActivity) {
     private var mActivity: FragmentActivity = activity
     private lateinit var mLoadingDialog: LoadingDialogFragment
     private lateinit var mConfirmDialog: DialogConfirmFragment
 
+
     fun onShowLoadingDialog(title: String): LoadingDialogFragment {
-        mLoadingDialog = LoadingDialogFragment.newInstance(title, false)
-        return mLoadingDialog.apply {
-            show(mActivity.supportFragmentManager, "LoadingFragment")
+        loadingDialog = LoadingDialogFragment.newInstance(title, false)
+        return loadingDialog.apply {
+            show(activity.supportFragmentManager, "LoadingFragment")
         }
     }
 
     fun onShowConfirmDialog(msg: String): DialogConfirmFragment {
-        mConfirmDialog = DialogConfirmFragment.newInstance(msg)
-        return mConfirmDialog.apply {
-            show(mActivity.supportFragmentManager, "ConfirmFragment")
+        confirmDialog = DialogConfirmFragment.newInstance(msg)
+        return confirmDialog.apply {
+            show(activity.supportFragmentManager, "ConfirmFragment")
         }
     }
 
     fun onDismissLoadingDialog() {
-        return mLoadingDialog.dismiss()
+        return loadingDialog.dismiss()
     }
 
     fun onDismissConfirmDialog() {
-        return mConfirmDialog.dismiss()
+        return confirmDialog.dismiss()
     }
 
 }
