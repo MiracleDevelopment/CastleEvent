@@ -71,5 +71,8 @@
     <color name="colorUnSelectorItem">#B2EBF2</color>
     <color name="colorIconTintNavigationBottom">#FFFFFF</color>
     <color name="colorTextNavigationBottom">#FFFFFF</color>
-
+    <color name="colorIconNotification">#00BCD4</color>
+    <color name="colorFontMissingDialog">#FFFFFF</color>
+    <color name="colorBackgroundButtonMissingDialog">#00BCD4</color>
+    <color name="colorFontMsgMissingDialog">#000000</color>
 </resources>

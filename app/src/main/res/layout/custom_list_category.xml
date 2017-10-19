@@ -2,6 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true"
     android:orientation="vertical">
 
     <LinearLayout
@@ -13,9 +16,6 @@
             android:id="@+id/tv_category_bottom_sheet"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/selectableItemBackground"
-            android:clickable="true"
-            android:focusable="true"
             android:fontFamily="@font/circular"
             android:gravity="start|center_vertical"
             android:padding="5dp"

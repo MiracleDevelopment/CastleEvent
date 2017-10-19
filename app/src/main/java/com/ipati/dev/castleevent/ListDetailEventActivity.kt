@@ -6,9 +6,11 @@ import android.view.View
 import com.ipati.dev.castleevent.base.BaseAppCompatActivity
 import com.ipati.dev.castleevent.fragment.ListDetailEventFragment
 import com.ipati.dev.castleevent.model.LoadingDialogListener
+import com.ipati.dev.castleevent.model.OnMissingConfirm
 
 
-class ListDetailEventActivity : BaseAppCompatActivity(), LoadingDialogListener {
+class ListDetailEventActivity : BaseAppCompatActivity(), LoadingDialogListener, OnMissingConfirm {
+
 
     private lateinit var listDetailFragment: ListDetailEventFragment
 
@@ -40,6 +42,12 @@ class ListDetailEventActivity : BaseAppCompatActivity(), LoadingDialogListener {
     override fun onNegativeClickable(statusLoading: Boolean) {
         supportFragmentManager.findFragmentByTag(TAG_LIST_FRAGMENT)?.let {
             (it as ListDetailEventFragment).onNegativeConfirmFragment()
+        }
+    }
+
+    override fun onMissingDialogConfirm() {
+        supportFragmentManager.findFragmentByTag(TAG_LIST_FRAGMENT)?.let {
+            (it as ListDetailEventFragment).onMissingDialogConfirmFragment()
         }
     }
 

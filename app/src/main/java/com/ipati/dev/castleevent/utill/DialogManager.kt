@@ -3,12 +3,14 @@ package com.ipati.dev.castleevent.utill
 import android.support.v4.app.FragmentActivity
 import com.ipati.dev.castleevent.fragment.loading.DialogConfirmFragment
 import com.ipati.dev.castleevent.fragment.loading.LoadingDialogFragment
+import com.ipati.dev.castleevent.fragment.loading.MissingDialogFragment
 
 
 class DialogManager(activity: FragmentActivity) {
     private var activityDialog: FragmentActivity = activity
     private lateinit var loadingDialog: LoadingDialogFragment
     private lateinit var confirmDialog: DialogConfirmFragment
+    private lateinit var missingDialog: MissingDialogFragment
 
 
     fun onShowLoadingDialog(title: String): LoadingDialogFragment {
@@ -25,12 +27,24 @@ class DialogManager(activity: FragmentActivity) {
         }
     }
 
+    fun onShowMissingDialog(msg: String): MissingDialogFragment {
+        missingDialog = MissingDialogFragment.newInstance(msg)
+        missingDialog.isCancelable = false
+        return missingDialog.apply {
+            show(activityDialog.supportFragmentManager, "MissingDialogFragment")
+        }
+    }
+
     fun onDismissLoadingDialog() {
         return loadingDialog.dismiss()
     }
 
     fun onDismissConfirmDialog() {
         return confirmDialog.dismiss()
+    }
+
+    fun onDismissMissingDialog() {
+        return missingDialog.dismiss()
     }
 
 }

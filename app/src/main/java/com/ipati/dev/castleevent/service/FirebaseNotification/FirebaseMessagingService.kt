@@ -5,15 +5,17 @@ import android.graphics.BitmapFactory
 import android.os.Build
 import android.support.annotation.RequiresApi
 import android.support.v4.app.NotificationCompat
+import android.util.Log
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import com.ipati.dev.castleevent.R
 import java.net.URL
 
 class FirebaseMessagingService : FirebaseMessagingService() {
-    var mNotificationManager: NotificationManager = NotificationManager(this)
-
+    private var mMapData: Map<String, String>? = null
+    private var mNotificationManager: NotificationManager = NotificationManager(this)
     lateinit var mRemoteMessageNotification: RemoteMessage.Notification
-    lateinit var mMapData: Map<String, String>
+
     override fun onMessageReceived(p0: RemoteMessage?) {
         super.onMessageReceived(p0)
         mRemoteMessageNotification = p0?.notification!!
@@ -35,8 +37,12 @@ class FirebaseMessagingService : FirebaseMessagingService() {
         mNotificationManager.createNotificationLess(mRemoteMessage, iconLarge(mMapData))
     }
 
-    private fun iconLarge(mMapData: Map<String, String>): Bitmap {
-        val url = URL(mMapData["picture_url"])
-        return BitmapFactory.decodeStream(url.openConnection().getInputStream())
+    private fun iconLarge(mMapData: Map<String, String>?): Bitmap? {
+        return mMapData?.let {
+            val url: URL? = URL(mMapData["picture_url"])
+            url?.let {
+                return BitmapFactory.decodeStream(url.openConnection().getInputStream())
+            } ?: BitmapFactory.decodeResource(applicationContext.resources, R.mipmap.event_logo)
+        } ?: BitmapFactory.decodeResource(applicationContext.resources, R.mipmap.event_logo)
     }
 }

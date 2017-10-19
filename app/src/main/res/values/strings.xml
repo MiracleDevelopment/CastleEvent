@@ -47,7 +47,7 @@
     <string name="hint_email_profile">E-mail</string>
     <string name="text_button_edit_profile" translatable="false">กลับสู่หน้าหลัก</string>
     <string name="cancel_dialog_logout" translatable="false">ยกเลิก</string>
-    <string name="accept_diaog_logout" translatable="false">ตกลง</string>
+    <string name="accept_dialog_logout" translatable="false">ตกลง</string>
     <string name="expiredTickets" translatable="false">ขออภัยบัตรหมดแล้วค่ะ</string>
     <string name="lessAfterDate" translatable="false">ขออภัยเลยกำหนดในการจองแล้วค่ะ</string>
     <string name="pleaseLogin" translatable="false">กรุณาเข้าสู่ระบบ</string>
@@ -61,4 +61,5 @@
     <string name="open_notification">Open</string>
     <string name="re_password">Re-Password</string>
     <string name="upload_text">อัพโหลดรูปภาพ</string>
+    <string name="accept_missing">ตกลง</string>
 </resources>
