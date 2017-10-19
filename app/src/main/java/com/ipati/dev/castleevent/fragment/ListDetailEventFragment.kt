@@ -72,16 +72,15 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
     private lateinit var realTimeDatabaseDetailManager: RealTimeDatabaseDetailManager
     private lateinit var googleSharePreference: SharePreferenceGoogleSignInManager
     private lateinit var googlePlayServiceMap: GooglePlayServiceMapManager
-    private lateinit var mGoogleCredentialAccount: GoogleAccountCredential
+    private lateinit var googleCredentialAccount: GoogleAccountCredential
     private lateinit var googleApiAvailability: GoogleApiAvailability
-    private lateinit var mBottomSheetBehavior: BottomSheetBehavior<View>
+    private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
     private lateinit var calendarManager: CalendarManager
-    private lateinit var mRecorderEvent: RecordListEvent
+    private lateinit var recorderEvent: RecordListEvent
     private lateinit var authenticationStatus: AuthenticationStatus
     private lateinit var dialogManager: DialogManager
     private lateinit var dateManager: DateManager
 
-    private var mCalendarTimeStamp = java.util.Calendar.getInstance()
     private var Ref: DatabaseReference = FirebaseDatabase.getInstance().reference
     private var eventId: Long? = null
     private var accountBank: String? = null
@@ -152,25 +151,25 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
 
 
     private fun initialGoogleCredentialAccount() {
-        mGoogleCredentialAccount = GoogleAccountCredential
+        googleCredentialAccount = GoogleAccountCredential
                 .usingOAuth2(activity, Arrays.asList(CalendarScopes.CALENDAR))
                 .setBackOff(ExponentialBackOff())
 
-        mGoogleCredentialAccount.selectedAccountName = googleSharePreference.defaultSharePreferenceManager()
+        googleCredentialAccount.selectedAccountName = googleSharePreference.defaultSharePreferenceManager()
     }
 
 
     @SuppressLint("InflateParams", "ResourceType")
     private fun initialBottomSheet() {
-        mBottomSheetBehavior = BottomSheetBehavior.from(view?.findViewById(R.id.bottom_sheet))
-        mBottomSheetBehavior.peekHeight = li_header_bottom_sheet.height
-        mBottomSheetBehavior.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+        bottomSheetBehavior = BottomSheetBehavior.from(view?.findViewById(R.id.bottom_sheet))
+        bottomSheetBehavior.peekHeight = li_header_bottom_sheet.height
+        bottomSheetBehavior.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
 
             }
 
             override fun onStateChanged(bottomSheet: View, newState: Int) {
-                when (mBottomSheetBehavior.state) {
+                when (bottomSheetBehavior.state) {
                     BottomSheetBehavior.STATE_COLLAPSED -> {
                         floating_bt_close.setImageResource(R.mipmap.ic_keyboard_arrow_up)
                     }
@@ -182,14 +181,14 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
         })
 
         floating_bt_close.setOnClickListener {
-            when (mBottomSheetBehavior.state) {
+            when (bottomSheetBehavior.state) {
                 BottomSheetBehavior.STATE_EXPANDED -> {
                     floating_bt_close.setImageResource(R.mipmap.ic_keyboard_arrow_up)
-                    mBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                    bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
                 }
 
                 BottomSheetBehavior.STATE_COLLAPSED -> {
-                    mBottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+                    bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
                     floating_bt_close.setImageResource(R.mipmap.ic_keyboard_arrow_down)
                 }
             }
@@ -210,23 +209,22 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
         tv_receive_tickets.setOnClickListener {
             when (tv_receive_tickets.text) {
                 resources.getText(R.string.expiredTickets) -> {
-                    Toast.makeText(context, tv_receive_tickets.text, Toast.LENGTH_SHORT).show()
+                    dialogManager.onShowMissingDialog(resources.getString(R.string.expiredTickets))
                 }
 
                 resources.getText(R.string.pleaseLogin) -> {
-                    Toast.makeText(context, tv_receive_tickets.text, Toast.LENGTH_SHORT).show()
+                    dialogManager.onShowMissingDialog(resources.getString(R.string.pleaseLogin))
                 }
 
                 resources.getText(R.string.lessAfterDate) -> {
-                    Toast.makeText(context, tv_receive_tickets.text, Toast.LENGTH_SHORT).show()
+                    dialogManager.onShowMissingDialog(resources.getString(R.string.lessAfterDate))
                 }
 
                 resources.getString(R.string.closeEvent) -> {
-                    Toast.makeText(context, tv_receive_tickets.text, Toast.LENGTH_SHORT).show()
+                    dialogManager.onShowMissingDialog(resources.getString(R.string.closeEvent))
                 }
 
                 else -> {
-                    mCalendarTimeStamp.timeZone = TimeZone.getDefault()
                     val msg = "คุณต้องการจองบัตร จำนวน " + number_picker.value.toString() + " ใบ" + "\n" + " ใช่ / ไม่"
                     dialogManager.onShowConfirmDialog(msg)
                 }
@@ -257,6 +255,7 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
     }
 
     //Todo: Direction Update
+    @SuppressLint("SetTextI18n")
     override fun setDataChange(itemListEvent: ItemListEvent) {
         loadPhotoDetail(context, itemListEvent.eventCover, im_detail_cover)
         loadPhotoAdvertise(context, itemListEvent.eventAdvertise, im_advertise_detail)
@@ -268,7 +267,7 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
         tv_detail_description.text = itemListEvent.eventDescription
         tv_detail_number_phone_contact.text = "092-270-7454"
         tv_detail_mail_description_contact.text = "admin@contact.co.th"
-        tv_Start_price.text = "STARTING FROM ฿" + itemListEvent.eventPrice
+        tv_Start_price.text = "STARTING FROM ฿${itemListEvent.eventPrice}"
 
 
         mAccountBank = itemListEvent.accountBank
@@ -291,6 +290,7 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
         })
     }
 
+    @SuppressLint("SetTextI18n")
     private fun setOnDetailEvent(itemListEvent: ItemListEvent) {
         loadPhotoDetail(context, itemListEvent.eventCover, im_detail_cover)
         loadPhotoAdvertise(context, itemListEvent.eventAdvertise, im_advertise_detail)
@@ -302,7 +302,7 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
         tv_detail_description.text = itemListEvent.eventDescription
         tv_detail_number_phone_contact.text = "092-270-7454"
         tv_detail_mail_description_contact.text = "admin@contact.co.th"
-        tv_Start_price.text = "STARTING FROM ฿" + itemListEvent.eventPrice
+        tv_Start_price.text = "STARTING FROM ฿${itemListEvent.eventPrice}"
 
         mAccountBank = itemListEvent.accountBank
         keyEvent = itemListEvent.eventKey
@@ -319,7 +319,7 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
         priceEvent = itemListEvent.eventPrice
         locationEvent = itemListEvent.eventLocation
 
-        mRecorderEvent = RecordListEvent()
+        recorderEvent = RecordListEvent()
         mCheckRest = Ref.child("eventItem").child("eventContinue").child(keyEvent)
 
         dateManager.getStatusTickets(itemListEvent, { status: String ->
@@ -368,9 +368,9 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
     private fun onSetUserAccount() {
         if (googleSharePreference.defaultSharePreferenceManager() != null) {
             attendee = googleSharePreference.defaultSharePreferenceManager()
-            mGoogleCredentialAccount.selectedAccountName = googleSharePreference.defaultSharePreferenceManager()
+            googleCredentialAccount.selectedAccountName = googleSharePreference.defaultSharePreferenceManager()
         } else {
-            startActivityForResult(mGoogleCredentialAccount.newChooseAccountIntent(), REQUEST_ACCOUNT)
+            startActivityForResult(googleCredentialAccount.newChooseAccountIntent(), REQUEST_ACCOUNT)
         }
     }
 
@@ -400,6 +400,11 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
         }
     }
 
+    fun onMissingDialogConfirmFragment() {
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+        dialogManager.onDismissMissingDialog()
+    }
+
     private fun addEvent() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(context, Manifest.permission.GET_ACCOUNTS) != PackageManager.PERMISSION_GRANTED) {
@@ -413,16 +418,16 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
     }
 
     private fun verifyGoogleAccounts() {
-        if (mGoogleCredentialAccount.selectedAccountName == null) {
+        if (googleCredentialAccount.selectedAccountName == null) {
             if (googleSharePreference.defaultSharePreferenceManager() != null) {
-                mGoogleCredentialAccount.selectedAccountName = googleSharePreference.defaultSharePreferenceManager()
+                googleCredentialAccount.selectedAccountName = googleSharePreference.defaultSharePreferenceManager()
                 attendee = googleSharePreference.defaultSharePreferenceManager()
                 recordMyTickets()
             } else {
-                startActivityForResult(mGoogleCredentialAccount.newChooseAccountIntent(), REQUEST_ACCOUNT_RECORD)
+                startActivityForResult(googleCredentialAccount.newChooseAccountIntent(), REQUEST_ACCOUNT_RECORD)
             }
         } else {
-            attendee = mGoogleCredentialAccount.selectedAccountName
+            attendee = googleCredentialAccount.selectedAccountName
             recordMyTickets()
         }
     }
@@ -430,11 +435,7 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
     private fun recordMyTickets() {
         dialogManager.onShowLoadingDialog("ระบบกำลังดำเนินงาน")
 
-        val day = mCalendarTimeStamp.get(java.util.Calendar.DATE)
-        val month = mCalendarTimeStamp.getDisplayName(java.util.Calendar.MONTH, java.util.Calendar.LONG, Locale("th"))
-        val year = mCalendarTimeStamp.get(java.util.Calendar.YEAR)
-
-        val dateStamp = day.toString() + "-" + month.toString() + "-" + year.toString()
+        val dateStamp = dateManager.getCurrentDate()
         val timeStamp = System.currentTimeMillis()
 
         mCheckRest?.runTransaction(object : Transaction.Handler {
@@ -443,14 +444,15 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
                     dialogManager.onDismissLoadingDialog()
                     Log.d("TransactionStatus", p0.message.toString())
                 } else {
-                    mRecorderEvent.pushEventRealTime(username.toString(), eventId.toString(), nameEvent.toString(), locationEvent.toString(), logoEvent!!, number_picker.value.toLong(), dateStamp, timeStamp)?.apply {
+                    recorderEvent.pushEventRealTime(username.toString(), eventId.toString(), nameEvent.toString()
+                            , locationEvent.toString(), logoEvent!!, number_picker.value.toLong(), dateStamp, timeStamp)?.apply {
                         addOnCompleteListener { task ->
                             if (task.isSuccessful) {
 
                                 if (ContextCompat.checkSelfPermission(context, Manifest.permission.GET_ACCOUNTS) == PackageManager.PERMISSION_GRANTED) {
-                                    MakePushEvent(mGoogleCredentialAccount).execute()
+                                    MakePushEvent(googleCredentialAccount).execute()
                                 } else {
-                                    mBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                                    bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
                                 }
 
                                 dialogManager.onDismissLoadingDialog()
@@ -515,15 +517,15 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
     override fun onClick(p0: View?) {
         when (p0?.id) {
             R.id.bt_get_tickets -> {
-                when (mBottomSheetBehavior.state) {
+                when (bottomSheetBehavior.state) {
                     BottomSheetBehavior.STATE_COLLAPSED -> {
                         floating_bt_close.setImageResource(R.mipmap.ic_keyboard_arrow_down)
-                        mBottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+                        bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
                     }
 
                     BottomSheetBehavior.STATE_EXPANDED -> {
                         floating_bt_close.setImageResource(R.mipmap.ic_keyboard_arrow_up)
-                        mBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                        bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
                     }
                 }
             }
@@ -547,7 +549,7 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
                     accountBank = data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME)
                     accountBank.let {
                         googleSharePreference.sharePreferenceManager(accountBank)
-                        mGoogleCredentialAccount.selectedAccountName = accountBank
+                        googleCredentialAccount.selectedAccountName = accountBank
                         attendee = accountBank
                     }
                 }
@@ -558,7 +560,7 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
             }
 
             REQUEST_CALENDAR_PERMISSION -> {
-                mPushEvent = MakePushEvent(mGoogleCredentialAccount)
+                mPushEvent = MakePushEvent(googleCredentialAccount)
                 mPushEvent?.execute()
             }
 
@@ -567,7 +569,7 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
                     accountBank = data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME)
                     accountBank?.let {
                         googleSharePreference.sharePreferenceManager(accountBank)
-                        mGoogleCredentialAccount.selectedAccountName = accountBank
+                        googleCredentialAccount.selectedAccountName = accountBank
                         attendee = accountBank
                         onPositiveConfirmFragment()
                     }
@@ -658,7 +660,7 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
         override fun onPostExecute(result: Event?) {
             super.onPostExecute(result)
             Log.d("resultTaskInsertEvent", result?.htmlLink)
-            mBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
             floating_bt_close.setImageResource(R.mipmap.ic_keyboard_arrow_up)
             dialogManager.onDismissLoadingDialog()
         }
@@ -673,6 +675,7 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
                     }
                     else -> {
                         dialogManager.onDismissLoadingDialog()
+                        dialogManager.onDismissConfirmDialog()
                         Log.d("errorAsyncTaskPushEvent", mListError?.toString())
                     }
                 }

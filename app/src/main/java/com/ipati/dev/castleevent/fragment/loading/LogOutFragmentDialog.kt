@@ -55,7 +55,6 @@ class LogOutFragmentDialog : DialogFragment(), View.OnClickListener {
                 mLogOutListener = activity as ListEventActivity
                 mLogOutListener?.let {
                     dialog.dismiss()
-                    activity.recreate()
                     mLogOutListener?.logOutApplication()
 
                 }

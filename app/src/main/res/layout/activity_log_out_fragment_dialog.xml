@@ -57,7 +57,7 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:fontFamily="@font/circular"
-                android:text="@string/accept_diaog_logout"
+                android:text="@string/accept_dialog_logout"
                 android:textColor="@color/colorAcceptButton"
                 android:textSize="22sp" />
         </LinearLayout>

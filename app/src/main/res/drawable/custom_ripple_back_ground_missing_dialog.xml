@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="@android:color/white">
+    <item>
+        <selector>
+            <item
+                android:drawable="@drawable/custom_back_ground_missing_dialog"
+                android:state_pressed="false">
+
+            </item>
+        </selector>
+    </item>
+</ripple>

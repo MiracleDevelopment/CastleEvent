@@ -7,18 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import com.ipati.dev.castleevent.R
 import com.ipati.dev.castleevent.model.*
-import com.ipati.dev.castleevent.model.Category.ALL
-import com.ipati.dev.castleevent.model.Category.Education
-import com.ipati.dev.castleevent.model.Category.Sport
-import com.ipati.dev.castleevent.model.Category.Technology
 import kotlinx.android.synthetic.main.custom_list_category.view.*
 
 
 class ListCategoryMenuAdapter(mListCategory: ArrayList<String>) : RecyclerView.Adapter<ListCategoryMenuAdapter.CategoryHolder>() {
-    var CATEGORY_ALL: String = "ALL"
-    var CATEGORY_EDUCATION: String = "Education"
-    var CATEGORY_TECHNOLOGY: String = "Technology"
-    var CATEGORY_SPORT: String = "Sport"
+    private var CATEGORY_ALL: String = "ALL"
+    private var CATEGORY_EDUCATION: String = "Education"
+    private var CATEGORY_TECHNOLOGY: String = "Technology"
+    private var CATEGORY_SPORT: String = "Sport"
 
     var listCategory: ArrayList<String> = mListCategory
     private lateinit var mOnChangeCategory: LoadingCategory
@@ -48,6 +44,10 @@ class ListCategoryMenuAdapter(mListCategory: ArrayList<String>) : RecyclerView.A
         }
 
         fun onBind() {
+            itemView.setOnClickListener { view ->
+                onClick(view)
+            }
+
             itemView.tv_category_bottom_sheet.text = listCategory[adapterPosition]
             itemView.tv_category_bottom_sheet.setOnClickListener { view -> onClick(view) }
 
@@ -58,16 +58,16 @@ class ListCategoryMenuAdapter(mListCategory: ArrayList<String>) : RecyclerView.A
         private fun onSetCountCategoryItem() {
             when (itemView.tv_category_bottom_sheet.text) {
                 CATEGORY_ALL -> {
-                    itemView.tv_category_bottom_sheet.text = listCategory[adapterPosition] + " (" + ALL.toString() + ")"
+                    itemView.tv_category_bottom_sheet.text = listCategory[adapterPosition]
                 }
                 CATEGORY_EDUCATION -> {
-                    itemView.tv_category_bottom_sheet.text = listCategory[adapterPosition] + " (" + Education.toString() + ")"
+                    itemView.tv_category_bottom_sheet.text = listCategory[adapterPosition]
                 }
                 CATEGORY_TECHNOLOGY -> {
-                    itemView.tv_category_bottom_sheet.text = listCategory[adapterPosition] + " (" + Technology.toString() + ")"
+                    itemView.tv_category_bottom_sheet.text = listCategory[adapterPosition]
                 }
                 CATEGORY_SPORT -> {
-                    itemView.tv_category_bottom_sheet.text = listCategory[adapterPosition] + " (" + Sport.toString() + ")"
+                    itemView.tv_category_bottom_sheet.text = listCategory[adapterPosition]
                 }
             }
         }

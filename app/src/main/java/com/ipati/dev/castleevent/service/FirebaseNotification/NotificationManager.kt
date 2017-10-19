@@ -9,6 +9,7 @@ import android.media.RingtoneManager
 import android.os.Build
 import android.support.annotation.RequiresApi
 import android.support.v4.app.NotificationCompat
+import android.support.v4.content.ContextCompat
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.RemoteMessage
 import com.ipati.dev.castleevent.ListEventActivity
@@ -37,9 +38,10 @@ class NotificationManager(context: Context) {
         mNotificationManager.createNotificationChannel(createNotificationChannel())
 
         mNotification = NotificationCompat.Builder(mContext, mChannelId)
-                .setSmallIcon(R.mipmap.event_logo)
+                .setSmallIcon(R.mipmap.ic_stat_castlenotification)
                 .setAutoCancel(true)
                 .setChannelId(mChannelId)
+                .setColor(ContextCompat.getColor(mContext, R.color.colorIconNotification))
                 .setContentTitle(mRemoteMessage.title)
                 .setContentText(mRemoteMessage.body)
                 .setNumber(badgeCount)
@@ -65,7 +67,8 @@ class NotificationManager(context: Context) {
                 .setAutoCancel(true)
                 .setContentTitle(mRemoteMessage.title)
                 .setContentText(mRemoteMessage.body)
-                .setSmallIcon(R.mipmap.event_logo)
+                .setSmallIcon(R.mipmap.ic_stat_castlenotification)
+                .setColor(ContextCompat.getColor(mContext, R.color.colorIconNotification))
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
 
         iconLarge?.let {

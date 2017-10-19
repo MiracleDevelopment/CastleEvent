@@ -47,10 +47,10 @@
     <string name="hint_email_profile">E-mail</string>
     <string name="text_button_edit_profile" translatable="false">Back To Main Menu</string>
     <string name="cancel_dialog_logout" translatable="false">Cancel</string>
-    <string name="accept_diaog_logout" translatable="false">OK</string>
+    <string name="accept_dialog_logout" translatable="false">OK</string>
     <string name="expiredTickets" translatable="false">tickets expired</string>
     <string name="lessAfterDate" translatable="false">exceeded the time limit</string>
-    <string name="pleaseLogin" translatable="false">please Login</string>
+    <string name="pleaseLogin" translatable="false">Please Login</string>
     <string name="closeEvent" translatable="false">Close</string>
     <string name="my_order">My Order</string>
     <string name="contact">Contact</string>
@@ -61,4 +61,5 @@
     <string name="open_notification">Open</string>
     <string name="re_password">Re-Password</string>
     <string name="upload_text">UploadPhoto</string>
+    <string name="accept_missing">OK</string>
 </resources>

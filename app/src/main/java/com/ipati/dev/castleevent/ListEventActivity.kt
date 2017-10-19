@@ -41,6 +41,10 @@ class ListEventActivity : BaseAppCompatActivity(), View.OnClickListener, OnLogOu
     private var lifeCycleRegistry: LifecycleRegistry = LifecycleRegistry(this)
     private var doubleTwiceBackPress: Boolean = false
 
+    private val handlerThread: Handler by lazy {
+        Handler()
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -182,7 +186,10 @@ class ListEventActivity : BaseAppCompatActivity(), View.OnClickListener, OnLogOu
 
     override fun logOutApplication() {
         FirebaseAuth.getInstance().signOut()
-        initialViewPager()
+        handlerThread.postDelayed(Runnable {
+            recreate()
+            initialViewPager()
+        }, 100)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

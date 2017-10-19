@@ -34,8 +34,8 @@ class DateManager(context: Context) {
 
     private fun getDateCalendar(date: Date): String {
         calendarInstance.timeInMillis = date.time
-        return "${calendarInstance.get(Calendar.DAY_OF_WEEK)}  ${calendarInstance.getDisplayName(Calendar.MONTH
-                , Calendar.LONG, Locale(getLocalDefault()))}  ${calendarInstance.get(Calendar.YEAR)}"
+        return "${calendarInstance.get(Calendar.DAY_OF_MONTH)} ${calendarInstance.getDisplayName(Calendar.MONTH
+                , Calendar.LONG, Locale(getLocalDefault()))} ${calendarInstance.get(Calendar.YEAR)}"
     }
 
     fun getStatusTickets(itemListEvent: ItemListEvent, setTextStatus: (String) -> Unit) {
@@ -54,6 +54,12 @@ class DateManager(context: Context) {
         } else {
             setTextStatus(contextManager.resources.getString(R.string.pleaseLogin))
         }
+    }
+
+    fun getCurrentDate(): String {
+        return "${calendarInstance.get(Calendar.DAY_OF_MONTH)}-" +
+                "${calendarInstance.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale(getLocalDefault()))}-" +
+                "${calendarInstance.get(Calendar.YEAR)}"
     }
 
 }

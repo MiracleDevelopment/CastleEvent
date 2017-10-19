@@ -51,5 +51,9 @@ interface OnChangeNotificationChannel {
     fun onChangeNotification(notification: Int)
 }
 
+interface OnMissingConfirm{
+    fun onMissingDialogConfirm()
+}
+
 
 
