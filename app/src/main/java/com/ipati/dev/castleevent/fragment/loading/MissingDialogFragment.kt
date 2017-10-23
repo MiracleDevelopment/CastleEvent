@@ -1,7 +1,9 @@
 package com.ipati.dev.castleevent.fragment.loading
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
+import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,9 +21,12 @@ class MissingDialogFragment : DialogFragment() {
         return inflater?.inflate(R.layout.activity_missing_dialog_fragment, container, false)
     }
 
+    @SuppressLint("ResourceType")
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.window.attributes.windowAnimations = R.style.AnimationDialogFragment
+
         arguments?.let {
             tv_msg_missing_dialog_fragment.text = arguments.getString(msgObject)
         }

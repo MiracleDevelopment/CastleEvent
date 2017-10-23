@@ -14,5 +14,6 @@ class FirebaseInstanceService : FirebaseInstanceIdService() {
 
     private fun sendRegisterToServer(token: String?) {
         //Sending To Server//
+        Log.d("token", token)
     }
 }

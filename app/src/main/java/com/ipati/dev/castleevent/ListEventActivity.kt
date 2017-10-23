@@ -186,10 +186,9 @@ class ListEventActivity : BaseAppCompatActivity(), View.OnClickListener, OnLogOu
 
     override fun logOutApplication() {
         FirebaseAuth.getInstance().signOut()
-        handlerThread.postDelayed(Runnable {
-            recreate()
-            initialViewPager()
-        }, 100)
+
+        recreate()
+        initialViewPager()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

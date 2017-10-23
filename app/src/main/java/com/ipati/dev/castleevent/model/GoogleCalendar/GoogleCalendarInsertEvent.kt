@@ -35,13 +35,13 @@ class GoogleCalendarInsertEvent(context: Context, summary: String?, location: St
     private var mTimeZone: TimeZone = mCalendar.timeZone
 
     private var dateManager: DateManager
+
     init {
         event.summary = summary
         event.location = location
         event.description = description
         event.start = setDateTimeStart()
         event.end = setDateTimeEnd()
-        event.recurrence = setRecurrence()
         event.attendees = setEventAttendee()
         event.reminders = setEventReminder()
         dateManager = DateManager(contextCalendar)
@@ -60,8 +60,23 @@ class GoogleCalendarInsertEvent(context: Context, summary: String?, location: St
 
     private fun setDateTimeEnd(): EventDateTime {
         simpleDateEnd = endEvent!!
+
+        if (getEqualDate(startEvent!!)?.time == getEqualDate(endEvent!!)?.time) {
+            event.recurrence = setRecurrence(1)
+        } else {
+            val recurrenceRest: Int = (getCurrent() - getCurrentDay(getEqualDate(startEvent!!)?.time!!)) + getCurrentDay(getEqualDate(endEvent!!)?.time!!) + 1
+
+            Log.d("startEventDay", getCurrentDay(getEqualDate(startEvent!!)?.time!!).toString())
+            Log.d("endEventDay", getCurrentDay(getEqualDate(endEvent!!)?.time!!).toString())
+            Log.d("recurrence", recurrenceRest.toString())
+
+            event.recurrence = setRecurrence(recurrenceRest)
+        }
+
+
         mSimpleDateFormat = SimpleDateFormat("dd-MM-yyyy'T'HH:mm:ss", Locale("th"))
         mDate = mSimpleDateFormat.parse(simpleDateEnd)
+
         Log.d("DateTimeFormatEnd", mDate.toString())
 
         endDateTime = DateTime(mDate.time)
@@ -69,8 +84,8 @@ class GoogleCalendarInsertEvent(context: Context, summary: String?, location: St
         return eventDateTimeEnd
     }
 
-    private fun setRecurrence(): List<String> {
-        listRecurrence = ArrayList(Arrays.asList("RRULE:FREQ=DAILY;COUNT=2"))
+    private fun setRecurrence(count: Int): List<String> {
+        listRecurrence = ArrayList(Arrays.asList("RRULE:FREQ=DAILY;COUNT=$count"))
         return listRecurrence
     }
 
@@ -92,5 +107,21 @@ class GoogleCalendarInsertEvent(context: Context, summary: String?, location: St
 
     fun requestEvent(): Event? {
         return event
+    }
+
+    private fun getEqualDate(time: String): Date? {
+        val simpleFormatDate = SimpleDateFormat("dd-MM-yyyy", Locale("th"))
+        return simpleFormatDate.parse(time)
+    }
+
+    private fun getCurrentDay(timeMillionDay: Long): Int {
+        val calendarDay: Calendar = Calendar.getInstance().apply {
+            timeInMillis = timeMillionDay
+        }
+        return calendarDay.get(Calendar.DAY_OF_MONTH)
+    }
+
+    private fun getCurrent(): Int {
+        return Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_MONTH)
     }
 }

@@ -1,9 +1,10 @@
 package com.ipati.dev.castleevent.model.GoogleCalendar
 
-var mAccountBank: String? = null
+var bankAccount: String? = null
 var keyEvent: String? = null
 var idEvent: String? = null
 var nameEvent: String? = null
+var categoryNameEvent: String? = null
 var logoEvent: String? = null
 var startEvent: String? = null
 var endEvent: String? = null

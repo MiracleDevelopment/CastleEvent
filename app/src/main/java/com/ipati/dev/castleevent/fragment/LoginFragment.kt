@@ -181,6 +181,9 @@ class LoginFragment : BaseFragment(), View.OnClickListener {
     override fun onStart() {
         super.onStart()
         googleApiService(activity)?.connect()
+        if (!lottie_view_animation_login.isAnimating) {
+            lottie_view_animation_login.playAnimation()
+        }
     }
 
     override fun onStop() {

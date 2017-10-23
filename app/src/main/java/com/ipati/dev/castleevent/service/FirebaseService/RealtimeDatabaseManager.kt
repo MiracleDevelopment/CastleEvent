@@ -10,25 +10,23 @@ import com.ipati.dev.castleevent.adapter.ListEventAdapter
 import com.ipati.dev.castleevent.model.ModelListItem.ItemListEvent
 
 class RealTimeDatabaseManager(context: Context, lifeCycle: Lifecycle) : LifecycleObserver {
-    var mCategory: String = "ALL"
+    var categoryManager: String = "ALL"
+    private var contextManager: Context? = null
+    private var lifeCycleManager: Lifecycle? = null
+    private var itemListEvent: ItemListEvent? = null
+    private var onChildListener: ChildEventListener? = null
+    var arrayItemList: ArrayList<ItemListEvent> = ArrayList()
+    var adapterListEvent: ListEventAdapter? = ListEventAdapter(listItem = arrayItemList)
+
     private var tagChild = "eventItem/eventContinue"
     private var refDatabase: DatabaseReference = FirebaseDatabase.getInstance().reference
     private var refDatabaseChild: DatabaseReference? = refDatabase.child(tagChild)
-    var listItem: ItemListEvent? = null
-    var hasMapData: HashMap<*, *>? = null
-    var mContext: Context? = null
-    var mLifeCycle: Lifecycle? = null
-    var arrayItemList: ArrayList<ItemListEvent> = ArrayList()
-    var adapterListEvent: ListEventAdapter? = ListEventAdapter(listItem = arrayItemList)
-        get() = field
-
-    lateinit var listItemEvent: List<ItemListEvent>
 
     //Todo:init Class Constructor
     init {
-        this.mContext = context
-        this.mLifeCycle = lifeCycle
-        mLifeCycle!!.addObserver(this)
+        contextManager = context
+        lifeCycleManager = lifeCycle
+        lifeCycleManager!!.addObserver(this)
     }
 
     //Todo:Handling Life Cycle
@@ -45,7 +43,7 @@ class RealTimeDatabaseManager(context: Context, lifeCycle: Lifecycle) : Lifecycl
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     fun onDestroy() {
-        mLifeCycle?.removeObserver(this)
+        lifeCycleManager?.removeObserver(this)
     }
 
     private fun registerChildEvent() {
@@ -53,23 +51,18 @@ class RealTimeDatabaseManager(context: Context, lifeCycle: Lifecycle) : Lifecycl
     }
 
     private fun removeChildEvent() {
-        refDatabaseChild?.removeEventListener(childEventListener())
-        arrayItemList.clear()
-    }
-
-    fun onChangeCategory() {
-        arrayItemList.clear()
         refDatabaseChild?.let {
-            refDatabaseChild?.removeEventListener(childEventListener())
+            refDatabaseChild?.removeEventListener(onChildListener)
         }
 
-        refDatabaseChild?.addChildEventListener(childEventListener())
+        arrayItemList.clear()
     }
 
-    private fun childEventListener(): ChildEventListener {
-        return object : ChildEventListener {
+
+    private fun childEventListener(): ChildEventListener? {
+        onChildListener = object : ChildEventListener {
             override fun onCancelled(p0: DatabaseError?) {
-                Log.d("onCancelled", p0?.message.toString())
+                Log.d("onCancelledListEvent", p0?.message.toString())
             }
 
             override fun onChildMoved(p0: DataSnapshot?, p1: String?) {
@@ -77,82 +70,34 @@ class RealTimeDatabaseManager(context: Context, lifeCycle: Lifecycle) : Lifecycl
             }
 
             override fun onChildChanged(p0: DataSnapshot?, p1: String?) {
-                hasMapData = p0?.value as HashMap<*, *>
-                val objectItem: List<ItemListEvent> = arrayItemList.filter { it.eventId == hasMapData!!["eventId"] as Long }
-                if (objectItem.count() != 0) {
-                    listItem = ItemListEvent(
-                            p0.key.toString(),
-                            hasMapData!!["eventId"] as Long,
-                            hasMapData!!["eventName"].toString(),
-                            hasMapData!!["eventCover"].toString(),
-                            hasMapData!!["eventAdvertise"].toString(),
-                            hasMapData!!["categoryName"].toString(),
-                            hasMapData!!["accountBank"].toString(),
-                            hasMapData!!["eventDescription"].toString(),
-                            hasMapData!!["eventLocation"].toString(),
-                            hasMapData!!["eventLogoCredit"].toString(),
-                            hasMapData!!["eventLatitude"] as Double,
-                            hasMapData!!["eventLongitude"] as Double,
-                            hasMapData!!["eventMax"] as Long,
-                            hasMapData!!["eventRest"] as Long,
-                            hasMapData!!["eventStatus"] as Boolean,
-                            hasMapData!!["eventTime"].toString(),
-                            hasMapData!!["eventCalendarStart"].toString(),
-                            hasMapData!!["eventCalendarEnd"].toString(),
-                            hasMapData!!["eventPrice"].toString()
-                    )
-                    arrayItemList.remove(objectItem[0])
-                    adapterListEvent?.notifyDataSetChanged()
-                    arrayItemList.add(0, listItem!!)
+                itemListEvent = p0?.getValue(ItemListEvent::class.java)
+                itemListEvent?.let {
+                    val itemChange: ItemListEvent? = arrayItemList.find { it.eventKey == itemListEvent?.eventKey }
+                    val indexRef: Int = arrayItemList.indexOf(itemChange)
+                    arrayItemList[indexRef] = itemListEvent!!
+                    adapterListEvent?.notifyItemChanged(indexRef)
                 }
             }
 
             override fun onChildAdded(p0: DataSnapshot?, p1: String?) {
-                hasMapData = p0?.value as HashMap<*, *>
-                listItem = ItemListEvent(
-                        p0.key.toString(),
-                        hasMapData!!["eventId"] as Long,
-                        hasMapData!!["eventName"].toString(),
-                        hasMapData!!["eventCover"].toString(),
-                        hasMapData!!["eventAdvertise"].toString(),
-                        hasMapData!!["categoryName"].toString(),
-                        hasMapData!!["accountBank"].toString(),
-                        hasMapData!!["eventDescription"].toString(),
-                        hasMapData!!["eventLocation"].toString(),
-                        hasMapData!!["eventLogoCredit"].toString(),
-                        hasMapData!!["eventLatitude"] as Double,
-                        hasMapData!!["eventLongitude"] as Double,
-                        hasMapData!!["eventMax"] as Long,
-                        hasMapData!!["eventRest"] as Long,
-                        hasMapData!!["eventStatus"] as Boolean,
-                        hasMapData!!["eventTime"].toString(),
-                        hasMapData!!["eventCalendarStart"].toString(),
-                        hasMapData!!["eventCalendarEnd"].toString(),
-                        hasMapData!!["eventPrice"].toString()
-
-                )
-                onFilter(hasMapData!!["categoryName"].toString(), listItem!!)
+                itemListEvent = p0?.getValue(ItemListEvent::class.java)
+                itemListEvent?.let {
+                    arrayItemList.add(itemListEvent!!)
+                    adapterListEvent?.notifyDataSetChanged()
+                }
             }
 
             override fun onChildRemoved(p0: DataSnapshot?) {
-                adapterListEvent?.notifyDataSetChanged()
-                hasMapData = p0?.value as HashMap<*, *>
-                listItemEvent = arrayItemList.filter { it.eventId == hasMapData!!["eventId"] as Long }
-
-                if (listItemEvent.count() != 0) {
-                    arrayItemList.remove(listItemEvent[0])
+                itemListEvent = p0?.getValue(ItemListEvent::class.java)
+                itemListEvent?.let {
+                    val itemRemove: ItemListEvent? = arrayItemList.find { it.eventKey == itemListEvent?.eventKey }
+                    val indexRef: Int = arrayItemList.indexOf(itemRemove)
+                    arrayItemList.removeAt(indexRef)
+                    adapterListEvent?.notifyItemRemoved(indexRef)
                 }
             }
         }
-    }
 
-    private fun onFilter(category: String, listItem: ItemListEvent) {
-        if (mCategory == category) {
-            arrayItemList.add(listItem)
-            adapterListEvent?.notifyDataSetChanged()
-        } else if (mCategory == "ALL") {
-            arrayItemList.add(listItem)
-            adapterListEvent?.notifyDataSetChanged()
-        }
+        return onChildListener
     }
 }

@@ -62,4 +62,8 @@
     <string name="re_password">Re-Password</string>
     <string name="upload_text">อัพโหลดรูปภาพ</string>
     <string name="accept_missing">ตกลง</string>
+    <string name="categoryAll">ALL</string>
+    <string name="categoryEducation">Education</string>
+    <string name="categoryTechnology">Technology</string>
+    <string name="categorySport">Sport</string>
 </resources>

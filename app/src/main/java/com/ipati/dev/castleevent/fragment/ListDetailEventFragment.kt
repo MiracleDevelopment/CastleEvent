@@ -50,7 +50,6 @@ import com.ipati.dev.castleevent.model.LoadingDetailData
 import com.ipati.dev.castleevent.model.OnUpdateInformation
 import com.ipati.dev.castleevent.model.GmsLocation.GooglePlayServiceMapManager
 import com.ipati.dev.castleevent.model.ModelListItem.ItemListEvent
-import com.ipati.dev.castleevent.model.UserManager.username
 import com.ipati.dev.castleevent.service.AuthenticationStatus
 import com.ipati.dev.castleevent.service.FirebaseService.RealTimeDatabaseDetailManager
 import com.ipati.dev.castleevent.service.RecordedEvent.RecordListEvent
@@ -76,7 +75,6 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
     private lateinit var googleApiAvailability: GoogleApiAvailability
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
     private lateinit var calendarManager: CalendarManager
-    private lateinit var recorderEvent: RecordListEvent
     private lateinit var authenticationStatus: AuthenticationStatus
     private lateinit var dialogManager: DialogManager
     private lateinit var dateManager: DateManager
@@ -87,7 +85,8 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
     private var statusCodeGoogleApi: Int? = null
     private var mPushEvent: MakePushEvent? = null
     private var restItemEvent: ItemListEvent? = null
-    private var mCheckRest: DatabaseReference? = null
+    private var recorderEvent: RecordListEvent? = null
+    private var checkRest: DatabaseReference? = null
     private var bundle: Bundle? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -194,18 +193,10 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
             }
         }
 
-        onShowBottomSheet()
-        setUIClickable()
+        setGetTicketsClickable()
     }
 
-    @SuppressLint("SetTextI18n")
-    private fun onShowBottomSheet() {
-        tv_bottom_sheet_header_event.text = nameEvent
-        tv_bottom_sheet_description_event.text = descriptionEvent
-        tv_bottom_sheet_limit_access.text = "สามารถจองได้ถึงภายในวันที่ ${dateManager.convertStringDate(startEvent)}"
-    }
-
-    private fun setUIClickable() {
+    private fun setGetTicketsClickable() {
         tv_receive_tickets.setOnClickListener {
             when (tv_receive_tickets.text) {
                 resources.getText(R.string.expiredTickets) -> {
@@ -265,15 +256,21 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
         tv_detail_time.text = itemListEvent.eventTime
         tv_detail_location.text = itemListEvent.eventLocation
         tv_detail_description.text = itemListEvent.eventDescription
-        tv_detail_number_phone_contact.text = "092-270-7454"
-        tv_detail_mail_description_contact.text = "admin@contact.co.th"
+        tv_detail_number_phone_contact.text = itemListEvent.eventPhone
+        tv_detail_mail_description_contact.text = itemListEvent.eventEmail
         tv_Start_price.text = "STARTING FROM ฿${itemListEvent.eventPrice}"
 
+        //Todo: Bottom Sheet Layout
+        tv_bottom_sheet_header_event.text = nameEvent
+        tv_bottom_sheet_description_event.text = descriptionEvent
+        tv_bottom_sheet_limit_access.text = "สามารถจองได้ถึงภายในวันที่ ${dateManager.convertStringDate(itemListEvent.eventCalendarStart)}"
 
-        mAccountBank = itemListEvent.accountBank
+
+        bankAccount = itemListEvent.accountBank
         keyEvent = itemListEvent.eventKey
         idEvent = itemListEvent.eventId.toString()
         nameEvent = itemListEvent.eventName
+        categoryNameEvent = itemListEvent.categoryName
         logoEvent = itemListEvent.eventCover
         startEvent = itemListEvent.eventCalendarStart
         endEvent = itemListEvent.eventCalendarEnd
@@ -288,8 +285,10 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
         dateManager.getStatusTickets(itemListEvent, { status: String ->
             statusButton(status)
         })
+
     }
 
+    //Todo: Call from intent
     @SuppressLint("SetTextI18n")
     private fun setOnDetailEvent(itemListEvent: ItemListEvent) {
         loadPhotoDetail(context, itemListEvent.eventCover, im_detail_cover)
@@ -300,14 +299,20 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
         tv_detail_time.text = itemListEvent.eventTime
         tv_detail_location.text = itemListEvent.eventLocation
         tv_detail_description.text = itemListEvent.eventDescription
-        tv_detail_number_phone_contact.text = "092-270-7454"
-        tv_detail_mail_description_contact.text = "admin@contact.co.th"
+        tv_detail_number_phone_contact.text = itemListEvent.eventPhone
+        tv_detail_mail_description_contact.text = itemListEvent.eventEmail
         tv_Start_price.text = "STARTING FROM ฿${itemListEvent.eventPrice}"
 
-        mAccountBank = itemListEvent.accountBank
+        //Todo: Bottom Sheet Layout
+        tv_bottom_sheet_header_event.text = itemListEvent.eventName
+        tv_bottom_sheet_description_event.text = itemListEvent.eventDescription
+        tv_bottom_sheet_limit_access.text = "สามารถจองได้ถึงภายในวันที่ ${dateManager.convertStringDate(itemListEvent.eventCalendarStart)}"
+
+        bankAccount = itemListEvent.accountBank
         keyEvent = itemListEvent.eventKey
         idEvent = itemListEvent.eventId.toString()
         nameEvent = itemListEvent.eventName
+        categoryNameEvent = itemListEvent.categoryName
         logoEvent = itemListEvent.eventCover
         startEvent = itemListEvent.eventCalendarStart
         endEvent = itemListEvent.eventCalendarEnd
@@ -319,12 +324,11 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
         priceEvent = itemListEvent.eventPrice
         locationEvent = itemListEvent.eventLocation
 
-        recorderEvent = RecordListEvent()
-        mCheckRest = Ref.child("eventItem").child("eventContinue").child(keyEvent)
 
         dateManager.getStatusTickets(itemListEvent, { status: String ->
             statusButton(status)
         })
+
     }
 
     private fun statusButton(status: String) {
@@ -433,70 +437,42 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
     }
 
     private fun recordMyTickets() {
-        dialogManager.onShowLoadingDialog("ระบบกำลังดำเนินงาน")
-
-        val dateStamp = dateManager.getCurrentDate()
-        val timeStamp = System.currentTimeMillis()
-
-        mCheckRest?.runTransaction(object : Transaction.Handler {
+        checkRest = Ref.child("eventItem").child("eventContinue").child(keyEvent)
+        checkRest?.runTransaction(object : Transaction.Handler {
             override fun onComplete(p0: DatabaseError?, p1: Boolean, p2: DataSnapshot?) {
                 if (p0 != null) {
                     dialogManager.onDismissLoadingDialog()
+                    dialogManager.onDismissConfirmDialog()
+
                     Log.d("TransactionStatus", p0.message.toString())
                 } else {
-                    recorderEvent.pushEventRealTime(username.toString(), eventId.toString(), nameEvent.toString()
-                            , locationEvent.toString(), logoEvent!!, number_picker.value.toLong(), dateStamp, timeStamp)?.apply {
-                        addOnCompleteListener { task ->
-                            if (task.isSuccessful) {
-
-                                if (ContextCompat.checkSelfPermission(context, Manifest.permission.GET_ACCOUNTS) == PackageManager.PERMISSION_GRANTED) {
-                                    MakePushEvent(googleCredentialAccount).execute()
-                                } else {
-                                    bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-                                }
-
-                                dialogManager.onDismissLoadingDialog()
-                                Toast.makeText(context, "คุณทำการจองบัตรเรียบร้อยแล้ว", Toast.LENGTH_SHORT).show()
-                            }
-                        }
-
-                        addOnFailureListener { exception ->
-                            Toast.makeText(context, exception.message.toString(), Toast.LENGTH_SHORT).show()
-                        }
-                    }
                     dialogManager.onDismissConfirmDialog()
+                    dialogManager.onDismissLoadingDialog()
+                    bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+
                     Log.d("TransactionStatus", "Success")
                 }
             }
 
             override fun doTransaction(p0: MutableData?): Transaction.Result {
-                restItemEvent = p0?.getValue(ItemListEvent::class.java)!!
-
-                if (restItemEvent == null) {
-                    return Transaction.success(p0)
+                p0?.let {
+                    restItemEvent = p0.getValue(ItemListEvent::class.java)
+                    restItemEvent?.let {
+                        if (setRestJoinEvent(number_picker.value) >= 0) {
+                            restItemEvent?.eventRest = (setRestJoinEvent(number_picker.value).toLong())
+                        } else {
+                            dialogManager.onShowMissingDialog("จำนวเหลือเพียง ${setRestJoinEvent(number_picker.value)}")
+                        }
+                    } ?: Transaction.success(p0)
+                    p0.value = restItemEvent
                 }
-
-                if (setRestJoinEvent(number_picker.value) >= 0) {
-                    restItemEvent?.apply {
-                        accountBank = mAccountBank.toString()
-                        eventKey = keyEvent.toString()
-                        eventMax = maxEvent!!
-                        eventRest = setRestJoinEvent(number_picker.value).toLong()
-                    }
-
-                } else {
-                    activity.runOnUiThread {
-                        dialogManager.onDismissConfirmDialog()
-                        dialogManager.onDismissLoadingDialog()
-                        Toast.makeText(context, "ขออภัยจำนวนบัตรเหลือ $restEvent ใบ", Toast.LENGTH_SHORT).show()
-                    }
-                }
-
-                p0.value = restItemEvent
                 return Transaction.success(p0)
             }
         })
+
+        dialogManager.onShowLoadingDialog("ระบบกำลังดำเนินงาน")
     }
+
 
     //Todo : DialogConfirmFragment
     fun onNegativeConfirmFragment() {
@@ -629,17 +605,17 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
     @SuppressLint("StaticFieldLeak")
     inner class MakePushEvent(mGoogleCredential: GoogleAccountCredential) : AsyncTask<Void, Void, Event?>() {
         private var credential: GoogleAccountCredential = mGoogleCredential
-        private var mListError: Exception? = null
-        private var mService: Calendar? = null
+        private var listError: Exception? = null
+        private var service: Calendar? = null
 
-        private var mGoogleCalendarInsertEvent: GoogleCalendarInsertEvent = GoogleCalendarInsertEvent(context,
+        private var googleCalendarInsertEvent: GoogleCalendarInsertEvent = GoogleCalendarInsertEvent(context,
                 nameEvent, locationEvent, descriptionEvent)
 
         private var transport: HttpTransport = AndroidHttp.newCompatibleTransport()
         private var jsonFactory: JsonFactory = JacksonFactory.getDefaultInstance()
 
         init {
-            mService = Calendar.Builder(
+            service = Calendar.Builder(
                     transport, jsonFactory, credential)
                     .setApplicationName("Castle EventApp")
                     .build()
@@ -648,10 +624,10 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
 
         override fun doInBackground(vararg p0: Void?): Event? {
             return try {
-                mService?.events()?.insert("primary", mGoogleCalendarInsertEvent.requestEvent())?.execute()
+                service?.events()?.insert("primary", googleCalendarInsertEvent.requestEvent())?.execute()
             } catch (e: Exception) {
                 cancel(true)
-                mListError = e
+                listError = e
                 null
             }
         }
@@ -667,16 +643,17 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
 
         override fun onCancelled() {
             super.onCancelled()
-            if (mListError != null) {
-                when (mListError) {
+            if (listError != null) {
+                when (listError) {
                     is UserRecoverableAuthIOException -> {
                         dialogManager.onDismissLoadingDialog()
-                        startActivityForResult((mListError as UserRecoverableAuthIOException).intent, REQUEST_CALENDAR_PERMISSION)
+                        dialogManager.onDismissConfirmDialog()
+                        startActivityForResult((listError as UserRecoverableAuthIOException).intent, REQUEST_CALENDAR_PERMISSION)
                     }
                     else -> {
                         dialogManager.onDismissLoadingDialog()
                         dialogManager.onDismissConfirmDialog()
-                        Log.d("errorAsyncTaskPushEvent", mListError?.toString())
+                        dialogManager.onShowMissingDialog(listError?.message.toString())
                     }
                 }
             }

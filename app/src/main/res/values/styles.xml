@@ -20,4 +20,9 @@
         <item name="android:textSize">22sp</item>
     </style>
 
+    <style name="AnimationDialogFragment">
+        <item name="android:windowEnterAnimation">@android:anim/overshoot_interpolator</item>
+        <item name="android:windowExitAnimation">@android:anim/fade_out</item>
+    </style>
+
 </resources>

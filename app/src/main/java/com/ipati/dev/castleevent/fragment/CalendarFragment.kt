@@ -190,12 +190,12 @@ class CalendarFragment : Fragment(), View.OnClickListener {
 
                         dateTimeStamp = "$dateOfYear/$mothOfYear/$yearsOfYear"
 
-                        for ((title, timeEventStart, timeEventEnd, timeDayOfYear, timeMonthDate, timeDateEvent) in mListItemShow) {
+                        for ((title, timeEventStart, timeEventEnd, _, _, timeDateEvent) in mListItemShow) {
                             if (dateTimeStamp == timeDateEvent) {
                                 tv_calendar_detail_event.text = title
                                 tv_calendar_time_ticket.text = "$timeEventStart น. - $timeEventEnd น."
                             } else {
-                                Log.d("dateTimeOnce", dateTimeStamp.toString())
+                                Log.d("dateTimeOnce", dateTimeStamp.toString() + " : " + timeDateEvent)
                             }
                         }
 
@@ -387,7 +387,7 @@ class CalendarFragment : Fragment(), View.OnClickListener {
                 for (items in result) {
                     //Todo: Convert Start Or End Time
                     mSimpleDateFormat = SimpleDateFormat("HH.mm", Locale("th"))
-                    mSimpleDateFormatDateTime = SimpleDateFormat("dd/MM/yyyy", Locale("th"))
+                    mSimpleDateFormatDateTime = SimpleDateFormat("d/MM/yyyy", Locale("th"))
                     mSimpleDateFormatNickNameDate = SimpleDateFormat("MMM", Locale("th"))
                     mSimpleDateFormatDateOfYear = SimpleDateFormat("d", Locale("th"))
 
