@@ -4,7 +4,7 @@ import android.arch.lifecycle.Lifecycle
 import android.arch.lifecycle.LifecycleObserver
 import android.arch.lifecycle.OnLifecycleEvent
 import android.content.Context
-import android.widget.Toast
+import android.util.Log
 import com.google.firebase.database.*
 import com.ipati.dev.castleevent.fragment.ListDetailEventFragment
 import com.ipati.dev.castleevent.model.LoadingDetailData
@@ -13,24 +13,25 @@ import com.ipati.dev.castleevent.model.ModelListItem.ItemListEvent
 
 
 class RealTimeDatabaseDetailManager(context: Context, lifecycle: Lifecycle, eventId: Long, listDetailEventFragment: ListDetailEventFragment) : LifecycleObserver {
-    private var mContext: Context? = null
-    private var mLifecycle: Lifecycle? = null
-    private var mEventId: Long? = null
-    var mListDetailEventFragment: ListDetailEventFragment? = null
+    private var contextManager: Context? = null
+    private var lifecycleManager: Lifecycle? = null
+    private var eventIdManager: Long? = null
+
+    var listDetailEventFragmentManager: ListDetailEventFragment? = null
     var onItemListDataChange: LoadingDetailData? = null
     var onItemUpdateDataChange: OnUpdateInformation? = null
 
-    lateinit var mChildEvent: ChildEventListener
+    private lateinit var childEvent: ChildEventListener
     private var realTimeDataDetail: DatabaseReference = FirebaseDatabase.getInstance().reference
     private var realTimeDataDetailRef: DatabaseReference = realTimeDataDetail.child("eventItem")
             .child("eventContinue")
 
     init {
-        mEventId = eventId
-        mContext = context
-        mLifecycle = lifecycle
-        mListDetailEventFragment = listDetailEventFragment
-        mLifecycle?.addObserver(this)
+        eventIdManager = eventId
+        contextManager = context
+        lifecycleManager = lifecycle
+        listDetailEventFragmentManager = listDetailEventFragment
+        lifecycleManager?.addObserver(this)
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
@@ -40,14 +41,13 @@ class RealTimeDatabaseDetailManager(context: Context, lifecycle: Lifecycle, even
 
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
     fun onStop() {
-        realTimeDataDetailRef.removeEventListener(mChildEvent)
+        realTimeDataDetailRef.removeEventListener(childEvent)
     }
 
     private fun onChildEvent(): ChildEventListener {
-        mChildEvent = object : ChildEventListener {
+        childEvent = object : ChildEventListener {
             override fun onCancelled(p0: DatabaseError?) {
-//                Log.d("onCancelled", p0?.message.toString())
-                Toast.makeText(mContext, p0?.message.toString(), Toast.LENGTH_SHORT).show()
+                Log.d("onCancelledDetailEvent", p0?.message.toString())
             }
 
             override fun onChildMoved(p0: DataSnapshot?, p1: String?) {
@@ -57,17 +57,16 @@ class RealTimeDatabaseDetailManager(context: Context, lifecycle: Lifecycle, even
             override fun onChildChanged(p0: DataSnapshot?, p1: String?) {
                 val itemListEvent: ItemListEvent? = p0?.getValue(ItemListEvent::class.java)
                 itemListEvent?.let {
-                    onItemUpdateDataChange = mListDetailEventFragment as OnUpdateInformation
+                    onItemUpdateDataChange = listDetailEventFragmentManager as OnUpdateInformation
                     onItemUpdateDataChange?.setDataChange(itemListEvent)
-
                 }
             }
 
             override fun onChildAdded(p0: DataSnapshot, p1: String?) {
                 val itemListEvent: ItemListEvent? = p0.getValue(ItemListEvent::class.java)
                 itemListEvent?.let {
-                    if (mEventId == itemListEvent.eventId) {
-                        onItemListDataChange = mListDetailEventFragment as LoadingDetailData
+                    if (eventIdManager == itemListEvent.eventId) {
+                        onItemListDataChange = listDetailEventFragmentManager as LoadingDetailData
                         onItemListDataChange?.onLoadingUpdateData(itemListEvent)
                     }
                 }
@@ -77,6 +76,6 @@ class RealTimeDatabaseDetailManager(context: Context, lifecycle: Lifecycle, even
 
             }
         }
-        return mChildEvent
+        return childEvent
     }
 }

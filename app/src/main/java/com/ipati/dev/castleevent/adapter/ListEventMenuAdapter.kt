@@ -27,7 +27,7 @@ class ListEventMenuAdapter(listItemMenu: ArrayList<String>) : RecyclerView.Adapt
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
         fun onBind() {
             itemView.tv_item_menu_event.text = mListItemMenu[adapterPosition]
-            itemView.tv_item_menu_event.setOnClickListener(this)
+            itemView.setOnClickListener { view -> onClick(view) }
             iconItemMenu(adapterPosition)
         }
 

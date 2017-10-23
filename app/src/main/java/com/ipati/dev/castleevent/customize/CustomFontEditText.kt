@@ -6,7 +6,6 @@ import android.support.v7.widget.AppCompatEditText
 import android.util.AttributeSet
 
 
-
 class CustomFontEditText : AppCompatEditText {
     constructor(context: Context) : super(context) {
         setUpFont(context)
@@ -20,7 +19,7 @@ class CustomFontEditText : AppCompatEditText {
         setUpFont(context)
     }
 
-    private fun setUpFont(mContext: Context) {
+    private fun setUpFont(context: Context) {
         typeface = Typeface.DEFAULT
     }
 }

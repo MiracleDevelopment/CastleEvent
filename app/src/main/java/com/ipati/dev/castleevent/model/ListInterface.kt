@@ -25,12 +25,6 @@ interface LoadingCategory {
     fun setOnChangeCategory(selectCategory: String)
 }
 
-
-interface OnCancelAnimationTouch {
-    fun setOnCancelTouch(target: View?, widthView: Int, heightView: Int, transitionName: String, eventId: Long)
-}
-
-
 interface OnLogOutSystem {
     fun logOutApplication()
 }
@@ -51,7 +45,7 @@ interface OnChangeNotificationChannel {
     fun onChangeNotification(notification: Int)
 }
 
-interface OnMissingConfirm{
+interface OnMissingConfirm {
     fun onMissingDialogConfirm()
 }
 

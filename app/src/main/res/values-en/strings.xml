@@ -62,4 +62,8 @@
     <string name="re_password">Re-Password</string>
     <string name="upload_text">UploadPhoto</string>
     <string name="accept_missing">OK</string>
+    <string name="categoryAll">ALL</string>
+    <string name="categoryEducation">Education</string>
+    <string name="categoryTechnology">Technology</string>
+    <string name="categorySport">Sport</string>
 </resources>

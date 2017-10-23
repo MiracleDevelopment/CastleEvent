@@ -1,16 +1,12 @@
 package com.ipati.dev.castleevent.adapter
 
 import android.annotation.SuppressLint
-import android.content.res.ColorStateList
-import android.graphics.drawable.RippleDrawable
-import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewCompat
 import android.support.v7.widget.RecyclerView
 import android.view.*
 import com.ipati.dev.castleevent.R
 import com.ipati.dev.castleevent.extension.getStringResource
 import com.ipati.dev.castleevent.model.Fresco.loadPhoto
-import com.ipati.dev.castleevent.model.OnCancelAnimationTouch
 import com.ipati.dev.castleevent.model.ModelListItem.ItemListEvent
 import kotlinx.android.synthetic.main.custom_list_event_adapter_layout.view.*
 
@@ -18,10 +14,7 @@ import kotlinx.android.synthetic.main.custom_list_event_adapter_layout.view.*
 class ListEventAdapter(listItem: ArrayList<ItemListEvent>) : RecyclerView.Adapter<ListEventAdapter.ListEventHolder>() {
     var itemList: ArrayList<ItemListEvent> = listItem
     var itemViewTransition: View? = null
-    lateinit var mOnCancelAnimation: OnCancelAnimationTouch
-    lateinit var mRippleDrawable: RippleDrawable
-
-
+    var onItemTransitionClickable: ((view: View?, width: Int, height: Int, transitionName: String, eventId: Long) -> Unit)? = null
     override fun getItemCount(): Int = itemList.count()
 
 
@@ -37,12 +30,6 @@ class ListEventAdapter(listItem: ArrayList<ItemListEvent>) : RecyclerView.Adapte
         return ListEventHolder(view)
     }
 
-
-    fun setOnCancelTouchItemEvent(onCancelAnimationTouch: OnCancelAnimationTouch) {
-        this.mOnCancelAnimation = onCancelAnimationTouch
-    }
-
-
     inner class ListEventHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
             , View.OnTouchListener {
 
@@ -50,10 +37,6 @@ class ListEventAdapter(listItem: ArrayList<ItemListEvent>) : RecyclerView.Adapte
             GestureDetector(itemView.context, object : GestureDetector.SimpleOnGestureListener() {
                 override fun onSingleTapConfirmed(e: MotionEvent?): Boolean {
                     itemViewTransition?.let {
-                        mRippleDrawable = itemView.background as RippleDrawable
-                        mRippleDrawable.setHotspot(itemView.ripple_background.x, itemView.ripple_background.y)
-                        mRippleDrawable.setColor(ColorStateList.valueOf(ContextCompat.getColor(itemView.context, R.color.colorRipple)))
-
                         val widthOriginal: Int = itemViewTransition?.custom_im_cover_list_event!!.measuredWidth
                         val heightOriginal: Int = itemViewTransition?.custom_im_cover_list_event!!.measuredHeight
 
@@ -61,7 +44,7 @@ class ListEventAdapter(listItem: ArrayList<ItemListEvent>) : RecyclerView.Adapte
                                 , "${itemViewTransition!!.custom_im_cover_list_event.id}$adapterPosition")
 
 
-                        mOnCancelAnimation.setOnCancelTouch(itemViewTransition?.custom_im_cover_list_event
+                        onItemTransitionClickable?.invoke(itemViewTransition?.custom_im_cover_list_event
                                 , widthOriginal
                                 , heightOriginal
                                 , ViewCompat.getTransitionName(itemViewTransition?.custom_im_cover_list_event)
@@ -93,22 +76,25 @@ class ListEventAdapter(listItem: ArrayList<ItemListEvent>) : RecyclerView.Adapte
                     " " + itemList[adapterPosition].eventRest.toString() +
                     " " + itemView.getStringResource(R.string.tv_people)
 
-
-            if (itemList[adapterPosition].eventStatus) {
-                itemView.custom_tv_status_list_event.text = itemView.getStringResource(R.string.tv_status_open)
-            } else {
-                itemView.custom_tv_status_list_event.text = itemView.getStringResource(R.string.tv_status_close)
-            }
-
-            itemView.ripple_background.translationY = 0.0F
-            itemView.ripple_background.translationZ = 0.0F
-            itemView.ripple_background.setOnTouchListener { view, motionEvent -> onTouch(view, motionEvent) }
-
-            if (itemView.custom_im_cover_list_event.visibility == View.INVISIBLE) {
-                itemView.custom_im_cover_list_event.visibility = View.VISIBLE
-            }
+            setVisibleView(itemView.custom_im_cover_list_event)
+            setStatusEvent(itemView, itemList[adapterPosition].eventStatus)
 
             itemView.setOnTouchListener(this)
+            itemView.setOnClickListener { }
+        }
+
+        private fun setVisibleView(appearanceView: View) {
+            if (appearanceView.visibility == View.INVISIBLE) {
+                appearanceView.visibility = View.VISIBLE
+            }
+        }
+
+        private fun setStatusEvent(statusView: View, status: Boolean) {
+            if (status) {
+                statusView.custom_tv_status_list_event.text = itemView.getStringResource(R.string.tv_status_open)
+            } else {
+                statusView.custom_tv_status_list_event.text = itemView.getStringResource(R.string.tv_status_close)
+            }
         }
 
 
