@@ -28,8 +28,9 @@
                 android:text="บัตรเข้างาน"
                 android:textColor="#000"
                 android:textSize="27sp"
+                app:layout_constraintHorizontal_bias="0.78"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintRight_toRightOf="@+id/tv_count_people_tickets_dialog"
                 app:layout_constraintTop_toTopOf="parent" />
 
 
@@ -70,6 +71,7 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:orientation="horizontal">
 
             <com.facebook.drawee.view.SimpleDraweeView

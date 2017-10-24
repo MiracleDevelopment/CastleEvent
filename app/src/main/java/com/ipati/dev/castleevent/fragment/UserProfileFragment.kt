@@ -1,16 +1,13 @@
 package com.ipati.dev.castleevent.fragment
 
+import android.content.Intent
 import android.os.Bundle
-import android.support.v7.widget.DefaultItemAnimator
-import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.Toast
-import com.ipati.dev.castleevent.ListEventActivity
+import com.ipati.dev.castleevent.*
 import com.ipati.dev.castleevent.base.BaseFragment
-import com.ipati.dev.castleevent.R
 import com.ipati.dev.castleevent.fragment.loading.LogOutFragmentDialog
 import com.ipati.dev.castleevent.model.OnChangeNotificationChannel
 import com.ipati.dev.castleevent.model.Fresco.loadPhotoProfileUser
@@ -18,12 +15,10 @@ import com.ipati.dev.castleevent.model.OnCustomLanguage
 import com.ipati.dev.castleevent.model.UserManager.photoUrl
 import com.ipati.dev.castleevent.model.UserManager.userEmail
 import com.ipati.dev.castleevent.model.UserManager.username
-import com.ipati.dev.castleevent.service.FirebaseService.RealTimeDatabaseMenuListItem
 import com.ipati.dev.castleevent.utill.SharePreferenceSettingManager
 import kotlinx.android.synthetic.main.activity_user_profile_fragment.*
 
 class UserProfileFragment : BaseFragment() {
-    private lateinit var realTimeDatabaseMenuListItem: RealTimeDatabaseMenuListItem
     private lateinit var sharePreferenceSettingMenuList: SharePreferenceSettingManager
     private lateinit var onChangeLanguage: OnCustomLanguage
     private lateinit var onChangeNotification: OnChangeNotificationChannel
@@ -31,7 +26,6 @@ class UserProfileFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        realTimeDatabaseMenuListItem = RealTimeDatabaseMenuListItem(context, lifecycle)
         sharePreferenceSettingMenuList = SharePreferenceSettingManager(context)
     }
 
@@ -41,7 +35,6 @@ class UserProfileFragment : BaseFragment() {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initialRecyclerMenu()
         initialSwitchSetting()
         initialLogOutBt()
     }
@@ -57,16 +50,30 @@ class UserProfileFragment : BaseFragment() {
     private fun initialUserProfile() {
         loadPhotoProfileUser(context, photoUrl, im_user_profile_photo)
 
+        my_profile_menu_profile.setOnClickListener {
+            val intentProfile = Intent(context, ProfileUserActivity::class.java)
+            startActivity(intentProfile)
+        }
+
+        my_order_menu_profile.setOnClickListener {
+            val intentMyOrder = Intent(context, MyOrderActivity::class.java)
+            startActivity(intentMyOrder)
+        }
+
+        calendar_menu_profile.setOnClickListener {
+            val intentCalendar = Intent(context, CalendarActivity::class.java)
+            startActivity(intentCalendar)
+        }
+
+        contact_menu_profile.setOnClickListener {
+            val intentContact = Intent(context, ContactUserActivity::class.java)
+            startActivity(intentContact)
+        }
+
         tv_user_profile_name_full.text = username
         tv_user_profile_email.text = userEmail
     }
 
-    private fun initialRecyclerMenu() {
-        user_profile_list_menu.layoutManager = LinearLayoutManager(context, LinearLayout.VERTICAL, false)
-        user_profile_list_menu.itemAnimator = DefaultItemAnimator()
-
-        user_profile_list_menu.adapter = realTimeDatabaseMenuListItem.adapterListItemMenu
-    }
 
     private fun initialSwitchSetting() {
         switch_language_user_profile.isChecked = sharePreferenceSettingMenuList.defaultSharePreferenceLanguageManager()!!

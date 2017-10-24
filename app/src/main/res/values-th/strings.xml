@@ -66,4 +66,8 @@
     <string name="categoryEducation">การศึกษา</string>
     <string name="categoryTechnology">เทคโนโลยี</string>
     <string name="categorySport">กีฬา</string>
+    <string name="contactFont">การติดต่อ</string>
+    <string name="calendarFont">ปฏิทิน</string>
+    <string name="myOrderFont">รายการสั่งซื้อ</string>
+    <string name="myProfileFont">โปรไฟล์ของฉัน</string>
 </resources>

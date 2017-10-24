@@ -20,12 +20,14 @@ import com.ipati.dev.castleevent.service.FirebaseService.RealTimeDatabaseManager
 import kotlinx.android.synthetic.main.activity_list_event_fragment.*
 import kotlinx.android.synthetic.main.custom_bottom_sheet_category.*
 import kotlinx.android.synthetic.main.custom_list_event_adapter_layout.view.*
+import java.util.*
 import kotlin.collections.ArrayList
 
 class ListEventFragment : BaseFragment() {
     private lateinit var realTimeDatabaseManager: RealTimeDatabaseManager
     private lateinit var categoryRealTimeDatabaseManager: CategoryRealTimeManager
-    private lateinit var mBottomSheetBehavior: BottomSheetBehavior<View>
+    private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
+    private lateinit var itemCategoryChangeThai: List<ItemListEvent>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         realTimeDatabaseManager = RealTimeDatabaseManager(context, lifecycle)
@@ -56,8 +58,8 @@ class ListEventFragment : BaseFragment() {
     }
 
     private fun initialBottomSheet() {
-        mBottomSheetBehavior = BottomSheetBehavior.from(view?.findViewById(R.id.bottom_sheet_category))
-        mBottomSheetBehavior.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+        bottomSheetBehavior = BottomSheetBehavior.from(view?.findViewById(R.id.bottom_sheet_category))
+        bottomSheetBehavior.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
 
             }
@@ -76,12 +78,12 @@ class ListEventFragment : BaseFragment() {
         })
 
         im_header_bottom_sheet_category.setOnClickListener {
-            when (mBottomSheetBehavior.state) {
+            when (bottomSheetBehavior.state) {
                 BottomSheetBehavior.STATE_EXPANDED -> {
-                    mBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                    bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
                 }
                 else -> {
-                    mBottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+                    bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
                 }
             }
         }
@@ -101,21 +103,64 @@ class ListEventFragment : BaseFragment() {
     }
 
     private fun onRefreshItemList(categorySelect: String) {
-        val itemCategoryChange: List<ItemListEvent> = realTimeDatabaseManager.arrayItemList.
-                filter { it.categoryName == categorySelect }
+        if (Locale.getDefault().language == "th") {
+            when (categorySelect) {
+                "การศึกษา" -> {
+                    itemCategoryChangeThai = realTimeDatabaseManager.arrayItemList.
+                            filter { it.categoryName == "Education" }
+                }
+                "เทคโนโลยี" -> {
+                    itemCategoryChangeThai = realTimeDatabaseManager.arrayItemList.
+                            filter { it.categoryName == "Technology" }
+                }
+                "กีฬา" -> {
+                    itemCategoryChangeThai = realTimeDatabaseManager.arrayItemList.
+                            filter { it.categoryName == "Sport" }
+                }
+                "ทั้งหมด" -> {
+                    itemCategoryChangeThai = realTimeDatabaseManager.arrayItemList.
+                            filter { it.categoryName == "ALL" }
+                }
+            }
+            if (itemCategoryChangeThai.count() > 0) {
+                realTimeDatabaseManager.adapterListEvent = ListEventAdapter(listItem = ArrayList(itemCategoryChangeThai))
+                recycler_list_event.adapter = realTimeDatabaseManager.adapterListEvent
+            } else {
+                realTimeDatabaseManager.adapterListEvent = ListEventAdapter(listItem = ArrayList(realTimeDatabaseManager.arrayItemList))
+                recycler_list_event.adapter = realTimeDatabaseManager.adapterListEvent
+            }
 
-        if (itemCategoryChange.count() > 0) {
-            realTimeDatabaseManager.adapterListEvent = ListEventAdapter(listItem = ArrayList(itemCategoryChange))
-            recycler_list_event.adapter = realTimeDatabaseManager.adapterListEvent
-            realTimeDatabaseManager.adapterListEvent?.onItemTransitionClickable = { view, width, height, transitionName, eventId ->
+            realTimeDatabaseManager.adapterListEvent?.onItemTransitionClickable = { view, width
+                                                                                    , height
+                                                                                    , transitionName
+                                                                                    , eventId ->
                 intentTransitionView(view, width, height, transitionName, eventId)
             }
 
         } else {
-            realTimeDatabaseManager.adapterListEvent = ListEventAdapter(listItem = realTimeDatabaseManager.arrayItemList)
-            recycler_list_event.adapter = realTimeDatabaseManager.adapterListEvent
-            realTimeDatabaseManager.adapterListEvent?.onItemTransitionClickable = { view, width, height, transitionName, eventId ->
-                intentTransitionView(view, width, height, transitionName, eventId)
+            val itemCategoryChangeUs: List<ItemListEvent> = realTimeDatabaseManager.arrayItemList.
+                    filter { it.categoryName == categorySelect }
+
+
+            if (itemCategoryChangeUs.count() > 0) {
+                realTimeDatabaseManager.adapterListEvent = ListEventAdapter(listItem = ArrayList(itemCategoryChangeUs))
+                recycler_list_event.adapter = realTimeDatabaseManager.adapterListEvent
+                realTimeDatabaseManager.adapterListEvent?.onItemTransitionClickable = { view, width
+                                                                                        , height
+                                                                                        , transitionName
+                                                                                        , eventId ->
+                    intentTransitionView(view, width, height, transitionName, eventId)
+                }
+
+            } else {
+                realTimeDatabaseManager.adapterListEvent = ListEventAdapter(listItem = realTimeDatabaseManager.arrayItemList)
+                recycler_list_event.adapter = realTimeDatabaseManager.adapterListEvent
+                realTimeDatabaseManager.adapterListEvent?.onItemTransitionClickable = { view, width
+                                                                                        , height
+                                                                                        , transitionName
+                                                                                        , eventId ->
+                    intentTransitionView(view, width, height, transitionName, eventId)
+                }
             }
         }
     }
@@ -132,25 +177,27 @@ class ListEventFragment : BaseFragment() {
         intentAnimation.putExtra("height", height)
         intentAnimation.putExtra("transitionName", transitionName)
         intentAnimation.putExtra("eventId", eventId)
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         startActivity(intentAnimation, activityOptionsCompat.toBundle())
+
     }
 
     //Todo: Calling From Activity
     fun onShowBottomSheetCategory() {
-        when (mBottomSheetBehavior.state) {
+        when (bottomSheetBehavior.state) {
             BottomSheetBehavior.STATE_EXPANDED -> {
-                mBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
             }
 
             BottomSheetBehavior.STATE_COLLAPSED -> {
-                mBottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+                bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
             }
         }
     }
 
     //Todo: Calling From Activity
     fun onDisableBottomSheetCategory() {
-        mBottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
     }
 
 

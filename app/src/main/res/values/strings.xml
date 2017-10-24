@@ -66,4 +66,8 @@
     <string name="categoryEducation">Education</string>
     <string name="categoryTechnology">Technology</string>
     <string name="categorySport">Sport</string>
+    <string name="contactFont">Contact</string>
+    <string name="calendarFont">Calendar</string>
+    <string name="myOrderFont">My Order</string>
+    <string name="myProfileFont">My Profile</string>
 </resources>

@@ -24,7 +24,6 @@ import com.ipati.dev.castleevent.model.UserManager.uid
 import com.ipati.dev.castleevent.model.UserManager.userEmail
 import com.ipati.dev.castleevent.model.UserManager.username
 import com.ipati.dev.castleevent.service.FirebaseNotification.NotificationManager
-import com.ipati.dev.castleevent.service.FirebaseService.RealTimeDatabaseMenuListItem
 import com.ipati.dev.castleevent.service.googleApiClient
 import com.ipati.dev.castleevent.utill.SharePreferenceSettingManager
 import kotlinx.android.synthetic.main.activity_list_event.*
@@ -32,7 +31,6 @@ import kotlinx.android.synthetic.main.bottom_navigation_layout.*
 
 
 class ListEventActivity : BaseAppCompatActivity(), View.OnClickListener, OnLogOutSystem, OnCustomLanguage, OnChangeNotificationChannel {
-    private lateinit var realTimeDatabaseMenuList: RealTimeDatabaseMenuListItem
     private lateinit var itemViewPagerAdapter: ItemViewPagerAdapter
     private lateinit var sharePreferenceManager: SharePreferenceSettingManager
     private lateinit var notificationManager: NotificationManager
@@ -41,18 +39,11 @@ class ListEventActivity : BaseAppCompatActivity(), View.OnClickListener, OnLogOu
     private var lifeCycleRegistry: LifecycleRegistry = LifecycleRegistry(this)
     private var doubleTwiceBackPress: Boolean = false
 
-    private val handlerThread: Handler by lazy {
-        Handler()
-    }
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list_event)
         auth = FirebaseAuth.getInstance()
         auth.addAuthStateListener(onChangeStateLogin())
-
-        realTimeDatabaseMenuList = RealTimeDatabaseMenuListItem(applicationContext, lifecycle)
         sharePreferenceManager = SharePreferenceSettingManager(context = applicationContext)
         notificationManager = NotificationManager(this)
 

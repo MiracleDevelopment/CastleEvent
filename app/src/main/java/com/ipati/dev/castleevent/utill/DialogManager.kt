@@ -15,6 +15,7 @@ class DialogManager(activity: FragmentActivity) {
 
     fun onShowLoadingDialog(title: String): LoadingDialogFragment {
         loadingDialog = LoadingDialogFragment.newInstance(title, false)
+        loadingDialog.isCancelable = false
         return loadingDialog.apply {
             show(activityDialog.supportFragmentManager, "LoadingFragment")
         }
@@ -22,6 +23,7 @@ class DialogManager(activity: FragmentActivity) {
 
     fun onShowConfirmDialog(msg: String): DialogConfirmFragment {
         confirmDialog = DialogConfirmFragment.newInstance(msg)
+        confirmDialog.isCancelable = false
         return confirmDialog.apply {
             show(activityDialog.supportFragmentManager, "ConfirmFragment")
         }

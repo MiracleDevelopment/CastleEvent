@@ -5,4 +5,8 @@
     <dimen name="sizeFontButtonRegister">25sp</dimen>
     <dimen name="sizeFontLogin">18sp</dimen>
     <dimen name="sizeFontCreateAccount">22sp</dimen>
+    <dimen name="sizeFontMenuProfile">22sp</dimen>
+    <dimen name="sizeFontHeaderSetting">35sp</dimen>
+    <dimen name="sizeFontTextSwitch">20sp</dimen>
+    <dimen name="sizeFontLogOut">25sp</dimen>
 </resources>
