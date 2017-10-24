@@ -25,8 +25,6 @@ class MissingDialogFragment : DialogFragment() {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.window.attributes.windowAnimations = R.style.AnimationDialogFragment
-
         arguments?.let {
             tv_msg_missing_dialog_fragment.text = arguments.getString(msgObject)
         }

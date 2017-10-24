@@ -50,6 +50,7 @@ import com.ipati.dev.castleevent.model.LoadingDetailData
 import com.ipati.dev.castleevent.model.OnUpdateInformation
 import com.ipati.dev.castleevent.model.GmsLocation.GooglePlayServiceMapManager
 import com.ipati.dev.castleevent.model.ModelListItem.ItemListEvent
+import com.ipati.dev.castleevent.model.UserManager.username
 import com.ipati.dev.castleevent.service.AuthenticationStatus
 import com.ipati.dev.castleevent.service.FirebaseService.RealTimeDatabaseDetailManager
 import com.ipati.dev.castleevent.service.RecordedEvent.RecordListEvent
@@ -79,11 +80,11 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
     private lateinit var dialogManager: DialogManager
     private lateinit var dateManager: DateManager
 
-    private var Ref: DatabaseReference = FirebaseDatabase.getInstance().reference
+    private var ref: DatabaseReference = FirebaseDatabase.getInstance().reference
     private var eventId: Long? = null
     private var accountBank: String? = null
     private var statusCodeGoogleApi: Int? = null
-    private var mPushEvent: MakePushEvent? = null
+    private var pushEvent: MakePushEvent? = null
     private var restItemEvent: ItemListEvent? = null
     private var recorderEvent: RecordListEvent? = null
     private var checkRest: DatabaseReference? = null
@@ -103,13 +104,13 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
 
         activity.window.sharedElementReturnTransition = DraweeTransition
                 .createTransitionSet(ScalingUtils.ScaleType.CENTER_CROP, ScalingUtils.ScaleType.CENTER_CROP)
-                .setDuration(400)
+                .setDuration(200)
                 .addTarget(R.id.im_detail_cover)
                 .excludeChildren(android.R.id.statusBarBackground, true)
 
         activity.window.exitTransition = DraweeTransition
                 .createTransitionSet(ScalingUtils.ScaleType.CENTER_CROP, ScalingUtils.ScaleType.CENTER_CROP)
-                .setDuration(400)
+                .setDuration(200)
                 .addTarget(R.id.im_detail_cover)
                 .excludeChildren(android.R.id.statusBarBackground, true)
 
@@ -437,7 +438,7 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
     }
 
     private fun recordMyTickets() {
-        checkRest = Ref.child("eventItem").child("eventContinue").child(keyEvent)
+        checkRest = ref.child("eventItem").child("eventContinue").child(keyEvent)
         checkRest?.runTransaction(object : Transaction.Handler {
             override fun onComplete(p0: DatabaseError?, p1: Boolean, p2: DataSnapshot?) {
                 if (p0 != null) {
@@ -446,11 +447,23 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
 
                     Log.d("TransactionStatus", p0.message.toString())
                 } else {
-                    dialogManager.onDismissConfirmDialog()
-                    dialogManager.onDismissLoadingDialog()
+                    recorderEvent = RecordListEvent()
                     bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
 
-                    Log.d("TransactionStatus", "Success")
+                    dialogManager.onDismissConfirmDialog()
+                    dialogManager.onDismissLoadingDialog()
+
+                    recorderEvent?.pushEventRealTime(username, eventId.toString(), nameEvent
+                            , locationEvent, logoEvent, number_picker.value.toLong()
+                            , dateManager.getCurrentDate(), java.util.Calendar.getInstance().timeInMillis)
+                            ?.addOnCompleteListener { task ->
+                                if (!task.isComplete) {
+                                    dialogManager.onShowMissingDialog(task.exception?.message!!)
+                                } else {
+                                    MakePushEvent(googleCredentialAccount).execute()
+                                    Log.d("TransactionStatus", "Success")
+                                }
+                            }
                 }
             }
 
@@ -536,8 +549,8 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
             }
 
             REQUEST_CALENDAR_PERMISSION -> {
-                mPushEvent = MakePushEvent(googleCredentialAccount)
-                mPushEvent?.execute()
+                pushEvent = MakePushEvent(googleCredentialAccount)
+                pushEvent?.execute()
             }
 
             REQUEST_ACCOUNT_RECORD -> {
@@ -646,13 +659,9 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
             if (listError != null) {
                 when (listError) {
                     is UserRecoverableAuthIOException -> {
-                        dialogManager.onDismissLoadingDialog()
-                        dialogManager.onDismissConfirmDialog()
                         startActivityForResult((listError as UserRecoverableAuthIOException).intent, REQUEST_CALENDAR_PERMISSION)
                     }
                     else -> {
-                        dialogManager.onDismissLoadingDialog()
-                        dialogManager.onDismissConfirmDialog()
                         dialogManager.onShowMissingDialog(listError?.message.toString())
                     }
                 }
