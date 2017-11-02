@@ -12,7 +12,10 @@ import com.ipati.dev.castleevent.extension.matrixHeightPx
 import com.ipati.dev.castleevent.extension.matrixWidthPx
 
 
-fun loadPhoto(context: Context, url: String, im: SimpleDraweeView) {
+fun loadPhoto(context: Context, url: String, widthCardView: Int, im: SimpleDraweeView) {
+    im.layoutParams.width = context.matrixWidthPx(widthCardView)
+    im.layoutParams.height = context.matrixHeightPx(350)
+
     val mImageRequest: ImageRequest = ImageRequestBuilder
             .newBuilderWithSource(Uri.parse(url))
             .setLocalThumbnailPreviewsEnabled(true)
@@ -78,8 +81,8 @@ fun loadPhotoAdvertise(context: Context, url: String, im: SimpleDraweeView) {
 }
 
 fun loadPhotoProfileUser(context: Context, url: String?, im: SimpleDraweeView) {
-    im.layoutParams.width = context.matrixWidthPx(450)
-    im.layoutParams.height = context.matrixHeightPx(450)
+    im.layoutParams.width = context.matrixWidthPx(360)
+    im.layoutParams.height = context.matrixHeightPx(360)
 
     val imageRequest: ImageRequest = ImageRequestBuilder.newBuilderWithSource(Uri.parse(url))
             .setLocalThumbnailPreviewsEnabled(true)
@@ -145,8 +148,8 @@ fun loadPhotoUserTickets(context: Context, url: String, im: SimpleDraweeView) {
 }
 
 fun loadPhotoUserProfile(context: Context, url: String, im: SimpleDraweeView) {
-    im.layoutParams.width = context.matrixWidthPx(500)
-    im.layoutParams.height = context.matrixHeightPx(500)
+    im.layoutParams.width = context.matrixWidthPx(360)
+    im.layoutParams.height = context.matrixHeightPx(360)
 
     val imageRequest: ImageRequest = ImageRequestBuilder.newBuilderWithSource(Uri.parse(url))
             .setLocalThumbnailPreviewsEnabled(true)

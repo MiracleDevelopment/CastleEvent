@@ -42,7 +42,7 @@ class DateManager(context: Context) {
         if (authenticationStatus.getCurrentUser() != null) {
             if (Date().before(simpleDateFormat.parse(itemListEvent.eventCalendarStart))) {
                 if (restEvent!! > 0) {
-                    setTextStatus("${itemListEvent.eventPrice}/Tickets")
+                    setTextStatus("${itemListEvent.eventPrice} / Tickets")
                 } else {
                     setTextStatus(contextManager.resources.getString(R.string.expiredTickets))
                 }

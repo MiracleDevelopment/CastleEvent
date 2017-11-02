@@ -63,12 +63,6 @@ import java.util.*
 
 
 class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInformation, View.OnClickListener {
-    private var REQUEST_ACCOUNT: Int = 1112
-    private var REQUEST_GOOGLE_PLAY: Int = 1121
-    private var REQUEST_PERMISSION_ACCOUNT: Int = 1111
-    private var REQUEST_CALENDAR_PERMISSION: Int = 1101
-    private var REQUEST_ACCOUNT_RECORD: Int = 1000
-
     private lateinit var realTimeDatabaseDetailManager: RealTimeDatabaseDetailManager
     private lateinit var googleSharePreference: SharePreferenceGoogleSignInManager
     private lateinit var googlePlayServiceMap: GooglePlayServiceMapManager
@@ -162,7 +156,7 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
     @SuppressLint("InflateParams", "ResourceType")
     private fun initialBottomSheet() {
         bottomSheetBehavior = BottomSheetBehavior.from(view?.findViewById(R.id.bottom_sheet))
-        bottomSheetBehavior.peekHeight = li_header_bottom_sheet.height
+        bottomSheetBehavior.peekHeight = 0
         bottomSheetBehavior.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
 
@@ -171,7 +165,7 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 when (bottomSheetBehavior.state) {
                     BottomSheetBehavior.STATE_COLLAPSED -> {
-                        floating_bt_close.setImageResource(R.mipmap.ic_keyboard_arrow_up)
+                        floating_bt_close.setImageResource(R.mipmap.ic_ticket)
                     }
                     BottomSheetBehavior.STATE_EXPANDED -> {
                         floating_bt_close.setImageResource(R.mipmap.ic_keyboard_arrow_down)
@@ -183,7 +177,7 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
         floating_bt_close.setOnClickListener {
             when (bottomSheetBehavior.state) {
                 BottomSheetBehavior.STATE_EXPANDED -> {
-                    floating_bt_close.setImageResource(R.mipmap.ic_keyboard_arrow_up)
+                    floating_bt_close.setImageResource(R.mipmap.ic_ticket)
                     bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
                 }
 
@@ -250,7 +244,7 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
     @SuppressLint("SetTextI18n")
     override fun setDataChange(itemListEvent: ItemListEvent) {
         loadPhotoDetail(context, itemListEvent.eventCover, im_detail_cover)
-        loadPhotoAdvertise(context, itemListEvent.eventAdvertise, im_advertise_detail)
+//        loadPhotoAdvertise(context, itemListEvent.eventAdvertise, im_advertise_detail)
         loadLogo(context, itemListEvent.eventLogoCredit, im_logo_owner_event)
         loadGoogleMapStatic(context, itemListEvent.eventLatitude, itemListEvent.eventLongitude, im_static_map)
 
@@ -265,7 +259,6 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
         tv_bottom_sheet_header_event.text = nameEvent
         tv_bottom_sheet_description_event.text = descriptionEvent
         tv_bottom_sheet_limit_access.text = "สามารถจองได้ถึงภายในวันที่ ${dateManager.convertStringDate(itemListEvent.eventCalendarStart)}"
-
 
         bankAccount = itemListEvent.accountBank
         keyEvent = itemListEvent.eventKey
@@ -293,7 +286,7 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
     @SuppressLint("SetTextI18n")
     private fun setOnDetailEvent(itemListEvent: ItemListEvent) {
         loadPhotoDetail(context, itemListEvent.eventCover, im_detail_cover)
-        loadPhotoAdvertise(context, itemListEvent.eventAdvertise, im_advertise_detail)
+//        loadPhotoAdvertise(context, itemListEvent.eventAdvertise, im_advertise_detail)
         loadLogo(context, itemListEvent.eventLogoCredit, im_logo_owner_event)
         loadGoogleMapStatic(context, itemListEvent.eventLatitude, itemListEvent.eventLongitude, im_static_map)
 
@@ -308,6 +301,7 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
         tv_bottom_sheet_header_event.text = itemListEvent.eventName
         tv_bottom_sheet_description_event.text = itemListEvent.eventDescription
         tv_bottom_sheet_limit_access.text = "สามารถจองได้ถึงภายในวันที่ ${dateManager.convertStringDate(itemListEvent.eventCalendarStart)}"
+
 
         bankAccount = itemListEvent.accountBank
         keyEvent = itemListEvent.eventKey
@@ -508,7 +502,7 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
             R.id.bt_get_tickets -> {
                 when (bottomSheetBehavior.state) {
                     BottomSheetBehavior.STATE_COLLAPSED -> {
-                        floating_bt_close.setImageResource(R.mipmap.ic_keyboard_arrow_down)
+                        floating_bt_close.setImageResource(R.mipmap.ic_ticket)
                         bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
                     }
 
@@ -599,10 +593,17 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
 
 
     companion object {
-        private var listEventObject: String = "ListDetailEventFragment"
-        private var widthObject: String = "width"
-        private var heightObject: String = "height"
-        private var transition: String = "transition"
+        private const val listEventObject: String = "ListDetailEventFragment"
+        private const val widthObject: String = "width"
+        private const val heightObject: String = "height"
+        private const val transition: String = "transition"
+
+        private const val REQUEST_ACCOUNT: Int = 1112
+        private const val REQUEST_GOOGLE_PLAY: Int = 1121
+        private const val REQUEST_PERMISSION_ACCOUNT: Int = 1111
+        private const val REQUEST_CALENDAR_PERMISSION: Int = 1101
+        private const val REQUEST_ACCOUNT_RECORD: Int = 1000
+
         fun newInstance(width: Int, height: Int, transitionName: String, nameObject: Long): ListDetailEventFragment {
             val listDetailEventFragment = ListDetailEventFragment()
             val bundle = Bundle()
@@ -650,7 +651,7 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
             super.onPostExecute(result)
             Log.d("resultTaskInsertEvent", result?.htmlLink)
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-            floating_bt_close.setImageResource(R.mipmap.ic_keyboard_arrow_up)
+            floating_bt_close.setImageResource(R.mipmap.ic_ticket)
             dialogManager.onDismissLoadingDialog()
         }
 

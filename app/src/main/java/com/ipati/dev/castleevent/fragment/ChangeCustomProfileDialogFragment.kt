@@ -9,18 +9,14 @@ import com.ipati.dev.castleevent.R
 import com.ipati.dev.castleevent.extension.toStrEditText
 import com.ipati.dev.castleevent.model.UserProfileUpdate
 import kotlinx.android.synthetic.main.activity_change_custom_profile_dialog_fragment.*
+import kotlinx.android.synthetic.main.activity_profile_user_fragment.*
 
-class ChangeCustomProfileDialogFragment : DialogFragment(), View.OnClickListener {
+class ChangeCustomProfileDialogFragment : DialogFragment() {
     private var RequestUsername: Int = 1001
     private var RequestPassword: Int = 1002
     private var RequestEmail: Int = 1003
 
-    private lateinit var mUserChangeProfile: UserProfileUpdate
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        mUserChangeProfile = UserProfileUpdate(context, activity)
-
-    }
+    private lateinit var userChangeProfile: UserProfileUpdate
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater?.inflate(R.layout.activity_change_custom_profile_dialog_fragment, container, false)
@@ -29,11 +25,12 @@ class ChangeCustomProfileDialogFragment : DialogFragment(), View.OnClickListener
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        userChangeProfile = UserProfileUpdate(context, tv_input_username_profile, tv_input_password_profile, tv_input_re_password, tv_input_email_profile, activity)
 
         requestCodeObject()
 
-        ed_record_profile.setOnClickListener { viewRecord -> onClick(viewRecord) }
-        tv_cancel_dialog_profile.setOnClickListener { viewCanCel: View -> onClick(viewCanCel) }
+//        ed_record_profile.setOnClickListener { viewRecord -> onClick(viewRecord) }
+//        tv_cancel_dialog_profile.setOnClickListener { viewCanCel: View -> onClick(viewCanCel) }
     }
 
     private fun requestCodeObject() {
@@ -79,84 +76,11 @@ class ChangeCustomProfileDialogFragment : DialogFragment(), View.OnClickListener
         ed_input_edit.setText(msg)
     }
 
-    override fun onClick(p0: View?) {
-        when (p0?.id) {
-            R.id.ed_record_profile -> {
-                when (arguments.getInt(codeObject)) {
-                    RequestUsername -> {
-                        mUserChangeProfile.onValidateUsername(ed_input_edit.toStrEditText())
-
-                        when {
-                            mUserChangeProfile.statusUsername() == "Success" -> {
-                                dialog.dismiss()
-                            }
-                            else -> {
-                                ed_input_edit.error = mUserChangeProfile.statusUsername()
-                            }
-                        }
-                    }
-
-                    RequestPassword -> {
-                        mUserChangeProfile.onValidatePassword(ed_input_edit.toStrEditText()
-                                , ed_confirm_password.toStrEditText())
-
-
-                        if (mUserChangeProfile.statusPassword() == "Success") {
-                            dialog.dismiss()
-                        }
-
-                        if (mUserChangeProfile.statusPassword() == "Missing Not Match") {
-                            ed_input_edit.error = mUserChangeProfile.statusPassword()
-                            ed_confirm_password.error = mUserChangeProfile.statusPasswordConfirm()
-
-                        }
-
-                        if (mUserChangeProfile.statusPassword() == "isEmpty") {
-                            ed_input_edit.error = mUserChangeProfile.statusPassword()
-                        }
-
-                        if (mUserChangeProfile.statusPasswordConfirm() == "isEmpty") {
-                            ed_confirm_password.error = mUserChangeProfile.statusPasswordConfirm()
-                        }
-
-                        if (mUserChangeProfile.statusPassword() == "More 6 Character") {
-                            ed_input_edit.error = mUserChangeProfile.statusPassword()
-                        }
-
-                        if (mUserChangeProfile.statusPasswordConfirm() == "More 6 Character") {
-                            ed_confirm_password.error = mUserChangeProfile.statusPasswordConfirm()
-                        }
-                    }
-
-                    RequestEmail -> {
-                        mUserChangeProfile.onValidateEmail(ed_input_edit.toStrEditText())
-
-                        when {
-                            mUserChangeProfile.statusEmail() == "Success" -> {
-                                dialog.dismiss()
-                            }
-
-                            mUserChangeProfile.statusEmail() == "isEmpty" -> {
-                                ed_input_edit.error = mUserChangeProfile.statusEmail()
-                            }
-                            else -> {
-                                ed_input_edit.error = mUserChangeProfile.statusEmail()
-                            }
-                        }
-                    }
-                }
-            }
-
-            R.id.tv_cancel_dialog_profile -> {
-                dialog.dismiss()
-            }
-        }
-    }
 
     companion object {
-        private var titleObject = "title"
-        private var msgObject = "msg"
-        private var codeObject = "code"
+        private const val titleObject = "title"
+        private const val msgObject = "msg"
+        private const val codeObject = "code"
         fun newInstance(title: String, msg: String, code: Int): ChangeCustomProfileDialogFragment {
             return ChangeCustomProfileDialogFragment().apply {
                 arguments = Bundle().apply {

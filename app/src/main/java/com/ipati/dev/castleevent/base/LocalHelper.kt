@@ -12,17 +12,16 @@ class LocalHelper {
     private lateinit var sharePreferenceSettingManager: SharePreferenceSettingManager
     fun onAttach(context: Context): Context {
         val language: String = Locale.getDefault().language
-        return FirebaseAuth.getInstance().currentUser?.let {
-            sharePreferenceSettingManager = SharePreferenceSettingManager(context)
 
-            sharePreferenceSettingManager.defaultSharePreferenceLanguageManager()?.let {
-                if (sharePreferenceSettingManager.defaultSharePreferenceLanguageManager()!!) {
-                    return setLocal(context, "en")
-                }
-                return setLocal(context, "th")
-            } ?: setLocal(context, language)
+        sharePreferenceSettingManager = SharePreferenceSettingManager(context)
 
-        } ?: setLocal(context, "en")
+        sharePreferenceSettingManager.defaultSharePreferenceLanguageManager()?.let {
+            if (sharePreferenceSettingManager.defaultSharePreferenceLanguageManager()!!) {
+                return setLocal(context, "en")
+            }
+            return setLocal(context, "th")
+        } ?: setLocal(context, language)
+        return setLocal(context, language)
     }
 
     fun onAttach(context: Context, defaultLanguage: String): Context {

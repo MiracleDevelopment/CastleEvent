@@ -5,20 +5,15 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.support.v4.app.Fragment
-import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
-import android.util.Log
 import android.view.*
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.iid.FirebaseInstanceId
 import com.ipati.dev.castleevent.adapter.ItemViewPagerAdapter
 import com.ipati.dev.castleevent.base.BaseAppCompatActivity
-import com.ipati.dev.castleevent.fragment.ListEventFragment
-import com.ipati.dev.castleevent.model.OnChangeNotificationChannel
-import com.ipati.dev.castleevent.model.OnCustomLanguage
-import com.ipati.dev.castleevent.model.OnLogOutSystem
+import com.ipati.dev.castleevent.extension.onShowSettingDialog
+import com.ipati.dev.castleevent.extension.onShowSnackBar
 import com.ipati.dev.castleevent.model.UserManager.photoUrl
 import com.ipati.dev.castleevent.model.UserManager.uid
 import com.ipati.dev.castleevent.model.UserManager.userEmail
@@ -27,10 +22,9 @@ import com.ipati.dev.castleevent.service.FirebaseNotification.NotificationManage
 import com.ipati.dev.castleevent.service.googleApiClient
 import com.ipati.dev.castleevent.utill.SharePreferenceSettingManager
 import kotlinx.android.synthetic.main.activity_list_event.*
-import kotlinx.android.synthetic.main.bottom_navigation_layout.*
 
 
-class ListEventActivity : BaseAppCompatActivity(), View.OnClickListener, OnLogOutSystem, OnCustomLanguage, OnChangeNotificationChannel {
+class ListEventActivity : BaseAppCompatActivity(), View.OnClickListener {
     private lateinit var itemViewPagerAdapter: ItemViewPagerAdapter
     private lateinit var sharePreferenceManager: SharePreferenceSettingManager
     private lateinit var notificationManager: NotificationManager
@@ -43,30 +37,74 @@ class ListEventActivity : BaseAppCompatActivity(), View.OnClickListener, OnLogOu
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list_event)
         auth = FirebaseAuth.getInstance()
-        auth.addAuthStateListener(onChangeStateLogin())
         sharePreferenceManager = SharePreferenceSettingManager(context = applicationContext)
         notificationManager = NotificationManager(this)
 
         onChangeStateLogin()
         initialViewPager()
-        initialBottomNavigationBar()
+        setUpTabLayout()
+        setUpDrawerSimpleProfile()
+        setUpDrawerSetting()
+    }
 
-        Log.d("tokenFireBase", FirebaseInstanceId.getInstance().token.toString())
+    private fun setUpDrawerSetting() {
+        im_setting_list_event.setOnClickListener {
+
+            val settingDialogFragment = onShowSettingDialog(supportFragmentManager)
+            settingDialogFragment.onChangeLanguage = { status ->
+                if (status) {
+                    setLanguage("en")
+                } else {
+                    setLanguage("th")
+                }
+            }
+
+            settingDialogFragment.onChangeNotification = { status ->
+                if (status) {
+                    onShowSnackBar(drawer_list_event, "เปิดการแจ้งเตือน")
+                } else {
+                    onShowSnackBar(drawer_list_event, "ปิดการแจ้งเตือน")
+                }
+            }
+        }
+    }
+
+    private fun setUpDrawerSimpleProfile() {
+        drawee_user_login.setOnClickListener {
+            if (FirebaseAuth.getInstance().currentUser != null) {
+                val intentUserProfile = Intent(this, UserProfileMenuActivity::class.java)
+                startActivity(intentUserProfile)
+            } else {
+                val intentUserLogin = Intent(this, LoginActivity::class.java)
+                startActivity(intentUserLogin)
+            }
+        }
+    }
+
+    private fun setUpTabLayout() {
+        tab_layout_list_event.addTab(tab_layout_list_event.newTab().setText("New"), 0, true)
+        tab_layout_list_event.addTab(tab_layout_list_event.newTab().setText("Coming"), 1)
+        tab_layout_list_event.addTab(tab_layout_list_event.newTab().setText("expire"), 2)
     }
 
     private fun onChangeStateLogin(): FirebaseAuth.AuthStateListener {
         authListener = FirebaseAuth.AuthStateListener { firebaseAuth: FirebaseAuth? ->
             firebaseAuth?.let {
                 val firebaseUser: FirebaseUser? = firebaseAuth.currentUser
-                firebaseUser?.let {
+                if (firebaseUser != null) {
                     uid = firebaseUser.uid
                     username = firebaseUser.displayName
                     userEmail = firebaseUser.email
                     photoUrl = firebaseUser.photoUrl.toString()
+
+                    drawee_user_login.hierarchy.setPlaceholderImage(R.mipmap.ic_launcher)
+                    drawee_user_login.setImageURI(photoUrl, applicationContext)
+                } else {
+                    drawee_user_login.hierarchy.setPlaceholderImage(null)
+                    drawee_user_login.setImageURI("", applicationContext)
                 }
             }
         }
-
         return authListener
     }
 
@@ -85,102 +123,10 @@ class ListEventActivity : BaseAppCompatActivity(), View.OnClickListener, OnLogOu
             }
 
             override fun onPageSelected(position: Int) {
-                when (position) {
-                    in 0..0 -> {
-                        bottom_navigation_list_event.selectedItemId = R.id.itemListEvent
-                    }
-                    in 1..1 -> {
-                        bottom_navigation_list_event.selectedItemId = R.id.itemUser
-                    }
-                }
             }
         })
     }
 
-    private fun initialBottomNavigationBar() {
-        bottom_navigation_list_event.inflateMenu(R.menu.menu_bottom_navigation_layout)
-        bottom_navigation_list_event.itemTextColor = ContextCompat.getColorStateList(applicationContext, R.color.custom_selector_navigation_bottom)
-        bottom_navigation_list_event.itemIconTintList = ContextCompat.getColorStateList(applicationContext, R.color.custom_selector_navigation_bottom)
-        bottom_navigation_list_event.selectedItemId = R.id.itemListEvent
-
-        bottom_navigation_list_event.setOnNavigationItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.itemListEvent -> {
-                    vp_list_event.currentItem = 0
-                    val listEventFragment: Fragment? = itemViewPagerAdapter.getRegisteredFragment(vp_list_event.currentItem)
-                    listEventFragment?.let {
-                        (listEventFragment as ListEventFragment).apply {
-                            onDisableBottomSheetCategory()
-                        }
-                    }
-                    return@setOnNavigationItemSelectedListener true
-                }
-
-                R.id.itemCategory -> {
-                    vp_list_event.currentItem = 0
-                    bottom_navigation_list_event.menu.getItem(vp_list_event.currentItem).isChecked = true
-
-                    val mListEventFragment: Fragment? = itemViewPagerAdapter.getRegisteredFragment(vp_list_event.currentItem)
-                    mListEventFragment?.let {
-                        (mListEventFragment as ListEventFragment).apply {
-                            onShowBottomSheetCategory()
-                        }
-                    }
-                    return@setOnNavigationItemSelectedListener true
-                }
-
-                R.id.itemUser -> {
-                    vp_list_event.currentItem = 1
-                    bottom_navigation_list_event.menu.getItem(vp_list_event.currentItem).isChecked = true
-
-                    val mListEventFragment: Fragment? = itemViewPagerAdapter.getRegisteredFragment(0)
-                    mListEventFragment?.let {
-                        (mListEventFragment as ListEventFragment).apply {
-                            onDisableBottomSheetCategory()
-                        }
-                    }
-                    return@setOnNavigationItemSelectedListener true
-                }
-            }
-            return@setOnNavigationItemSelectedListener false
-        }
-
-
-    }
-
-
-    override fun onChangeLanguage(language: Int) {
-        when (language) {
-            0 -> {
-                setLanguage("th")
-            }
-
-            1 -> {
-                setLanguage("en")
-            }
-        }
-    }
-
-    override fun onChangeNotification(notification: Int) {
-        when (notification) {
-            0 -> {
-                notificationManager.cancelNotification()
-            }
-
-            1 -> {
-                notificationManager.activeNotification()
-            }
-        }
-
-    }
-
-
-    override fun logOutApplication() {
-        FirebaseAuth.getInstance().signOut()
-
-        recreate()
-        initialViewPager()
-    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -200,6 +146,11 @@ class ListEventActivity : BaseAppCompatActivity(), View.OnClickListener, OnLogOu
 
     override fun getLifecycle(): LifecycleRegistry {
         return lifeCycleRegistry
+    }
+
+    override fun onStart() {
+        super.onStart()
+        auth.addAuthStateListener(authListener)
     }
 
     override fun onStop() {

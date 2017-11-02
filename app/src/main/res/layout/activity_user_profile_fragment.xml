@@ -5,10 +5,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackgroundResource"
-    android:clipToPadding="false"
     android:orientation="vertical"
-    android:paddingBottom="48dp"
     tools:context="com.ipati.dev.castleevent.fragment.UserProfileFragment">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_user_menu_profile_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@android:color/transparent"
+        android:clipToPadding="false"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+    </android.support.v7.widget.Toolbar>
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -25,7 +34,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_margin="10dp"
                 android:adjustViewBounds="true"
                 app:actualImageScaleType="centerCrop"
                 app:fadeDuration="200"
@@ -37,278 +45,208 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:fontFamily="@font/circular"
+                android:fontFamily="@font/roboto_light"
                 android:padding="5dp"
                 android:textColor="@color/colorMenuList"
-                android:textSize="25sp" />
+                android:textSize="@dimen/sizeFontHeader" />
 
             <TextView
                 android:id="@+id/tv_user_profile_email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:fontFamily="@font/circular"
+                android:fontFamily="@font/roboto_light"
                 android:padding="5dp"
                 android:textColor="@color/colorMenuList"
-                android:textSize="22sp" />
-
-            <LinearLayout
-                android:id="@+id/my_profile_menu_profile"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="?attr/selectableItemBackground"
-                android:clickable="true"
-                android:focusable="true"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:id="@+id/im_my_profile_menu"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="2dp"
-                    android:src="@mipmap/ic_person_pin" />
-
-                <TextView
-                    android:id="@+id/tv_my_profile_menu"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:fontFamily="@font/circular"
-                    android:padding="2dp"
-                    android:text="@string/myProfileFont"
-                    android:textColor="@color/colorFontProfile"
-                    android:textSize="@dimen/sizeFontMenuProfile" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/my_order_menu_profile"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="?attr/selectableItemBackground"
-                android:clickable="true"
-                android:focusable="true"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:id="@+id/im_logo_order_menu"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="2dp"
-                    android:src="@mipmap/ic_list" />
-
-                <TextView
-                    android:id="@+id/tv_my_order_menu"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:fontFamily="@font/circular"
-                    android:padding="2dp"
-                    android:text="@string/myOrderFont"
-                    android:textColor="@color/colorFontProfile"
-                    android:textSize="@dimen/sizeFontMenuProfile" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/calendar_menu_profile"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="?attr/selectableItemBackground"
-                android:clickable="true"
-                android:focusable="true"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:id="@+id/im_calendar_menu"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="2dp"
-                    android:src="@mipmap/ic_perm_contact_calendar" />
-
-                <TextView
-                    android:id="@+id/tv_calendar_menu"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:fontFamily="@font/circular"
-                    android:padding="2dp"
-                    android:text="@string/calendarFont"
-                    android:textColor="@color/colorFontProfile"
-                    android:textSize="@dimen/sizeFontMenuProfile" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/contact_menu_profile"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="?attr/selectableItemBackground"
-                android:clickable="true"
-                android:focusable="true"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:id="@+id/im_logo_contact_menu"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="2dp"
-                    android:src="@mipmap/ic_contact_phone" />
-
-                <TextView
-                    android:id="@+id/tv_contact_menu"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:fontFamily="@font/circular"
-                    android:padding="2dp"
-                    android:text="@string/contactFont"
-                    android:textColor="@color/colorFontProfile"
-                    android:textSize="@dimen/sizeFontMenuProfile" />
-            </LinearLayout>
+                android:textSize="@dimen/sizeFontContent" />
 
             <TextView
-                android:id="@+id/header_menu_list_user_profile_setting"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:fontFamily="@font/circular"
-                android:text="@string/header_setting"
-                android:textColor="@color/colorMenuList"
-                android:textSize="@dimen/sizeFontHeaderSetting" />
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:baselineAligned="true"
-                android:orientation="vertical"
-                android:padding="2dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:gravity="center_horizontal"
-                    android:orientation="horizontal"
-                    android:padding="5dp">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/header_language_user_profile"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/circular"
-                            android:padding="5dp"
-                            android:text="@string/language"
-                            android:textColor="@color/colorMenuList"
-                            android:textSize="@dimen/sizeFontMenuProfile"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/circular"
-                            android:padding="5dp"
-                            android:text="@string/notification"
-                            android:textColor="@color/colorMenuList"
-                            android:textSize="@dimen/sizeFontMenuProfile"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center_vertical"
-                        android:orientation="vertical"
-                        android:padding="5dp">
-
-                        <TextView
-                            android:id="@+id/tv_header_menu_list_thai"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/circular"
-                            android:padding="5dp"
-                            android:text="@string/thai_language"
-                            android:textColor="@color/colorMenuList"
-                            android:textSize="@dimen/sizeFontTextSwitch" />
-
-                        <TextView
-                            android:id="@+id/tv_notification_close"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/circular"
-                            android:padding="5dp"
-                            android:text="@string/close_notification"
-                            android:textColor="@color/colorMenuList"
-                            android:textSize="@dimen/sizeFontTextSwitch" />
-                    </LinearLayout>
-
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:orientation="vertical"
-                        android:padding="5dp">
-
-                        <Switch
-                            android:id="@+id/switch_language_user_profile"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:padding="5dp" />
-
-                        <Switch
-                            android:id="@+id/switch_notification_user_profile"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:padding="5dp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center_vertical"
-                        android:orientation="vertical"
-                        android:padding="5dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/circular"
-                            android:padding="5dp"
-                            android:text="@string/eng_language"
-                            android:textColor="@color/colorMenuList"
-                            android:textSize="@dimen/sizeFontTextSwitch" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/circular"
-                            android:padding="5dp"
-                            android:text="@string/open_notification"
-                            android:textColor="@color/colorMenuList"
-                            android:textSize="@dimen/sizeFontTextSwitch" />
-                    </LinearLayout>
-
-                </LinearLayout>
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/tv_logout_system"
+                android:id="@+id/tv_edit_profile"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="5dp"
-                android:background="@drawable/custom_ripple_back_ground_button_logout"
+                android:layout_margin="5dp"
+                android:background="@drawable/ripple_edit_profile"
                 android:clickable="true"
                 android:focusable="true"
-                android:fontFamily="@font/circular"
-                android:text="@string/logout"
-                android:textColor="@color/colorFontProfile"
-                android:textSize="@dimen/sizeFontLogOut" />
+                android:fontFamily="@font/roboto_light"
+                android:text="@string/edit_profile"
+                android:textColor="@color/colorMenuList"
+                android:textSize="@dimen/sizeFontHeader" />
+
+            <LinearLayout
+                android:id="@+id/li_menu_user"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/card_my_order"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="2.5dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_weight="1"
+                    app:cardBackgroundColor="@android:color/transparent">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/ripple_item_menu"
+                        android:orientation="vertical"
+                        android:paddingTop="26dp">
+
+                        <ImageView
+                            android:id="@+id/im_logo_my_order"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:padding="5dp"
+                            android:src="@mipmap/ic_launcher" />
+
+                        <TextView
+                            android:id="@+id/tv_my_order_menu"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:fontFamily="@font/roboto_light"
+                            android:gravity="center"
+                            android:padding="10dp"
+                            android:text="@string/my_order"
+                            android:textColor="@color/colorFontMenuItem"
+                            android:textSize="@dimen/sizeFontHeader" />
+
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/card_calendar"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginStart="2.5dp"
+                    android:layout_weight="1"
+                    app:cardBackgroundColor="@android:color/transparent">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@drawable/ripple_item_menu"
+                        android:orientation="vertical"
+                        android:paddingTop="26dp">
+
+                        <ImageView
+                            android:id="@+id/im_logo_calendar"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:padding="5dp"
+                            android:src="@mipmap/ic_launcher" />
+
+                        <TextView
+                            android:id="@+id/tv_calendar_menu"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/roboto_light"
+                            android:gravity="center"
+                            android:padding="10dp"
+                            android:text="@string/calendarFont"
+                            android:textColor="@color/colorFontMenuItem"
+                            android:textSize="@dimen/sizeFontHeader" />
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/card_contact"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="2.5dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_weight="1"
+                    app:cardBackgroundColor="@android:color/transparent">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/ripple_item_menu"
+                        android:orientation="vertical"
+                        android:paddingTop="26dp">
+
+                        <ImageView
+                            android:id="@+id/im_logo_contact"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:padding="5dp"
+                            android:src="@mipmap/ic_launcher" />
+
+                        <TextView
+                            android:id="@+id/tv_contact_menu"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:fontFamily="@font/roboto_light"
+                            android:gravity="center"
+                            android:padding="10dp"
+                            android:text="@string/contact"
+                            android:textColor="@color/colorFontMenuItem"
+                            android:textSize="@dimen/sizeFontHeader" />
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/card_my_favorite"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginStart="2.5dp"
+                    android:layout_weight="1"
+                    app:cardBackgroundColor="@android:color/transparent">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/ripple_item_menu"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:orientation="vertical"
+                        android:paddingTop="26dp">
+
+                        <ImageView
+                            android:id="@+id/im_logo_favorite"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:padding="5dp"
+                            android:src="@mipmap/ic_launcher" />
+
+                        <TextView
+                            android:id="@+id/my_favorite_menu"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/roboto_light"
+                            android:gravity="center"
+                            android:padding="10dp"
+                            android:text="@string/my_favorite"
+                            android:textColor="@color/colorFontMenuItem"
+                            android:textSize="@dimen/sizeFontHeader" />
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+            </LinearLayout>
         </LinearLayout>
+
     </android.support.v4.widget.NestedScrollView>
 </LinearLayout>

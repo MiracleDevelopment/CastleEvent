@@ -3,11 +3,11 @@
     android:shape="oval">
     <solid android:color="#FFF" />
     <padding
-        android:bottom="2dp"
+        android:bottom="18dp"
         android:left="2dp"
         android:right="2dp"
         android:top="2dp" />
     <size
-        android:width="75dp"
-        android:height="75dp" />
+        android:width="85dp"
+        android:height="85dp" />
 </shape>

@@ -5,11 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:clickable="false"
-    android:clipToPadding="false"
     android:focusable="false"
     android:orientation="vertical"
-    android:paddingBottom="48dp"
-    app:behavior_peekHeight="98dp"
+    app:behavior_peekHeight="48dp"
     app:layout_behavior="@string/bottom_sheet_behavior">
 
     <TextView
@@ -20,11 +18,11 @@
         android:background="@drawable/circle_shape_bottom_category"
         android:clickable="true"
         android:focusable="true"
-        android:fontFamily="@font/circular"
-        android:gravity="center_vertical"
+        android:fontFamily="@font/roboto_light"
+        android:gravity="center"
         android:text="Category"
         android:textColor="#000"
-        android:textSize="25sp"
+        android:textSize="18sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 

@@ -1,6 +1,7 @@
 package com.ipati.dev.castleevent.utill
 
 import android.support.v4.app.FragmentActivity
+import com.ipati.dev.castleevent.fragment.LoginFragment
 import com.ipati.dev.castleevent.fragment.loading.DialogConfirmFragment
 import com.ipati.dev.castleevent.fragment.loading.LoadingDialogFragment
 import com.ipati.dev.castleevent.fragment.loading.MissingDialogFragment
@@ -11,7 +12,6 @@ class DialogManager(activity: FragmentActivity) {
     private lateinit var loadingDialog: LoadingDialogFragment
     private lateinit var confirmDialog: DialogConfirmFragment
     private lateinit var missingDialog: MissingDialogFragment
-
 
     fun onShowLoadingDialog(title: String): LoadingDialogFragment {
         loadingDialog = LoadingDialogFragment.newInstance(title, false)

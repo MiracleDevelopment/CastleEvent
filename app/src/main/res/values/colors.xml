@@ -75,4 +75,17 @@
     <color name="colorFontMissingDialog">#FFFFFF</color>
     <color name="colorBackgroundButtonMissingDialog">#00BCD4</color>
     <color name="colorFontMsgMissingDialog">#000000</color>
+    <color name="colorBackgroundTabLayout">#263238</color>
+    <color name="colorTabNormal">#546E7A</color>
+    <color name="colorTabSelector">#FFFFFF</color>
+    <color name="colorBackgroundToolbar">#00BCD4</color>
+    <color name="colorIndicatorTabLayout">#00B8D4</color>
+    <color name="colorFontToolbar">#263238</color>
+    <color name="colorBackgroundBottomTabDialog">#00B8D4</color>
+    <color name="colorBackgroundAccept">#00B8D4</color>
+    <color name="colorBackgroundCancel">#00ACC1</color>
+    <color name="colorBackgroundCreateAccount">#424242</color>
+    <color name="colorBackgroundButtonFacebook">#3b5998</color>
+    <color name="colorFontSetting">#000000</color>
+    <color name="colorFontMenuItem">#FFFFFF</color>
 </resources>

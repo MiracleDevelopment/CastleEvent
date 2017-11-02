@@ -2,10 +2,14 @@ package com.ipati.dev.castleevent.model
 
 import android.content.Context
 import android.net.Uri
+import android.support.design.widget.TextInputLayout
 import android.support.v4.app.FragmentActivity
 import android.text.TextUtils
 import android.util.Log
 import android.widget.Toast
+import com.androidhuman.rxfirebase2.auth.*
+import com.facebook.internal.Utility
+import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
@@ -13,208 +17,154 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.UploadTask
 import com.ipati.dev.castleevent.ProfileUserActivity
-import com.ipati.dev.castleevent.extension.onDismissDialog
 import com.ipati.dev.castleevent.extension.onShowDialog
+import com.ipati.dev.castleevent.extension.onShowLoadingDialog
 import com.ipati.dev.castleevent.fragment.loading.LoadingDialogFragment
 import com.ipati.dev.castleevent.model.UserManager.photoUrl
 import com.ipati.dev.castleevent.model.UserManager.uid
 import com.ipati.dev.castleevent.model.UserManager.userEmail
 import com.ipati.dev.castleevent.model.UserManager.username
 
-
-class UserProfileUpdate(context: Context, activity: FragmentActivity) {
-    private lateinit var mUserRequestChangeProfile: UserProfileChangeRequest
-    private lateinit var mLoadingDialogFragment: LoadingDialogFragment
-    private lateinit var mOnDismissDialogFragment: DismissDialogFragment
+class UserProfileUpdate(context: Context, inputUsername: TextInputLayout, inputPassword: TextInputLayout
+                        , inputRePassword: TextInputLayout, inputEmail: TextInputLayout, activity: FragmentActivity) {
+    private lateinit var userRequestChangeProfile: UserProfileChangeRequest
+    private lateinit var loadingDialogFragment: LoadingDialogFragment
+    private lateinit var onDismissDialogFragment: DismissDialogFragment
     private lateinit var onChangeProgressUserPhoto: OnProgressPhotoUser
-    private lateinit var mUploadTask: UploadTask
-    private lateinit var mStatusUsername: String
-    private lateinit var mStatusPassword: String
-    private lateinit var mStatusEmail: String
+    private lateinit var uploadTask: UploadTask
 
-    private var mContext: Context = context
-    private var mActivity: FragmentActivity = activity
+    private var contextProfileManager: Context = context
+    private var activityProfileManager: FragmentActivity = activity
     private var fireBaseUser: FirebaseUser = FirebaseAuth.getInstance().currentUser!!
     private var fireBaseStorage: StorageReference = FirebaseStorage.getInstance().reference
-    private var mStatusPasswordConfirm: String = ""
-    private var msgAlertDialog = "ระบบกำลังอัพเดท..."
 
-    private fun onUpdateUsername(mUsername: String) {
-        mUserRequestChangeProfile = UserProfileChangeRequest.Builder().setDisplayName(mUsername).build()
-        fireBaseUser.updateProfile(mUserRequestChangeProfile).addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                mOnDismissDialogFragment = mContext as ProfileUserActivity
-                mOnDismissDialogFragment.onChangeProfile(mUsername, 1001)
+    private var usernameLayout: TextInputLayout = inputUsername
+    private var passwordLayout: TextInputLayout = inputPassword
+    private var rePasswordLayout: TextInputLayout = inputRePassword
+    private var emailLayout: TextInputLayout = inputEmail
 
-                username = mUsername
-                mLoadingDialogFragment.onDismissDialog()
-            }
-        }.addOnFailureListener { exception ->
-            mLoadingDialogFragment.onDismissDialog()
-            Toast.makeText(mContext, exception.message.toString(), Toast.LENGTH_SHORT).show()
-        }
+    var callBackUserProfileChange: ((String) -> Unit)? = null
+    var callBackPassword: ((String) -> Unit)? = null
+    var callBackEmail: ((String) -> Unit)? = null
 
-    }
+    fun onChangeProfileUser(userAccount: String, password: String, rePassword: String, userEmail: String) {
 
+        val loadingDialog = onShowLoadingDialog(activityProfileManager, "คุณกำลังอัพเดทโปรไฟล์...")
+        userRequestChangeProfile = UserProfileChangeRequest.Builder()
+                .setDisplayName(userAccount)
+                .build()
+        onDismissDialogFragment = activityProfileManager as ProfileUserActivity
 
-    private fun onUpdatePassword(mPassword: String) {
-        fireBaseUser.updatePassword(mPassword).addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                mOnDismissDialogFragment = mContext as ProfileUserActivity
-                mOnDismissDialogFragment.onChangeProfile(mPassword, 1002)
+        fireBaseUser.rxUpdateProfile(userRequestChangeProfile).subscribe({
+            //Todo: success
+            onDismissDialogFragment.onChangeProfile(userAccount, 1008)
 
-                Log.d("passwordUpdate", mPassword)
-                mLoadingDialogFragment.onDismissDialog()
+            fireBaseUser.rxUpdatePassword(password).subscribe({
+                //Todo: success
+                onDismissDialogFragment.onChangeProfile(password, 1009)
 
-            }
+                fireBaseUser.rxUpdateEmail(userEmail).subscribe({
+                    //Todo: success
+                    onDismissDialogFragment.onChangeProfile(userEmail, 1010)
+                    loadingDialog.dismiss()
 
-        }.addOnFailureListener { exception ->
-            mLoadingDialogFragment.onDismissDialog()
-            Toast.makeText(mContext, exception.message.toString(), Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    private fun onUpdateEmail(email: String) {
-        fireBaseUser.updateEmail(email).addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                fireBaseUser.sendEmailVerification().addOnCompleteListener { taskEmail ->
-                    if (taskEmail.isSuccessful) {
-                        mOnDismissDialogFragment = mContext as ProfileUserActivity
-                        mOnDismissDialogFragment.onChangeProfile(email, 1003)
-
-                        userEmail = email
-                        mLoadingDialogFragment.onDismissDialog()
-                    }
+                    //Todo: EndProcessEmail
+                }) { t: Throwable? ->
+                    loadingDialog.dismiss()
+                    Log.d("onErrorEmail", t?.message.toString())
                 }
+
+                //Todo: EndProcessPassword
+            }) { t: Throwable? ->
+                loadingDialog.dismiss()
+                Log.d("onErrorPassword", t?.message.toString())
             }
-        }.addOnFailureListener { exception ->
-            mLoadingDialogFragment.onDismissDialog()
-            Toast.makeText(mContext, exception.message.toString(), Toast.LENGTH_SHORT).show()
+        })
+    }
+
+
+    fun onCheckStateChange(userAccount: String, password: String, rePassword: String, emailUser: String): Boolean {
+        if (userAccount.isEmpty()) {
+            callBackUserProfileChange?.invoke("specific username")
+            return false
+        } else if (userAccount == username) {
+            callBackUserProfileChange?.invoke("already username")
+            return false
+        } else {
+            usernameLayout.isErrorEnabled = false
         }
 
+        if (password.isEmpty() || rePassword.isEmpty()) {
+            callBackPassword?.invoke("specific password")
+            return false
+        } else if (password != rePassword || password.length != rePassword.length) {
+            callBackPassword?.invoke("not Match")
+            return false
+        } else {
+            passwordLayout.isErrorEnabled = false
+            rePasswordLayout.isErrorEnabled = false
+        }
+
+        if (emailUser.isEmpty()) {
+            callBackEmail?.invoke("specific email")
+            return false
+        } else if (emailUser != userEmail) {
+            callBackEmail?.invoke("already email")
+            return false
+        } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(emailUser).matches()) {
+            callBackEmail?.invoke("not Match Pattern Email")
+            return false
+        } else {
+            emailLayout.isErrorEnabled = false
+        }
+
+        if (!userAccount.isEmpty()
+                && !password.isEmpty()
+                && !rePassword.isEmpty()
+                && !emailUser.isEmpty()) {
+
+            return true
+        }
+
+        return false
     }
+
 
     fun onUpdatePhotoUser(path: Uri) {
-        mLoadingDialogFragment = LoadingDialogFragment.newInstance("กำลังอัพเดทโปรไฟล์ของคุณ...", true)
-        mLoadingDialogFragment.onShowDialog(mActivity)
+        loadingDialogFragment = LoadingDialogFragment.newInstance("กำลังอัพโหลดรูปโปรไฟล์...", true)
+        loadingDialogFragment.onShowDialog(activityProfileManager)
 
         val storageReference: StorageReference = fireBaseStorage.child("userProfile").child(uid.toString()).child(path.lastPathSegment)
-        mUploadTask = storageReference.putFile(path).addOnSuccessListener { taskSnapshot: UploadTask.TaskSnapshot? ->
+        uploadTask = storageReference.putFile(path).addOnSuccessListener { taskSnapshot: UploadTask.TaskSnapshot? ->
             taskSnapshot?.let {
                 onUpdateProfile(taskSnapshot.downloadUrl)
             }
 
         }.addOnFailureListener { exception ->
-
-            mLoadingDialogFragment.dismiss()
-            Toast.makeText(mContext, exception.message.toString(), Toast.LENGTH_SHORT).show()
+            loadingDialogFragment.dismiss()
+            Toast.makeText(contextProfileManager, exception.message.toString(), Toast.LENGTH_SHORT).show()
 
         }.addOnProgressListener { taskSnapshot ->
-            onChangeProgressUserPhoto = mContext as ProfileUserActivity
+            onChangeProgressUserPhoto = contextProfileManager as ProfileUserActivity
             onChangeProgressUserPhoto.setProgressUserPhoto(((100 * taskSnapshot.bytesTransferred) / taskSnapshot.totalByteCount).toInt())
 
         } as UploadTask
     }
 
     private fun onUpdateProfile(uri: Uri?) {
-        mUserRequestChangeProfile = UserProfileChangeRequest.Builder().setPhotoUri(uri).build()
-        fireBaseUser.updateProfile(mUserRequestChangeProfile).addOnCompleteListener { task ->
+        userRequestChangeProfile = UserProfileChangeRequest.Builder().setPhotoUri(uri).build()
+        fireBaseUser.updateProfile(userRequestChangeProfile).addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                mOnDismissDialogFragment = mContext as ProfileUserActivity
-                mOnDismissDialogFragment.onChangeProfile(uri.toString(), 1004)
-                mLoadingDialogFragment.dismiss()
+                onDismissDialogFragment = contextProfileManager as ProfileUserActivity
+                onDismissDialogFragment.onChangeProfile(uri.toString(), 1111)
 
+                loadingDialogFragment.dismiss()
                 photoUrl = uri.toString()
             }
         }.addOnFailureListener { exception ->
-            Toast.makeText(mContext, exception.message.toString(), Toast.LENGTH_SHORT).show()
+            loadingDialogFragment.dismiss()
+            Toast.makeText(contextProfileManager, exception.message.toString(), Toast.LENGTH_SHORT).show()
         }
     }
 
-    fun onValidateUsername(mUsername: String) {
-        if (!TextUtils.isEmpty(username)) {
-            if (mUsername != username) {
-                mLoadingDialogFragment = LoadingDialogFragment.newInstance(msgAlertDialog, false)
-                mLoadingDialogFragment.onShowDialog(activity = mActivity)
-                onUpdateUsername(mUsername)
-                mStatusUsername = "Success"
-            } else {
-                mStatusUsername = "This not Change"
-            }
-        } else if (TextUtils.isEmpty(mUsername)) {
-            mStatusUsername = "isEmpty"
-        }
-    }
-
-    fun statusUsername(): String {
-        return mStatusUsername
-    }
-
-    fun onValidatePassword(password: String, mConfirmPassword: String) {
-        mLoadingDialogFragment = LoadingDialogFragment.newInstance(msgAlertDialog, false)
-        if (!TextUtils.isEmpty(password) && !TextUtils.isEmpty(mConfirmPassword)) {
-            if (password.length >= 6 && mConfirmPassword.length >= 6) {
-                if (password == mConfirmPassword) {
-                    onUpdatePassword(password)
-                    mStatusPassword = "Success"
-
-                    mLoadingDialogFragment.onShowDialog(activity = mActivity)
-                }
-
-                if (password != mConfirmPassword) {
-                    mStatusPassword = "Missing Not Match"
-                    mStatusPasswordConfirm = "Missing Not Match"
-                }
-            }
-            if (password.length < 6) {
-                mStatusPassword = "More 6 Character"
-            }
-
-            if (mConfirmPassword.length < 6) {
-                mStatusPasswordConfirm = "More 6 Character"
-            }
-
-        } else if (!TextUtils.isEmpty(password)) {
-            mStatusPassword = ""
-        } else if (!TextUtils.isEmpty(mConfirmPassword)) {
-            mStatusPasswordConfirm = ""
-        }
-
-        if (TextUtils.isEmpty(password)) {
-            mStatusPassword = "isEmpty"
-        }
-
-        if (TextUtils.isEmpty(mConfirmPassword)) {
-            mStatusPasswordConfirm = "isEmpty"
-        }
-    }
-
-    fun statusPassword(): String {
-        return mStatusPassword
-    }
-
-    fun statusPasswordConfirm(): String {
-        return mStatusPasswordConfirm
-    }
-
-    fun onValidateEmail(email: String) {
-        if (!TextUtils.isEmpty(email)) {
-            if (android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                if (email != userEmail) {
-                    onUpdateEmail(email)
-                    mStatusEmail = "Success"
-                    mLoadingDialogFragment = LoadingDialogFragment.newInstance(msgAlertDialog, false)
-                    mLoadingDialogFragment.onShowDialog(activity = mActivity)
-                } else {
-                    mStatusEmail = "This not Change"
-                }
-            }
-        } else if (TextUtils.isEmpty(email)) {
-            mStatusEmail = "isEmpty"
-        }
-    }
-
-    fun statusEmail(): String {
-        return mStatusEmail
-    }
 }

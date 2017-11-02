@@ -28,6 +28,7 @@ class ListEventFragment : BaseFragment() {
     private lateinit var categoryRealTimeDatabaseManager: CategoryRealTimeManager
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
     private lateinit var itemCategoryChangeThai: List<ItemListEvent>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         realTimeDatabaseManager = RealTimeDatabaseManager(context, lifecycle)
@@ -182,27 +183,8 @@ class ListEventFragment : BaseFragment() {
 
     }
 
-    //Todo: Calling From Activity
-    fun onShowBottomSheetCategory() {
-        when (bottomSheetBehavior.state) {
-            BottomSheetBehavior.STATE_EXPANDED -> {
-                bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-            }
-
-            BottomSheetBehavior.STATE_COLLAPSED -> {
-                bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-            }
-        }
-    }
-
-    //Todo: Calling From Activity
-    fun onDisableBottomSheetCategory() {
-        bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-    }
-
-
     companion object {
-        private var listEventObject: String = "ListEventFragment"
+        private const val listEventObject: String = "ListEventFragment"
         fun newInstance(nameObject: String): ListEventFragment {
             val listEventFragment = ListEventFragment()
             val bundle = Bundle()

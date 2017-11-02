@@ -2,10 +2,10 @@ package com.ipati.dev.castleevent.fragment
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.support.v7.app.AppCompatActivity
+import android.view.*
 import android.widget.Toast
+import com.google.firebase.auth.FirebaseAuth
 import com.ipati.dev.castleevent.*
 import com.ipati.dev.castleevent.base.BaseFragment
 import com.ipati.dev.castleevent.fragment.loading.LogOutFragmentDialog
@@ -20,12 +20,11 @@ import kotlinx.android.synthetic.main.activity_user_profile_fragment.*
 
 class UserProfileFragment : BaseFragment() {
     private lateinit var sharePreferenceSettingMenuList: SharePreferenceSettingManager
-    private lateinit var onChangeLanguage: OnCustomLanguage
-    private lateinit var onChangeNotification: OnChangeNotificationChannel
     private lateinit var logOutDialogFragment: LogOutFragmentDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
         sharePreferenceSettingMenuList = SharePreferenceSettingManager(context)
     }
 
@@ -35,37 +34,50 @@ class UserProfileFragment : BaseFragment() {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initialSwitchSetting()
-        initialLogOutBt()
+        setUpToolbar()
     }
 
-    private fun initialLogOutBt() {
-        tv_logout_system.setOnClickListener {
-            logOutDialogFragment = LogOutFragmentDialog.newInstance("กรุณายืนยัน", "คุณต้องการออกจากระบบ ใช่ / ไม่")
-            logOutDialogFragment.isCancelable = false
-            logOutDialogFragment.show(activity.supportFragmentManager, "LogOutDialogFragment")
+    private fun setUpToolbar() {
+        (activity as AppCompatActivity).apply {
+            setSupportActionBar(toolbar_user_menu_profile_fragment)
+            supportActionBar?.apply {
+                title = ""
+                setDisplayHomeAsUpEnabled(true)
+                setDisplayShowHomeEnabled(true)
+            }
+        }
+    }
+
+    private fun onShowDialogLogOut() {
+        logOutDialogFragment = LogOutFragmentDialog.newInstance("กรุณายืนยัน", "คุณต้องการออกจากระบบ ใช่ / ไม่")
+        logOutDialogFragment.isCancelable = false
+        logOutDialogFragment.show(activity.supportFragmentManager, "LogOutDialogFragment")
+
+        logOutDialogFragment.onClickPositiveLogOut = {
+            FirebaseAuth.getInstance().signOut()
+            activity.supportFinishAfterTransition()
         }
     }
 
     private fun initialUserProfile() {
         loadPhotoProfileUser(context, photoUrl, im_user_profile_photo)
 
-        my_profile_menu_profile.setOnClickListener {
+        tv_edit_profile.setOnClickListener {
             val intentProfile = Intent(context, ProfileUserActivity::class.java)
             startActivity(intentProfile)
         }
 
-        my_order_menu_profile.setOnClickListener {
+        card_my_order.setOnClickListener {
             val intentMyOrder = Intent(context, MyOrderActivity::class.java)
             startActivity(intentMyOrder)
         }
 
-        calendar_menu_profile.setOnClickListener {
+        card_calendar.setOnClickListener {
             val intentCalendar = Intent(context, CalendarActivity::class.java)
             startActivity(intentCalendar)
         }
 
-        contact_menu_profile.setOnClickListener {
+        card_contact.setOnClickListener {
             val intentContact = Intent(context, ContactUserActivity::class.java)
             startActivity(intentContact)
         }
@@ -75,67 +87,30 @@ class UserProfileFragment : BaseFragment() {
     }
 
 
-    private fun initialSwitchSetting() {
-        switch_language_user_profile.isChecked = sharePreferenceSettingMenuList.defaultSharePreferenceLanguageManager()!!
-        switch_notification_user_profile.isChecked = sharePreferenceSettingMenuList.defaultSharePreferenceNotificationManager()!!
-
-        switch_language_user_profile.setOnCheckedChangeListener { compoundButton, b ->
-            if (b) {
-                compoundButton.isChecked = b
-                sharePreferenceSettingMenuList.sharePreferenceLanguageManager(b)
-
-                onChangeLanguage = activity as ListEventActivity
-                onChangeLanguage.onChangeLanguage(1)
-
-            } else {
-                compoundButton.isChecked = b
-                sharePreferenceSettingMenuList.sharePreferenceLanguageManager(b)
-
-                onChangeLanguage = activity as ListEventActivity
-                onChangeLanguage.onChangeLanguage(0)
-            }
-        }
-
-        switch_notification_user_profile.setOnCheckedChangeListener { compoundButton, b ->
-            if (b) {
-                compoundButton.isChecked = b
-                sharePreferenceSettingMenuList.sharePreferenceNotificationManager(b)
-
-                onChangeNotification = activity as ListEventActivity
-                onChangeNotification.onChangeNotification(1)
-                Toast.makeText(context, "active", Toast.LENGTH_SHORT).show()
-            } else {
-                compoundButton.isChecked = b
-                sharePreferenceSettingMenuList.sharePreferenceNotificationManager(b)
-
-                onChangeNotification = activity as ListEventActivity
-                onChangeNotification.onChangeNotification(0)
-                Toast.makeText(context, "unActive", Toast.LENGTH_SHORT).show()
-            }
-        }
-
-        sharePreferenceSettingMenuList.defaultSharePreferenceLanguageManager()?.let {
-            if (sharePreferenceSettingMenuList.defaultSharePreferenceNotificationManager()!!) {
-                onChangeNotification = activity as ListEventActivity
-                onChangeNotification.onChangeNotification(1)
-            } else {
-                onChangeNotification = activity as ListEventActivity
-                onChangeNotification.onChangeNotification(0)
-            }
-        }
-
-    }
-
     override fun onStart() {
         super.onStart()
         initialUserProfile()
-
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        inflater?.inflate(R.menu.menu_user_profile, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            android.R.id.home -> {
+                activity.supportFinishAfterTransition()
+            }
+            R.id.logout -> {
+                onShowDialogLogOut()
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
 
     companion object {
-        private var objectUserProfile: String = "UserProfileFragment"
-
+        private const val objectUserProfile: String = "UserProfileFragment"
         fun newInstance(objectEvent: String): UserProfileFragment = UserProfileFragment().apply {
             arguments = Bundle().apply {
                 putString(objectUserProfile, objectEvent)

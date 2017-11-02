@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/custom_shape_selector_notification"
+        android:state_activated="true">
+
+    </item>
+    <item android:drawable="@drawable/custom_shape_un_selector_notification"
+        android:state_activated="false" />
+</selector>

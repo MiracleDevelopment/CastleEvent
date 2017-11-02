@@ -29,38 +29,39 @@ class ProfileUserActivity : BaseAppCompatActivity(), DismissDialogFragment, OnPr
     }
 
     override fun onChangeProfile(msg: String, requestCode: Int) {
-        when (requestCode) {
-            1001 -> {
-                val mProfileFragment = supportFragmentManager.findFragmentByTag("ProfileUserFragment")
-                mProfileFragment?.let {
-                    (mProfileFragment as ProfileUserFragment).apply {
+        val profileFragment = supportFragmentManager.findFragmentByTag("ProfileUserFragment")
+        profileFragment?.let {
+            when (requestCode) {
+                1008 -> {
+                    (profileFragment as ProfileUserFragment).apply {
                         onChangeUsername(msg)
                     }
                 }
-            }
-            1002 -> {
-                val mProfileFraagment = supportFragmentManager.findFragmentByTag("ProfileUserFragment")
-                mProfileFraagment?.let {
-                    (mProfileFraagment as ProfileUserFragment).apply {
+
+                1009 -> {
+                    (profileFragment as ProfileUserFragment).apply {
                         onChangePassword(msg)
                     }
                 }
-            }
-            1003 -> {
-                val mProfileFragment = supportFragmentManager.findFragmentByTag("ProfileUserFragment")
-                mProfileFragment?.let {
-                    (mProfileFragment as ProfileUserFragment).onChangeEmail(msg)
+
+                1010 -> {
+                    (profileFragment as ProfileUserFragment).apply {
+                        onChangeEmail(msg)
+                    }
                 }
-            }
-            1004 -> {
-                val mProfileFragment = supportFragmentManager.findFragmentByTag("ProfileUserFragment")
-                mProfileFragment?.let {
-                    (mProfileFragment as ProfileUserFragment).apply {
+
+                1111 -> {
+                    (profileFragment as ProfileUserFragment).apply {
                         onChangeUserPhoto(msg)
                     }
+
+                }
+                else -> {
+
                 }
             }
         }
+
     }
 
     override fun setProgressUserPhoto(progress: Int) {

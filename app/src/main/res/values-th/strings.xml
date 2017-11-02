@@ -25,7 +25,7 @@
     <string name="hind">ซ่อนลิสรายการ</string>
     <string name="loginPassword">รหัสผ่าน</string>
     <string name="loginUsername">ชื่อผู้ใช้งาน</string>
-    <string name="create_account"><![CDATA[Create Account ->]]></string>
+    <string name="create_account">สร้างบัญชีผู้ใช้งาน</string>
     <string name="register_phone">เบอร์โทรศัพท์</string>
     <string name="register_re_password">ระบุพาสเวิร์ดอีกครั้ง</string>
     <string name="register_password">พาสเวิร์ค</string>
@@ -45,7 +45,7 @@
     <string name="hint_ed_user_name_profile">ชื่อผู้ใช้งาน</string>
     <string name="hint_phone_profile">พาสเวิร์ค</string>
     <string name="hint_email_profile">อีเมลล์</string>
-    <string name="text_button_edit_profile" translatable="false">กลับสู่หน้าหลัก</string>
+    <string name="text_button_edit_profile" translatable="false">บันทึก</string>
     <string name="cancel_dialog_logout" translatable="false">ยกเลิก</string>
     <string name="accept_dialog_logout" translatable="false">ตกลง</string>
     <string name="expiredTickets" translatable="false">ขออภัยบัตรหมดแล้วค่ะ</string>
@@ -55,7 +55,6 @@
     <string name="my_order">รายการจองอีเว้น</string>
     <string name="contact">ข้อมูลติดต่อ</string>
     <string name="logout">ออกจากระบบ</string>
-    <string name="eng_language">อังกฤษ (US)</string>
     <string name="thai_language">ไทย</string>
     <string name="close_notification">ปิด </string>
     <string name="open_notification">เปิด</string>
@@ -70,4 +69,9 @@
     <string name="calendarFont">ปฏิทิน</string>
     <string name="myOrderFont">รายการสั่งซื้อ</string>
     <string name="myProfileFont">โปรไฟล์ของฉัน</string>
+    <string name="event">Castle Event</string>
+    <string name="forgot_password">ลืมรหัสผ่าน</string>
+    <string name="location">สถานที่</string>
+    <string name="edit_profile">แก้ไขโปรไฟล์</string>
+    <string name="my_favorite">รายการโปรด</string>
 </resources>

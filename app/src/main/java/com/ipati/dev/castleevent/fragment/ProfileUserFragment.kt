@@ -6,27 +6,30 @@ import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.view.*
+import android.widget.Toast
 import com.ipati.dev.castleevent.R
 import com.ipati.dev.castleevent.model.Fresco.loadPhotoUserProfile
+import com.ipati.dev.castleevent.model.UserManager.*
 import com.ipati.dev.castleevent.model.UserProfileUpdate
-import com.ipati.dev.castleevent.model.UserManager.photoUrl
-import com.ipati.dev.castleevent.model.UserManager.userEmail
-import com.ipati.dev.castleevent.model.UserManager.username
 import kotlinx.android.synthetic.main.activity_profile_user_fragment.*
 import java.util.*
+import kotlin.collections.ArrayList
 
 class ProfileUserFragment : Fragment(), View.OnClickListener {
-    private var mRequestUsername: Int = 1001
-    private var mRequestPassword: Int = 1002
-    private var mRequestEmail: Int = 1003
-    private var REQUEST_PHOTO: Int = 1111
+    private lateinit var editTableChangeText: EditableChangeText
+    private lateinit var listItemEditText: ArrayList<DataEditText>
 
-    private lateinit var mUserProfileChange: UserProfileUpdate
-    private lateinit var mChangeCustomProfile: ChangeCustomProfileDialogFragment
+    private val changeProfileUser: UserProfileUpdate by lazy {
+        UserProfileUpdate(context, tv_input_username_profile
+                , tv_input_password_profile
+                , tv_input_re_password
+                , tv_input_email_profile
+                , activity)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-        mUserProfileChange = UserProfileUpdate(context, activity)
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -38,6 +41,19 @@ class ProfileUserFragment : Fragment(), View.OnClickListener {
         initialToolbar()
         initialEditText()
         getLanguageDefault()
+
+        changeProfileUser.callBackUserProfileChange = {
+            tv_input_username_profile.error = it
+        }
+
+        changeProfileUser.callBackPassword = {
+            tv_input_password_profile.error = it
+            tv_input_re_password.error = it
+        }
+
+        changeProfileUser.callBackEmail = {
+            tv_input_email_profile.error = it
+        }
     }
 
     private fun getLanguageDefault() {
@@ -47,7 +63,6 @@ class ProfileUserFragment : Fragment(), View.OnClickListener {
             im_edit_photo_profile.hierarchy.setOverlayImage(ContextCompat.getDrawable(context, R.mipmap.crop_image))
         }
     }
-
 
     private fun initialToolbar() {
         (activity as AppCompatActivity).apply {
@@ -66,13 +81,7 @@ class ProfileUserFragment : Fragment(), View.OnClickListener {
         ed_account_name_profile.setText(username)
         ed_email_profile.setText(userEmail)
 
-        edit_username.setOnClickListener { view -> onClick(view) }
-        edit_pass.setOnClickListener { view -> onClick(view) }
-        edit_email_profile.setOnClickListener { view -> onClick(view) }
-
         tv_record_profile.setOnClickListener { view -> onClick(view) }
-
-
         im_edit_photo_profile.setOnClickListener { view -> onClick(view) }
 
         im_edit_photo_profile.setOnLongClickListener {
@@ -83,27 +92,18 @@ class ProfileUserFragment : Fragment(), View.OnClickListener {
 
     override fun onClick(p0: View?) {
         when (p0?.id) {
-            R.id.edit_username -> {
-                mChangeCustomProfile = ChangeCustomProfileDialogFragment.newInstance("Username", username.toString(), mRequestUsername)
-                mChangeCustomProfile.isCancelable = false
-                mChangeCustomProfile.show(activity.supportFragmentManager, "ChangeProfile")
-            }
-
-            R.id.edit_pass -> {
-                mChangeCustomProfile = ChangeCustomProfileDialogFragment.newInstance("Password", "", mRequestPassword)
-                mChangeCustomProfile.isCancelable = false
-                mChangeCustomProfile.show(activity.supportFragmentManager, "ChangeProfile")
-            }
-
-
-            R.id.edit_email_profile -> {
-                mChangeCustomProfile = ChangeCustomProfileDialogFragment.newInstance("userEmail", userEmail.toString(), mRequestEmail)
-                mChangeCustomProfile.isCancelable = false
-                mChangeCustomProfile.show(activity.supportFragmentManager, "ChangeProfile")
-            }
-
             R.id.tv_record_profile -> {
-                activity.supportFinishAfterTransition()
+                if (changeProfileUser.onCheckStateChange(ed_account_name_profile.text.toString()
+                        , ed_account_pass_profile.text.toString()
+                        , ed_re_account_password_profile.text.toString()
+                        , ed_email_profile.text.toString())) {
+
+                    changeProfileUser.onChangeProfileUser(ed_account_name_profile.text.toString()
+                            , ed_account_pass_profile.text.toString()
+                            , ed_re_account_password_profile.text.toString()
+                            , ed_email_profile.text.toString())
+
+                }
             }
 
             R.id.im_edit_photo_profile -> {
@@ -112,30 +112,50 @@ class ProfileUserFragment : Fragment(), View.OnClickListener {
                 intentPhoto.type = "image/*"
                 startActivityForResult(Intent.createChooser(intentPhoto, "Choose Image Profile"), REQUEST_PHOTO)
             }
-
         }
     }
 
-
-    //Todo: Calling From Dialog
-    fun onChangeUsername(mUsername: String) {
-        ed_account_name_profile.setText(mUsername)
+    //Todo: Change Profile Fragment from activity
+    fun onChangeUserPhoto(msg: String) {
+        loadPhotoUserProfile(context, msg, im_edit_photo_profile)
     }
 
-    //Todo: Calling From Dialog
-    fun onChangePassword(mPassword: String) {
-        ed_account_pass_profile.setText(mPassword)
-        ed_re_account_password_profile.setText(mPassword)
+    //Todo: ChangeUsername from activity
+    fun onChangeUsername(userAccount: String) {
+        ed_account_name_profile.setText(userAccount)
     }
 
-    //Todo: Calling From Dialog
-    fun onChangeEmail(mUserEmail: String) {
-        ed_email_profile.setText(mUserEmail)
+    //Todo : ChangePassword from activity
+    fun onChangePassword(password: String) {
+        ed_account_pass_profile.setText(password)
+        ed_re_account_password_profile.setText(password)
     }
 
-    //Todo: Calling From Dialog
-    fun onChangeUserPhoto(mUserUri: String) {
-        loadPhotoUserProfile(context, mUserUri, im_edit_photo_profile)
+    //Todo: ChangeEmail from activity
+    fun onChangeEmail(email: String) {
+        ed_email_profile.setText(email)
+    }
+
+    private fun addItemEditText() {
+        listItemEditText = ArrayList(arrayListOf(DataEditText(ed_account_name_profile, username!!)
+                , DataEditText(ed_account_pass_profile, ed_account_pass_profile.text.toString())
+                , DataEditText(ed_re_account_password_profile, ed_re_account_password_profile.text.toString())
+                , DataEditText(ed_email_profile, ed_email_profile.text.toString())))
+
+        editTableChangeText = EditableChangeText(context, listItemEditText, callBackEnable = { status: Boolean ->
+            if (status) {
+                tv_record_profile.setBackgroundResource(R.drawable.custom_back_ground_accept)
+            } else {
+                tv_record_profile.setBackgroundResource(R.drawable.ripple_record_un_save)
+            }
+        })
+
+        editTableChangeText.addOnChangeTextListener()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        addItemEditText()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -143,7 +163,7 @@ class ProfileUserFragment : Fragment(), View.OnClickListener {
         when (requestCode) {
             REQUEST_PHOTO ->
                 if (data != null) {
-                    mUserProfileChange.onUpdatePhotoUser(data.data)
+                    changeProfileUser.onUpdatePhotoUser(data.data)
                     tv_show_upload.visibility = View.GONE
                 } else {
                     tv_show_upload.visibility = View.GONE
@@ -161,6 +181,7 @@ class ProfileUserFragment : Fragment(), View.OnClickListener {
     }
 
     companion object {
+        private const val REQUEST_PHOTO: Int = 1111
         fun newInstance(): ProfileUserFragment = ProfileUserFragment().apply {
             arguments = Bundle()
         }

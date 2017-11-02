@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/profile_parent_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackgroundResource"
@@ -85,158 +86,83 @@
 
                 </FrameLayout>
 
-                <LinearLayout
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/tv_input_username_profile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:weightSum="2">
+                    android:textColorHint="@color/colorFontProfile">
 
-                    <android.support.design.widget.TextInputLayout
-                        android:layout_width="0dp"
+                    <EditText
+                        android:id="@+id/ed_account_name_profile"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1.8"
-                        android:orientation="horizontal"
-                        android:textColorHint="@color/colorFontProfile">
+                        android:layout_gravity="center"
+                        android:fontFamily="@font/circular"
+                        android:hint="@string/hint_ed_user_name_profile"
+                        android:inputType="text"
+                        android:textColor="@color/colorFontProfile"
+                        android:textSize="25sp" />
 
-                        <EditText
-                            android:id="@+id/ed_account_name_profile"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1.8"
-                            android:clickable="false"
-                            android:cursorVisible="false"
-                            android:focusable="false"
-                            android:focusableInTouchMode="false"
-                            android:fontFamily="@font/circular"
-                            android:hint="@string/hint_ed_user_name_profile"
-                            android:inputType="text"
-                            android:textColor="@color/colorFontProfile"
-                            android:textSize="25sp" />
+                </android.support.design.widget.TextInputLayout>
 
-                    </android.support.design.widget.TextInputLayout>
 
-                    <ImageView
-                        android:id="@+id/edit_username"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="0.2"
-                        android:adjustViewBounds="true"
-                        android:src="@mipmap/ic_mode_edit" />
-                </LinearLayout>
-
-                <LinearLayout
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/tv_input_password_profile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
+                    android:textColorHint="@color/colorFontProfile">
 
-                    <android.support.design.widget.TextInputLayout
-                        android:layout_width="0dp"
+                    <EditText
+                        android:id="@+id/ed_account_pass_profile"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1.8"
-                        android:textColorHint="@color/colorFontProfile">
+                        android:fontFamily="@font/circular"
+                        android:hint="@string/hint_phone_profile"
+                        android:inputType="textPassword"
+                        android:text="000000"
+                        android:textColor="@color/colorFontProfile"
+                        android:textSize="18sp" />
 
-                        <EditText
-                            android:id="@+id/ed_account_pass_profile"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:clickable="false"
-                            android:cursorVisible="false"
-                            android:focusable="false"
-                            android:focusableInTouchMode="false"
-                            android:fontFamily="@font/circular"
-                            android:hint="@string/hint_phone_profile"
-                            android:inputType="textPassword"
-                            android:text="0000000000"
-                            android:textColor="@color/colorFontProfile"
-                            android:textSize="18sp" />
+                </android.support.design.widget.TextInputLayout>
 
-                    </android.support.design.widget.TextInputLayout>
 
-                    <ImageView
-                        android:id="@+id/edit_pass"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="0.2"
-                        android:adjustViewBounds="true"
-                        android:src="@mipmap/ic_mode_edit" />
-                </LinearLayout>
-
-                <LinearLayout
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/tv_input_re_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
+                    android:textColorHint="@color/colorFontProfile">
 
-                    <android.support.design.widget.TextInputLayout
-                        android:layout_width="0dp"
+                    <EditText
+                        android:id="@+id/ed_re_account_password_profile"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1.8"
-                        android:textColorHint="@color/colorFontProfile">
+                        android:fontFamily="@font/circular"
+                        android:hint="@string/re_password"
+                        android:inputType="textPassword"
+                        android:text="000000"
+                        android:textColor="@color/colorFontProfile"
+                        android:textSize="18sp" />
+                </android.support.design.widget.TextInputLayout>
 
-                        <EditText
-                            android:id="@+id/ed_re_account_password_profile"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:clickable="false"
-                            android:cursorVisible="false"
-                            android:focusable="false"
-                            android:focusableInTouchMode="false"
-                            android:fontFamily="@font/circular"
-                            android:hint="@string/re_password"
-                            android:inputType="textPassword"
-                            android:text="0000000000"
-                            android:textColor="@color/colorFontProfile"
-                            android:textSize="18sp" />
-                    </android.support.design.widget.TextInputLayout>
 
-                    <ImageView
-                        android:id="@+id/edit_re_password"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="0.2"
-                        android:src="@mipmap/ic_mode_edit" />
-                </LinearLayout>
-
-                <LinearLayout
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/tv_input_email_profile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
+                    android:textColorHint="@color/colorFontProfile">
 
-                    <android.support.design.widget.TextInputLayout
-                        android:layout_width="0dp"
+                    <EditText
+                        android:id="@+id/ed_email_profile"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1.8"
-                        android:textColorHint="@color/colorFontProfile">
-
-                        <EditText
-                            android:id="@+id/ed_email_profile"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:clickable="false"
-                            android:cursorVisible="false"
-                            android:focusable="false"
-                            android:focusableInTouchMode="false"
-                            android:fontFamily="@font/circular"
-                            android:hint="@string/hint_email_profile"
-                            android:inputType="textEmailAddress"
-                            android:textColor="@color/colorFontProfile"
-                            android:textSize="25sp" />
-                    </android.support.design.widget.TextInputLayout>
-
-                    <ImageView
-                        android:id="@+id/edit_email_profile"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="0.2"
-                        android:adjustViewBounds="true"
-                        android:src="@mipmap/ic_mode_edit" />
-                </LinearLayout>
+                        android:fontFamily="@font/circular"
+                        android:hint="@string/hint_email_profile"
+                        android:inputType="textEmailAddress"
+                        android:textColor="@color/colorFontProfile"
+                        android:textSize="25sp" />
+                </android.support.design.widget.TextInputLayout>
 
                 <TextView
                     android:id="@+id/tv_record_profile"
@@ -244,9 +170,9 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_margin="5dp"
-                    android:background="@drawable/custom_back_ground_edit"
-                    android:clickable="true"
-                    android:focusable="true"
+                    android:background="@drawable/ripple_record_un_save"
+                    android:clickable="false"
+                    android:focusable="false"
                     android:fontFamily="@font/circular"
                     android:text="@string/text_button_edit_profile"
                     android:textColor="@color/colorFontProfile"

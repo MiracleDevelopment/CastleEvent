@@ -50,4 +50,9 @@ class LoginActivity : BaseAppCompatActivity() {
             fragment.onActivityResult(requestCode, resultCode, data)
         }
     }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        supportFinishAfterTransition()
+    }
 }

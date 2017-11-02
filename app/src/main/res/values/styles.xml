@@ -7,6 +7,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowContentTransitions">true</item>
+        <item name="android:windowAllowReturnTransitionOverlap">true</item>
         <item name="android:fragmentSharedElementEnterTransition">@transition/default_transitions
         </item>
     </style>
@@ -18,6 +19,11 @@
 
     <style name="ExpandCollapsingAppBar" parent="@android:style/TextAppearance">
         <item name="android:textSize">22sp</item>
+    </style>
+
+    <style name="StyleTextAppearance" parent="@android:style/TextAppearance.Holo.Small">
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textSize">12sp</item>
     </style>
 
 

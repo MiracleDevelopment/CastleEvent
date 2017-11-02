@@ -81,8 +81,6 @@ fun updateUserProfile(activity: Activity, fireBaseUser: FirebaseUser, nameUser: 
             fireBaseUser.updateEmail(mUserEmail.toString()).addOnCompleteListener { fireBaseResult ->
                 if (fireBaseResult.isSuccessful) {
                     userEmail = mUserEmail
-                    val listEventIntent = Intent(activity, ListEventActivity::class.java)
-                    activity.startActivity(listEventIntent)
                     loadingDialogFragment.dismiss()
                     activity.finish()
                 } else {

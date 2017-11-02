@@ -126,14 +126,6 @@ class CalendarFragment : Fragment(), View.OnClickListener {
                 mListEventDateClick = compat_calendar_view.getEvents(dateClicked)
                 mCalendarManager.initialCalendar().time = dateClicked
 
-                //Todo: Check Date This
-//                val dateOfYear = mCalendarManager.initialCalendar().get(Calendar.DAY_OF_MONTH)
-//                val mothOfYear = mCalendarManager.initialCalendar().get(Calendar.MONTH) + 1
-//                val yearsOfYear = mCalendarManager.initialCalendar().get(Calendar.YEAR)
-//
-//                val dateTimeStampM = "$dateOfYear/$mothOfYear/$yearsOfYear"
-//                Toast.makeText(context, dateTimeStampM, Toast.LENGTH_SHORT).show()
-//
                 if (mListEventDateClick.count() == 0) {
                     mCalendarManager.animationHeaderExpanded(calendar_bar_app, maxHeaderCalendar, calendar_bar_app.height)
                     mCalendarManager.animationCalendarExpanded(compat_calendar_view, maxCalendarHeight, compat_calendar_view.height)
@@ -150,7 +142,7 @@ class CalendarFragment : Fragment(), View.OnClickListener {
                     mListEventCalendarAdapter.notifyDataSetChanged()
 
                 } else {
-                    if (mListEventDateClick.count() > 1) {
+                    if (mListEventDateClick.count() > 0) {
                         mListItemEvent.clear()
                         dayOfYear = mCalendarManager.initialCalendar().get(Calendar.DATE)
                         monthOfYear = mCalendarManager.initialCalendar().get(Calendar.MONTH) + 1
@@ -179,28 +171,6 @@ class CalendarFragment : Fragment(), View.OnClickListener {
                         mCalendarManager.animationHeaderCollapse(calendar_bar_app, minHeaderCalendar, calendar_bar_app.height)
                         mCalendarManager.animationCalendarCollapse(compat_calendar_view, minCalendarHeight, compat_calendar_view.height)
 
-                    } else if (mListEventDateClick.count() == 1) {
-                        tv_header_month.text = mCalendarManager.initialCalendar().getDisplayName(Calendar.MONTH, Calendar.LONG, Locale("th"))
-                        tv_calendar_select_date.text = mCalendarManager.initialCalendar().get(Calendar.DATE).toString()
-                        tv_calendar_year.text = mCalendarManager.initialCalendar().get(Calendar.YEAR).toString()
-
-                        val dateOfYear = mCalendarManager.initialCalendar().get(Calendar.DAY_OF_MONTH)
-                        val mothOfYear = mCalendarManager.initialCalendar().get(Calendar.MONTH) + 1
-                        val yearsOfYear = mCalendarManager.initialCalendar().get(Calendar.YEAR)
-
-                        dateTimeStamp = "$dateOfYear/$mothOfYear/$yearsOfYear"
-
-                        for ((title, timeEventStart, timeEventEnd, _, _, timeDateEvent) in mListItemShow) {
-                            if (dateTimeStamp == timeDateEvent) {
-                                tv_calendar_detail_event.text = title
-                                tv_calendar_time_ticket.text = "$timeEventStart น. - $timeEventEnd น."
-                            } else {
-                                Log.d("dateTimeOnce", dateTimeStamp.toString() + " : " + timeDateEvent)
-                            }
-                        }
-
-                        mCalendarManager.animationHeaderExpanded(calendar_bar_app, maxHeaderCalendar, calendar_bar_app.height)
-                        mCalendarManager.animationCalendarExpanded(compat_calendar_view, maxCalendarHeight, compat_calendar_view.height)
                     }
                 }
             }

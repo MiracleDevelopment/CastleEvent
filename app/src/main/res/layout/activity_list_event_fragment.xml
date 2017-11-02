@@ -18,13 +18,12 @@
             android:id="@+id/recycler_list_event"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="#37474F"
             android:clipToPadding="false"
-            android:paddingBottom="95dp"
+            android:paddingBottom="48dp"
             android:splitMotionEvents="false">
 
         </android.support.v7.widget.RecyclerView>
-
-
     </LinearLayout>
 
     <include layout="@layout/custom_bottom_sheet_category" />

@@ -22,11 +22,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:fontFamily="@font/circular"
+            android:fontFamily="@font/roboto_bold"
             android:padding="5dp"
             android:text="HeaderEvent"
             android:textColor="@color/colorHeaderBottomSheet"
-            android:textSize="25sp"
+            android:textSize="@dimen/sizeFontHeader"
             android:textStyle="bold" />
 
         <TextView
@@ -34,10 +34,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:fontFamily="@font/circular"
+            android:fontFamily="@font/roboto_light"
             android:text="จองบัตร"
             android:textColor="@color/colorHeaderBottomSheet"
-            android:textSize="30sp" />
+            android:textSize="@dimen/sizeFontHeader" />
 
         <ImageView
             android:layout_width="match_parent"
@@ -56,11 +56,12 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:layout_weight="1.9"
-                android:fontFamily="@font/circular"
+                android:fontFamily="@font/roboto_light"
                 android:gravity="center_vertical"
+                android:lineSpacingExtra="8dp"
                 android:lines="3"
                 android:textColor="@color/colorFontBottomSheet"
-                android:textSize="20sp" />
+                android:textSize="@dimen/sizeFontContent" />
 
             <com.michaelmuenzer.android.scrollablennumberpicker.ScrollableNumberPicker
                 android:id="@+id/number_picker"
@@ -87,11 +88,11 @@
             android:id="@+id/tv_bottom_sheet_limit_access"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/circular"
+            android:fontFamily="@font/roboto_bold"
             android:gravity="center_horizontal"
             android:text="สามารถจองได้ภายในวันที่ 10 กันยายน 2560"
             android:textColor="@color/colorFontBottomSheet"
-            android:textSize="20sp"
+            android:textSize="@dimen/sizeFontContent"
             android:textStyle="bold" />
 
         <TextView
@@ -100,10 +101,10 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:background="@drawable/background_get_tickets"
-            android:fontFamily="@font/circular"
+            android:fontFamily="@font/roboto_light"
             android:gravity="center"
             android:text="FREE TICKETS"
             android:textColor="@color/colorFontReceiveTickets"
-            android:textSize="18sp" />
+            android:textSize="@dimen/sizeFontContent" />
     </LinearLayout>
 </LinearLayout>

@@ -1,12 +1,15 @@
 package com.ipati.dev.castleevent.fragment
 
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.support.v4.app.DialogFragment
+import android.support.v4.app.Fragment
+import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Toast
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
@@ -16,8 +19,8 @@ import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInResult
-import com.ipati.dev.castleevent.base.BaseFragment
 import com.ipati.dev.castleevent.R
+import com.ipati.dev.castleevent.R.id.im_twitter
 import com.ipati.dev.castleevent.RegisterActivity
 import com.ipati.dev.castleevent.authCredential.facebookAuthCredential
 import com.ipati.dev.castleevent.authCredential.twitterAuthCredential
@@ -29,22 +32,16 @@ import com.twitter.sdk.android.core.identity.TwitterAuthClient
 import kotlinx.android.synthetic.main.activity_login_fragment.*
 
 
-class LoginFragment : BaseFragment(), View.OnClickListener {
+class LoginFragment : Fragment(), View.OnClickListener {
     private lateinit var callbackManager: CallbackManager
     private lateinit var loginTwitterAuthentication: TwitterAuthClient
     private lateinit var twitterConfig: TwitterConfig
-    private lateinit var mGoogleSharePreference: SharePreferenceGoogleSignInManager
-    private lateinit var mLoginAuthManager: LoginAuthManager
+    private lateinit var googleSharePreference: SharePreferenceGoogleSignInManager
+    private lateinit var logInAuthManager: LoginAuthManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mGoogleSharePreference = SharePreferenceGoogleSignInManager(context)
-        mLoginAuthManager = LoginAuthManager(activity, lifecycle)
-        callbackManager = CallbackManager.Factory.create()
-
-        twitterConfig()
-        facebookLoginManager()
-
+        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -53,13 +50,34 @@ class LoginFragment : BaseFragment(), View.OnClickListener {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        googleSharePreference = SharePreferenceGoogleSignInManager(context)
+        logInAuthManager = LoginAuthManager(activity, lifecycle)
+        callbackManager = CallbackManager.Factory.create()
+
+        twitterConfig()
+        facebookLoginManager()
+        setUpToolbar()
+
         im_facebook.setOnClickListener { v -> onClick(v) }
         im_twitter.setOnClickListener { v -> onClick(v) }
         im_google_plus.setOnClickListener { v -> onClick(v) }
         tv_create_account_login.setOnClickListener { v -> onClick(v) }
-        tv_login_fragment.setOnClickListener { v -> onClick(v) }
+        tv_login_fragment?.let {
+            tv_login_fragment.setOnClickListener { v -> onClick(v) }
+        }
 
         initialLottieAnimation()
+    }
+
+    private fun setUpToolbar() {
+        (activity as AppCompatActivity).apply {
+            setSupportActionBar(toolbar_login_fragment)
+            supportActionBar?.apply {
+                title = ""
+                setDisplayHomeAsUpEnabled(true)
+                setDisplayShowHomeEnabled(true)
+            }
+        }
     }
 
     private fun facebookLoginManager() {
@@ -105,7 +123,7 @@ class LoginFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun initialLottieAnimation() {
-        lottie_view_animation_login.layoutParams.height = context.matrixHeightPx(450)
+        lottie_view_animation_login.layoutParams.height = context.matrixHeightPx(400)
         lottie_view_animation_login.setAnimation("login_animation.json")
         lottie_view_animation_login.loop(true)
         lottie_view_animation_login.enableMergePathsForKitKatAndAbove(true)
@@ -140,7 +158,7 @@ class LoginFragment : BaseFragment(), View.OnClickListener {
                             android.util.Patterns.EMAIL_ADDRESS.matcher(login_ed_username.text.toString()).matches() -> {
                                 when (login_ed_password.length()) {
                                     in 6..10 -> {
-                                        mLoginAuthManager.loginAuthentication(login_ed_username.text.toString(), login_ed_password.text.toString(), login_ed_username, login_ed_password)
+                                        logInAuthManager.loginAuthentication(login_ed_username.text.toString(), login_ed_password.text.toString(), login_ed_username, login_ed_password)
                                     }
                                     else -> {
                                         login_ed_password.error = "Password is More  6 Character"
@@ -164,7 +182,7 @@ class LoginFragment : BaseFragment(), View.OnClickListener {
                 val mGoogleSignInResult: GoogleSignInResult = Auth.GoogleSignInApi.getSignInResultFromIntent(data)
                 if (mGoogleSignInResult.isSuccess) {
                     val mGoogleSignInAccount: GoogleSignInAccount = mGoogleSignInResult.signInAccount!!
-                    callbackGoogleSignIn(activity, mGoogleSignInAccount, mGoogleSharePreference)
+                    callbackGoogleSignIn(activity, mGoogleSignInAccount, googleSharePreference)
                 } else {
                     Toast.makeText(context, mGoogleSignInResult.status.toString(), Toast.LENGTH_SHORT).show()
                 }
@@ -175,6 +193,15 @@ class LoginFragment : BaseFragment(), View.OnClickListener {
                 loginTwitterAuthentication.onActivityResult(requestCode, resultCode, data)
             }
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            android.R.id.home -> {
+                activity.supportFinishAfterTransition()
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
 
@@ -192,7 +219,7 @@ class LoginFragment : BaseFragment(), View.OnClickListener {
     }
 
     companion object {
-        private var listEventObject: String = "LoginActivity"
+        private const val listEventObject: String = "LoginActivity"
 
         fun newInstance(objects: String): LoginFragment = LoginFragment().apply {
             arguments = Bundle().apply {

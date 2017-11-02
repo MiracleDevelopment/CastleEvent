@@ -21,19 +21,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="2dp"
-            android:fontFamily="@font/circular"
+            android:fontFamily="@font/roboto_light"
             android:text="@string/tv_price_start"
             android:textColor="@color/colorTextGetTickets"
-            android:textSize="16sp" />
+            android:textSize="@dimen/sizeFontContent" />
 
         <TextView
             android:id="@+id/tv_get_tickets"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="2dp"
+            android:fontFamily="@font/roboto_bold"
             android:text="@string/tv_get_tickets"
             android:textColor="@color/colorTextGetTickets"
-            android:textSize="18sp"
+            android:textSize="@dimen/sizeFontHeader"
             android:textStyle="bold" />
     </LinearLayout>
 </LinearLayout>
