@@ -23,17 +23,16 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:fontFamily="@font/circular"
                 android:padding="5dp"
                 android:text="@string/header_profile"
                 android:textColor="@color/colorFontProfile"
-                android:textSize="32sp"
+                android:textSize="@dimen/sizeFontHeaderMenu"
                 android:textStyle="bold" />
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar_user_profile"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
+                android:layout_height="@dimen/sizeHeightCustomToolbar"
                 android:background="@android:color/transparent"
                 android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
@@ -99,13 +98,93 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:fontFamily="@font/circular"
                         android:hint="@string/hint_ed_user_name_profile"
                         android:inputType="text"
                         android:textColor="@color/colorFontProfile"
-                        android:textSize="25sp" />
+                        android:textSize="@dimen/sizeFontHeader" />
 
                 </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/tv_input_birthday"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:textColorHint="@color/colorFontProfile">
+
+                    <EditText
+                        android:id="@+id/ed_birth_day"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/birthday"
+                        android:inputType="date"
+                        android:text="27 มีนาคม 1996"
+                        android:textColor="@color/colorFontProfile"
+                        android:textSize="@dimen/sizeFontHeader" />
+                </android.support.design.widget.TextInputLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal"
+                    android:padding="5dp">
+
+                    <LinearLayout
+                        android:id="@+id/li_gender_male"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginEnd="0dp"
+                        android:layout_marginStart="8dp"
+                        android:orientation="horizontal"
+                        android:padding="6dp">
+
+                        <ImageView
+                            android:id="@+id/im_logo_male"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@mipmap/ic_gender_male" />
+
+                        <TextView
+                            android:id="@+id/tv_header_male"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:padding="6dp"
+                            android:text="@string/male"
+                            android:textColor="@color/colorFontProfile"
+                            android:textSize="@dimen/sizeFontHeader" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/li_gender_female"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="0dp"
+                        android:layout_marginStart="8dp"
+                        android:orientation="horizontal"
+                        android:padding="6dp">
+
+                        <ImageView
+                            android:id="@+id/im_logo_female"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:src="@mipmap/ic_gender_female" />
+
+                        <TextView
+                            android:id="@+id/tv_header_female"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:padding="6dp"
+                            android:text="@string/female"
+                            android:textColor="@color/colorFontProfile"
+                            android:textSize="@dimen/sizeFontHeader" />
+                    </LinearLayout>
+                </LinearLayout>
 
 
                 <android.support.design.widget.TextInputLayout
@@ -118,12 +197,11 @@
                         android:id="@+id/ed_account_pass_profile"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/circular"
                         android:hint="@string/hint_phone_profile"
                         android:inputType="textPassword"
                         android:text="000000"
                         android:textColor="@color/colorFontProfile"
-                        android:textSize="18sp" />
+                        android:textSize="@dimen/sizeFontHeader" />
 
                 </android.support.design.widget.TextInputLayout>
 
@@ -138,12 +216,11 @@
                         android:id="@+id/ed_re_account_password_profile"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/circular"
                         android:hint="@string/re_password"
                         android:inputType="textPassword"
                         android:text="000000"
                         android:textColor="@color/colorFontProfile"
-                        android:textSize="18sp" />
+                        android:textSize="@dimen/sizeFontHeader" />
                 </android.support.design.widget.TextInputLayout>
 
 
@@ -157,11 +234,10 @@
                         android:id="@+id/ed_email_profile"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/circular"
                         android:hint="@string/hint_email_profile"
                         android:inputType="textEmailAddress"
                         android:textColor="@color/colorFontProfile"
-                        android:textSize="25sp" />
+                        android:textSize="@dimen/sizeFontHeader" />
                 </android.support.design.widget.TextInputLayout>
 
                 <TextView

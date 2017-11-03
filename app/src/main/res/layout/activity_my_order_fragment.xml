@@ -19,7 +19,7 @@
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar_my_order"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
+                android:layout_height="@dimen/sizeHeightCustomToolbar"
                 android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
@@ -32,11 +32,10 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:fontFamily="@font/circular"
                 android:gravity="center_vertical"
                 android:text="@string/my_order"
                 android:textColor="@color/colorHeaderMyOrder"
-                android:textSize="32sp"
+                android:textSize="@dimen/sizeFontHeaderMenu"
                 android:textStyle="bold" />
         </RelativeLayout>
 

@@ -18,10 +18,17 @@ class MyOrderActivity : BaseAppCompatActivity(), LoadingTicketsEvent {
                 .commitNow()
     }
 
-    override fun onShowTicketsUser(eventId: String, userPhoto: String?, eventName: String, eventLogo: String, userAccount: String, eventLocation: String, count: Long) {
+    override fun onShowTicketsUser(eventId: String, eventPhoto: String?, eventName: String
+                                   , userAccount: String
+                                   , eventLocation: String
+                                   , count: Long) {
+
         myOrderFragment = supportFragmentManager.findFragmentByTag("MyOrderFragment")
         myOrderFragment?.let {
-            (myOrderFragment as MyOrderFragment).onShowTicketsUserDialog(eventId, userPhoto, eventName, eventLogo, userAccount, eventLocation, count)
+            (myOrderFragment as MyOrderFragment).onShowTicketsUserDialog(eventId, eventPhoto
+                    , eventName
+                    , userAccount, eventLocation
+                    , count)
         }
     }
 

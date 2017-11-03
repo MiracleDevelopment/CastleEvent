@@ -6,7 +6,6 @@ import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.view.*
-import android.widget.Toast
 import com.ipati.dev.castleevent.R
 import com.ipati.dev.castleevent.model.Fresco.loadPhotoUserProfile
 import com.ipati.dev.castleevent.model.UserManager.*
@@ -83,11 +82,7 @@ class ProfileUserFragment : Fragment(), View.OnClickListener {
 
         tv_record_profile.setOnClickListener { view -> onClick(view) }
         im_edit_photo_profile.setOnClickListener { view -> onClick(view) }
-
-        im_edit_photo_profile.setOnLongClickListener {
-            tv_show_upload.visibility = View.VISIBLE
-            return@setOnLongClickListener false
-        }
+        im_edit_photo_profile.setOnLongClickListener { tv_show_upload.visibility = View.VISIBLE ; return@setOnLongClickListener false }
     }
 
     override fun onClick(p0: View?) {
@@ -117,11 +112,13 @@ class ProfileUserFragment : Fragment(), View.OnClickListener {
 
     //Todo: Change Profile Fragment from activity
     fun onChangeUserPhoto(msg: String) {
+        photoUrl = msg
         loadPhotoUserProfile(context, msg, im_edit_photo_profile)
     }
 
     //Todo: ChangeUsername from activity
     fun onChangeUsername(userAccount: String) {
+        username = userAccount
         ed_account_name_profile.setText(userAccount)
     }
 
@@ -133,6 +130,7 @@ class ProfileUserFragment : Fragment(), View.OnClickListener {
 
     //Todo: ChangeEmail from activity
     fun onChangeEmail(email: String) {
+        userEmail = email
         ed_email_profile.setText(email)
     }
 

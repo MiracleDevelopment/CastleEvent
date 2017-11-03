@@ -123,7 +123,7 @@ class LoginFragment : Fragment(), View.OnClickListener {
     }
 
     private fun initialLottieAnimation() {
-        lottie_view_animation_login.layoutParams.height = context.matrixHeightPx(400)
+        lottie_view_animation_login.layoutParams.height = context.matrixHeightPx(280)
         lottie_view_animation_login.setAnimation("login_animation.json")
         lottie_view_animation_login.loop(true)
         lottie_view_animation_login.enableMergePathsForKitKatAndAbove(true)

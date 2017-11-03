@@ -25,7 +25,7 @@
                 <android.support.v7.widget.Toolbar
                     android:id="@+id/toolbar_contact"
                     android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
+                    android:layout_height="@dimen/sizeHeightCustomToolbar"
                     android:background="@android:color/transparent"
                     android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
                     app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
@@ -38,11 +38,10 @@
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
-                    android:fontFamily="@font/circular"
                     android:gravity="center_vertical"
                     android:text="@string/contact"
                     android:textColor="@color/colorFontContact"
-                    android:textSize="32sp"
+                    android:textSize="@dimen/sizeFontHeaderMenu"
                     android:textStyle="bold" />
             </RelativeLayout>
 
@@ -72,12 +71,11 @@
                     android:drawableStart="@mipmap/ic_local_phone"
                     android:focusable="false"
                     android:focusableInTouchMode="false"
-                    android:fontFamily="@font/circular"
                     android:hint="Telephone"
                     android:inputType="textPhonetic"
                     android:text="66+ 922707454"
                     android:textColor="@color/colorFontContact"
-                    android:textSize="25sp" />
+                    android:textSize="@dimen/sizeFontContent" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -94,12 +92,11 @@
                     android:drawableStart="@mipmap/ic_email"
                     android:focusable="false"
                     android:focusableInTouchMode="false"
-                    android:fontFamily="@font/circular"
                     android:hint="E-mail"
                     android:inputType="textEmailAddress"
                     android:text="castleEvent01@gmail.com"
                     android:textColor="@color/colorFontContact"
-                    android:textSize="25sp" />
+                    android:textSize="@dimen/sizeFontContent" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -114,12 +111,11 @@
                     android:drawableStart="@mipmap/ic_facebook_256"
                     android:focusable="false"
                     android:focusableInTouchMode="false"
-                    android:fontFamily="@font/circular"
                     android:hint="Facebook"
                     android:inputType="text"
                     android:text="castleEvent@Facebook.com"
                     android:textColor="@color/colorFontContact"
-                    android:textSize="25sp" />
+                    android:textSize="@dimen/sizeFontContent" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -136,12 +132,11 @@
                     android:drawableStart="@mipmap/ic_line"
                     android:focusable="false"
                     android:focusableInTouchMode="false"
-                    android:fontFamily="@font/circular"
                     android:hint="Line"
                     android:inputType="text"
                     android:text="castleEvent"
                     android:textColor="@color/colorFontContact"
-                    android:textSize="25sp" />
+                    android:textSize="@dimen/sizeFontContent" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -158,12 +153,11 @@
                     android:drawableStart="@mipmap/ic_location_contact"
                     android:focusable="false"
                     android:focusableInTouchMode="false"
-                    android:fontFamily="@font/circular"
                     android:hint="Location"
                     android:inputType="text"
                     android:text="AIA Capital Center Building 18 Floor"
                     android:textColor="@color/colorFontContact"
-                    android:textSize="25sp" />
+                    android:textSize="@dimen/sizeFontContent" />
             </android.support.design.widget.TextInputLayout>
         </LinearLayout>
     </LinearLayout>

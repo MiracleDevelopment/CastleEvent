@@ -9,7 +9,7 @@ interface LoadingDialogListener {
 }
 
 interface LoadingTicketsEvent {
-    fun onShowTicketsUser(eventId: String, userPhoto: String?, eventName: String, eventLogo: String, userAccount: String, eventLocation: String, count: Long)
+    fun onShowTicketsUser(eventId: String, eventPhoto: String?, eventName: String, userAccount: String, eventLocation: String, count: Long)
 }
 
 

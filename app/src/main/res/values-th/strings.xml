@@ -74,4 +74,11 @@
     <string name="location">สถานที่</string>
     <string name="edit_profile">แก้ไขโปรไฟล์</string>
     <string name="my_favorite">รายการโปรด</string>
+    <string name="gender">เพศ:</string>
+    <string name="male">ชาย</string>
+    <string name="female">หญิง</string>
+    <string name="birthday">วันเกิด</string>
+    <string name="tickets">บัตรเข้างาน</string>
+    <string name="close_bt">ปิด</string>
+    <string name="countPeopleTickets">คน</string>
 </resources>

@@ -1,144 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="10dp"
+    app:cardBackgroundColor="#FFF"
+    app:cardCornerRadius="6dp"
     tools:context="com.ipati.dev.castleevent.fragment.loading.TicketsEventDialogFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-
-        <android.support.constraint.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="5dp">
-
-            <TextView
-                android:id="@+id/tv_header_tickets_dialog"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/circular"
-                android:padding="5dp"
-                android:text="บัตรเข้างาน"
-                android:textColor="#000"
-                android:textSize="27sp"
-                app:layout_constraintHorizontal_bias="0.78"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="@+id/tv_count_people_tickets_dialog"
-                app:layout_constraintTop_toTopOf="parent" />
-
-
-            <TextView
-                android:id="@+id/tv_count_people_tickets_dialog"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/circular"
-                android:text="1"
-                android:textColor="#000"
-                android:textSize="20sp"
-                app:layout_constraintHorizontal_bias="0.6"
-                app:layout_constraintLeft_toLeftOf="@+id/tv_header_tickets_dialog"
-                app:layout_constraintRight_toRightOf="parent" />
-
-            <ImageView
-                android:id="@+id/im_logo_people_tickets"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:src="@mipmap/ic_people"
-                app:layout_constraintHorizontal_bias="0.2"
-                app:layout_constraintLeft_toLeftOf="@+id/tv_count_people_tickets_dialog"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintVertical_bias="0.0" />
-        </android.support.constraint.ConstraintLayout>
+        android:orientation="vertical"
+        android:padding="8dp">
 
         <TextView
-            android:id="@+id/tv_name_event_dialog"
+            android:id="@+id/tv_header_tickets_dialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="5dp"
+            android:text="@string/tickets"
+            android:textColor="@color/colorFontTicketsDialog"
+            android:textSize="@dimen/sizeFontHeader" />
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/im_logo_event_ticket_dialog"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:fontFamily="@font/circular"
+            android:layout_marginEnd="6dp"
+            android:layout_marginStart="6dp"
+            app:placeholderImage="@mipmap/ic_launcher" />
+
+        <TextView
+            android:id="@+id/tv_name_event_tickets_dialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
             android:lines="1"
-            android:textColor="#000"
-            android:textSize="18sp" />
+            android:textColor="@color/colorFontTicketsDialog"
+            android:textSize="@dimen/sizeFontSubMenu" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
+            android:gravity="center"
             android:orientation="horizontal">
-
-            <com.facebook.drawee.view.SimpleDraweeView
-                android:id="@+id/im_photo_user"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                app:actualImageScaleType="centerCrop"
-                app:placeholderImage="@mipmap/ic_launcher"
-                app:roundAsCircle="true" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <LinearLayout
+                <ImageView
+                    android:id="@+id/im_logo_user_dialog"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:src="@mipmap/ic_person" />
 
-                    <ImageView
-                        android:id="@+id/im_logo_account_tickets"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:adjustViewBounds="true"
-                        android:src="@mipmap/ic_account_circle_dark" />
-
-                    <TextView
-                        android:id="@+id/tv_user_name_ticket"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:fontFamily="@font/circular"
-                        android:lines="1"
-                        android:padding="5dp"
-                        android:text="Username"
-                        android:textColor="#000"
-                        android:textSize="22sp" />
-                </LinearLayout>
-
-                <LinearLayout
+                <ImageView
+                    android:id="@+id/im_logo_location_tickets_dialog"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:src="@mipmap/ic_people" />
 
-                    <ImageView
-                        android:id="@+id/im_logo_location_tickets"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:adjustViewBounds="true"
-                        android:src="@mipmap/ic_my_location_dark" />
-
-                    <TextView
-                        android:id="@+id/tv_location_tickets_dialog"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:fontFamily="@font/circular"
-                        android:lines="1"
-                        android:padding="5dp"
-                        android:text="AIA Capital Center Building"
-                        android:textColor="#000"
-                        android:textSize="18sp" />
-                </LinearLayout>
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_username_tickets_dialog"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:lines="1"
+                    android:padding="6dp"
+                    android:text="หลับสนิท ศิษย์ ห่ามโรง"
+                    android:textColor="@color/colorFontTicketsDialog"
+                    android:textSize="@dimen/sizeFontContent" />
+
+                <TextView
+                    android:id="@+id/tv_people_count_tickets_dialog"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:lines="1"
+                    android:padding="6dp"
+                    android:text="5 people"
+                    android:textColor="@color/colorFontTicketsDialog"
+                    android:textSize="@dimen/sizeFontContent" />
+            </LinearLayout>
         </LinearLayout>
 
         <ImageView
@@ -147,7 +104,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:adjustViewBounds="true"
-            android:padding="5dp"
             android:src="@mipmap/ic_launcher" />
 
         <TextView
@@ -160,8 +116,8 @@
             android:focusable="true"
             android:fontFamily="@font/circular"
             android:gravity="center"
-            android:text="ปิด "
+            android:text="@string/close_bt"
             android:textColor="@color/colorFontCloseDialog"
             android:textSize="25sp" />
     </LinearLayout>
-</LinearLayout>
+</android.support.v7.widget.CardView>

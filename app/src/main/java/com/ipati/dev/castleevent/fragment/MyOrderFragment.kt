@@ -46,8 +46,12 @@ class MyOrderFragment : BaseFragment() {
         }
     }
 
-    fun onShowTicketsUserDialog(eventId: String, userPhoto: String?, eventName: String, eventLogo: String, userAccount: String, eventLocation: String, count: Long) {
-        mTicketsEventDialog = TicketsEventDialogFragment.newInstance(eventId, userPhoto, eventName, eventLogo, userAccount, eventLocation, count)
+    fun onShowTicketsUserDialog(eventId: String, eventPhoto: String?, eventName: String, userAccount: String, eventLocation: String, count: Long) {
+        mTicketsEventDialog = TicketsEventDialogFragment.newInstance(eventId
+                , eventPhoto, eventName
+                , userAccount
+                , eventLocation, count)
+
         mTicketsEventDialog.isCancelable = false
         mTicketsEventDialog.show(activity.supportFragmentManager, "TicketsDialog")
     }

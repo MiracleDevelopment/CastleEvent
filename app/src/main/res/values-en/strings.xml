@@ -74,4 +74,11 @@
     <string name="location">Location</string>
     <string name="edit_profile">Edit Profile</string>
     <string name="my_favorite">My Favorite</string>
+    <string name="gender">Gender</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="birthday">BirthDay</string>
+    <string name="tickets">Tickets</string>
+    <string name="close_bt">close</string>
+    <string name="countPeopleTickets">People</string>
 </resources>

@@ -59,6 +59,7 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:gravity="center"
+                android:padding="6dp"
                 android:text="@string/cancel_dialog_logout"
                 android:textColor="@color/colorCancelButton"
                 android:textSize="@dimen/sizeFontButton" />
@@ -74,6 +75,7 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:gravity="center"
+                android:padding="6dp"
                 android:text="@string/accept_dialog_logout"
                 android:textColor="@color/colorAcceptButton"
                 android:textSize="@dimen/sizeFontButton" />

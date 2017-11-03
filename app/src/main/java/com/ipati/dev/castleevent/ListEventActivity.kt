@@ -45,6 +45,7 @@ class ListEventActivity : BaseAppCompatActivity(), View.OnClickListener {
         setUpTabLayout()
         setUpDrawerSimpleProfile()
         setUpDrawerSetting()
+
     }
 
     private fun setUpDrawerSetting() {

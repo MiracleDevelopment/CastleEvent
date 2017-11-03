@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="sizeCollapsingToolbar">512</dimen>
-    <dimen name="sizeFontRegister">18sp</dimen>
-    <dimen name="sizeFontButtonRegister">25sp</dimen>
+    <dimen name="sizeFontRegister">16sp</dimen>
+    <dimen name="sizeFontButtonRegister">20sp</dimen>
     <dimen name="sizeFontLogin">18sp</dimen>
     <dimen name="sizeFontCreateAccount">22sp</dimen>
     <dimen name="sizeFontMenuProfile">16sp</dimen>
@@ -15,4 +15,8 @@
     <dimen name="sizeFontSubMenu">14sp</dimen>
     <dimen name="sizeFontNameApp">18sp</dimen>
     <dimen name="sizeMinWidthDialog">256dp</dimen>
+    <dimen name="sizeFontHeaderMenu">24sp</dimen>
+    <dimen name="sizeHeightCustomToolbar">48sp</dimen>
+    <dimen name="sizeFontCalendar">128sp</dimen>
+    <dimen name="sizeFontMonthCalendar">25sp</dimen>
 </resources>

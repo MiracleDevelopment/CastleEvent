@@ -80,7 +80,7 @@
     <color name="colorTabSelector">#FFFFFF</color>
     <color name="colorBackgroundToolbar">#00BCD4</color>
     <color name="colorIndicatorTabLayout">#00B8D4</color>
-    <color name="colorFontToolbar">#263238</color>
+    <color name="colorFontToolbar">#FFFFFF</color>
     <color name="colorBackgroundBottomTabDialog">#00B8D4</color>
     <color name="colorBackgroundAccept">#00B8D4</color>
     <color name="colorBackgroundCancel">#00ACC1</color>
@@ -88,4 +88,5 @@
     <color name="colorBackgroundButtonFacebook">#3b5998</color>
     <color name="colorFontSetting">#000000</color>
     <color name="colorFontMenuItem">#FFFFFF</color>
+    <color name="colorFontTicketsDialog">#000000</color>
 </resources>
