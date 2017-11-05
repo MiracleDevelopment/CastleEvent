@@ -20,7 +20,7 @@ class LoginActivity : BaseAppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         supportFragmentManager.beginTransaction().replace(R.id.frame_login_fragment
-                , LoginFragment.newInstance("LoginFragment"), "LoginFragment").commitNow()
+                , LoginFragment.newInstance("LoginFragment"), tagLoginFragment).commitNow()
 
         Log.d("hasKeyFacebook", initHashKey(context = applicationContext))
     }
@@ -45,7 +45,7 @@ class LoginActivity : BaseAppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        val fragment: Fragment? = supportFragmentManager.findFragmentByTag("LoginFragment")
+        val fragment: Fragment? = supportFragmentManager.findFragmentByTag(tagLoginFragment)
         fragment?.let {
             fragment.onActivityResult(requestCode, resultCode, data)
         }
@@ -54,5 +54,9 @@ class LoginActivity : BaseAppCompatActivity() {
     override fun onBackPressed() {
         super.onBackPressed()
         supportFinishAfterTransition()
+    }
+
+    companion object {
+        private const val tagLoginFragment = "LoginFragment"
     }
 }

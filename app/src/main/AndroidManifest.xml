@@ -107,6 +107,9 @@
             android:name=".LoadingChangeLanguage"
             android:screenOrientation="portrait" />
         <activity android:name=".UserProfileMenuActivity" />
+        <activity android:name=".fragment.loading.RegisterDialogFragment" />
+        <activity android:name=".fragment.RegisterGenderFragment" />
+        <activity android:name=".fragment.RegisterCategoryFragment"></activity>
     </application>
 
 </manifest>

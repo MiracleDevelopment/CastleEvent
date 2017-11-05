@@ -17,6 +17,7 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.UploadTask
 import com.ipati.dev.castleevent.ProfileUserActivity
+import com.ipati.dev.castleevent.extension.onDismissDialog
 import com.ipati.dev.castleevent.extension.onShowDialog
 import com.ipati.dev.castleevent.extension.onShowLoadingDialog
 import com.ipati.dev.castleevent.fragment.loading.LoadingDialogFragment
@@ -66,17 +67,17 @@ class UserProfileUpdate(context: Context, inputUsername: TextInputLayout, inputP
                 fireBaseUser.rxUpdateEmail(userEmail).subscribe({
                     //Todo: success
                     onDismissDialogFragment.onChangeProfile(userEmail, 1010)
-                    loadingDialog.dismiss()
+                    loadingDialog.onDismissDialog()
 
                     //Todo: EndProcessEmail
                 }) { t: Throwable? ->
-                    loadingDialog.dismiss()
+                    loadingDialog.onDismissDialog()
                     Log.d("onErrorEmail", t?.message.toString())
                 }
 
                 //Todo: EndProcessPassword
             }) { t: Throwable? ->
-                loadingDialog.dismiss()
+                loadingDialog.onDismissDialog()
                 Log.d("onErrorPassword", t?.message.toString())
             }
         })
@@ -156,7 +157,7 @@ class UserProfileUpdate(context: Context, inputUsername: TextInputLayout, inputP
         fireBaseUser.updateProfile(userRequestChangeProfile).addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 onDismissDialogFragment = contextProfileManager as ProfileUserActivity
-                onDismissDialogFragment.onChangeProfile(uri.toString(), 1111)
+                onDismissDialogFragment.onChangeProfile(uri.toString(), requestChangeProfile)
 
                 loadingDialogFragment.dismiss()
                 photoUrl = uri.toString()
@@ -165,6 +166,10 @@ class UserProfileUpdate(context: Context, inputUsername: TextInputLayout, inputP
             loadingDialogFragment.dismiss()
             Toast.makeText(contextProfileManager, exception.message.toString(), Toast.LENGTH_SHORT).show()
         }
+    }
+
+    companion object {
+        private const val requestChangeProfile = 1111
     }
 
 }

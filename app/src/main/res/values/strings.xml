@@ -84,4 +84,5 @@
     <string name="tickets">Tickets</string>
     <string name="close_bt">close</string>
     <string name="countPeopleTickets">People</string>
+    <string name="select_gender">Please Select Gender</string>
 </resources>

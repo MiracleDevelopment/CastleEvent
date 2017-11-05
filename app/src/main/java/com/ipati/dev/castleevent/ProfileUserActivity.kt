@@ -24,33 +24,33 @@ class ProfileUserActivity : BaseAppCompatActivity(), DismissDialogFragment, OnPr
         supportFragmentManager
                 .beginTransaction()
                 .replace(R.id.frame_profile_user
-                        , ProfileUserFragment.newInstance(), "ProfileUserFragment")
+                        , ProfileUserFragment.newInstance(), tagProfileUserFragment)
                 .commitNow()
     }
 
     override fun onChangeProfile(msg: String, requestCode: Int) {
-        val profileFragment = supportFragmentManager.findFragmentByTag("ProfileUserFragment")
+        val profileFragment = supportFragmentManager.findFragmentByTag(tagProfileUserFragment)
         profileFragment?.let {
             when (requestCode) {
-                1008 -> {
+                requestChangeUserName -> {
                     (profileFragment as ProfileUserFragment).apply {
                         onChangeUsername(msg)
                     }
                 }
 
-                1009 -> {
+                requestChangePassword -> {
                     (profileFragment as ProfileUserFragment).apply {
                         onChangePassword(msg)
                     }
                 }
 
-                1010 -> {
+                requestChangeEmail -> {
                     (profileFragment as ProfileUserFragment).apply {
                         onChangeEmail(msg)
                     }
                 }
 
-                1111 -> {
+                requestChangePhoto -> {
                     (profileFragment as ProfileUserFragment).apply {
                         onChangeUserPhoto(msg)
                     }
@@ -65,10 +65,19 @@ class ProfileUserActivity : BaseAppCompatActivity(), DismissDialogFragment, OnPr
     }
 
     override fun setProgressUserPhoto(progress: Int) {
-        val loadingFragment: Fragment? = supportFragmentManager.findFragmentByTag("LoadingDialogFragment")
+        val loadingFragment: Fragment? = supportFragmentManager.findFragmentByTag(tagLoadingDialogFragment)
         loadingFragment?.let {
             (loadingFragment as LoadingDialogFragment).setProgressUploadTaskPhoto(progress)
         }
+    }
+
+    companion object {
+        private const val tagProfileUserFragment = "ProfileUserFragment"
+        private const val tagLoadingDialogFragment = "LoadingDialogFragment"
+        private const val requestChangeUserName = 1008
+        private const val requestChangePassword = 1009
+        private const val requestChangeEmail = 1010
+        private const val requestChangePhoto = 1111
     }
 
 }

@@ -17,7 +17,7 @@ class DialogManager(activity: FragmentActivity) {
         loadingDialog = LoadingDialogFragment.newInstance(title, false)
         loadingDialog.isCancelable = false
         return loadingDialog.apply {
-            show(activityDialog.supportFragmentManager, "LoadingFragment")
+            show(activityDialog.supportFragmentManager, tagLoadingFragment)
         }
     }
 
@@ -25,7 +25,7 @@ class DialogManager(activity: FragmentActivity) {
         confirmDialog = DialogConfirmFragment.newInstance(msg)
         confirmDialog.isCancelable = false
         return confirmDialog.apply {
-            show(activityDialog.supportFragmentManager, "ConfirmFragment")
+            show(activityDialog.supportFragmentManager, tagConfirmFragment)
         }
     }
 
@@ -33,7 +33,7 @@ class DialogManager(activity: FragmentActivity) {
         missingDialog = MissingDialogFragment.newInstance(msg)
         missingDialog.isCancelable = false
         return missingDialog.apply {
-            show(activityDialog.supportFragmentManager, "MissingDialogFragment")
+            show(activityDialog.supportFragmentManager, tagMissingDialogFragment)
         }
     }
 
@@ -47,6 +47,12 @@ class DialogManager(activity: FragmentActivity) {
 
     fun onDismissMissingDialog() {
         return missingDialog.dismiss()
+    }
+
+    companion object {
+        private const val tagLoadingFragment = "LoadingFragment"
+        private const val tagConfirmFragment = "ConfirmFragment"
+        private const val tagMissingDialogFragment = "MissingDialogFragment"
     }
 
 }

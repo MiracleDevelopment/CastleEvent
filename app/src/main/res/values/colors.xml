@@ -89,4 +89,6 @@
     <color name="colorFontSetting">#000000</color>
     <color name="colorFontMenuItem">#FFFFFF</color>
     <color name="colorFontTicketsDialog">#000000</color>
+    <color name="colorStrokeFontGenderFragment">#00ACC1</color>
+    <color name="colorBackgroundGenderFragment">#00ACC1</color>
 </resources>

@@ -9,12 +9,13 @@ import com.ipati.dev.castleevent.model.LoadingTicketsEvent
 
 class MyOrderActivity : BaseAppCompatActivity(), LoadingTicketsEvent {
     private var myOrderFragment: Fragment? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_my_order)
 
         supportFragmentManager.beginTransaction()
-                .replace(R.id.frame_my_order, MyOrderFragment.newInstance(), "MyOrderFragment")
+                .replace(R.id.frame_my_order, MyOrderFragment.newInstance(), tagMyOrderFragment)
                 .commitNow()
     }
 
@@ -23,13 +24,17 @@ class MyOrderActivity : BaseAppCompatActivity(), LoadingTicketsEvent {
                                    , eventLocation: String
                                    , count: Long) {
 
-        myOrderFragment = supportFragmentManager.findFragmentByTag("MyOrderFragment")
+        myOrderFragment = supportFragmentManager.findFragmentByTag(tagMyOrderFragment)
         myOrderFragment?.let {
             (myOrderFragment as MyOrderFragment).onShowTicketsUserDialog(eventId, eventPhoto
                     , eventName
                     , userAccount, eventLocation
                     , count)
         }
+    }
+
+    companion object {
+        private const val tagMyOrderFragment = "MyOrderFragment"
     }
 
 }

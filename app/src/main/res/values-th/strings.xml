@@ -81,4 +81,5 @@
     <string name="tickets">บัตรเข้างาน</string>
     <string name="close_bt">ปิด</string>
     <string name="countPeopleTickets">คน</string>
+    <string name="select_gender">กรุณาระบุเพศของคุณ</string>
 </resources>

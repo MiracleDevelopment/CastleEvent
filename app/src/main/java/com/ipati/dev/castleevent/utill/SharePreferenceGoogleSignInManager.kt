@@ -5,34 +5,34 @@ import android.content.SharedPreferences
 
 
 class SharePreferenceGoogleSignInManager(context: Context) {
-    private var mGoogleSignIn = "GoogleUsernameAccount"
-    private var mGoogleSignInIgnore = "GoogleUserIgnore"
-    private var mContext: Context = context
+    private var googleSignIn = "GoogleUsernameAccount"
+    private var googleSignInIgnore = "GoogleUserIgnore"
+    private var contextSharePreferenceGoogleSignIn: Context = context
     private lateinit var sharePreference: SharedPreferences
     private lateinit var sharePreferenceEditor: SharedPreferences.Editor
 
     fun sharePreferenceManager(username: String?) {
-        sharePreference = mContext.getSharedPreferences(mGoogleSignIn, Context.MODE_PRIVATE)
+        sharePreference = contextSharePreferenceGoogleSignIn.getSharedPreferences(googleSignIn, Context.MODE_PRIVATE)
         sharePreferenceEditor = sharePreference.edit()
-        sharePreferenceEditor.putString(mGoogleSignIn, username)
+        sharePreferenceEditor.putString(googleSignIn, username)
         sharePreferenceEditor.apply()
     }
 
 
     fun defaultSharePreferenceManager(): String? {
-        sharePreference = mContext.getSharedPreferences(mGoogleSignIn, Context.MODE_PRIVATE)
-        return sharePreference.getString(mGoogleSignIn, null)
+        sharePreference = contextSharePreferenceGoogleSignIn.getSharedPreferences(googleSignIn, Context.MODE_PRIVATE)
+        return sharePreference.getString(googleSignIn, null)
     }
 
     fun sharePreferenceManagerIgonre(username: String?) {
-        sharePreference = mContext.getSharedPreferences(mGoogleSignInIgnore, Context.MODE_PRIVATE)
+        sharePreference = contextSharePreferenceGoogleSignIn.getSharedPreferences(googleSignInIgnore, Context.MODE_PRIVATE)
         sharePreferenceEditor = sharePreference.edit()
-        sharePreferenceEditor.putString(mGoogleSignInIgnore, username)
+        sharePreferenceEditor.putString(googleSignInIgnore, username)
         sharePreferenceEditor.apply()
     }
 
     fun defaultSharePreferenceManagerIgnore(): String? {
-        sharePreference = mContext.getSharedPreferences(mGoogleSignInIgnore, Context.MODE_PRIVATE)
-        return sharePreference.getString(mGoogleSignInIgnore, null)
+        sharePreference = contextSharePreferenceGoogleSignIn.getSharedPreferences(googleSignInIgnore, Context.MODE_PRIVATE)
+        return sharePreference.getString(googleSignInIgnore, null)
     }
 }

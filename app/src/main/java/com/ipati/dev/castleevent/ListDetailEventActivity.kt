@@ -10,8 +10,6 @@ import com.ipati.dev.castleevent.model.OnMissingConfirm
 
 
 class ListDetailEventActivity : BaseAppCompatActivity(), LoadingDialogListener, OnMissingConfirm {
-
-
     private lateinit var listDetailFragment: ListDetailEventFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {

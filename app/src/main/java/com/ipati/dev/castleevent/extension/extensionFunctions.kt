@@ -1,17 +1,16 @@
 package com.ipati.dev.castleevent.extension
 
+import android.animation.ObjectAnimator
 import android.content.Context
-import android.os.Handler
 import android.support.design.widget.Snackbar
+import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentActivity
 import android.support.v4.app.FragmentManager
-import android.support.v4.content.ContextCompat
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
-import com.ipati.dev.castleevent.R
-import com.ipati.dev.castleevent.fragment.LoginFragment
 import com.ipati.dev.castleevent.fragment.loading.LoadingDialogFragment
+import com.ipati.dev.castleevent.fragment.loading.RegisterDialogFragment
 import com.ipati.dev.castleevent.fragment.loading.SettingDialogFragment
 
 
@@ -25,9 +24,7 @@ fun LoadingDialogFragment.onShowDialog(activity: FragmentActivity) {
 }
 
 fun LoadingDialogFragment.onDismissDialog() {
-
     dismiss()
-
 }
 
 fun View.getStringResource(resource: Int): String {
@@ -51,7 +48,6 @@ fun onShowSettingDialog(supportFragmentManager: FragmentManager): SettingDialogF
 
 fun onShowSnackBar(view: View, msg: String) {
     return Snackbar.make(view, msg, Toast.LENGTH_SHORT).show()
-
 }
 
 fun onShowLoadingDialog(activity: FragmentActivity, msg: String): LoadingDialogFragment {
@@ -61,6 +57,11 @@ fun onShowLoadingDialog(activity: FragmentActivity, msg: String): LoadingDialogF
     }
 }
 
+fun onShowRegisterDialogFragment(supportFragmentManager: FragmentManager): RegisterDialogFragment {
+    return RegisterDialogFragment.newInstance().apply {
+        show(supportFragmentManager, "RegisterDialogFragment")
+    }
+}
 
 
 
