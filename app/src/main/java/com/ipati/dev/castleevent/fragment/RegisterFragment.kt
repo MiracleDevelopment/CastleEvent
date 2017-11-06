@@ -18,8 +18,12 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.ipati.dev.castleevent.R
 import com.ipati.dev.castleevent.extension.matrixHeightPx
+import com.ipati.dev.castleevent.extension.onDismissDialog
+import com.ipati.dev.castleevent.extension.onShowLoadingDialog
 import com.ipati.dev.castleevent.extension.onShowRegisterDialogFragment
+import com.ipati.dev.castleevent.fragment.loading.LoadingDialogFragment
 import com.ipati.dev.castleevent.model.Register.RegisterManager
+import com.ipati.dev.castleevent.model.UserManager.uidRegister
 import kotlinx.android.synthetic.main.activity_register_fragment.*
 import java.lang.Exception
 
@@ -28,6 +32,7 @@ class RegisterFragment : Fragment() {
     private lateinit var auth: FirebaseAuth
     private lateinit var fireBaseUser: FirebaseUser
     private lateinit var fireBaseUpdateProfile: UserProfileChangeRequest
+    private lateinit var loadingDialogFragment: LoadingDialogFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,7 +51,7 @@ class RegisterFragment : Fragment() {
         initialLottieAnimation()
 
         tv_success_register.setOnClickListener {
-            onShowRegisterDialogFragment(activity.supportFragmentManager)
+            initialValidateAccount()
         }
     }
 
@@ -115,6 +120,7 @@ class RegisterFragment : Fragment() {
                                     register_ed_re_password.text.toString() -> {
                                         when (register_ed_password.length()) {
                                             in 6..10 -> {
+                                                loadingDialogFragment = onShowLoadingDialog(activity, "ระบบกำลังสมัครสมาชิก...")
                                                 stateRegisterListener(register_ed_email.text.toString()
                                                         , register_ed_password.text.toString())
                                             }
@@ -152,25 +158,30 @@ class RegisterFragment : Fragment() {
                         .build()
                 fireBaseUser.updatePassword(register_ed_password.text.toString()).addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-
                         fireBaseUser.updateProfile(fireBaseUpdateProfile).addOnCompleteListener { resultPassword ->
                             if (resultPassword.isSuccessful) {
-                                activity.finish()
+                                loadingDialogFragment.onDismissDialog()
+                                uidRegister = fireBaseUser.uid
+                                onShowRegisterDialogFragment(activity.supportFragmentManager)
                             } else {
                                 Toast.makeText(context, "fail Update Profile User", Toast.LENGTH_SHORT).show()
                             }
                         }.addOnFailureListener { exception ->
+                            loadingDialogFragment.onDismissDialog()
                             Toast.makeText(context, exception.message.toString(), Toast.LENGTH_SHORT).show()
                         }
                     }
                 }.addOnFailureListener { exception ->
+                    loadingDialogFragment.onDismissDialog()
                     Toast.makeText(context, exception.message.toString(), Toast.LENGTH_SHORT).show()
                 }
             } else {
+                loadingDialogFragment.onDismissDialog()
                 register_ed_email.error = "The userEmail address is already"
                 Toast.makeText(context, "The userEmail address is already in use by another account", Toast.LENGTH_SHORT).show()
             }
         }.addOnFailureListener { exception: Exception ->
+            loadingDialogFragment.onDismissDialog()
             Toast.makeText(context, exception.message.toString(), Toast.LENGTH_SHORT).show()
         }
     }

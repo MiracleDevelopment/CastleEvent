@@ -82,4 +82,6 @@
     <string name="close_bt">ปิด</string>
     <string name="countPeopleTickets">คน</string>
     <string name="select_gender">กรุณาระบุเพศของคุณ</string>
+    <string name="next_step">ต่อไป -></string>
+    <string name="success_button">เสร็จสิ้น</string>
 </resources>

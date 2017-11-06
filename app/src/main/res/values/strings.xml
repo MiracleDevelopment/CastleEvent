@@ -85,4 +85,18 @@
     <string name="close_bt">close</string>
     <string name="countPeopleTickets">People</string>
     <string name="select_gender">Please Select Gender</string>
+    <string name="next_step">Next -></string>
+    <string name="success_button">Success</string>
+
+    <string-array name="CategoryFavorite">
+        <item>การศึกษา</item>
+        <item>กีฬา</item>
+        <item>ดนตรี</item>
+        <item>เทคโนโลยี</item>
+        <item>สัตว์เลี้ยง</item>
+        <item>งานเลี้ยง</item>
+        <item>อาหาร</item>
+        <item>ศิลปะ</item>
+        <item>เพลง</item>
+    </string-array>
 </resources>

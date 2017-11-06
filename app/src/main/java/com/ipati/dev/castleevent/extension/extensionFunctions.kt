@@ -63,5 +63,9 @@ fun onShowRegisterDialogFragment(supportFragmentManager: FragmentManager): Regis
     }
 }
 
+fun FragmentManager.replaceFragment(frameLayout: Int, fragmentOwner: Fragment) {
+    beginTransaction().replace(frameLayout, fragmentOwner).commitNow()
+}
+
 
 

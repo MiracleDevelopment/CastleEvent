@@ -82,4 +82,6 @@
     <string name="close_bt">close</string>
     <string name="countPeopleTickets">People</string>
     <string name="select_gender">Please Select Gender</string>
+    <string name="next_step">Next -></string>
+    <string name="success_button">Success</string>
 </resources>

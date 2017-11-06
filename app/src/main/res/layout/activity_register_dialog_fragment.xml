@@ -5,13 +5,70 @@
     android:id="@+id/card_view_dialog_fragment"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    app:cardBackgroundColor="@color/colorBackgroundRegisterDialog"
     app:cardCornerRadius="6dp"
     tools:context="com.ipati.dev.castleevent.fragment.loading.RegisterDialogFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="5dp">
 
+        <TextView
+            android:id="@+id/tv_register_dialog_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:padding="5dp"
+            android:text="@string/select_gender"
+            android:textColor="@color/colorFontDialogRegister"
+            android:textSize="@dimen/sizeFontHeader" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_register_dialog_male"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="6dp"
+                android:background="@drawable/selector_gender_fragment"
+                android:text="@string/male"
+                android:textColor="@color/colorFontDialogRegister"
+                android:textSize="@dimen/sizeFontHeader" />
+
+            <TextView
+                android:id="@+id/tv_register_dialog_female"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="6dp"
+                android:background="@drawable/selector_gender_fragment"
+                android:text="@string/female"
+                android:textColor="@color/colorFontDialogRegister" />
+        </LinearLayout>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            app:cardCornerRadius="6dp">
+
+            <TextView
+                android:id="@+id/tv_next_step_gender"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:padding="5dp"
+                android:text="@string/next_step"
+                android:textColor="@color/colorFontDialogRegister"
+                android:textSize="@dimen/sizeFontContent" />
+        </android.support.v7.widget.CardView>
     </LinearLayout>
 </android.support.v7.widget.CardView>

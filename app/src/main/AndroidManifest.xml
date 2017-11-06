@@ -109,7 +109,9 @@
         <activity android:name=".UserProfileMenuActivity" />
         <activity android:name=".fragment.loading.RegisterDialogFragment" />
         <activity android:name=".fragment.RegisterGenderFragment" />
-        <activity android:name=".fragment.RegisterCategoryFragment"></activity>
+        <activity android:name=".fragment.RegisterCategoryFragment" />
+        <activity android:name=".FavoriteCategoryActivity" />
+        <activity android:name=".fragment.FavoriteCategoryFragment"></activity>
     </application>
 
 </manifest>

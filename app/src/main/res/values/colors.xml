@@ -91,4 +91,8 @@
     <color name="colorFontTicketsDialog">#000000</color>
     <color name="colorStrokeFontGenderFragment">#00ACC1</color>
     <color name="colorBackgroundGenderFragment">#00ACC1</color>
+    <color name="colorBackgroundRegisterDialog">#FFFFFF</color>
+    <color name="colorFontDialogRegister">#000000</color>
+    <color name="colorFontCategoryFavorite">#FFFFFF</color>
+    <color name="colorFontUnSelector">#9E9E9E</color>
 </resources>
