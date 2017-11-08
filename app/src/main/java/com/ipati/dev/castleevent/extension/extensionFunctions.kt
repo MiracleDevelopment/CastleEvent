@@ -1,6 +1,5 @@
 package com.ipati.dev.castleevent.extension
 
-import android.animation.ObjectAnimator
 import android.content.Context
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
@@ -66,6 +65,8 @@ fun onShowRegisterDialogFragment(supportFragmentManager: FragmentManager): Regis
 fun FragmentManager.replaceFragment(frameLayout: Int, fragmentOwner: Fragment) {
     beginTransaction().replace(frameLayout, fragmentOwner).commitNow()
 }
+
+
 
 
 

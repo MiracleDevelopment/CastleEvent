@@ -12,22 +12,23 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.google.android.gms.tasks.Task
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.ipati.dev.castleevent.FavoriteCategoryActivity
 import com.ipati.dev.castleevent.R
+import com.ipati.dev.castleevent.base.BaseFragment
+import com.ipati.dev.castleevent.extension.onDismissDialog
+import com.ipati.dev.castleevent.extension.onShowLoadingDialog
 import com.ipati.dev.castleevent.model.UserManager.uid
 import com.ipati.dev.castleevent.service.FirebaseService.FavoriteCategoryRealTimeDatabaseManager
 import kotlinx.android.synthetic.main.activity_my_favorite_fragment.*
 import kotlin.collections.HashMap
 
-class MyFavoriteFragment : Fragment() {
-
-    private val favoriteCategoryManager: FavoriteCategoryRealTimeDatabaseManager by lazy {
-        FavoriteCategoryRealTimeDatabaseManager(context, lifecycle)
-    }
+class MyFavoriteFragment : BaseFragment() {
+    private lateinit var favoriteCategoryManager: FavoriteCategoryRealTimeDatabaseManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +41,7 @@ class MyFavoriteFragment : Fragment() {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        favoriteCategoryManager = FavoriteCategoryRealTimeDatabaseManager(lifecycle)
         setUpToolbar()
         setUpRecyclerView()
 
@@ -70,7 +72,7 @@ class MyFavoriteFragment : Fragment() {
         recycler_view_my_favorite.itemAnimator = DefaultItemAnimator()
         recycler_view_my_favorite.adapter = favoriteCategoryManager.adapterFavorite
 
-        favoriteCategoryManager.adapterFavorite.setOnRemoveItem = { position ->
+        favoriteCategoryManager.adapterFavorite.setOnRemoveItem = {
             val ref = FirebaseDatabase.getInstance().reference
             val refEdit = ref.child("userCategoryProfile").child(uid)
             val childrenChangeData: HashMap<String, Any> = HashMap()
@@ -81,23 +83,41 @@ class MyFavoriteFragment : Fragment() {
                 }
 
                 override fun onDataChange(p0: DataSnapshot?) {
+                    val loadingDialogFragment = onShowLoadingDialog(activity, "ระบบกำลังลบข้อมูล...")
                     for (item in p0?.children!!) {
-                        childrenChangeData.put("${item.key}/listCategory", favoriteCategoryManager.adapterFavorite.listItemFavoriteCategory[0].listCategory)
-                        refEdit.updateChildren(childrenChangeData)
+                        childrenChangeData.put("${item.key}/listCategory"
+                                , favoriteCategoryManager.adapterFavorite.listItemFavoriteCategory[0].listCategory)
+
+                        refEdit.updateChildren(childrenChangeData).addOnCompleteListener { task: Task<Void> ->
+                            when {
+                                task.isSuccessful -> {
+                                    loadingDialogFragment.onDismissDialog()
+                                }
+                                else -> {
+                                    loadingDialogFragment.onDismissDialog()
+                                }
+                            }
+                        }
                     }
                 }
             })
         }
 
         favoriteCategoryManager.onChangeItemCount = { count ->
-            if (count > 0) {
-                recycler_view_my_favorite.visibility = View.VISIBLE
-                tv_no_item.visibility = View.GONE
-                tv_add_category.visibility = View.GONE
-            } else {
-                recycler_view_my_favorite.visibility = View.GONE
-                tv_no_item.visibility = View.VISIBLE
-                tv_add_category.visibility = View.VISIBLE
+            view?.let {
+                when (count) {
+                    0 -> {
+                        recycler_view_my_favorite.visibility = View.GONE
+                        tv_no_item.visibility = View.VISIBLE
+                        tv_add_category.visibility = View.VISIBLE
+                    }
+
+                    else -> {
+                        recycler_view_my_favorite.visibility = View.VISIBLE
+                        tv_no_item.visibility = View.GONE
+                        tv_add_category.visibility = View.GONE
+                    }
+                }
             }
         }
     }

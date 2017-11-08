@@ -5,25 +5,23 @@ import android.arch.lifecycle.LifecycleObserver
 import android.arch.lifecycle.OnLifecycleEvent
 import android.content.Context
 import android.util.Log
-import android.widget.Toast
 import com.google.firebase.database.*
 import com.ipati.dev.castleevent.adapter.FavoriteMenuAdapter
 import com.ipati.dev.castleevent.model.UserManager.uid
-import com.ipati.dev.castleevent.model.UserManager.uidRegister
 import com.ipati.dev.castleevent.service.RecordedEvent.CategoryRecordData
 
 
-class FavoriteCategoryRealTimeDatabaseManager(context: Context, lifecycle: Lifecycle) : LifecycleObserver {
-    var contextManager: Context = context
+class FavoriteCategoryRealTimeDatabaseManager(lifecycle: Lifecycle) : LifecycleObserver {
     var listItemFavorite: ArrayList<CategoryRecordData> = ArrayList()
     var adapterFavorite: FavoriteMenuAdapter = FavoriteMenuAdapter(listItemFavorite)
+
     var onChangeItemCount: ((count: Int) -> Unit?)? = null
+    var refDatabase: DatabaseReference? = null
 
     private var lifecycleManager: Lifecycle? = lifecycle
     private var ref: DatabaseReference = FirebaseDatabase.getInstance().reference
-    private var refDatabase: DatabaseReference? = null
-    private var onChildEventListener: ChildEventListener? = null
-    private var onValueListener: ValueEventListener? = null
+    private var addValueEventListener: ValueEventListener? = setOnValueListener()
+    private var addChildEventListener: ChildEventListener? = setChildEvent()
 
     init {
         lifecycleManager?.addObserver(this)
@@ -31,43 +29,45 @@ class FavoriteCategoryRealTimeDatabaseManager(context: Context, lifecycle: Lifec
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     fun onStart() {
-        ref.child(keyChild).addListenerForSingleValueEvent(setOnValueListener())
+        ref.child(keyChild).addListenerForSingleValueEvent(addValueEventListener)
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
     fun onStop() {
-        ref.removeEventListener(onValueListener)
+        ref.removeEventListener(addValueEventListener)
+
         refDatabase?.let {
-            refDatabase?.removeEventListener(onChildEventListener)
+            refDatabase?.removeEventListener(addChildEventListener)
         }
     }
 
     private fun setOnValueListener(): ValueEventListener? {
-        onValueListener = object : ValueEventListener {
-            override fun onCancelled(p0: DatabaseError?) {
-                Log.d("onCancelled", p0?.message.toString())
+        return object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+                Log.d("onCancelled", p0.message.toString())
             }
 
-            override fun onDataChange(p0: DataSnapshot?) {
-                if (p0?.exists()!!) {
-                    if (p0.hasChild(uid)) {
-                        onChangeItemCount?.invoke(1)
-                        refDatabase = ref.child(keyChild).child(uid)
-                        refDatabase?.addChildEventListener(setChildEvent())
-                    } else {
+            override fun onDataChange(p0: DataSnapshot) {
+                when {
+                    p0.exists() -> {
+                        if (p0.hasChild(uid)) {
+                            refDatabase = ref.child(keyChild).child(uid)
+                            refDatabase?.addChildEventListener(setChildEvent())
+                        } else {
+                            onChangeItemCount?.invoke(0)
+                        }
+                    }
+                    else -> {
                         onChangeItemCount?.invoke(0)
                     }
-                } else {
-                    onChangeItemCount?.invoke(0)
                 }
             }
         }
-        return onValueListener
     }
 
 
     private fun setChildEvent(): ChildEventListener? {
-        onChildEventListener = object : ChildEventListener {
+        return object : ChildEventListener {
             override fun onCancelled(p0: DatabaseError?) {
                 Log.d("onCancelled", p0?.message.toString())
             }
@@ -84,7 +84,7 @@ class FavoriteCategoryRealTimeDatabaseManager(context: Context, lifecycle: Lifec
                 val recordCategoryData = p0?.getValue(CategoryRecordData::class.java)
                 listItemFavorite.add(recordCategoryData!!)
                 adapterFavorite.notifyDataSetChanged()
-
+                onChangeItemCount?.invoke(1)
             }
 
             override fun onChildRemoved(p0: DataSnapshot?) {
@@ -93,12 +93,20 @@ class FavoriteCategoryRealTimeDatabaseManager(context: Context, lifecycle: Lifec
                 adapterFavorite.notifyDataSetChanged()
                 onChangeItemCount?.invoke(0)
 
-                if (listItemFavorite[0].listCategory.count() == 0) {
-                    listItemFavorite.clear()
+                when (listItemFavorite.count()) {
+                    0 -> {
+                        Log.d("listItemFavoriteSize", "Zero")
+                    }
+                    else -> {
+                        when (listItemFavorite[0].listCategory.count()) {
+                            0 -> {
+                                listItemFavorite.clear()
+                            }
+                        }
+                    }
                 }
             }
         }
-        return onChildEventListener
     }
 
     companion object {

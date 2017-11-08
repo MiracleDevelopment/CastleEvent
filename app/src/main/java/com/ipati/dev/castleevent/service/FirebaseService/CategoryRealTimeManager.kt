@@ -8,12 +8,12 @@ import com.ipati.dev.castleevent.R
 import com.ipati.dev.castleevent.adapter.ListCategoryMenuAdapter
 
 class CategoryRealTimeManager(context: Context, lifecycle: Lifecycle) : LifecycleObserver {
-    private var CATEGORY_ALL: String = context.getString(R.string.categoryAll)
-    private var CATEGORY_EDUCATION: String = context.getString(R.string.categoryEducation)
-    private var CATEGORY_TECHNOLOGY: String = context.getString(R.string.categoryTechnology)
-    private var CATEGORY_SPORT: String = context.getString(R.string.categorySport)
+    private val contextManager: Context = context
+    private val categoryALL: String = contextManager.getString(R.string.categoryAll)
+    private val categoryEducation: String = contextManager.getString(R.string.categoryEducation)
+    private val categoryTechnology: String = contextManager.getString(R.string.categoryTechnology)
+    private val categorySport: String = contextManager.getString(R.string.categorySport)
 
-    private var contextManager: Context = context
     private var lifecycleManager: Lifecycle? = null
     private var listCategory: ArrayList<String> = ArrayList()
 
@@ -28,10 +28,10 @@ class CategoryRealTimeManager(context: Context, lifecycle: Lifecycle) : Lifecycl
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     fun onStart() {
         listCategory.apply {
-            add(CATEGORY_ALL)
-            add(CATEGORY_EDUCATION)
-            add(CATEGORY_TECHNOLOGY)
-            add(CATEGORY_SPORT)
+            add(categoryALL)
+            add(categoryEducation)
+            add(categoryTechnology)
+            add(categorySport)
         }
     }
 

@@ -13,7 +13,7 @@ import java.util.*
 
 class FavoriteMenuAdapter(listItemFavorite: ArrayList<CategoryRecordData>) : RecyclerView.Adapter<FavoriteMenuAdapter.ViewHolder>() {
     var listItemFavoriteCategory: ArrayList<CategoryRecordData> = listItemFavorite
-    var setOnRemoveItem: ((position: Int) -> Any?)? = null
+    var setOnRemoveItem: (() -> Any?)? = null
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
         return ViewHolder(LayoutInflater.from(parent?.context).inflate(R.layout.custom_layout_favorite_adapter, parent, false))
     }
@@ -32,8 +32,8 @@ class FavoriteMenuAdapter(listItemFavorite: ArrayList<CategoryRecordData>) : Rec
         override fun onLongClick(p0: View?): Boolean {
             listItemFavoriteCategory[0].listCategory.remove(listItemFavoriteCategory[0].listCategory[adapterPosition])
             notifyItemRemoved(adapterPosition)
+            setOnRemoveItem?.invoke()
 
-            setOnRemoveItem?.invoke(adapterPosition)
             return false
         }
 
