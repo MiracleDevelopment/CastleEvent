@@ -18,16 +18,14 @@ import com.ipati.dev.castleevent.adapter.FavoriteCategoryAdapter
 import com.ipati.dev.castleevent.extension.onDismissDialog
 import com.ipati.dev.castleevent.extension.onShowLoadingDialog
 import com.ipati.dev.castleevent.model.UserManager.gender
+import com.ipati.dev.castleevent.model.UserManager.uid
+import com.ipati.dev.castleevent.model.UserManager.uidRegister
 import com.ipati.dev.castleevent.service.RecordedEvent.RecordCategory
 import kotlinx.android.synthetic.main.activity_favorite_category_fragment.*
 import kotlinx.android.synthetic.main.custom_layout_favorite_category.view.*
 import kotlinx.android.synthetic.main.layout_button_record_category.*
 
 class FavoriteCategoryFragment : Fragment() {
-    private val recordCategory: RecordCategory by lazy {
-        RecordCategory()
-    }
-
     private val adapterCategory: FavoriteCategoryAdapter by lazy {
         FavoriteCategoryAdapter(context)
     }
@@ -43,6 +41,7 @@ class FavoriteCategoryFragment : Fragment() {
         setUpToolbar()
         setUpRecyclerView()
         setUpView()
+
     }
 
     private fun setUpToolbar() {
@@ -57,17 +56,34 @@ class FavoriteCategoryFragment : Fragment() {
     private fun setUpView() {
         tv_success_category.setOnClickListener {
             if (itemSelectCategory.count() > 1) {
-                val loadingDialogFragment = onShowLoadingDialog(activity,"ระบบกำลังบันทึกข้อมูล...")
-                recordCategory.pushProfile(gender!!, itemSelectCategory).addOnCompleteListener { task: Task<Void> ->
-                    if (task.isSuccessful) {
-                        loadingDialogFragment.onDismissDialog()
-                        activity.supportFinishAfterTransition()
-                    } else {
-                        Log.d("errorSuccessCategory", task.exception?.message.toString())
-                    }
+                if (!arguments.getBoolean(objectStatus)) {
+                    updateCategory(uid!!)
+                } else {
+                    updateCategory(uidRegister!!)
                 }
             } else {
                 Toast.makeText(context, "Please Select More 1 Item", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        tv_skip_category.setOnClickListener {
+            activity.supportFinishAfterTransition()
+        }
+    }
+
+    private fun updateCategory(uidSwitch: String) {
+        val loadingDialogFragment = onShowLoadingDialog(activity, "ระบบกำลังบันทึกข้อมูล...")
+        val recordCategory = RecordCategory()
+        recordCategory.pushProfile(uidSwitch, itemSelectCategory)?.addOnCompleteListener { task: Task<Void> ->
+            when {
+                task.isSuccessful -> {
+                    loadingDialogFragment.onDismissDialog()
+                    activity.supportFinishAfterTransition()
+                }
+                else -> {
+                    loadingDialogFragment.onDismissDialog()
+                    Log.d("errorSuccessCategory", task.exception?.message.toString())
+                }
             }
         }
     }
@@ -100,6 +116,11 @@ class FavoriteCategoryFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance(): FavoriteCategoryFragment = FavoriteCategoryFragment().apply { arguments = Bundle() }
+        private const val objectStatus = "status"
+        fun newInstance(statusCheckUpload: Boolean): FavoriteCategoryFragment = FavoriteCategoryFragment().apply {
+            arguments = Bundle().apply {
+                putBoolean(objectStatus, statusCheckUpload)
+            }
+        }
     }
 }

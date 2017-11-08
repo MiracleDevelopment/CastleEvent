@@ -82,6 +82,11 @@ class UserProfileFragment : BaseFragment() {
             startActivity(intentContact)
         }
 
+        card_my_favorite.setOnClickListener {
+            val intentFavorite = Intent(context, MyFavoriteActivity::class.java)
+            startActivity(intentFavorite)
+        }
+
         tv_user_profile_name_full.text = username
         tv_user_profile_email.text = userEmail
     }

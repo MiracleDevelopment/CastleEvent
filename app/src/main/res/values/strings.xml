@@ -87,6 +87,9 @@
     <string name="select_gender">Please Select Gender</string>
     <string name="next_step">Next -></string>
     <string name="success_button">Success</string>
+    <string name="add_category">Add Category</string>
+    <string name="no_item">No Item</string>
+    <string name="skip"><![CDATA[Skip ->]]></string>
 
     <string-array name="CategoryFavorite">
         <item>การศึกษา</item>

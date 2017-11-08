@@ -38,7 +38,7 @@ class LoginFragment : Fragment(), View.OnClickListener {
     private lateinit var twitterConfig: TwitterConfig
     private lateinit var googleSharePreference: SharePreferenceGoogleSignInManager
     private lateinit var logInAuthManager: LoginAuthManager
-
+    private lateinit var authLoginStatus: AuthenticationStatus
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -53,6 +53,7 @@ class LoginFragment : Fragment(), View.OnClickListener {
         googleSharePreference = SharePreferenceGoogleSignInManager(context)
         logInAuthManager = LoginAuthManager(activity, lifecycle)
         callbackManager = CallbackManager.Factory.create()
+        authLoginStatus = AuthenticationStatus()
 
         twitterConfig()
         facebookLoginManager()
@@ -210,6 +211,10 @@ class LoginFragment : Fragment(), View.OnClickListener {
         googleApiService(activity)?.connect()
         if (!lottie_view_animation_login.isAnimating) {
             lottie_view_animation_login.playAnimation()
+        }
+
+        authLoginStatus.getCurrentUser()?.let {
+            activity.supportFinishAfterTransition()
         }
     }
 

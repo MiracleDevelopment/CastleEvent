@@ -19,4 +19,5 @@
     <dimen name="sizeHeightCustomToolbar">48sp</dimen>
     <dimen name="sizeFontCalendar">128sp</dimen>
     <dimen name="sizeFontMonthCalendar">25sp</dimen>
+    <dimen name="sizeFontNoItem">22sp</dimen>
 </resources>

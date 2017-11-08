@@ -7,6 +7,18 @@
     android:orientation="vertical">
 
     <TextView
+        android:id="@+id/tv_skip_category"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_margin="8dp"
+        android:gravity="center"
+        android:padding="8dp"
+        android:text="@string/skip"
+        android:textColor="@color/colorFontCategoryFavorite"
+        android:textSize="@dimen/sizeFontContent" />
+
+    <TextView
         android:id="@+id/tv_success_category"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

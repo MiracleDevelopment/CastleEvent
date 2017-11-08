@@ -1,23 +1,16 @@
 package com.ipati.dev.castleevent.service.RecordedEvent
 
-import android.support.annotation.Keep
 import com.google.android.gms.tasks.Task
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
-import com.ipati.dev.castleevent.model.UserManager.uidRegister
-
+import com.google.firebase.database.*
+import java.util.*
 
 class RecordCategory {
     private var ref: DatabaseReference = FirebaseDatabase.getInstance().reference
-    private var refPushData: DatabaseReference = ref.child("userCategoryProfile").child(uidRegister)
 
-    lateinit var categoryRecordData: CategoryRecordData
+    fun pushProfile(uid: String?, listItemCategory: ArrayList<Int>): Task<Void>? {
+        val refPushData: DatabaseReference = ref.child("userCategoryProfile").child(uid)
+        val categoryData = CategoryRecordData(listCategory = listItemCategory)
 
-    fun pushProfile(gender: Int, listItemCategory: ArrayList<Int>): Task<Void> {
-        categoryRecordData = CategoryRecordData(gender, listItemCategory)
-        return refPushData.push().setValue(categoryRecordData)
+        return refPushData.push().setValue(categoryData)
     }
-
-    @Keep
-    data class CategoryRecordData(var gender: Int = 0, var listCategory: ArrayList<Int> = ArrayList())
 }

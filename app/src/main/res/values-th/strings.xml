@@ -84,4 +84,7 @@
     <string name="select_gender">กรุณาระบุเพศของคุณ</string>
     <string name="next_step">ต่อไป -></string>
     <string name="success_button">เสร็จสิ้น</string>
+    <string name="add_category">เพิ่มความชอบของคุณ</string>
+    <string name="no_item">ไม่มีไอเท็ม</string>
+    <string name="skip"><![CDATA[ข้าม ->]]></string>
 </resources>

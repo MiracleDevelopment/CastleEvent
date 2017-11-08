@@ -57,6 +57,7 @@ fun googleAuthCredential(activity: FragmentActivity, account: GoogleSignInAccoun
     mAuth.signInWithCredential(authCredential).addOnCompleteListener(activity, { task ->
         if (task.isSuccessful) {
             val fireBaseUser: FirebaseUser = mAuth.currentUser!!
+            
             mGoogleSharedPreferences.sharePreferenceManager(fireBaseUser.email)
             updateUserProfile(activity, fireBaseUser, fireBaseUser.displayName, fireBaseUser.photoUrl, fireBaseUser.email, loadingDialogFragment)
         } else {

@@ -161,7 +161,7 @@ class RegisterFragment : Fragment() {
                         fireBaseUser.updateProfile(fireBaseUpdateProfile).addOnCompleteListener { resultPassword ->
                             if (resultPassword.isSuccessful) {
                                 loadingDialogFragment.onDismissDialog()
-                                uidRegister = fireBaseUser.uid
+                                uidRegister = resultLogin.result.user.uid
                                 onShowRegisterDialogFragment(activity.supportFragmentManager)
                             } else {
                                 Toast.makeText(context, "fail Update Profile User", Toast.LENGTH_SHORT).show()

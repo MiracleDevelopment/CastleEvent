@@ -95,4 +95,5 @@
     <color name="colorFontDialogRegister">#000000</color>
     <color name="colorFontCategoryFavorite">#FFFFFF</color>
     <color name="colorFontUnSelector">#9E9E9E</color>
+    <color name="colorFontFavorite">#FFFFFF</color>
 </resources>

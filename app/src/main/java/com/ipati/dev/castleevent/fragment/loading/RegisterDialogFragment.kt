@@ -9,9 +9,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import com.ipati.dev.castleevent.FavoriteCategoryActivity
 import com.ipati.dev.castleevent.R
 import com.ipati.dev.castleevent.model.UserManager.gender
+import com.ipati.dev.castleevent.model.UserManager.uid
+import com.ipati.dev.castleevent.model.UserManager.uidRegister
 import kotlinx.android.synthetic.main.activity_register_dialog_fragment.*
 
 
@@ -34,6 +38,7 @@ class RegisterDialogFragment : DialogFragment(), View.OnClickListener {
 
     private fun defaultEnable() {
         tv_register_dialog_male.isActivated = true
+        gender = 0
     }
 
     private fun enableMale() {
@@ -59,10 +64,19 @@ class RegisterDialogFragment : DialogFragment(), View.OnClickListener {
             }
 
             R.id.tv_next_step_gender -> {
-                val intentFavoriteCategory = Intent(context, FavoriteCategoryActivity::class.java)
-                startActivity(intentFavoriteCategory)
-                dialog.dismiss()
-                activity.supportFinishAfterTransition()
+                val ref: DatabaseReference = FirebaseDatabase.getInstance().reference
+                val refGender: DatabaseReference = ref.child("userGender").child(uidRegister)
+                refGender.setValue(gender).addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        val intentFavoriteCategory = Intent(context, FavoriteCategoryActivity::class.java)
+                        intentFavoriteCategory.putExtra("status", true)
+                        startActivity(intentFavoriteCategory)
+
+                        dialog.dismiss()
+                        activity.supportFinishAfterTransition()
+                    }
+                }
+
             }
         }
     }

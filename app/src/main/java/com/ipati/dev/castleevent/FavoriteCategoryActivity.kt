@@ -11,6 +11,11 @@ class FavoriteCategoryActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_favorite_category)
 
-        supportFragmentManager.replaceFragment(R.id.frame_favorite_category_fragment, FavoriteCategoryFragment.newInstance())
+        val statusBoolean = intent.extras.getBoolean(keyStatus)
+        supportFragmentManager.replaceFragment(R.id.frame_favorite_category_fragment, FavoriteCategoryFragment.newInstance(statusBoolean))
+    }
+
+    companion object {
+        private const val keyStatus = "status"
     }
 }
