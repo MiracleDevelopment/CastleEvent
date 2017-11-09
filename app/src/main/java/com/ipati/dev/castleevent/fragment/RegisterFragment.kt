@@ -1,33 +1,43 @@
 package com.ipati.dev.castleevent.fragment
 
 
+import android.annotation.SuppressLint
+import android.app.DatePickerDialog
+import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import android.widget.DatePicker
 import android.widget.Toast
 import com.airbnb.lottie.LottieComposition
 import com.airbnb.lottie.LottieDrawable
+import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
+import com.google.firebase.database.FirebaseDatabase
 import com.ipati.dev.castleevent.R
-import com.ipati.dev.castleevent.extension.matrixHeightPx
-import com.ipati.dev.castleevent.extension.onDismissDialog
-import com.ipati.dev.castleevent.extension.onShowLoadingDialog
-import com.ipati.dev.castleevent.extension.onShowRegisterDialogFragment
+import com.ipati.dev.castleevent.extension.*
 import com.ipati.dev.castleevent.fragment.loading.LoadingDialogFragment
 import com.ipati.dev.castleevent.model.Register.RegisterManager
+import com.ipati.dev.castleevent.model.UserManager.ExtendedProfileUserModel
+import com.ipati.dev.castleevent.model.UserManager.birthDay
+import com.ipati.dev.castleevent.model.UserManager.phoneNumber
 import com.ipati.dev.castleevent.model.UserManager.uidRegister
 import kotlinx.android.synthetic.main.activity_register_fragment.*
 import java.lang.Exception
+import java.text.SimpleDateFormat
+import java.util.*
 
-class RegisterFragment : Fragment() {
+class RegisterFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     private lateinit var registerManager: RegisterManager
     private lateinit var auth: FirebaseAuth
     private lateinit var fireBaseUser: FirebaseUser
@@ -53,6 +63,12 @@ class RegisterFragment : Fragment() {
         tv_success_register.setOnClickListener {
             initialValidateAccount()
         }
+
+
+        register_birth_day.setOnClickListener {
+            DatePickerDialog(context, this, Calendar.YEAR, Calendar.MONTH, Calendar.DAY_OF_MONTH).show()
+        }
+
     }
 
     private fun initialLottieAnimation() {
@@ -147,6 +163,7 @@ class RegisterFragment : Fragment() {
         }
     }
 
+
     private fun stateRegisterListener(email: String, password: String) {
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { resultLogin ->
             if (resultLogin.isSuccessful) {
@@ -160,10 +177,17 @@ class RegisterFragment : Fragment() {
                     if (task.isSuccessful) {
                         fireBaseUser.updateProfile(fireBaseUpdateProfile).addOnCompleteListener { resultPassword ->
                             if (resultPassword.isSuccessful) {
+                                val birthDateFormat = SimpleDateFormat("dd/MM/yyyy", Locale("th"))
+                                val dateTime: Date? = birthDateFormat.parse(register_birth_day.text.toString())
+                                Log.d("dateTime", dateTime.toString())
+                                birthDay = dateTime?.time
+                                phoneNumber = register_ed_phone.text.toString()
+
                                 loadingDialogFragment.onDismissDialog()
                                 uidRegister = resultLogin.result.user.uid
                                 onShowRegisterDialogFragment(activity.supportFragmentManager)
                             } else {
+                                loadingDialogFragment.onDismissDialog()
                                 Toast.makeText(context, "fail Update Profile User", Toast.LENGTH_SHORT).show()
                             }
                         }.addOnFailureListener { exception ->
@@ -184,6 +208,11 @@ class RegisterFragment : Fragment() {
             loadingDialogFragment.onDismissDialog()
             Toast.makeText(context, exception.message.toString(), Toast.LENGTH_SHORT).show()
         }
+    }
+
+    @SuppressLint("SetTextI18n")
+    override fun onDateSet(p0: DatePicker?, p1: Int, p2: Int, p3: Int) {
+        register_birth_day.setText("$p3/$p2/$p1")
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {

@@ -54,7 +54,6 @@ class ProfileUserActivity : BaseAppCompatActivity(), DismissDialogFragment, OnPr
                     (profileFragment as ProfileUserFragment).apply {
                         onChangeUserPhoto(msg)
                     }
-
                 }
                 else -> {
 

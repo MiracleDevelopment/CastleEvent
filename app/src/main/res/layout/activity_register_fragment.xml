@@ -88,6 +88,23 @@
                     </android.support.design.widget.TextInputLayout>
 
                     <android.support.design.widget.TextInputLayout
+                        android:id="@+id/tv_input_birth_day"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColorHint="@color/colorEditTextResource">
+
+                        <com.ipati.dev.castleevent.customize.CustomFontEditText
+                            android:id="@+id/register_birth_day"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:focusableInTouchMode="false"
+                            android:hint="@string/birth_day"
+                            android:inputType="datetime"
+                            android:textColor="@color/colorEditTextResource"
+                            android:textSize="@dimen/sizeFontRegister" />
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
                         android:id="@+id/tv_input_register_password"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

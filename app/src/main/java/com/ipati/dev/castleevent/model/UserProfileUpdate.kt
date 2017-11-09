@@ -13,6 +13,8 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.UploadTask
@@ -25,6 +27,8 @@ import com.ipati.dev.castleevent.model.UserManager.photoUrl
 import com.ipati.dev.castleevent.model.UserManager.uid
 import com.ipati.dev.castleevent.model.UserManager.userEmail
 import com.ipati.dev.castleevent.model.UserManager.username
+import java.util.*
+import kotlin.collections.HashMap
 
 class UserProfileUpdate(context: Context, inputUsername: TextInputLayout, inputPassword: TextInputLayout
                         , inputRePassword: TextInputLayout, inputEmail: TextInputLayout, activity: FragmentActivity) {
@@ -165,6 +169,23 @@ class UserProfileUpdate(context: Context, inputUsername: TextInputLayout, inputP
         }.addOnFailureListener { exception ->
             loadingDialogFragment.dismiss()
             Toast.makeText(contextProfileManager, exception.message.toString(), Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    fun onChangeUserProfileDate(updateChild: String, birthDay: Long, gender: Int) {
+        val refRoot: DatabaseReference = FirebaseDatabase.getInstance().reference
+        val refUserProfile: DatabaseReference = refRoot.child("userProfile").child(uid!!).child(updateChild)
+
+        val mapData: HashMap<String, Any> = HashMap()
+        mapData.put("dateUser", birthDay)
+        mapData.put("gender", gender)
+
+        refUserProfile.updateChildren(mapData).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Toast.makeText(contextProfileManager, "UpdateChildSuccess", Toast.LENGTH_SHORT).show()
+            } else {
+
+            }
         }
     }
 

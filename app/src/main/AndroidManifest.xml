@@ -113,7 +113,8 @@
         <activity android:name=".FavoriteCategoryActivity" />
         <activity android:name=".fragment.FavoriteCategoryFragment" />
         <activity android:name=".MyFavoriteActivity" />
-        <activity android:name=".fragment.MyFavoriteFragment"></activity>
+        <activity android:name=".fragment.MyFavoriteFragment" />
+        <activity android:name=".fragment.loading.DateTimePickerDialogFragment"></activity>
     </application>
 
 </manifest>

@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentManager
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
+import com.ipati.dev.castleevent.fragment.loading.DateTimePickerDialogFragment
 import com.ipati.dev.castleevent.fragment.loading.LoadingDialogFragment
 import com.ipati.dev.castleevent.fragment.loading.RegisterDialogFragment
 import com.ipati.dev.castleevent.fragment.loading.SettingDialogFragment
@@ -64,6 +65,12 @@ fun onShowRegisterDialogFragment(supportFragmentManager: FragmentManager): Regis
 
 fun FragmentManager.replaceFragment(frameLayout: Int, fragmentOwner: Fragment) {
     beginTransaction().replace(frameLayout, fragmentOwner).commitNow()
+}
+
+fun onShowDatePickerDialog(activity: FragmentActivity, tagDateTime: String): DateTimePickerDialogFragment {
+    return DateTimePickerDialogFragment.newInstance().apply {
+        show(activity.supportFragmentManager, tagDateTime)
+    }
 }
 
 

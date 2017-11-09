@@ -9,13 +9,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import android.widget.Toast
+import com.google.android.gms.tasks.Task
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.ipati.dev.castleevent.FavoriteCategoryActivity
 import com.ipati.dev.castleevent.R
-import com.ipati.dev.castleevent.model.UserManager.gender
-import com.ipati.dev.castleevent.model.UserManager.uid
-import com.ipati.dev.castleevent.model.UserManager.uidRegister
+import com.ipati.dev.castleevent.model.UserManager.*
 import kotlinx.android.synthetic.main.activity_register_dialog_fragment.*
 
 
@@ -64,19 +64,25 @@ class RegisterDialogFragment : DialogFragment(), View.OnClickListener {
             }
 
             R.id.tv_next_step_gender -> {
-                val ref: DatabaseReference = FirebaseDatabase.getInstance().reference
-                val refGender: DatabaseReference = ref.child("userGender").child(uidRegister)
-                refGender.setValue(gender).addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        val intentFavoriteCategory = Intent(context, FavoriteCategoryActivity::class.java)
-                        intentFavoriteCategory.putExtra("status", true)
-                        startActivity(intentFavoriteCategory)
+                val refRoot: DatabaseReference = FirebaseDatabase.getInstance().reference
+                val refUserProfile: DatabaseReference = refRoot.child("userProfile").child(uidRegister)
+                val modelProfile = ExtendedProfileUserModel(gender, birthDay, phoneNumber!!)
+                refUserProfile.push().setValue(modelProfile).addOnCompleteListener { task: Task<Void> ->
+                    when {
+                        task.isSuccessful -> {
+                            val intentFavoriteCategory = Intent(context, FavoriteCategoryActivity::class.java)
+                            intentFavoriteCategory.putExtra("status", true)
+                            startActivity(intentFavoriteCategory)
 
-                        dialog.dismiss()
-                        activity.supportFinishAfterTransition()
+                            dialog.dismiss()
+                            activity.supportFinishAfterTransition()
+                        }
+                        else -> {
+                            Toast.makeText(context, task.exception?.message.toString(), Toast.LENGTH_SHORT).show()
+                        }
                     }
-                }
 
+                }
             }
         }
     }

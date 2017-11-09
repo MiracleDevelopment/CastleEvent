@@ -96,4 +96,6 @@
     <color name="colorFontCategoryFavorite">#FFFFFF</color>
     <color name="colorFontUnSelector">#9E9E9E</color>
     <color name="colorFontFavorite">#FFFFFF</color>
+    <color name="colorSelectorMale">#546E7A</color>
+    <color name="colorUnSelectorFemale">#263238</color>
 </resources>

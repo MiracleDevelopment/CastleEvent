@@ -1,5 +1,6 @@
 package com.ipati.dev.castleevent.fragment
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -10,14 +11,17 @@ import com.ipati.dev.castleevent.R
 import com.ipati.dev.castleevent.model.Fresco.loadPhotoUserProfile
 import com.ipati.dev.castleevent.model.UserManager.*
 import com.ipati.dev.castleevent.model.UserProfileUpdate
+import com.ipati.dev.castleevent.service.FirebaseService.ProfileUserFragmentManager
 import kotlinx.android.synthetic.main.activity_profile_user_fragment.*
+import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
 class ProfileUserFragment : Fragment(), View.OnClickListener {
     private lateinit var editTableChangeText: EditableChangeText
     private lateinit var listItemEditText: ArrayList<DataEditText>
-
+    private lateinit var userProfileManager: ProfileUserFragmentManager
+    private lateinit var calendarBirthDay: Calendar
     private val changeProfileUser: UserProfileUpdate by lazy {
         UserProfileUpdate(context, tv_input_username_profile
                 , tv_input_password_profile
@@ -26,6 +30,8 @@ class ProfileUserFragment : Fragment(), View.OnClickListener {
                 , activity)
     }
 
+    private var stateClickable: Boolean = false
+    private var updateChild: String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -37,6 +43,7 @@ class ProfileUserFragment : Fragment(), View.OnClickListener {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        userProfileManager = ProfileUserFragmentManager(lifecycle)
         initialToolbar()
         initialEditText()
         getLanguageDefault()
@@ -53,6 +60,10 @@ class ProfileUserFragment : Fragment(), View.OnClickListener {
         changeProfileUser.callBackEmail = {
             tv_input_email_profile.error = it
         }
+
+        li_gender_male.setOnClickListener(this)
+        li_gender_female.setOnClickListener(this)
+
     }
 
     private fun getLanguageDefault() {
@@ -82,7 +93,7 @@ class ProfileUserFragment : Fragment(), View.OnClickListener {
 
         tv_record_profile.setOnClickListener { view -> onClick(view) }
         im_edit_photo_profile.setOnClickListener { view -> onClick(view) }
-        im_edit_photo_profile.setOnLongClickListener { tv_show_upload.visibility = View.VISIBLE ; return@setOnLongClickListener false }
+        im_edit_photo_profile.setOnLongClickListener { tv_show_upload.visibility = View.VISIBLE; return@setOnLongClickListener false }
     }
 
     override fun onClick(p0: View?) {
@@ -98,6 +109,12 @@ class ProfileUserFragment : Fragment(), View.OnClickListener {
                             , ed_re_account_password_profile.text.toString()
                             , ed_email_profile.text.toString())
 
+                    updateChild?.let {
+                        val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale("th"))
+                        val timeMillion: Date? = dateFormat.parse(ed_birth_day.text.toString())
+                        changeProfileUser.onChangeUserProfileDate(updateChild!!, timeMillion?.time!!
+                                , gender = if (li_gender_female.isActivated) 0 else 1)
+                    }
                 }
             }
 
@@ -107,7 +124,29 @@ class ProfileUserFragment : Fragment(), View.OnClickListener {
                 intentPhoto.type = "image/*"
                 startActivityForResult(Intent.createChooser(intentPhoto, "Choose Image Profile"), REQUEST_PHOTO)
             }
+
+            R.id.li_gender_male -> {
+                enableMale()
+                tv_record_profile.setBackgroundResource(R.drawable.custom_back_ground_accept)
+                stateClickable = true
+            }
+
+            R.id.li_gender_female -> {
+                disableFemale()
+                tv_record_profile.setBackgroundResource(R.drawable.custom_back_ground_accept)
+                stateClickable = true
+            }
         }
+    }
+
+    private fun enableMale() {
+        li_gender_male.isActivated = true
+        li_gender_female.isActivated = false
+    }
+
+    private fun disableFemale() {
+        li_gender_female.isActivated = true
+        li_gender_male.isActivated = false
     }
 
     //Todo: Change Profile Fragment from activity
@@ -138,23 +177,43 @@ class ProfileUserFragment : Fragment(), View.OnClickListener {
         listItemEditText = ArrayList(arrayListOf(DataEditText(ed_account_name_profile, username!!)
                 , DataEditText(ed_account_pass_profile, ed_account_pass_profile.text.toString())
                 , DataEditText(ed_re_account_password_profile, ed_re_account_password_profile.text.toString())
-                , DataEditText(ed_email_profile, ed_email_profile.text.toString())))
+                , DataEditText(ed_email_profile, ed_email_profile.text.toString())
+                , DataEditText(ed_birth_day, ed_birth_day.text.toString())))
 
         editTableChangeText = EditableChangeText(context, listItemEditText, callBackEnable = { status: Boolean ->
             if (status) {
                 tv_record_profile.setBackgroundResource(R.drawable.custom_back_ground_accept)
             } else {
-                tv_record_profile.setBackgroundResource(R.drawable.ripple_record_un_save)
+                if (!stateClickable) {
+                    tv_record_profile.setBackgroundResource(R.drawable.ripple_record_un_save)
+                }
             }
         })
 
         editTableChangeText.addOnChangeTextListener()
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onStart() {
         super.onStart()
-        addItemEditText()
+        userProfileManager.callBackManager = { key: String, userProfile: ExtendedProfileUserModel? ->
+            updateChild = key
+            calendarBirthDay = Calendar.getInstance()
+            calendarBirthDay.timeInMillis = userProfile?.dateUser!!
+            ed_birth_day.setText("${calendarBirthDay.get(Calendar.DAY_OF_MONTH)}/${calendarBirthDay.get(Calendar.MONTH)}/${calendarBirthDay.get(Calendar.YEAR)}")
+
+            when (userProfile.gender) {
+                0 -> {
+                    enableMale()
+                }
+                1 -> {
+                    disableFemale()
+                }
+            }
+            addItemEditText()
+        }
     }
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -180,9 +239,7 @@ class ProfileUserFragment : Fragment(), View.OnClickListener {
 
     companion object {
         private const val REQUEST_PHOTO: Int = 1111
-        fun newInstance(): ProfileUserFragment = ProfileUserFragment().apply {
-            arguments = Bundle()
-        }
+        fun newInstance(): ProfileUserFragment = ProfileUserFragment().apply { arguments = Bundle() }
     }
 }
 
