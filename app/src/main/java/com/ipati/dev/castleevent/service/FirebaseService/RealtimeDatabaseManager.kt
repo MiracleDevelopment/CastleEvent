@@ -10,7 +10,6 @@ import com.ipati.dev.castleevent.adapter.ListEventAdapter
 import com.ipati.dev.castleevent.model.ModelListItem.ItemListEvent
 
 class RealTimeDatabaseManager(context: Context, lifeCycle: Lifecycle) : LifecycleObserver {
-    var categoryManager: String = "ALL"
     private var contextManager: Context? = null
     private var lifeCycleManager: Lifecycle? = null
     private var itemListEvent: ItemListEvent? = null

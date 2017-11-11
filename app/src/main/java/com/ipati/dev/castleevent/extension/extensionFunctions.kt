@@ -8,7 +8,6 @@ import android.support.v4.app.FragmentManager
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
-import com.ipati.dev.castleevent.fragment.loading.DateTimePickerDialogFragment
 import com.ipati.dev.castleevent.fragment.loading.LoadingDialogFragment
 import com.ipati.dev.castleevent.fragment.loading.RegisterDialogFragment
 import com.ipati.dev.castleevent.fragment.loading.SettingDialogFragment
@@ -50,8 +49,8 @@ fun onShowSnackBar(view: View, msg: String) {
     return Snackbar.make(view, msg, Toast.LENGTH_SHORT).show()
 }
 
-fun onShowLoadingDialog(activity: FragmentActivity, msg: String): LoadingDialogFragment {
-    return LoadingDialogFragment.newInstance(msg, false).apply {
+fun onShowLoadingDialog(activity: FragmentActivity, msg: String, statusLoading: Boolean): LoadingDialogFragment {
+    return LoadingDialogFragment.newInstance(msg, statusLoading).apply {
         isCancelable = false
         show(activity.supportFragmentManager, "LoadingDialogFragment")
     }
@@ -67,10 +66,8 @@ fun FragmentManager.replaceFragment(frameLayout: Int, fragmentOwner: Fragment) {
     beginTransaction().replace(frameLayout, fragmentOwner).commitNow()
 }
 
-fun onShowDatePickerDialog(activity: FragmentActivity, tagDateTime: String): DateTimePickerDialogFragment {
-    return DateTimePickerDialogFragment.newInstance().apply {
-        show(activity.supportFragmentManager, tagDateTime)
-    }
+fun Context.onShowToast(msg: String) {
+    Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
 }
 
 

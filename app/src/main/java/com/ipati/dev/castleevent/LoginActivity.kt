@@ -1,5 +1,6 @@
 package com.ipati.dev.castleevent
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
@@ -19,6 +20,7 @@ class LoginActivity : BaseAppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         supportFragmentManager.beginTransaction().replace(R.id.frame_login_fragment
                 , LoginFragment.newInstance("LoginFragment"), tagLoginFragment).commitNow()
 

@@ -112,6 +112,7 @@
                         android:id="@+id/ed_birth_day"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:focusableInTouchMode="false"
                         android:hint="@string/birthday"
                         android:inputType="date"
                         android:text="--/--/--"

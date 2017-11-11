@@ -81,7 +81,7 @@ class MyFavoriteFragment : BaseFragment() {
                 }
 
                 override fun onDataChange(p0: DataSnapshot?) {
-                    val loadingDialogFragment = onShowLoadingDialog(activity, "ระบบกำลังลบข้อมูล...")
+                    val loadingDialogFragment = onShowLoadingDialog(activity, "ระบบกำลังลบข้อมูล...", false)
                     for (item in p0?.children!!) {
                         childrenChangeData.put("${item.key}/listCategory"
                                 , favoriteCategoryManager.adapterFavorite.listItemFavoriteCategory[0].listCategory)

@@ -1,13 +1,20 @@
 package com.ipati.dev.castleevent.fragment
 
 import android.annotation.SuppressLint
+import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.view.*
+import android.widget.DatePicker
+import android.widget.Toast
+import com.google.firebase.auth.*
 import com.ipati.dev.castleevent.R
+import com.ipati.dev.castleevent.extension.onDismissDialog
+import com.ipati.dev.castleevent.extension.onShowLoadingDialog
+import com.ipati.dev.castleevent.extension.onShowToast
 import com.ipati.dev.castleevent.model.Fresco.loadPhotoUserProfile
 import com.ipati.dev.castleevent.model.UserManager.*
 import com.ipati.dev.castleevent.model.UserProfileUpdate
@@ -17,21 +24,19 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-class ProfileUserFragment : Fragment(), View.OnClickListener {
+class ProfileUserFragment : Fragment(), View.OnClickListener, DatePickerDialog.OnDateSetListener {
     private lateinit var editTableChangeText: EditableChangeText
     private lateinit var listItemEditText: ArrayList<DataEditText>
     private lateinit var userProfileManager: ProfileUserFragmentManager
     private lateinit var calendarBirthDay: Calendar
+
     private val changeProfileUser: UserProfileUpdate by lazy {
-        UserProfileUpdate(context, tv_input_username_profile
-                , tv_input_password_profile
-                , tv_input_re_password
-                , tv_input_email_profile
-                , activity)
+        UserProfileUpdate(context)
     }
 
     private var stateClickable: Boolean = false
     private var updateChild: String? = null
+    private var timeMillion: Date? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -48,22 +53,10 @@ class ProfileUserFragment : Fragment(), View.OnClickListener {
         initialEditText()
         getLanguageDefault()
 
-        changeProfileUser.callBackUserProfileChange = {
-            tv_input_username_profile.error = it
-        }
-
-        changeProfileUser.callBackPassword = {
-            tv_input_password_profile.error = it
-            tv_input_re_password.error = it
-        }
-
-        changeProfileUser.callBackEmail = {
-            tv_input_email_profile.error = it
-        }
-
         li_gender_male.setOnClickListener(this)
         li_gender_female.setOnClickListener(this)
-
+        ed_birth_day.setOnClickListener(this)
+        enableMale()
     }
 
     private fun getLanguageDefault() {
@@ -93,28 +86,46 @@ class ProfileUserFragment : Fragment(), View.OnClickListener {
 
         tv_record_profile.setOnClickListener { view -> onClick(view) }
         im_edit_photo_profile.setOnClickListener { view -> onClick(view) }
-        im_edit_photo_profile.setOnLongClickListener { tv_show_upload.visibility = View.VISIBLE; return@setOnLongClickListener false }
+
+        im_edit_photo_profile.setOnLongClickListener {
+            tv_show_upload.visibility = View.VISIBLE; return@setOnLongClickListener false
+        }
     }
 
     override fun onClick(p0: View?) {
         when (p0?.id) {
             R.id.tv_record_profile -> {
+                resetOnError()
+                val loadingDialogFragment = onShowLoadingDialog(activity, "กำลังอัพเดทข้อมูล...", false)
                 if (changeProfileUser.onCheckStateChange(ed_account_name_profile.text.toString()
                         , ed_account_pass_profile.text.toString()
                         , ed_re_account_password_profile.text.toString()
-                        , ed_email_profile.text.toString())) {
+                        , ed_email_profile.text.toString()
+
+                        , { errorUsername: String ->
+                    tv_input_username_profile.error = errorUsername
+                }, { errorPassword: String ->
+                    tv_input_password_profile.error = errorPassword
+                    tv_input_re_password.error = errorPassword
+                }, { errorEmail: String ->
+                    tv_input_email_profile.error = errorEmail
+                })) {
 
                     changeProfileUser.onChangeProfileUser(ed_account_name_profile.text.toString()
                             , ed_account_pass_profile.text.toString()
-                            , ed_re_account_password_profile.text.toString()
-                            , ed_email_profile.text.toString())
+                            , ed_email_profile.text.toString(), {
 
-                    updateChild?.let {
-                        val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale("th"))
-                        val timeMillion: Date? = dateFormat.parse(ed_birth_day.text.toString())
-                        changeProfileUser.onChangeUserProfileDate(updateChild!!, timeMillion?.time!!
-                                , gender = if (li_gender_female.isActivated) 0 else 1)
-                    }
+                        //Todo: OnSuccess
+                        loadingDialogFragment.onDismissDialog()
+                    }, { errorCode: Exception ->
+                        //Todo: OnFailure
+                        context.onShowToast(errorCode.message.toString())
+                        loadingDialogFragment.onDismissDialog()
+                    })
+                    onChangeGenderWithBirthDay()
+
+                } else {
+                    loadingDialogFragment.onDismissDialog()
                 }
             }
 
@@ -136,6 +147,13 @@ class ProfileUserFragment : Fragment(), View.OnClickListener {
                 tv_record_profile.setBackgroundResource(R.drawable.custom_back_ground_accept)
                 stateClickable = true
             }
+
+            R.id.ed_birth_day -> {
+                DatePickerDialog(context, this, Calendar.getInstance().get(Calendar.YEAR)
+                        , Calendar.getInstance().get(Calendar.MONTH)
+                        , Calendar.getInstance().get(Calendar.DAY_OF_MONTH))
+                        .show()
+            }
         }
     }
 
@@ -148,6 +166,35 @@ class ProfileUserFragment : Fragment(), View.OnClickListener {
         li_gender_female.isActivated = true
         li_gender_male.isActivated = false
     }
+
+    private fun resetOnError() {
+        tv_input_username_profile.isErrorEnabled = false
+        tv_input_password_profile.isErrorEnabled = false
+        tv_input_re_password.isErrorEnabled = false
+        tv_input_email_profile.isErrorEnabled = false
+    }
+
+    private fun onChangeGenderWithBirthDay() {
+        //Todo; UpdateGender with BirthDay
+        val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale("th"))
+        timeMillion = when (ed_birth_day.text.toString()) {
+            "--/--/--" -> {
+                Calendar.getInstance().time
+            }
+            else -> {
+                dateFormat.parse(ed_birth_day.text.toString())
+            }
+        }
+
+        if (updateChild == null) {
+            changeProfileUser.onChangeUserProfileDateFirst(timeMillion?.time!!
+                    , gender = if (li_gender_male.isActivated) 0 else 1, phoneNumber = "")
+        } else {
+            changeProfileUser.onChangeUserProfileDate(updateChild!!, timeMillion?.time!!
+                    , gender = if (li_gender_male.isActivated) 0 else 1)
+        }
+    }
+
 
     //Todo: Change Profile Fragment from activity
     fun onChangeUserPhoto(msg: String) {
@@ -180,17 +227,24 @@ class ProfileUserFragment : Fragment(), View.OnClickListener {
                 , DataEditText(ed_email_profile, ed_email_profile.text.toString())
                 , DataEditText(ed_birth_day, ed_birth_day.text.toString())))
 
-        editTableChangeText = EditableChangeText(context, listItemEditText, callBackEnable = { status: Boolean ->
-            if (status) {
-                tv_record_profile.setBackgroundResource(R.drawable.custom_back_ground_accept)
-            } else {
-                if (!stateClickable) {
+        editTableChangeText = EditableChangeText(context, listItemEditText, callBackEnable = { statusUpload: Boolean ->
+            when {
+                statusUpload -> {
+                    tv_record_profile.setBackgroundResource(R.drawable.custom_back_ground_accept)
+                }
+                else -> {
                     tv_record_profile.setBackgroundResource(R.drawable.ripple_record_un_save)
                 }
             }
         })
 
         editTableChangeText.addOnChangeTextListener()
+
+    }
+
+    @SuppressLint("SetTextI18n")
+    override fun onDateSet(p0: DatePicker?, p1: Int, p2: Int, p3: Int) {
+        ed_birth_day.setText("$p3/$p2/$p1")
     }
 
     @SuppressLint("SetTextI18n")
@@ -200,7 +254,9 @@ class ProfileUserFragment : Fragment(), View.OnClickListener {
             updateChild = key
             calendarBirthDay = Calendar.getInstance()
             calendarBirthDay.timeInMillis = userProfile?.dateUser!!
-            ed_birth_day.setText("${calendarBirthDay.get(Calendar.DAY_OF_MONTH)}/${calendarBirthDay.get(Calendar.MONTH)}/${calendarBirthDay.get(Calendar.YEAR)}")
+            ed_birth_day.setText("${calendarBirthDay.get(Calendar.DAY_OF_MONTH)}" +
+                    "/${calendarBirthDay.get(Calendar.MONTH)}" +
+                    "/${calendarBirthDay.get(Calendar.YEAR)}")
 
             when (userProfile.gender) {
                 0 -> {
@@ -210,8 +266,9 @@ class ProfileUserFragment : Fragment(), View.OnClickListener {
                     disableFemale()
                 }
             }
-            addItemEditText()
         }
+
+        addItemEditText()
     }
 
 
@@ -220,7 +277,15 @@ class ProfileUserFragment : Fragment(), View.OnClickListener {
         when (requestCode) {
             REQUEST_PHOTO ->
                 if (data != null) {
-                    changeProfileUser.onUpdatePhotoUser(data.data)
+                    val loadingDialogFragment = onShowLoadingDialog(activity, "กำลังอัพเดทโปรไฟล์...", true)
+                    changeProfileUser.onUpdatePhotoUser(data.data, {
+                        loadingDialogFragment.onDismissDialog()
+
+                    }, { e: Exception ->
+                        context.onShowToast(e.message.toString())
+                        loadingDialogFragment.onDismissDialog()
+                    })
+
                     tv_show_upload.visibility = View.GONE
                 } else {
                     tv_show_upload.visibility = View.GONE

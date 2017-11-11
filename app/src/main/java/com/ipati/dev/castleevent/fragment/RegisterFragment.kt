@@ -136,7 +136,7 @@ class RegisterFragment : Fragment(), DatePickerDialog.OnDateSetListener {
                                     register_ed_re_password.text.toString() -> {
                                         when (register_ed_password.length()) {
                                             in 6..10 -> {
-                                                loadingDialogFragment = onShowLoadingDialog(activity, "ระบบกำลังสมัครสมาชิก...")
+                                                loadingDialogFragment = onShowLoadingDialog(activity, "ระบบกำลังสมัครสมาชิก...", false)
                                                 stateRegisterListener(register_ed_email.text.toString()
                                                         , register_ed_password.text.toString())
                                             }

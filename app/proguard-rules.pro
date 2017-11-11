@@ -68,9 +68,20 @@
     @com.facebook.common.internal.DoNotStrip *;
 }
 
+-dontwarn org.hamcrest.**
+-dontwarn android.test.**
+-dontwarn android.support.test.**
+
+-keep class org.hamcrest.** {
+   *;
+}
+
 # Keep native methods
 -keepclassmembers class * {
     native <methods>;
+}
+-keepclassmembernames class kotlinx.** {
+    volatile <fields>;
 }
 
 -dontwarn okio.**

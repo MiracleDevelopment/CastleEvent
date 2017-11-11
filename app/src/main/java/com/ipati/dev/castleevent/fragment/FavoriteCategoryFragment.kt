@@ -72,7 +72,7 @@ class FavoriteCategoryFragment : Fragment() {
     }
 
     private fun updateCategory(uidSwitch: String) {
-        val loadingDialogFragment = onShowLoadingDialog(activity, "ระบบกำลังบันทึกข้อมูล...")
+        val loadingDialogFragment = onShowLoadingDialog(activity, "ระบบกำลังบันทึกข้อมูล...", false)
         val recordCategory = RecordCategory()
         recordCategory.pushProfile(uidSwitch, itemSelectCategory)?.addOnCompleteListener { task: Task<Void> ->
             when {
