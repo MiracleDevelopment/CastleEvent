@@ -1,15 +1,20 @@
 package com.ipati.dev.castleevent.model.Fresco
 
 import android.content.Context
+import android.media.Image
 import android.net.Uri
+import android.widget.RelativeLayout
 import com.facebook.drawee.backends.pipeline.Fresco
 import com.facebook.drawee.interfaces.DraweeController
 import com.facebook.drawee.view.SimpleDraweeView
 import com.facebook.imagepipeline.common.ResizeOptions
 import com.facebook.imagepipeline.request.ImageRequest
 import com.facebook.imagepipeline.request.ImageRequestBuilder
+import com.facebook.imagepipeline.request.Postprocessor
 import com.ipati.dev.castleevent.extension.matrixHeightPx
 import com.ipati.dev.castleevent.extension.matrixWidthPx
+import jp.wasabeef.fresco.processors.BlurPostprocessor
+import jp.wasabeef.fresco.processors.CombinePostProcessors
 
 
 fun loadPhoto(context: Context, url: String, widthCardView: Int, im: SimpleDraweeView) {
@@ -84,6 +89,7 @@ fun loadPhotoProfileUser(context: Context, url: String?, im: SimpleDraweeView) {
     im.layoutParams.width = context.matrixWidthPx(360)
     im.layoutParams.height = context.matrixHeightPx(360)
 
+
     val imageRequest: ImageRequest = ImageRequestBuilder.newBuilderWithSource(Uri.parse(url))
             .setLocalThumbnailPreviewsEnabled(true)
             .build()
@@ -102,8 +108,8 @@ fun loadPhotoItemMenu(context: Context, resource: Int, im: SimpleDraweeView) {
     im.layoutParams.height = context.matrixHeightPx(80)
 
     val imageRequest: ImageRequest = ImageRequestBuilder.newBuilderWithResourceId(resource)
-            .setLocalThumbnailPreviewsEnabled(true)
             .build()
+
     val draweeController: DraweeController = Fresco.newDraweeControllerBuilder()
             .setImageRequest(imageRequest)
             .setOldController(im.controller)
@@ -185,3 +191,4 @@ fun loadGoogleMapStatic(context: Context, latitude: Double, longitude: Double, i
     im.controller = draweeController
     im.setImageURI(queryMapStatic, context)
 }
+

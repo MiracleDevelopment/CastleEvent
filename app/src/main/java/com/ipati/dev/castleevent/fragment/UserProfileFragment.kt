@@ -4,14 +4,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.*
-import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.ipati.dev.castleevent.*
 import com.ipati.dev.castleevent.base.BaseFragment
 import com.ipati.dev.castleevent.fragment.loading.LogOutFragmentDialog
-import com.ipati.dev.castleevent.model.OnChangeNotificationChannel
 import com.ipati.dev.castleevent.model.Fresco.loadPhotoProfileUser
-import com.ipati.dev.castleevent.model.OnCustomLanguage
 import com.ipati.dev.castleevent.model.UserManager.photoUrl
 import com.ipati.dev.castleevent.model.UserManager.userEmail
 import com.ipati.dev.castleevent.model.UserManager.username
@@ -21,11 +19,12 @@ import kotlinx.android.synthetic.main.activity_user_profile_fragment.*
 class UserProfileFragment : BaseFragment() {
     private lateinit var sharePreferenceSettingMenuList: SharePreferenceSettingManager
     private lateinit var logOutDialogFragment: LogOutFragmentDialog
+    private lateinit var authUser: FirebaseAuth
+    private lateinit var authListener: FirebaseAuth.AuthStateListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-        sharePreferenceSettingMenuList = SharePreferenceSettingManager(context)
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -35,6 +34,22 @@ class UserProfileFragment : BaseFragment() {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUpToolbar()
+        authUser = FirebaseAuth.getInstance()
+        sharePreferenceSettingMenuList = SharePreferenceSettingManager(context)
+
+        authListener = FirebaseAuth.AuthStateListener { fireBaseAuth: FirebaseAuth ->
+            val fireBaseUser: FirebaseUser? = fireBaseAuth.currentUser
+            fireBaseUser?.let {
+                username = fireBaseUser.displayName
+                userEmail = fireBaseUser.email
+                photoUrl = fireBaseUser.photoUrl.toString()
+
+                loadPhotoProfileUser(context, photoUrl, im_user_profile_photo)
+
+                tv_user_profile_name_full.text = username
+                tv_user_profile_email.text = userEmail
+            } ?: activity.finish()
+        }
     }
 
     private fun setUpToolbar() {
@@ -60,7 +75,7 @@ class UserProfileFragment : BaseFragment() {
     }
 
     private fun initialUserProfile() {
-        loadPhotoProfileUser(context, photoUrl, im_user_profile_photo)
+
 
         tv_edit_profile.setOnClickListener {
             val intentProfile = Intent(context, ProfileUserActivity::class.java)
@@ -86,15 +101,19 @@ class UserProfileFragment : BaseFragment() {
             val intentFavorite = Intent(context, MyFavoriteActivity::class.java)
             startActivity(intentFavorite)
         }
-
-        tv_user_profile_name_full.text = username
-        tv_user_profile_email.text = userEmail
     }
 
 
     override fun onStart() {
         super.onStart()
         initialUserProfile()
+        authUser.addAuthStateListener(authListener)
+
+    }
+
+    override fun onStop() {
+        super.onStop()
+        authUser.removeAuthStateListener(authListener)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {

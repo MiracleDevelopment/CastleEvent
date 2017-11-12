@@ -29,50 +29,62 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <com.facebook.drawee.view.SimpleDraweeView
-                android:id="@+id/im_user_profile_photo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:adjustViewBounds="true"
-                app:actualImageScaleType="centerCrop"
-                app:fadeDuration="200"
-                app:placeholderImage="@mipmap/ic_launcher"
-                app:roundAsCircle="true" />
+            <RelativeLayout
+                android:id="@+id/rl_back_ground_profile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/tv_user_profile_name_full"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:fontFamily="@font/roboto_light"
-                android:padding="5dp"
-                android:textColor="@color/colorMenuList"
-                android:textSize="@dimen/sizeFontHeader" />
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/im_user_profile_photo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center"
+                    app:actualImageScaleType="centerCrop"
+                    app:fadeDuration="200"
+                    app:placeholderImage="@mipmap/ic_launcher"
+                    app:roundAsCircle="true" />
 
-            <TextView
-                android:id="@+id/tv_user_profile_email"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:fontFamily="@font/roboto_light"
-                android:padding="5dp"
-                android:textColor="@color/colorMenuList"
-                android:textSize="@dimen/sizeFontContent" />
+                <TextView
+                    android:id="@+id/tv_user_profile_name_full"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/im_user_profile_photo"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/roboto_light"
+                    android:padding="5dp"
+                    android:textColor="@color/colorMenuList"
+                    android:textSize="@dimen/sizeFontHeader" />
 
-            <TextView
-                android:id="@+id/tv_edit_profile"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="5dp"
-                android:background="@drawable/ripple_edit_profile"
-                android:clickable="true"
-                android:focusable="true"
-                android:fontFamily="@font/roboto_light"
-                android:text="@string/edit_profile"
-                android:textColor="@color/colorMenuList"
-                android:textSize="@dimen/sizeFontHeader" />
+                <TextView
+                    android:id="@+id/tv_user_profile_email"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_user_profile_name_full"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/roboto_light"
+                    android:padding="5dp"
+                    android:textColor="@color/colorMenuList"
+                    android:textSize="@dimen/sizeFontContent" />
+
+                <TextView
+                    android:id="@+id/tv_edit_profile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_user_profile_email"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/ripple_edit_profile"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:fontFamily="@font/roboto_light"
+                    android:text="@string/edit_profile"
+                    android:textColor="@color/colorMenuList"
+                    android:textSize="@dimen/sizeFontHeader" />
+            </RelativeLayout>
 
             <LinearLayout
                 android:id="@+id/li_menu_user"
@@ -103,8 +115,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:padding="5dp"
-                            android:src="@mipmap/ic_launcher" />
+                            android:padding="12dp"
+                            android:src="@mipmap/ic_shopping_cart" />
 
                         <TextView
                             android:id="@+id/tv_my_order_menu"
@@ -143,8 +155,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
-                            android:padding="5dp"
-                            android:src="@mipmap/ic_launcher" />
+                            android:padding="12dp"
+                            android:src="@mipmap/ic_perm_contact_calendar" />
 
                         <TextView
                             android:id="@+id/tv_calendar_menu"
@@ -189,8 +201,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
-                            android:padding="5dp"
-                            android:src="@mipmap/ic_launcher" />
+                            android:padding="12dp"
+                            android:src="@mipmap/ic_contacts" />
 
                         <TextView
                             android:id="@+id/tv_contact_menu"
@@ -227,8 +239,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
-                            android:padding="5dp"
-                            android:src="@mipmap/ic_launcher" />
+                            android:padding="12dp"
+                            android:src="@mipmap/ic_favorite" />
 
                         <TextView
                             android:id="@+id/my_favorite_menu"

@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.EditText
 import android.widget.Toast
 import com.ipati.dev.castleevent.fragment.loading.LoadingDialogFragment
+import com.ipati.dev.castleevent.fragment.loading.MissingDialogFragment
 import com.ipati.dev.castleevent.fragment.loading.RegisterDialogFragment
 import com.ipati.dev.castleevent.fragment.loading.SettingDialogFragment
 
@@ -68,6 +69,13 @@ fun FragmentManager.replaceFragment(frameLayout: Int, fragmentOwner: Fragment) {
 
 fun Context.onShowToast(msg: String) {
     Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+}
+
+fun onShowMissingDialog(activity: FragmentActivity, msg: String, codeMessage: Int): MissingDialogFragment {
+    return MissingDialogFragment.newInstance(msg, codeMessage).apply {
+        isCancelable = false
+        show(activity.supportFragmentManager, "MissingDialogFragment")
+    }
 }
 
 

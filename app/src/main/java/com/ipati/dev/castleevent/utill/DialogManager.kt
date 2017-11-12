@@ -29,8 +29,8 @@ class DialogManager(activity: FragmentActivity) {
         }
     }
 
-    fun onShowMissingDialog(msg: String): MissingDialogFragment {
-        missingDialog = MissingDialogFragment.newInstance(msg)
+    fun onShowMissingDialog(msg: String, codeMessage: Int): MissingDialogFragment {
+        missingDialog = MissingDialogFragment.newInstance(msg, codeMessage)
         missingDialog.isCancelable = false
         return missingDialog.apply {
             show(activityDialog.supportFragmentManager, tagMissingDialogFragment)

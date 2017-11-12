@@ -41,7 +41,6 @@ import com.ipati.dev.castleevent.extension.matrixHeightPx
 import com.ipati.dev.castleevent.extension.matrixWidthPx
 import com.ipati.dev.castleevent.model.Fresco.loadGoogleMapStatic
 import com.ipati.dev.castleevent.model.Fresco.loadLogo
-import com.ipati.dev.castleevent.model.Fresco.loadPhotoAdvertise
 import com.ipati.dev.castleevent.model.Fresco.loadPhotoDetail
 import com.ipati.dev.castleevent.model.GoogleCalendar.*
 import com.ipati.dev.castleevent.model.GoogleCalendar.CalendarFragment.CalendarManager
@@ -195,19 +194,19 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
         tv_receive_tickets.setOnClickListener {
             when (tv_receive_tickets.text) {
                 resources.getText(R.string.expiredTickets) -> {
-                    dialogManager.onShowMissingDialog(resources.getString(R.string.expiredTickets))
+                    dialogManager.onShowMissingDialog(resources.getString(R.string.expiredTickets), REQUEST_TICKET_EXPIRED)
                 }
 
                 resources.getText(R.string.pleaseLogin) -> {
-                    dialogManager.onShowMissingDialog(resources.getString(R.string.pleaseLogin))
+                    dialogManager.onShowMissingDialog(resources.getString(R.string.pleaseLogin), REQUEST_LOGIN_AUTHENTICATION)
                 }
 
                 resources.getText(R.string.lessAfterDate) -> {
-                    dialogManager.onShowMissingDialog(resources.getString(R.string.lessAfterDate))
+                    dialogManager.onShowMissingDialog(resources.getString(R.string.lessAfterDate), REQUEST_TIME_LIMIT)
                 }
 
                 resources.getString(R.string.closeEvent) -> {
-                    dialogManager.onShowMissingDialog(resources.getString(R.string.closeEvent))
+                    dialogManager.onShowMissingDialog(resources.getString(R.string.closeEvent), REQUEST_CLOSE_TICKET)
                 }
 
                 else -> {
@@ -391,11 +390,13 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(context, Manifest.permission.GET_ACCOUNTS) == PackageManager.PERMISSION_GRANTED) {
                 addEvent()
+                dialogManager.onDismissConfirmDialog()
             } else {
                 requestPermissionGetAccounts()
             }
         } else {
             addEvent()
+            dialogManager.onDismissConfirmDialog()
         }
     }
 
@@ -444,15 +445,12 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
                     recorderEvent = RecordListEvent()
                     bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
 
-                    dialogManager.onDismissConfirmDialog()
-                    dialogManager.onDismissLoadingDialog()
-
                     recorderEvent?.pushEventRealTime(username, eventId.toString(), nameEvent
                             , locationEvent, logoEvent, number_picker.value.toLong()
                             , dateManager.getCurrentDate(), java.util.Calendar.getInstance().timeInMillis)
                             ?.addOnCompleteListener { task ->
                                 if (!task.isComplete) {
-                                    dialogManager.onShowMissingDialog(task.exception?.message!!)
+                                    dialogManager.onShowMissingDialog(task.exception?.message!!, REQURST_OTHER_ERROR)
                                 } else {
                                     MakePushEvent(googleCredentialAccount).execute()
                                     Log.d("TransactionStatus", "Success")
@@ -468,7 +466,7 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
                         if (setRestJoinEvent(number_picker.value) >= 0) {
                             restItemEvent?.eventRest = (setRestJoinEvent(number_picker.value).toLong())
                         } else {
-                            dialogManager.onShowMissingDialog("จำนวเหลือเพียง ${setRestJoinEvent(number_picker.value)}")
+                            dialogManager.onShowMissingDialog("จำนวเหลือเพียง ${setRestJoinEvent(number_picker.value)}", REQURST_OTHER_ERROR)
                         }
                     } ?: Transaction.success(p0)
                     p0.value = restItemEvent
@@ -603,6 +601,11 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
         private const val REQUEST_PERMISSION_ACCOUNT: Int = 1111
         private const val REQUEST_CALENDAR_PERMISSION: Int = 1101
         private const val REQUEST_ACCOUNT_RECORD: Int = 1000
+        private const val REQUEST_TICKET_EXPIRED: Int = 1001
+        private const val REQUEST_TIME_LIMIT: Int = 1002
+        private const val REQUEST_LOGIN_AUTHENTICATION: Int = 1003
+        private const val REQUEST_CLOSE_TICKET: Int = 1004
+        private const val REQURST_OTHER_ERROR: Int = 1005
 
         fun newInstance(width: Int, height: Int, transitionName: String, nameObject: Long): ListDetailEventFragment {
             val listDetailEventFragment = ListDetailEventFragment()
@@ -650,8 +653,6 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
         override fun onPostExecute(result: Event?) {
             super.onPostExecute(result)
             Log.d("resultTaskInsertEvent", result?.htmlLink)
-            bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-            floating_bt_close.setImageResource(R.mipmap.ic_ticket)
             dialogManager.onDismissLoadingDialog()
         }
 
@@ -663,7 +664,7 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
                         startActivityForResult((listError as UserRecoverableAuthIOException).intent, REQUEST_CALENDAR_PERMISSION)
                     }
                     else -> {
-                        dialogManager.onShowMissingDialog(listError?.message.toString())
+                        dialogManager.onShowMissingDialog(listError?.message.toString(), REQURST_OTHER_ERROR)
                     }
                 }
             }

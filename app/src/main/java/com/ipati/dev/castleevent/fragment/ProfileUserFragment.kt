@@ -9,8 +9,9 @@ import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.view.*
 import android.widget.DatePicker
-import android.widget.Toast
+import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.*
+import com.ipati.dev.castleevent.LoginActivity
 import com.ipati.dev.castleevent.R
 import com.ipati.dev.castleevent.extension.onDismissDialog
 import com.ipati.dev.castleevent.extension.onShowLoadingDialog
@@ -102,6 +103,7 @@ class ProfileUserFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
                         , ed_re_account_password_profile.text.toString()
                         , ed_email_profile.text.toString()
 
+                        //Todo: Callback
                         , { errorUsername: String ->
                     tv_input_username_profile.error = errorUsername
                 }, { errorPassword: String ->
@@ -119,9 +121,28 @@ class ProfileUserFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
                         loadingDialogFragment.onDismissDialog()
                     }, { errorCode: Exception ->
                         //Todo: OnFailure
-                        context.onShowToast(errorCode.message.toString())
+
+                        when (errorCode) {
+                            is FirebaseAuthUserCollisionException -> {
+
+                            }
+
+                            is FirebaseAuthWeakPasswordException -> {
+
+                            }
+
+                            is FirebaseAuthRecentLoginRequiredException -> {
+                                changeProfileUser.reAuthentication(activity, {
+                                    activity.finish()
+                                    val intentLogin = Intent(context, LoginActivity::class.java)
+                                    startActivity(intentLogin)
+                                    FirebaseAuth.getInstance().signOut()
+                                })
+                            }
+                        }
                         loadingDialogFragment.onDismissDialog()
                     })
+
                     onChangeGenderWithBirthDay()
 
                 } else {
@@ -156,6 +177,7 @@ class ProfileUserFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
             }
         }
     }
+
 
     private fun enableMale() {
         li_gender_male.isActivated = true

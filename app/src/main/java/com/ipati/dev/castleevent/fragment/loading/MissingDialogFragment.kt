@@ -21,12 +21,15 @@ class MissingDialogFragment : DialogFragment() {
         return inflater?.inflate(R.layout.activity_missing_dialog_fragment, container, false)
     }
 
+    private var codeMessage: Int = 0
+    var callBackReAuthentication: (() -> Unit)? = null
     @SuppressLint("ResourceType")
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         arguments?.let {
             tv_msg_missing_dialog_fragment.text = arguments.getString(msgObject)
+            codeMessage = arguments.getInt(codeMessageObject)
         }
         sizeImageAlert()
     }
@@ -34,23 +37,39 @@ class MissingDialogFragment : DialogFragment() {
     private fun sizeImageAlert() {
         im_logo_missing.layoutParams.width = context.matrixWidthPx(200)
         im_logo_missing.layoutParams.height = context.matrixHeightPx(200)
-        tv_accept_cancel_missing_dialog.layoutParams.width = context.matrixWidthPx(context.resources.displayMetrics.widthPixels - 350)
+        tv_accept_cancel_missing_dialog.layoutParams.width = context
+                .matrixWidthPx(context.resources.displayMetrics.widthPixels - 350)
 
         tv_accept_cancel_missing_dialog.setOnClickListener {
-            onMissingDialogConfirm = context as ListDetailEventActivity
-            onMissingDialogConfirm?.let {
-                (onMissingDialogConfirm as ListDetailEventActivity).onMissingDialogConfirm()
-            }
+            when (codeMessage) {
+                codeReAuthentication -> {
+                    callBackReAuthentication?.invoke()
+                    dialog.dismiss()
+                }
 
+                else -> {
+                    confirmTicket()
+                }
+            }
+        }
+    }
+
+    private fun confirmTicket() {
+        onMissingDialogConfirm = context as ListDetailEventActivity
+        onMissingDialogConfirm?.let {
+            (onMissingDialogConfirm as ListDetailEventActivity).onMissingDialogConfirm()
         }
     }
 
     companion object {
-        var msgObject = "msg"
-        fun newInstance(msg: String): MissingDialogFragment {
+        private const val msgObject = "msg"
+        private const val codeMessageObject = "codeMessage"
+        private const val codeReAuthentication = 1112
+        fun newInstance(msg: String, codeMessage: Int): MissingDialogFragment {
             return MissingDialogFragment().apply {
                 arguments = Bundle().apply {
                     putString(msgObject, msg)
+                    putInt(codeMessageObject, codeMessage)
                 }
             }
         }

@@ -3,8 +3,6 @@ package com.ipati.dev.castleevent.model
 import android.content.Context
 import android.net.Uri
 import android.support.v4.app.FragmentActivity
-import android.widget.Toast
-import com.airbnb.lottie.utils.Utils
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.*
 import com.google.firebase.database.DatabaseReference
@@ -14,13 +12,9 @@ import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.UploadTask
 import com.ipati.dev.castleevent.LibPerson.FireBaseWrapper
 import com.ipati.dev.castleevent.ProfileUserActivity
-import com.ipati.dev.castleevent.extension.onDismissDialog
-import com.ipati.dev.castleevent.extension.onShowDialog
-import com.ipati.dev.castleevent.extension.onShowLoadingDialog
+import com.ipati.dev.castleevent.extension.onShowMissingDialog
 import com.ipati.dev.castleevent.extension.onShowToast
-import com.ipati.dev.castleevent.fragment.loading.LoadingDialogFragment
 import com.ipati.dev.castleevent.model.UserManager.*
-import okhttp3.internal.Util
 import kotlin.collections.HashMap
 
 class UserProfileUpdate(context: Context) {
@@ -41,7 +35,7 @@ class UserProfileUpdate(context: Context) {
                 .build()
 
         val fireBaseListTask: List<Task<Void>> = listOf(fireBaseUser.updateProfile(userRequestChangeProfile)
-                , fireBaseUser.updatePassword(password))
+                , fireBaseUser.updatePassword(password), fireBaseUser.updateEmail(userEmail))
 
         fireBaseWrapper = FireBaseWrapper(fireBaseListTask).apply {
             addCompleteSuccess = {
@@ -57,11 +51,6 @@ class UserProfileUpdate(context: Context) {
                            , errorUserName: ((String) -> Unit)
                            , errorPassword: ((String) -> Unit)
                            , errorEmail: ((String) -> Unit)): Boolean {
-        when (userAccount) {
-            username -> {
-                errorUserName("used userName")
-            }
-        }
 
         when (password) {
             rePassword -> {
@@ -82,7 +71,7 @@ class UserProfileUpdate(context: Context) {
         }
 
         when {
-            userAccount != username && password == rePassword && password.length >= 6 && rePassword.length >= 6
+            password == rePassword && password.length >= 6 && rePassword.length >= 6
                     && android.util.Patterns.EMAIL_ADDRESS.matcher(emailUser).matches() -> {
                 return true
             }
@@ -165,8 +154,17 @@ class UserProfileUpdate(context: Context) {
         }
     }
 
+    fun reAuthentication(activity: FragmentActivity, callBackReAuthenticationSuccess: (() -> Unit)) {
+        onShowMissingDialog(activity, "คุณเข้าสู่ระบบนานกินไป กรุณาล๊อคอินใหม่อีกครั้ง...", requestReAuthentication).apply {
+            callBackReAuthentication = {
+                callBackReAuthenticationSuccess()
+            }
+        }
+    }
+
     companion object {
         private const val requestChangeProfile = 1111
+        private const val requestReAuthentication = 1112
     }
 
 }

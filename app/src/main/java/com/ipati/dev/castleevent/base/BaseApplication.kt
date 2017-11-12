@@ -2,7 +2,9 @@ package com.ipati.dev.castleevent.base
 
 import android.app.Application
 import com.crashlytics.android.Crashlytics
+import com.facebook.drawee.backends.pipeline.DraweeConfig
 import com.facebook.drawee.backends.pipeline.Fresco
+import com.facebook.imagepipeline.core.ImagePipelineConfig
 import com.google.firebase.database.FirebaseDatabase
 import io.fabric.sdk.android.Fabric
 

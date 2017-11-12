@@ -1,14 +1,17 @@
 package com.ipati.dev.castleevent.service
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.FragmentActivity
+import android.support.v4.content.ContextCompat
 import android.util.Log
 import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.GoogleApiClient
+import com.ipati.dev.castleevent.R
 import com.ipati.dev.castleevent.authCredential.googleAuthCredential
 import com.ipati.dev.castleevent.utill.SharePreferenceGoogleSignInManager
 
@@ -23,10 +26,10 @@ fun loginGoogleSignInOption(activity: FragmentActivity) {
     activity.startActivityForResult(googleSignInIntent, 1010)
 }
 
-fun googleSignInOptionsApi(): GoogleSignInOptions? {
+fun googleSignInOptionsApi(activity: FragmentActivity): GoogleSignInOptions? {
     googleLoginManager = GoogleSignInOptions
             .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(serverClientSide)
+            .requestIdToken(activity.getString(R.string.default_web_client_id))
             .requestProfile()
             .requestEmail()
             .build()
@@ -47,12 +50,13 @@ fun googleApiService(activity: FragmentActivity): GoogleApiClient? {
 
             //Todo: Fix This Bug is null
             .addOnConnectionFailedListener { connectionResult -> Log.d("OnFailed", connectionResult.errorMessage.toString()) }
-            .addApi(Auth.GOOGLE_SIGN_IN_API, googleSignInOptionsApi()!!)
+            .addApi(Auth.GOOGLE_SIGN_IN_API, googleSignInOptionsApi(activity)!!)
             .build()
 
     return googleApiClient
 }
 
 fun callbackGoogleSignIn(activity: FragmentActivity, result: GoogleSignInAccount, mGoogleSharedPreferences: SharePreferenceGoogleSignInManager) {
+
     googleAuthCredential(activity, result, mGoogleSharedPreferences)
 }

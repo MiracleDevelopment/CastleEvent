@@ -55,7 +55,7 @@ class LoginActivity : BaseAppCompatActivity() {
 
     override fun onBackPressed() {
         super.onBackPressed()
-        supportFinishAfterTransition()
+        finish()
     }
 
     companion object {
