@@ -1,6 +1,8 @@
 package com.ipati.dev.castleevent.fragment.loading
 
 import android.annotation.SuppressLint
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
 import android.support.v4.content.ContextCompat
@@ -27,6 +29,8 @@ class MissingDialogFragment : DialogFragment() {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
         arguments?.let {
             tv_msg_missing_dialog_fragment.text = arguments.getString(msgObject)
             codeMessage = arguments.getInt(codeMessageObject)

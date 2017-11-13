@@ -39,11 +39,6 @@
                 android:textStyle="bold" />
         </RelativeLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/colorToolbar" />
-
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view_my_order"
             android:layout_width="match_parent"

@@ -4,6 +4,7 @@ import android.arch.lifecycle.LifecycleRegistry
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.view.ViewPager
 import android.view.*
@@ -86,6 +87,22 @@ class ListEventActivity : BaseAppCompatActivity(), View.OnClickListener {
         tab_layout_list_event.addTab(tab_layout_list_event.newTab().setText("New"), 0, true)
         tab_layout_list_event.addTab(tab_layout_list_event.newTab().setText("Coming"), 1)
         tab_layout_list_event.addTab(tab_layout_list_event.newTab().setText("expire"), 2)
+        tab_layout_list_event.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+
+            }
+
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                tab?.let {
+                    tab.select()
+                    vp_list_event.currentItem = tab.position
+                }
+            }
+        })
     }
 
     private fun onChangeStateLogin(): FirebaseAuth.AuthStateListener {
@@ -124,6 +141,7 @@ class ListEventActivity : BaseAppCompatActivity(), View.OnClickListener {
             }
 
             override fun onPageSelected(position: Int) {
+                tab_layout_list_event.getTabAt(position)?.select()
             }
         })
     }

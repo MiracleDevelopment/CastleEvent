@@ -91,6 +91,8 @@
     <string name="no_item">No Item</string>
     <string name="skip"><![CDATA[Skip ->]]></string>
     <string name="birth_day">วันเ/เดือน/ปี</string>
+    <string name="accept_bt">Accept</string>
+    <string name="cancel_bt">Cancel</string>
 
     <string-array name="CategoryFavorite">
         <item>การศึกษา</item>

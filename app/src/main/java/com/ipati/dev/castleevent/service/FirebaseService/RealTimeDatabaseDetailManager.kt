@@ -24,7 +24,7 @@ class RealTimeDatabaseDetailManager(context: Context, lifecycle: Lifecycle, even
     private lateinit var childEvent: ChildEventListener
     private var realTimeDataDetail: DatabaseReference = FirebaseDatabase.getInstance().reference
     private var realTimeDataDetailRef: DatabaseReference = realTimeDataDetail.child("eventItem")
-            .child("eventContinue")
+            .child("eventContinue").child("news")
 
     init {
         eventIdManager = eventId

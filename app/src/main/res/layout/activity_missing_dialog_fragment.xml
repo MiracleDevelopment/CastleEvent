@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    app:cardBackgroundColor="@android:color/transparent"
+    app:cardCornerRadius="6dp"
     tools:context="com.ipati.dev.castleevent.fragment.loading.MissingDialogFragment">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:background="@color/colorBackgroundDialog"
         android:orientation="vertical">
 
         <ImageView
@@ -18,36 +20,31 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:adjustViewBounds="true"
-            android:padding="5dp"
+            android:padding="6dp"
             android:src="@mipmap/ic_error_outline" />
 
         <TextView
             android:id="@+id/tv_msg_missing_dialog_fragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/circular"
             android:gravity="center"
-            android:padding="5dp"
+            android:lines="2"
+            android:maxLines="2"
+            android:nestedScrollingEnabled="true"
+            android:padding="2dp"
             android:textColor="@color/colorFontMsgMissingDialog"
-            android:textSize="25sp" />
+            android:textSize="@dimen/sizeFontHeader" />
 
-        <android.support.v7.widget.CardView
-            android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/tv_accept_cancel_missing_dialog"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardElevation="14dp">
+            android:background="@drawable/custom_ripple_back_ground_missing_dialog"
+            android:gravity="center"
+            android:text="@string/accept_missing"
+            android:textColor="@color/colorFontMissingDialog"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/tv_accept_cancel_missing_dialog"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/custom_ripple_back_ground_missing_dialog"
-                android:fontFamily="@font/circular"
-                android:gravity="center"
-                android:text="@string/accept_missing"
-                android:textColor="@color/colorFontMissingDialog"
-                android:textSize="28sp"
-                android:textStyle="bold" />
-        </android.support.v7.widget.CardView>
     </LinearLayout>
-</LinearLayout>
+</android.support.v7.widget.CardView>

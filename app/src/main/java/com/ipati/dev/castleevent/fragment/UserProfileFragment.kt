@@ -75,8 +75,6 @@ class UserProfileFragment : BaseFragment() {
     }
 
     private fun initialUserProfile() {
-
-
         tv_edit_profile.setOnClickListener {
             val intentProfile = Intent(context, ProfileUserActivity::class.java)
             startActivity(intentProfile)

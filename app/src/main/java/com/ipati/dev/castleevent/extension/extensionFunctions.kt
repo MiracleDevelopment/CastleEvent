@@ -8,10 +8,7 @@ import android.support.v4.app.FragmentManager
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
-import com.ipati.dev.castleevent.fragment.loading.LoadingDialogFragment
-import com.ipati.dev.castleevent.fragment.loading.MissingDialogFragment
-import com.ipati.dev.castleevent.fragment.loading.RegisterDialogFragment
-import com.ipati.dev.castleevent.fragment.loading.SettingDialogFragment
+import com.ipati.dev.castleevent.fragment.loading.*
 
 
 fun EditText.toStrEditText(): String {
@@ -75,6 +72,13 @@ fun onShowMissingDialog(activity: FragmentActivity, msg: String, codeMessage: In
     return MissingDialogFragment.newInstance(msg, codeMessage).apply {
         isCancelable = false
         show(activity.supportFragmentManager, "MissingDialogFragment")
+    }
+}
+
+fun onShowQuestionDialog(activity: FragmentActivity, msg: String): QuestionDialogFragment {
+    return QuestionDialogFragment.newInstance(msg).apply {
+        isCancelable = false
+        show(activity.supportFragmentManager, "QuestionDialogFragment")
     }
 }
 

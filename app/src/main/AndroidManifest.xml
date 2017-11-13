@@ -114,7 +114,10 @@
         <activity android:name=".fragment.FavoriteCategoryFragment" />
         <activity android:name=".MyFavoriteActivity" />
         <activity android:name=".fragment.MyFavoriteFragment" />
-        <activity android:name=".fragment.loading.DateTimePickerDialogFragment"></activity>
+        <activity android:name=".fragment.loading.DateTimePickerDialogFragment" />
+        <activity android:name=".fragment.loading.QuestionDialogFragment" />
+        <activity android:name=".fragment.ComingEventFragment" />
+        <activity android:name=".fragment.ExpireEventFragment"></activity>
     </application>
 
 </manifest>

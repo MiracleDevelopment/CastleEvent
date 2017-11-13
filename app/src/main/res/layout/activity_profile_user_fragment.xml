@@ -43,7 +43,7 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:fillViewport="true">
 
             <LinearLayout
@@ -63,9 +63,12 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         app:actualImageScaleType="centerCrop"
-                        app:placeholderImage="@mipmap/ic_launcher"
+                        app:placeholderImage="@mipmap/castle_place_holder"
                         app:pressedStateOverlayImage="@drawable/shape_circle_press_image"
-                        app:roundAsCircle="true" />
+                        app:roundAsCircle="true"
+                        app:roundWithOverlayColor="@color/colorBackgroundResource"
+                        app:roundingBorderColor="#FFF"
+                        app:roundingBorderWidth="4dp" />
 
                     <TextView
                         android:id="@+id/tv_show_upload"
@@ -239,20 +242,22 @@
                         android:textSize="@dimen/sizeFontHeader" />
                 </android.support.design.widget.TextInputLayout>
 
+
                 <TextView
                     android:id="@+id/tv_record_profile"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_margin="5dp"
+                    android:layout_gravity="center"
                     android:background="@drawable/ripple_record_un_save"
                     android:clickable="false"
                     android:focusable="false"
-                    android:fontFamily="@font/circular"
+                    android:gravity="center"
                     android:text="@string/text_button_edit_profile"
                     android:textColor="@color/colorFontProfile"
-                    android:textSize="25sp" />
+                    android:textSize="18sp" />
             </LinearLayout>
+
         </ScrollView>
     </LinearLayout>
+
 </LinearLayout>

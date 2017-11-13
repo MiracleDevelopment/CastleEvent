@@ -4,37 +4,35 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Build
 import android.support.annotation.RequiresApi
-import android.support.v4.app.NotificationCompat
-import android.util.Log
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.ipati.dev.castleevent.R
 import java.net.URL
 
 class FirebaseMessagingService : FirebaseMessagingService() {
-    private var mMapData: Map<String, String>? = null
-    private var mNotificationManager: NotificationManager = NotificationManager(this)
-    lateinit var mRemoteMessageNotification: RemoteMessage.Notification
+    private var mapData: Map<String, String>? = null
+    private var notificationManager: NotificationManager = NotificationManager(this)
+    lateinit var remoteMessageNotification: RemoteMessage.Notification
 
     override fun onMessageReceived(p0: RemoteMessage?) {
         super.onMessageReceived(p0)
-        mRemoteMessageNotification = p0?.notification!!
-        mMapData = p0.data
+        remoteMessageNotification = p0?.notification!!
+        mapData = p0.data
 
         if (Build.VERSION.SDK_INT >= 26) {
-            sendNotification(mRemoteMessageNotification)
+            sendNotification(remoteMessageNotification)
         } else {
-            sendNotificationLess(mRemoteMessageNotification)
+            sendNotificationLess(remoteMessageNotification)
         }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun sendNotification(mRemoteMessage: RemoteMessage.Notification) {
-        mNotificationManager.createNotificationManager(mRemoteMessage, iconLarge(mMapData), 0)
+        notificationManager.createNotificationManager(mRemoteMessage, iconLarge(mapData), 0)
     }
 
     private fun sendNotificationLess(mRemoteMessage: RemoteMessage.Notification) {
-        mNotificationManager.createNotificationLess(mRemoteMessage, iconLarge(mMapData))
+        notificationManager.createNotificationLess(mRemoteMessage, iconLarge(mapData))
     }
 
     private fun iconLarge(mMapData: Map<String, String>?): Bitmap? {

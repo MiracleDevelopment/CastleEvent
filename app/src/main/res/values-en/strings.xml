@@ -88,4 +88,6 @@
     <string name="no_item">No Item</string>
     <string name="skip"><![CDATA[Skip ->]]></string>
     <string name="birth_day">day/month/year</string>
+    <string name="accept_bt">Accept</string>
+    <string name="cancel_bt">Cancel</string>
 </resources>

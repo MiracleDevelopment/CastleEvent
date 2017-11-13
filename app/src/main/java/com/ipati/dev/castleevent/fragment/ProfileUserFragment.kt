@@ -9,12 +9,11 @@ import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.view.*
 import android.widget.DatePicker
-import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.*
-import com.ipati.dev.castleevent.LoginActivity
 import com.ipati.dev.castleevent.R
 import com.ipati.dev.castleevent.extension.onDismissDialog
 import com.ipati.dev.castleevent.extension.onShowLoadingDialog
+import com.ipati.dev.castleevent.extension.onShowQuestionDialog
 import com.ipati.dev.castleevent.extension.onShowToast
 import com.ipati.dev.castleevent.model.Fresco.loadPhotoUserProfile
 import com.ipati.dev.castleevent.model.UserManager.*
@@ -38,6 +37,7 @@ class ProfileUserFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
     private var stateClickable: Boolean = false
     private var updateChild: String? = null
     private var timeMillion: Date? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -133,10 +133,7 @@ class ProfileUserFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
 
                             is FirebaseAuthRecentLoginRequiredException -> {
                                 changeProfileUser.reAuthentication(activity, {
-                                    activity.finish()
-                                    val intentLogin = Intent(context, LoginActivity::class.java)
-                                    startActivity(intentLogin)
-                                    FirebaseAuth.getInstance().signOut()
+                                    onShowQuestionDialog(activity, "คุณต้องการเข้าสู่ระบบใหม่ ใช่/ไม่")
                                 })
                             }
                         }
@@ -159,13 +156,13 @@ class ProfileUserFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
 
             R.id.li_gender_male -> {
                 enableMale()
-                tv_record_profile.setBackgroundResource(R.drawable.custom_back_ground_accept)
+                tv_record_profile.setBackgroundResource(R.drawable.custom_back_ground_accept_record)
                 stateClickable = true
             }
 
             R.id.li_gender_female -> {
                 disableFemale()
-                tv_record_profile.setBackgroundResource(R.drawable.custom_back_ground_accept)
+                tv_record_profile.setBackgroundResource(R.drawable.custom_back_ground_accept_record)
                 stateClickable = true
             }
 
@@ -252,16 +249,14 @@ class ProfileUserFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
         editTableChangeText = EditableChangeText(context, listItemEditText, callBackEnable = { statusUpload: Boolean ->
             when {
                 statusUpload -> {
-                    tv_record_profile.setBackgroundResource(R.drawable.custom_back_ground_accept)
+                    tv_record_profile.setBackgroundResource(R.drawable.custom_back_ground_accept_record)
                 }
                 else -> {
                     tv_record_profile.setBackgroundResource(R.drawable.ripple_record_un_save)
                 }
             }
         })
-
         editTableChangeText.addOnChangeTextListener()
-
     }
 
     @SuppressLint("SetTextI18n")

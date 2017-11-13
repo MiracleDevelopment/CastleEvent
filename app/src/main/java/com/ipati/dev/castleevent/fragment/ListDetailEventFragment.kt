@@ -466,7 +466,7 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
                         if (setRestJoinEvent(number_picker.value) >= 0) {
                             restItemEvent?.eventRest = (setRestJoinEvent(number_picker.value).toLong())
                         } else {
-                            dialogManager.onShowMissingDialog("จำนวเหลือเพียง ${setRestJoinEvent(number_picker.value)}", REQURST_OTHER_ERROR)
+                            dialogManager.onShowMissingDialog("บัตรเหลือเพียง $restEvent ใบ", REQURST_OTHER_ERROR)
                         }
                     } ?: Transaction.success(p0)
                     p0.value = restItemEvent

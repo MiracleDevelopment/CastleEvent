@@ -32,7 +32,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 app:actualImageScaleType="centerCrop"
-                app:placeholderImage="@mipmap/ic_launcher"
+                app:placeholderImage="@mipmap/castle_place_holder"
                 app:placeholderImageScaleType="centerCrop"
                 app:roundedCornerRadius="6dp" />
 

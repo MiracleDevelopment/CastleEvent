@@ -155,7 +155,7 @@ class UserProfileUpdate(context: Context) {
     }
 
     fun reAuthentication(activity: FragmentActivity, callBackReAuthenticationSuccess: (() -> Unit)) {
-        onShowMissingDialog(activity, "คุณเข้าสู่ระบบนานกินไป กรุณาล๊อคอินใหม่อีกครั้ง...", requestReAuthentication).apply {
+        onShowMissingDialog(activity, "คุณเข้าสู่ระบบนานเกินไป กรุณาล๊อคอินใหม่อีกครั้ง", requestReAuthentication).apply {
             callBackReAuthentication = {
                 callBackReAuthenticationSuccess()
             }

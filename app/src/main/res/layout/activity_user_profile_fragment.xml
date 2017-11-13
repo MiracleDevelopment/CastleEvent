@@ -42,8 +42,11 @@
                     android:layout_gravity="center"
                     app:actualImageScaleType="centerCrop"
                     app:fadeDuration="200"
-                    app:placeholderImage="@mipmap/ic_launcher"
-                    app:roundAsCircle="true" />
+                    app:placeholderImage="@mipmap/castle_place_holder"
+                    app:roundAsCircle="true"
+                    app:roundWithOverlayColor="@color/colorBackgroundResource"
+                    app:roundingBorderColor="#FFF"
+                    app:roundingBorderWidth="4dp" />
 
                 <TextView
                     android:id="@+id/tv_user_profile_name_full"

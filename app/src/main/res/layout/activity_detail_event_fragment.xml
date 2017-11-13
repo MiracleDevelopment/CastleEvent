@@ -31,7 +31,7 @@
                 android:layout_gravity="center"
                 app:actualImageScaleType="centerCrop"
                 app:layout_collapseMode="parallax"
-                app:placeholderImage="@mipmap/ic_launcher"
+                app:placeholderImage="@mipmap/castle_place_holder"
                 app:placeholderImageScaleType="centerCrop"
                 app:roundedCornerRadius="6dp" />
 
@@ -130,7 +130,7 @@
                 android:id="@+id/im_static_map"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:placeholderImage="@mipmap/ic_launcher" />
+                app:placeholderImage="@mipmap/castle_place_holder" />
 
             <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/im_logo_owner_event"
@@ -139,7 +139,7 @@
                 android:layout_gravity="center"
                 app:actualImageScaleType="centerCrop"
                 app:fadeDuration="200"
-                app:placeholderImage="@mipmap/ic_launcher" />
+                app:placeholderImage="@mipmap/castle_place_holder" />
 
             <TextView
                 android:id="@+id/tv_credit_detail"

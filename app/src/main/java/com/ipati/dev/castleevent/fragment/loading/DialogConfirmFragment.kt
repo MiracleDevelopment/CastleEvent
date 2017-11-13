@@ -1,5 +1,7 @@
 package com.ipati.dev.castleevent.fragment.loading
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
 import android.view.LayoutInflater
@@ -12,7 +14,7 @@ import com.ipati.dev.castleevent.model.LoadingDialogListener
 import kotlinx.android.synthetic.main.activity_dialog_confirm_fragment.*
 
 class DialogConfirmFragment : DialogFragment() {
-    private var mLoadingListener: LoadingDialogListener? = null
+    private var loadingListener: LoadingDialogListener? = null
     private var restoreMsg: String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,21 +30,22 @@ class DialogConfirmFragment : DialogFragment() {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         defaultMsg()
         tv_confirm_dialog_fragment.setOnClickListener {
-            mLoadingListener = activity as ListDetailEventActivity
-            if (mLoadingListener != null) {
-                (mLoadingListener as ListDetailEventActivity).onPositiveClickable(true)
+            loadingListener = activity as ListDetailEventActivity
+            if (loadingListener != null) {
+                (loadingListener as ListDetailEventActivity).onPositiveClickable(true)
             } else {
                 dialog.dismiss()
             }
         }
 
         tv_cancel_dialog_fragment.setOnClickListener {
-            mLoadingListener = activity as ListDetailEventActivity
-            if (mLoadingListener != null) {
-                (mLoadingListener as ListDetailEventActivity).onNegativeClickable(false)
+            loadingListener = activity as ListDetailEventActivity
+            if (loadingListener != null) {
+                (loadingListener as ListDetailEventActivity).onNegativeClickable(false)
             } else {
                 dialog.dismiss()
             }

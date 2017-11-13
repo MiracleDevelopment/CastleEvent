@@ -88,4 +88,6 @@
     <string name="no_item">ไม่มีไอเท็ม</string>
     <string name="skip"><![CDATA[ข้าม ->]]></string>
     <string name="birth_day">วันเ/เดือน/ปี</string>
+    <string name="accept_bt">ยืนยัน</string>
+    <string name="cancel_bt">ยกเลิก</string>
 </resources>
