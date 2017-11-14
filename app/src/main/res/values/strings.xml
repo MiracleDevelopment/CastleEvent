@@ -93,6 +93,10 @@
     <string name="birth_day">วันเ/เดือน/ปี</string>
     <string name="accept_bt">Accept</string>
     <string name="cancel_bt">Cancel</string>
+    <string name="news_topic">New</string>
+    <string name="coming_topic">Coming</string>
+    <string name="expire_topic">Expire</string>
+    <string name="text_search">search event here</string>
 
     <string-array name="CategoryFavorite">
         <item>การศึกษา</item>

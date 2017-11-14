@@ -9,11 +9,24 @@ import android.view.View
 import android.view.ViewGroup
 import com.ipati.dev.castleevent.R
 import com.ipati.dev.castleevent.adapter.ExpireListEventAdapter
+import com.ipati.dev.castleevent.model.ModelListItem.ItemListEvent
 import com.ipati.dev.castleevent.service.FirebaseService.ExpireRealTimeDatabaseManager
 import kotlinx.android.synthetic.main.activity_expire_event_fragment.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 class ExpireEventFragment : Fragment() {
     private lateinit var expireRealTimeDatabase: ExpireRealTimeDatabaseManager
+    var changeCategory: ((msg: String) -> Unit) = { msg: String ->
+        when (Locale.getDefault().language) {
+            "en" -> {
+                setChangeCategoryEN(msg)
+            }
+            else -> {
+                setChangeCategoryTH(msg)
+            }
+        }
+    }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater?.inflate(R.layout.activity_expire_event_fragment, container, false)
@@ -28,8 +41,67 @@ class ExpireEventFragment : Fragment() {
     private fun setUpRecyclerView() {
         recycler_expire_event.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         recycler_expire_event.itemAnimator = DefaultItemAnimator()
-        recycler_expire_event.adapter = expireRealTimeDatabase.adapterExpire
+        setAdapterRecyclerView()
+    }
 
+    //Todo: EditText Filter
+    fun setOnSearchListener(eventName: String) {
+        val listItemEvent = expireRealTimeDatabase.listItemEventExpire.filter { it.eventName.contains(eventName, true) }
+        expireRealTimeDatabase.adapterExpire = ExpireListEventAdapter(listChangeItem(listItemEvent))
+        setAdapterRecyclerView()
+    }
+
+    //Todo categoryEnglish
+    private fun setChangeCategoryEN(category: String) {
+        val itemChangeCategory = expireRealTimeDatabase.listItemEventExpire.filter { it.categoryName == category }
+        when (itemChangeCategory.count()) {
+            0 -> {
+                expireRealTimeDatabase.adapterExpire = ExpireListEventAdapter(expireRealTimeDatabase.listItemEventExpire)
+                setAdapterRecyclerView()
+            }
+
+            else -> {
+                expireRealTimeDatabase.adapterExpire = ExpireListEventAdapter(listChangeItem(itemChangeCategory))
+                setAdapterRecyclerView()
+            }
+        }
+    }
+
+    //Todo: categoryThai
+    private fun setChangeCategoryTH(category: String) {
+        when (category) {
+            context.getString(R.string.categoryAll) -> {
+                expireRealTimeDatabase.adapterExpire = ExpireListEventAdapter(expireRealTimeDatabase.listItemEventExpire)
+                setAdapterRecyclerView()
+            }
+
+            context.getString(R.string.categoryEducation) -> {
+                val listItemCategory = expireRealTimeDatabase.listItemEventExpire.filter { it.categoryName == "Education" }
+                expireRealTimeDatabase.adapterExpire = ExpireListEventAdapter(listChangeItem(listItemCategory))
+                setAdapterRecyclerView()
+            }
+
+            context.getString(R.string.categoryTechnology) -> {
+                val listItemCategory = expireRealTimeDatabase.listItemEventExpire.filter { it.categoryName == "Technology" }
+                expireRealTimeDatabase.adapterExpire = ExpireListEventAdapter(listChangeItem(listItemCategory))
+                setAdapterRecyclerView()
+            }
+
+            else -> {
+                val listItemCategory = expireRealTimeDatabase.listItemEventExpire.filter { it.categoryName == "Sport" }
+                expireRealTimeDatabase.adapterExpire = ExpireListEventAdapter(listChangeItem(listItemCategory))
+                setAdapterRecyclerView()
+            }
+        }
+    }
+
+    //Todo : ConvertListToArrayList
+    private fun listChangeItem(list: List<ItemListEvent>): ArrayList<ItemListEvent> {
+        return ArrayList(list)
+    }
+
+    private fun setAdapterRecyclerView() {
+        recycler_expire_event.adapter = expireRealTimeDatabase.adapterExpire
     }
 
     companion object {

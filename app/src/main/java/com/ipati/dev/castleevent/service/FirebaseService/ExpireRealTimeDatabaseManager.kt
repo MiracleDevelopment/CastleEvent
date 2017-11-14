@@ -14,7 +14,7 @@ class ExpireRealTimeDatabaseManager(lifecycle: Lifecycle) : LifecycleObserver {
     private val refDatabase: DatabaseReference? = ref.child(eventItemObject).child(eventContinue).child("expire")
     private val lifeCycle: Lifecycle = lifecycle
 
-    private var listItemEventExpire: ArrayList<ItemListEvent> = ArrayList()
+    var listItemEventExpire: ArrayList<ItemListEvent> = ArrayList()
     var adapterExpire: ExpireListEventAdapter = ExpireListEventAdapter(listItemEventExpire)
 
     init {
@@ -44,7 +44,13 @@ class ExpireRealTimeDatabaseManager(lifecycle: Lifecycle) : LifecycleObserver {
         }
 
         override fun onChildChanged(p0: DataSnapshot?, p1: String?) {
-
+            val itemListEvent: ItemListEvent? = p0?.getValue(ItemListEvent::class.java)
+            itemListEvent?.let {
+                val itemListChange: ItemListEvent? = listItemEventExpire.find { it.eventKey == p0.key }
+                val indexChange: Int = listItemEventExpire.indexOf(itemListChange)
+                listItemEventExpire[indexChange] = itemListEvent
+                adapterExpire.notifyItemChanged(indexChange)
+            }
         }
 
         override fun onChildAdded(p0: DataSnapshot?, p1: String?) {

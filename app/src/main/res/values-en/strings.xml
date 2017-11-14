@@ -90,4 +90,5 @@
     <string name="birth_day">day/month/year</string>
     <string name="accept_bt">Accept</string>
     <string name="cancel_bt">Cancel</string>
+    <string name="text_search">search event here</string>
 </resources>

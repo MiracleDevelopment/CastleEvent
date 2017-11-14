@@ -26,5 +26,5 @@
         </android.support.v7.widget.RecyclerView>
     </LinearLayout>
 
-    <include layout="@layout/custom_bottom_sheet_category" />
+
 </android.support.design.widget.CoordinatorLayout>

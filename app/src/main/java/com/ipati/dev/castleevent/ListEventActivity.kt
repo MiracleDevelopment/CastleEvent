@@ -4,9 +4,13 @@ import android.arch.lifecycle.LifecycleRegistry
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
-import android.support.design.widget.TabLayout
+import android.support.design.widget.BottomSheetBehavior
 import android.support.v4.app.Fragment
 import android.support.v4.view.ViewPager
+import android.support.v7.widget.DefaultItemAnimator
+import android.support.v7.widget.LinearLayoutManager
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.*
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
@@ -15,15 +19,20 @@ import com.ipati.dev.castleevent.adapter.ItemViewPagerAdapter
 import com.ipati.dev.castleevent.base.BaseAppCompatActivity
 import com.ipati.dev.castleevent.extension.onShowSettingDialog
 import com.ipati.dev.castleevent.extension.onShowSnackBar
+import com.ipati.dev.castleevent.fragment.ComingEventFragment
+import com.ipati.dev.castleevent.fragment.ExpireEventFragment
+import com.ipati.dev.castleevent.fragment.ListEventFragment
+import com.ipati.dev.castleevent.model.LoadingCategory
 import com.ipati.dev.castleevent.model.UserManager.photoUrl
 import com.ipati.dev.castleevent.model.UserManager.uid
 import com.ipati.dev.castleevent.model.UserManager.userEmail
 import com.ipati.dev.castleevent.model.UserManager.username
 import com.ipati.dev.castleevent.service.FirebaseNotification.NotificationManager
+import com.ipati.dev.castleevent.service.FirebaseService.CategoryRealTimeManager
 import com.ipati.dev.castleevent.service.googleApiClient
 import com.ipati.dev.castleevent.utill.SharePreferenceSettingManager
 import kotlinx.android.synthetic.main.activity_list_event.*
-
+import kotlinx.android.synthetic.main.custom_bottom_sheet_category.*
 
 class ListEventActivity : BaseAppCompatActivity(), View.OnClickListener {
     private lateinit var itemViewPagerAdapter: ItemViewPagerAdapter
@@ -31,6 +40,8 @@ class ListEventActivity : BaseAppCompatActivity(), View.OnClickListener {
     private lateinit var notificationManager: NotificationManager
     private lateinit var auth: FirebaseAuth
     private lateinit var authListener: FirebaseAuth.AuthStateListener
+    private lateinit var categoryManager: CategoryRealTimeManager
+    private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
     private var lifeCycleRegistry: LifecycleRegistry = LifecycleRegistry(this)
     private var doubleTwiceBackPress: Boolean = false
 
@@ -39,19 +50,36 @@ class ListEventActivity : BaseAppCompatActivity(), View.OnClickListener {
         setContentView(R.layout.activity_list_event)
         auth = FirebaseAuth.getInstance()
         sharePreferenceManager = SharePreferenceSettingManager(context = applicationContext)
+        categoryManager = CategoryRealTimeManager(this, lifecycle)
         notificationManager = NotificationManager(this)
 
-        onChangeStateLogin()
+        setChangeStateLogin()
         initialViewPager()
         setUpTabLayout()
+        setUpBottomSheet()
+        setUpRecyclerBottomSheet()
         setUpDrawerSimpleProfile()
         setUpDrawerSetting()
+        setUpSearchEvent()
+    }
 
+
+    private fun setUpBottomSheet() {
+        im_header_bottom_sheet_category.setOnClickListener(this)
+        bottomSheetBehavior = BottomSheetBehavior.from(bottom_sheet_category)
+        bottomSheetBehavior.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+
+            }
+
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+
+            }
+        })
     }
 
     private fun setUpDrawerSetting() {
         im_setting_list_event.setOnClickListener {
-
             val settingDialogFragment = onShowSettingDialog(supportFragmentManager)
             settingDialogFragment.onChangeLanguage = { status ->
                 if (status) {
@@ -84,36 +112,18 @@ class ListEventActivity : BaseAppCompatActivity(), View.OnClickListener {
     }
 
     private fun setUpTabLayout() {
-        tab_layout_list_event.addTab(tab_layout_list_event.newTab().setText("New"), 0, true)
-        tab_layout_list_event.addTab(tab_layout_list_event.newTab().setText("Coming"), 1)
-        tab_layout_list_event.addTab(tab_layout_list_event.newTab().setText("expire"), 2)
-        tab_layout_list_event.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabReselected(tab: TabLayout.Tab?) {
-
-            }
-
-            override fun onTabUnselected(tab: TabLayout.Tab?) {
-
-            }
-
-            override fun onTabSelected(tab: TabLayout.Tab?) {
-                tab?.let {
-                    tab.select()
-                    vp_list_event.currentItem = tab.position
-                }
-            }
-        })
+        tab_layout_list_event.setupWithViewPager(vp_list_event)
     }
 
-    private fun onChangeStateLogin(): FirebaseAuth.AuthStateListener {
+    private fun setChangeStateLogin(): FirebaseAuth.AuthStateListener {
         authListener = FirebaseAuth.AuthStateListener { firebaseAuth: FirebaseAuth? ->
             firebaseAuth?.let {
-                val firebaseUser: FirebaseUser? = firebaseAuth.currentUser
-                if (firebaseUser != null) {
-                    uid = firebaseUser.uid
-                    username = firebaseUser.displayName
-                    userEmail = firebaseUser.email
-                    photoUrl = firebaseUser.photoUrl.toString()
+                val fireBaseUser: FirebaseUser? = firebaseAuth.currentUser
+                if (fireBaseUser != null) {
+                    uid = fireBaseUser.uid
+                    username = fireBaseUser.displayName
+                    userEmail = fireBaseUser.email
+                    photoUrl = fireBaseUser.photoUrl.toString()
 
                     drawee_user_login.hierarchy.setPlaceholderImage(R.mipmap.ic_launcher)
                     drawee_user_login.setImageURI(photoUrl, applicationContext)
@@ -128,9 +138,8 @@ class ListEventActivity : BaseAppCompatActivity(), View.OnClickListener {
 
 
     private fun initialViewPager() {
-        itemViewPagerAdapter = ItemViewPagerAdapter(supportFragmentManager)
+        itemViewPagerAdapter = ItemViewPagerAdapter(applicationContext, supportFragmentManager)
         vp_list_event.adapter = itemViewPagerAdapter
-
         vp_list_event.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {
 
@@ -141,7 +150,88 @@ class ListEventActivity : BaseAppCompatActivity(), View.OnClickListener {
             }
 
             override fun onPageSelected(position: Int) {
-                tab_layout_list_event.getTabAt(position)?.select()
+                ed_search_filter.setText("")
+                ed_search_filter.isCursorVisible = false
+            }
+        })
+    }
+
+    private fun setUpRecyclerBottomSheet() {
+        recycler_bottom_sheet.layoutManager = LinearLayoutManager(applicationContext, LinearLayoutManager.VERTICAL, false)
+        recycler_bottom_sheet.itemAnimator = DefaultItemAnimator()
+        recycler_bottom_sheet.adapter = categoryManager.categoryAdapter
+
+        categoryManager.categoryAdapter.setOnChangeCategory(object : LoadingCategory {
+            override fun setOnChangeCategory(selectCategory: String) {
+                ed_search_filter.isCursorVisible = false
+                ed_search_filter.setText("")
+
+                when (vp_list_event.currentItem) {
+                    0 -> {
+                        val newFragment: Fragment? = itemViewPagerAdapter.getRegisteredFragment(0)
+                        newFragment?.let {
+                            (newFragment as ListEventFragment).apply {
+                                changeCategory.invoke(selectCategory)
+                            }
+                        }
+                    }
+
+                    1 -> {
+                        val comingFragment: Fragment? = itemViewPagerAdapter.getRegisteredFragment(1)
+                        comingFragment?.let {
+                            (comingFragment as ComingEventFragment).apply {
+                                changeCategory.invoke(selectCategory)
+                            }
+                        }
+                    }
+
+                    2 -> {
+                        val expireFragment: Fragment? = itemViewPagerAdapter.getRegisteredFragment(2)
+                        expireFragment?.let {
+                            (expireFragment as ExpireEventFragment).apply {
+                                changeCategory.invoke(selectCategory)
+                            }
+                        }
+                    }
+                }
+            }
+        })
+    }
+
+    private fun setUpSearchEvent() {
+        ed_search_filter.setOnClickListener(this)
+        ed_search_filter.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(p0: Editable?) {
+                when (vp_list_event.currentItem) {
+                    0 -> {
+                        val listEventFragment = itemViewPagerAdapter.getRegisteredFragment(0)
+                        listEventFragment?.let {
+                            (listEventFragment as ListEventFragment).setOnSearchListener(ed_search_filter.text.toString())
+                        }
+                    }
+
+                    1 -> {
+                        val comingEventFragment = itemViewPagerAdapter.getRegisteredFragment(1)
+                        comingEventFragment?.let {
+                            (comingEventFragment as ComingEventFragment).setOnSearchListener(ed_search_filter.text.toString())
+                        }
+                    }
+
+                    2 -> {
+                        val expireEventFragment = itemViewPagerAdapter.getRegisteredFragment(2)
+                        expireEventFragment?.let {
+                            (expireEventFragment as ExpireEventFragment).setOnSearchListener(ed_search_filter.text.toString())
+                        }
+                    }
+                }
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
             }
         })
     }
@@ -149,7 +239,6 @@ class ListEventActivity : BaseAppCompatActivity(), View.OnClickListener {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
         val fragment: Fragment? = itemViewPagerAdapter.getRegisteredFragment(vp_list_event.currentItem)
         fragment?.let {
             fragment.onActivityResult(requestCode, resultCode, data)
@@ -159,7 +248,21 @@ class ListEventActivity : BaseAppCompatActivity(), View.OnClickListener {
 
     override fun onClick(p0: View?) {
         when (p0?.id) {
+            R.id.im_header_bottom_sheet_category -> {
+                when (bottomSheetBehavior.state) {
+                    BottomSheetBehavior.STATE_COLLAPSED -> {
+                        bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+                    }
+                    else -> {
+                        bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                    }
+                }
 
+            }
+            R.id.ed_search_filter -> {
+                ed_search_filter.isCursorVisible = true
+                ed_search_filter.requestFocus()
+            }
         }
     }
 

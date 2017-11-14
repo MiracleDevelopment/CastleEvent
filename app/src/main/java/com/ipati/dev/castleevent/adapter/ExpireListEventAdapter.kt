@@ -1,11 +1,14 @@
 package com.ipati.dev.castleevent.adapter
 
+import android.annotation.SuppressLint
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.ipati.dev.castleevent.R
+import com.ipati.dev.castleevent.model.Fresco.loadPhoto
 import com.ipati.dev.castleevent.model.ModelListItem.ItemListEvent
+import kotlinx.android.synthetic.main.custom_list_event_adapter_layout.view.*
 
 
 class ExpireListEventAdapter(listItemListEvent: ArrayList<ItemListEvent>) : RecyclerView.Adapter<ExpireListEventAdapter.ViewHolder>() {
@@ -16,16 +19,30 @@ class ExpireListEventAdapter(listItemListEvent: ArrayList<ItemListEvent>) : Recy
     }
 
     override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
-
+        holder?.onBind()
     }
 
     override fun getItemCount(): Int {
         return listItemListEventExpire.count()
     }
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun onBind() {
+            setUpDetail()
+        }
 
+        @SuppressLint("SetTextI18n")
+        private fun setUpDetail() {
+            loadPhoto(itemView.context, listItemListEventExpire[adapterPosition].eventCover
+                    , itemView.card_view_list_event.layoutParams.width, itemView.custom_im_cover_list_event)
+
+            itemView.custom_tv_header_list_event.text = listItemListEventExpire[adapterPosition].eventName
+            itemView.custom_tv_location_list_event.text = listItemListEventExpire[adapterPosition].eventLocation
+            itemView.custom_tv_time_list_event.text = listItemListEventExpire[adapterPosition].eventTime
+            itemView.custom_tv_status_list_event.text = itemView.context.getString(R.string.expire_topic)
+
+            itemView.custom_tv_people_count_list_event.text = "${itemView.context.getString(R.string.tv_count_people)} " +
+                    "${listItemListEventExpire[adapterPosition].eventRest} ${itemView.context.getString(R.string.tv_people)}"
         }
     }
 }

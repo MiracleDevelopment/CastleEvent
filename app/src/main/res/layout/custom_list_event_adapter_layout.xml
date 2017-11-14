@@ -48,23 +48,11 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto_regular"
                     android:gravity="center_horizontal"
-                    android:maxLength="30"
+                    android:lines="1"
                     android:padding="4dp"
                     android:textColor="@color/colorFontListEvent"
                     android:textSize="@dimen/sizeFontHeader" />
 
-                <TextView
-                    android:id="@+id/custom_tv_status_list_event"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_margin="2sp"
-                    android:background="@drawable/status_background"
-                    android:fontFamily="@font/roboto_light"
-                    android:gravity="center"
-                    android:lines="1"
-                    android:textColor="@color/colorFontStatus"
-                    android:textSize="14sp" />
             </RelativeLayout>
 
             <LinearLayout
@@ -138,6 +126,18 @@
                     android:textColor="@color/colorFontListEvent"
                     android:textSize="@dimen/sizeFontContent" />
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/custom_tv_status_list_event"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/status_background"
+                android:fontFamily="@font/roboto_light"
+                android:gravity="center"
+                android:lines="1"
+                android:textColor="@color/colorFontStatus"
+                android:textSize="@dimen/sizeFontHeader" />
         </LinearLayout>
     </android.support.v7.widget.CardView>
 </LinearLayout>

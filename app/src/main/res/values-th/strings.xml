@@ -90,4 +90,5 @@
     <string name="birth_day">วันเ/เดือน/ปี</string>
     <string name="accept_bt">ยืนยัน</string>
     <string name="cancel_bt">ยกเลิก</string>
+    <string name="text_search">ค้นหาชื่ออีเว้นของคุณ</string>
 </resources>

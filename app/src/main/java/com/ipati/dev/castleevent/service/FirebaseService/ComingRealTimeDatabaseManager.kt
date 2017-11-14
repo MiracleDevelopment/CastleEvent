@@ -14,7 +14,7 @@ class ComingRealTimeDatabaseManager(lifecycle: Lifecycle) : LifecycleObserver {
     private val refDatabase: DatabaseReference? = ref.child(eventObject).child(eventContinue).child("coming")
     private val lifeCycle: Lifecycle = lifecycle
 
-    private var listItemEventComing: ArrayList<ItemListEvent> = ArrayList()
+    var listItemEventComing: ArrayList<ItemListEvent> = ArrayList()
     var adapterListComing: ComingListEventAdapter = ComingListEventAdapter(listItemEventComing)
 
     init {
@@ -44,7 +44,13 @@ class ComingRealTimeDatabaseManager(lifecycle: Lifecycle) : LifecycleObserver {
         }
 
         override fun onChildChanged(p0: DataSnapshot?, p1: String?) {
-
+            val itemListEvent: ItemListEvent? = p0?.getValue(ItemListEvent::class.java)
+            itemListEvent?.let {
+                val itemListChange: ItemListEvent? = listItemEventComing.find { it.eventKey == p0?.key }
+                val indexChange: Int = listItemEventComing.indexOf(itemListChange)
+                listItemEventComing[indexChange] = itemListEvent!!
+                adapterListComing.notifyItemChanged(indexChange)
+            }
         }
 
         override fun onChildAdded(p0: DataSnapshot?, p1: String?) {

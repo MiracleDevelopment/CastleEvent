@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.ipati.dev.castleevent.R
+import com.ipati.dev.castleevent.extension.onShowToast
 import com.ipati.dev.castleevent.model.Fresco.loadPhoto
 import com.ipati.dev.castleevent.model.ModelListItem.ItemListEvent
 import kotlinx.android.synthetic.main.custom_list_event_adapter_layout.view.*
@@ -43,7 +44,7 @@ class ComingListEventAdapter(listItemEvent: ArrayList<ItemListEvent>) : Recycler
             itemView.custom_tv_people_count_list_event.text = "${itemView.context.getString(R.string.tv_count_people)} " +
                     "" + "${listItemEventComing[adapterPosition].eventRest} ${itemView.context.getString(R.string.tv_people)} "
 
-            itemView.custom_tv_status_list_event.text = "Coming"
+            itemView.custom_tv_status_list_event.text = itemView.context.getString(R.string.coming_topic)
         }
     }
 }

@@ -65,7 +65,7 @@ class ListEventAdapter(listItem: ArrayList<ItemListEvent>) : RecyclerView.Adapte
 
         @SuppressLint("SetTextI18n")
         fun onBind(itemList: ArrayList<ItemListEvent>) {
-            loadPhoto(itemView.context, itemList[adapterPosition].eventCover,itemView.card_view_list_event.layoutParams.width, itemView.custom_im_cover_list_event)
+            loadPhoto(itemView.context, itemList[adapterPosition].eventCover, itemView.card_view_list_event.layoutParams.width, itemView.custom_im_cover_list_event)
             itemView.custom_tv_header_list_event.text = itemList[adapterPosition].eventName
 
             itemView.custom_tv_location_list_event.text = itemList[adapterPosition].eventLocation
@@ -89,7 +89,7 @@ class ListEventAdapter(listItem: ArrayList<ItemListEvent>) : RecyclerView.Adapte
 
         private fun setStatusEvent(statusView: View, status: Boolean) {
             if (status) {
-                statusView.custom_tv_status_list_event.text = itemView.getStringResource(R.string.tv_status_open)
+                statusView.custom_tv_status_list_event.text = itemView.getStringResource(R.string.news_topic)
             } else {
                 statusView.custom_tv_status_list_event.text = itemView.getStringResource(R.string.tv_status_close)
             }
