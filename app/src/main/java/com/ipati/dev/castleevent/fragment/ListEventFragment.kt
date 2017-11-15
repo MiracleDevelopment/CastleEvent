@@ -63,6 +63,8 @@ class ListEventFragment : BaseFragment() {
         val listItemCategory = realTimeDatabaseManager.arrayItemList.filter { it.eventName.contains(eventName, true) }
         realTimeDatabaseManager.adapterListEvent = ListEventAdapter(listChangeItem(listItemCategory))
         setShareElementTransition()
+
+        context.onShowToast("New Filter Work")
     }
 
     //Todo: categoryEnglish
@@ -118,13 +120,15 @@ class ListEventFragment : BaseFragment() {
 
     private fun setShareElementTransition() {
         recycler_list_event.adapter = realTimeDatabaseManager.adapterListEvent
-        realTimeDatabaseManager.adapterListEvent?.onItemTransitionClickable = { view, width, height, transitionName, eventId ->
-            intentTransitionView(view, width, height, transitionName, eventId)
+        realTimeDatabaseManager.adapterListEvent?.onItemTransitionClickable = { view, width, height, transitionName
+                                                                                , eventId
+                                                                                , status ->
+            intentTransitionView(view, width, height, transitionName, eventId, status)
         }
     }
 
 
-    private fun intentTransitionView(view: View?, width: Int, height: Int, transitionName: String, eventId: Long) {
+    private fun intentTransitionView(view: View?, width: Int, height: Int, transitionName: String, eventId: Long, status: Int) {
         val intentAnimation = Intent(context, ListDetailEventActivity::class.java)
 
         val activityOptionsCompat: ActivityOptionsCompat = ActivityOptionsCompat
@@ -136,6 +140,7 @@ class ListEventFragment : BaseFragment() {
         intentAnimation.putExtra("height", height)
         intentAnimation.putExtra("transitionName", transitionName)
         intentAnimation.putExtra("eventId", eventId)
+        intentAnimation.putExtra("status", status)
         startActivity(intentAnimation, activityOptionsCompat.toBundle())
     }
 

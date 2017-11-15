@@ -1,7 +1,8 @@
 package com.ipati.dev.castleevent.model.History
 
 
-data class RecorderTickets(var userAccount: String = ""
+data class RecorderTickets(var eventTickets: String = ""
+                           , var userAccount: String = ""
                            , var eventId: String = ""
                            , var eventName: String = ""
                            , var eventLocation: String = ""

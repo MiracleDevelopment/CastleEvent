@@ -13,47 +13,43 @@ import com.ipati.dev.castleevent.model.UserManager.uid
 
 
 class MyOrderRealTimeManager(context: Context, lifecycle: Lifecycle) : LifecycleObserver {
-    var mContext: Context = context
+    var contextManager: Context = context
     var Ref: DatabaseReference = FirebaseDatabase.getInstance().reference
-    var mRef: DatabaseReference? = Ref.child("eventUser").child(uid)
-    var mLifecycle: Lifecycle? = null
+    var refMyOrder: DatabaseReference? = Ref.child("eventUser").child(uid)
+    var lifecycle: Lifecycle? = null
 
-    var mListOrder: ArrayList<RecorderTickets> = ArrayList()
-    var mAdapterMyOrder: ListMyOrderAdapter = ListMyOrderAdapter(mListOrder)
-    var mRefChild: DatabaseReference? = null
+    var listOrder: ArrayList<RecorderTickets> = ArrayList()
+    var adapterMyOrder: ListMyOrderAdapter = ListMyOrderAdapter(listOrder)
+    var refChild: DatabaseReference? = null
 
-    lateinit var mChildEvent: ChildEventListener
-    lateinit var mChildValueEvent: ChildEventListener
+    lateinit var childEvent: ChildEventListener
+    lateinit var childValueEvent: ChildEventListener
 
     init {
-        mLifecycle = lifecycle
-        mLifecycle!!.addObserver(this)
+        this.lifecycle = lifecycle
+        this.lifecycle!!.addObserver(this)
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     private fun onStart() {
-        mRef?.let {
-            mRef!!.addChildEventListener(onChildMyOrderListener())
+        refMyOrder?.let {
+            refMyOrder!!.addChildEventListener(onChildMyOrderListener())
         }
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
     private fun onStop() {
-        mListOrder.clear()
-        mRef?.let {
-            mRef!!.removeEventListener(mChildEvent)
-        }
-
-        mRefChild?.let {
-            mRefChild!!.removeEventListener(mChildValueEvent)
+        listOrder.clear()
+        refMyOrder?.let {
+            refMyOrder!!.removeEventListener(childEvent)
         }
     }
 
 
     private fun onChildMyOrderListener(): ChildEventListener {
-        mChildEvent = object : ChildEventListener {
+        childEvent = object : ChildEventListener {
             override fun onCancelled(p0: DatabaseError?) {
-                Toast.makeText(mContext, p0?.message.toString(), Toast.LENGTH_SHORT).show()
+                Toast.makeText(contextManager, p0?.message.toString(), Toast.LENGTH_SHORT).show()
             }
 
             override fun onChildMoved(p0: DataSnapshot?, p1: String?) {
@@ -65,19 +61,25 @@ class MyOrderRealTimeManager(context: Context, lifecycle: Lifecycle) : Lifecycle
             }
 
             override fun onChildAdded(p0: DataSnapshot?, p1: String?) {
-                mRefChild = Ref.child("eventUser").child(uid).child(p0?.key.toString())
-                mRefChild?.addChildEventListener(onChildValueListener())
+                val mItemRecordTickets: RecorderTickets? = p0?.getValue(RecorderTickets::class.java)
+                mItemRecordTickets?.let {
+                    listOrder.add(mItemRecordTickets)
+                    adapterMyOrder.notifyDataSetChanged()
+                }
+
+//                refChild = Ref.child("eventUser").child(uid).child(p0?.key.toString())
+//                refChild?.addChildEventListener(onChildValueListener())
             }
 
             override fun onChildRemoved(p0: DataSnapshot?) {
 
             }
         }
-        return mChildEvent
+        return childEvent
     }
 
     private fun onChildValueListener(): ChildEventListener {
-        mChildValueEvent = object : ChildEventListener {
+        childValueEvent = object : ChildEventListener {
             override fun onCancelled(p0: DatabaseError?) {
                 Log.d("onCancelled", p0?.message.toString())
             }
@@ -93,8 +95,8 @@ class MyOrderRealTimeManager(context: Context, lifecycle: Lifecycle) : Lifecycle
             override fun onChildAdded(p0: DataSnapshot?, p1: String?) {
                 val mItemRecordTickets: RecorderTickets? = p0?.getValue(RecorderTickets::class.java)
                 mItemRecordTickets?.let {
-                    mListOrder.add(mItemRecordTickets)
-                    mAdapterMyOrder.notifyDataSetChanged()
+                    listOrder.add(mItemRecordTickets)
+                    adapterMyOrder.notifyDataSetChanged()
                 }
             }
 
@@ -103,6 +105,6 @@ class MyOrderRealTimeManager(context: Context, lifecycle: Lifecycle) : Lifecycle
             }
 
         }
-        return mChildValueEvent
+        return childValueEvent
     }
 }

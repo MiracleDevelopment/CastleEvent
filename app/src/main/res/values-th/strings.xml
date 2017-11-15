@@ -91,4 +91,10 @@
     <string name="accept_bt">ยืนยัน</string>
     <string name="cancel_bt">ยกเลิก</string>
     <string name="text_search">ค้นหาชื่ออีเว้นของคุณ</string>
+    <string name="comingTickets">อีเว้นนี้ยังไม่เปิดให้จองบัตรค่ะ</string>
+    <string name="expireTickets">อีเว้นนี้ปิดการจองแล้วค่ะ</string>
+    <string name="comingMsg">กำลังมาเร็วๆนี้</string>
+    <string name="expireMsg">อีเว้นนี้จัดขึ้นไปแล้วค่ะ</string>
+    <string name="confirm">ยืนยัน</string>
+    <string name="อัพเดทโปรไฟล์ของคุณเสร็จแล้วค่ะ">Update Complete</string>
 </resources>

@@ -118,7 +118,8 @@
         <activity android:name=".fragment.loading.DateTimePickerDialogFragment" />
         <activity android:name=".fragment.loading.QuestionDialogFragment" />
         <activity android:name=".fragment.ComingEventFragment" />
-        <activity android:name=".fragment.ExpireEventFragment"></activity>
+        <activity android:name=".fragment.ExpireEventFragment" />
+        <activity android:name=".fragment.loading.SuccessDialogFragment"></activity>
     </application>
 
 </manifest>

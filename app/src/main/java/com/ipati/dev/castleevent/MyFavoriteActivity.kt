@@ -7,10 +7,16 @@ import com.ipati.dev.castleevent.fragment.MyFavoriteFragment
 
 class MyFavoriteActivity : AppCompatActivity() {
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_my_favorite)
 
-        supportFragmentManager.replaceFragment(R.id.frame_my_favorite_fragment, MyFavoriteFragment.newInstance())
+        supportFragmentManager.replaceFragment(R.id.frame_my_favorite_fragment
+                , MyFavoriteFragment.newInstance(), questionFragmentObject)
+    }
+
+    companion object {
+        private const val questionFragmentObject = "QuestionFragment"
     }
 }

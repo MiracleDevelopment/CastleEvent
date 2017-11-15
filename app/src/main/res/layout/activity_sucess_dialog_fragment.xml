@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    app:cardCornerRadius="6dp"
+    tools:context="com.ipati.dev.castleevent.fragment.loading.SuccessDialogFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minWidth="180dp"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/im_check_mark_success_dialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="4dp"
+            android:background="@drawable/success_mask"
+            android:src="@mipmap/icon_check" />
+
+        <TextView
+            android:id="@+id/tv_msg_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="4dp"
+            android:gravity="center"
+            android:textColor="#000"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tv_success_dialog"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ripple_success"
+            android:gravity="center_horizontal"
+            android:text="@string/confirm"
+            android:textColor="#FFF"
+            android:textSize="20sp" />
+    </LinearLayout>
+</android.support.v7.widget.CardView>

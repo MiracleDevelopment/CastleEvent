@@ -25,10 +25,6 @@ interface LoadingCategory {
     fun setOnChangeCategory(selectCategory: String)
 }
 
-interface OnLogOutSystem {
-    fun logOutApplication()
-}
-
 interface OnUpdateInformation {
     fun setDataChange(itemListEvent: ItemListEvent)
 }
@@ -37,17 +33,12 @@ interface OnProgressPhotoUser {
     fun setProgressUserPhoto(progress: Int)
 }
 
-interface OnCustomLanguage {
-    fun onChangeLanguage(language: Int)
-}
-
-interface OnChangeNotificationChannel {
-    fun onChangeNotification(notification: Int)
-}
 
 interface OnMissingConfirm {
     fun onMissingDialogConfirm()
 }
+
+
 
 
 

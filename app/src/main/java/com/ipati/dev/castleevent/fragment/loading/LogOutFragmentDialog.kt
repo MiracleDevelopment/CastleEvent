@@ -8,19 +8,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
-import com.ipati.dev.castleevent.ListEventActivity
 import com.ipati.dev.castleevent.R
-import com.ipati.dev.castleevent.extension.matrixHeightPx
-import com.ipati.dev.castleevent.extension.matrixWidthPx
-import com.ipati.dev.castleevent.model.OnLogOutSystem
 import kotlinx.android.synthetic.main.activity_log_out_fragment_dialog.*
 
 class LogOutFragmentDialog : DialogFragment(), View.OnClickListener {
     var onClickPositiveLogOut: (() -> Unit)? = null
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater?.inflate(R.layout.activity_log_out_fragment_dialog, container, false)
-    }
+    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? =
+            inflater?.inflate(R.layout.activity_log_out_fragment_dialog, container, false)
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

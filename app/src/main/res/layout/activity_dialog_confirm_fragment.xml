@@ -50,7 +50,7 @@
                 android:gravity="center"
                 android:text="@string/cancel_bt"
                 android:textColor="#FFF"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/tv_confirm_dialog_fragment"
@@ -61,7 +61,7 @@
                 android:gravity="center"
                 android:text="@string/accept_bt"
                 android:textColor="#FFF"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
         </LinearLayout>
     </LinearLayout>
 </android.support.v7.widget.CardView>

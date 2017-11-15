@@ -20,7 +20,7 @@
             android:layout_height="match_parent"
             android:background="#37474F"
             android:clipToPadding="false"
-            android:paddingBottom="48dp"
+            android:paddingBottom="100dp"
             android:splitMotionEvents="false">
 
         </android.support.v7.widget.RecyclerView>

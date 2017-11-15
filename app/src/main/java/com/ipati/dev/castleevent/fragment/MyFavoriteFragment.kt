@@ -20,8 +20,12 @@ import com.ipati.dev.castleevent.R
 import com.ipati.dev.castleevent.base.BaseFragment
 import com.ipati.dev.castleevent.extension.onDismissDialog
 import com.ipati.dev.castleevent.extension.onShowLoadingDialog
+import com.ipati.dev.castleevent.extension.onShowQuestionDialog
+import com.ipati.dev.castleevent.extension.onShowToast
+import com.ipati.dev.castleevent.fragment.loading.QuestionDialogFragment
 import com.ipati.dev.castleevent.model.UserManager.uid
 import com.ipati.dev.castleevent.service.FirebaseService.FavoriteCategoryRealTimeDatabaseManager
+import com.ipati.dev.castleevent.service.RecordedEvent.CategoryRecordData
 import kotlinx.android.synthetic.main.activity_my_favorite_fragment.*
 import kotlin.collections.HashMap
 
@@ -70,35 +74,8 @@ class MyFavoriteFragment : BaseFragment() {
         recycler_view_my_favorite.itemAnimator = DefaultItemAnimator()
         recycler_view_my_favorite.adapter = favoriteCategoryManager.adapterFavorite
 
-        favoriteCategoryManager.adapterFavorite.setOnRemoveItem = {
-            val ref = FirebaseDatabase.getInstance().reference
-            val refEdit = ref.child("userCategoryProfile").child(uid)
-            val childrenChangeData: HashMap<String, Any> = HashMap()
-
-            refEdit.addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onCancelled(p0: DatabaseError?) {
-                    Log.d("onCancelledUpdateChild", p0?.message.toString())
-                }
-
-                override fun onDataChange(p0: DataSnapshot?) {
-                    val loadingDialogFragment = onShowLoadingDialog(activity, "ระบบกำลังลบข้อมูล...", false)
-                    for (item in p0?.children!!) {
-                        childrenChangeData.put("${item.key}/listCategory"
-                                , favoriteCategoryManager.adapterFavorite.listItemFavoriteCategory[0].listCategory)
-
-                        refEdit.updateChildren(childrenChangeData).addOnCompleteListener { task: Task<Void> ->
-                            when {
-                                task.isSuccessful -> {
-                                    loadingDialogFragment.onDismissDialog()
-                                }
-                                else -> {
-                                    loadingDialogFragment.onDismissDialog()
-                                }
-                            }
-                        }
-                    }
-                }
-            })
+        favoriteCategoryManager.adapterFavorite.setOnRemoveItem = { listItem, position ->
+            setCallBack(listItem, position)
         }
 
         favoriteCategoryManager.onChangeItemCount = { count ->
@@ -118,6 +95,45 @@ class MyFavoriteFragment : BaseFragment() {
                 }
             }
         }
+    }
+
+    private fun setCallBack(listItem: ArrayList<CategoryRecordData>, position: Int) {
+        onShowQuestionDialog(activity, "คุณต้องการลบ Category นี้ ใช่ / ไม่", 1002).callBackQuestion = {
+            listItem[0].listCategory.removeAt(position)
+            favoriteCategoryManager.adapterFavorite.notifyItemRemoved(position)
+            deleteItemFireBase()
+        }
+    }
+
+    private fun deleteItemFireBase() {
+        val ref = FirebaseDatabase.getInstance().reference
+        val refEdit = ref.child("userCategoryProfile").child(uid)
+        val childrenChangeData: HashMap<String, Any> = HashMap()
+
+        refEdit.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError?) {
+                Log.d("onCancelledUpdateChild", p0?.message.toString())
+            }
+
+            override fun onDataChange(p0: DataSnapshot?) {
+                val loadingDialogFragment = onShowLoadingDialog(activity, "ระบบกำลังลบข้อมูล...", false)
+                for (item in p0?.children!!) {
+                    childrenChangeData.put("${item.key}/listCategory"
+                            , favoriteCategoryManager.adapterFavorite.listItemFavoriteCategory[0].listCategory)
+
+                    refEdit.updateChildren(childrenChangeData).addOnCompleteListener { task: Task<Void> ->
+                        when {
+                            task.isSuccessful -> {
+                                loadingDialogFragment.onDismissDialog()
+                            }
+                            else -> {
+                                loadingDialogFragment.onDismissDialog()
+                            }
+                        }
+                    }
+                }
+            }
+        })
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {

@@ -26,5 +26,10 @@
         <item name="android:textSize">12sp</item>
     </style>
 
+    <style name="dialogAnimation">
+        <item name="android:windowEnterAnimation">@android:anim/accelerate_interpolator</item>
+        <item name="android:windowExitAnimation">@android:anim/slide_out_right</item>
+    </style>
+
 
 </resources>

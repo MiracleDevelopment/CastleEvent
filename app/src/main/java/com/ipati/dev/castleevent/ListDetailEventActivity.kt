@@ -20,7 +20,8 @@ class ListDetailEventActivity : BaseAppCompatActivity(), LoadingDialogListener, 
             val widthView = it.getInt("width")
             val heightView = it.getInt("height")
             val transitionName = it.getString("transitionName")
-            listDetailFragment = ListDetailEventFragment.newInstance(widthView, heightView, transitionName, eventId)
+            val statusType = it.getInt("status")
+            listDetailFragment = ListDetailEventFragment.newInstance(widthView, heightView, transitionName, eventId, statusType)
 
             supportFragmentManager.beginTransaction()
                     .replace(R.id.frame_list_detail_event

@@ -5,8 +5,8 @@
 
     </solid>
     <padding
-        android:bottom="2dp"
+        android:bottom="4dp"
         android:left="30dp"
         android:right="25dp"
-        android:top="2dp" />
+        android:top="4dp" />
 </shape>

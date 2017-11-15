@@ -79,7 +79,7 @@
     <string name="female">Female</string>
     <string name="birthday">BirthDay</string>
     <string name="tickets">Tickets</string>
-    <string name="close_bt">close</string>
+    <string name="close_bt">Close</string>
     <string name="countPeopleTickets">People</string>
     <string name="select_gender">Please Select Gender</string>
     <string name="next_step">Next -></string>
@@ -91,4 +91,10 @@
     <string name="accept_bt">Accept</string>
     <string name="cancel_bt">Cancel</string>
     <string name="text_search">search event here</string>
+    <string name="comingTickets">Wait this event coming</string>
+    <string name="expireTickets">Expire this event</string>
+    <string name="comingMsg">Coming Soon…</string>
+    <string name="expireMsg">Expire Event</string>
+    <string name="confirm">Accept</string>
+    <string name="updateProfileSuccess">Update Complete</string>
 </resources>

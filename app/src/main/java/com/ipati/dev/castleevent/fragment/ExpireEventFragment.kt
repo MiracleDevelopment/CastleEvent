@@ -1,14 +1,19 @@
 package com.ipati.dev.castleevent.fragment
 
+import android.content.Intent
 import android.os.Bundle
+import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.app.Fragment
+import android.support.v4.view.ViewCompat
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.ipati.dev.castleevent.ListDetailEventActivity
 import com.ipati.dev.castleevent.R
 import com.ipati.dev.castleevent.adapter.ExpireListEventAdapter
+import com.ipati.dev.castleevent.extension.onShowToast
 import com.ipati.dev.castleevent.model.ModelListItem.ItemListEvent
 import com.ipati.dev.castleevent.service.FirebaseService.ExpireRealTimeDatabaseManager
 import kotlinx.android.synthetic.main.activity_expire_event_fragment.*
@@ -49,6 +54,8 @@ class ExpireEventFragment : Fragment() {
         val listItemEvent = expireRealTimeDatabase.listItemEventExpire.filter { it.eventName.contains(eventName, true) }
         expireRealTimeDatabase.adapterExpire = ExpireListEventAdapter(listChangeItem(listItemEvent))
         setAdapterRecyclerView()
+
+        context.onShowToast("Expire Filter Work")
     }
 
     //Todo categoryEnglish
@@ -102,6 +109,20 @@ class ExpireEventFragment : Fragment() {
 
     private fun setAdapterRecyclerView() {
         recycler_expire_event.adapter = expireRealTimeDatabase.adapterExpire
+        expireRealTimeDatabase.adapterExpire.callBackExpireListEventAdapter = { eventId, width, height, transitionName, viewTransition, status ->
+            val intentExpire = Intent(context, ListDetailEventActivity::class.java)
+            intentExpire.putExtra("eventId", eventId)
+            intentExpire.putExtra("width", width)
+            intentExpire.putExtra("height", height)
+            intentExpire.putExtra("transitionName", transitionName)
+            intentExpire.putExtra("status", status)
+
+            val activityOptionCompat: ActivityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(activity
+                    , viewTransition
+                    , ViewCompat.getTransitionName(viewTransition))
+
+            startActivity(intentExpire, activityOptionCompat.toBundle())
+        }
     }
 
     companion object {

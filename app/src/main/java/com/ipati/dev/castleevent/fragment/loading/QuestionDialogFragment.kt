@@ -12,23 +12,29 @@ import android.view.Window
 import com.google.firebase.auth.FirebaseAuth
 import com.ipati.dev.castleevent.LoginActivity
 import com.ipati.dev.castleevent.R
+import com.ipati.dev.castleevent.extension.matrixHeightPx
 import kotlinx.android.synthetic.main.activity_question_dialog_fragment.*
 
 class QuestionDialogFragment : DialogFragment(), View.OnClickListener {
-
-
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater?.inflate(R.layout.activity_question_dialog_fragment, container, false)
-    }
+    private var codeMsg: Int = 0
+    var callBackQuestion: (() -> Any?)? = null
+    var callBackMyOrderQuestion: (() -> Unit?)? = null
+    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? =
+            inflater?.inflate(R.layout.activity_question_dialog_fragment, container, false)
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
+        im_error_outline_logo.layoutParams.width = context.matrixHeightPx(180)
+        im_error_outline_logo.layoutParams.height = context.matrixHeightPx(180)
+
         arguments?.let {
             tv_msg_question_dialog.text = arguments.getString(msgObject)
+            codeMsg = arguments.getInt(codeObject)
         }
+
         tv_accept_question_dialog.setOnClickListener(this)
         tv_cancel_bt_question_dialog.setOnClickListener(this)
     }
@@ -36,11 +42,25 @@ class QuestionDialogFragment : DialogFragment(), View.OnClickListener {
     override fun onClick(p0: View?) {
         when (p0?.id) {
             R.id.tv_accept_question_dialog -> {
-                FirebaseAuth.getInstance().signOut()
-                val intentLogin = Intent(context, LoginActivity::class.java)
-                startActivity(intentLogin)
-                dialog.dismiss()
-                activity.finish()
+                when (codeMsg) {
+                    REQUEST_RE_LOGIN -> {
+                        FirebaseAuth.getInstance().signOut()
+                        val intentLogin = Intent(context, LoginActivity::class.java)
+                        startActivity(intentLogin)
+                        dialog.dismiss()
+                        activity.finish()
+                    }
+
+                    REQUEST_DELETE_FAVORITE -> {
+                        callBackQuestion?.invoke()
+                        dialog.dismiss()
+                    }
+
+                    REQUEST_MY_ORDER -> {
+                        callBackMyOrderQuestion?.invoke()
+                        dialog.dismiss()
+                    }
+                }
             }
 
             R.id.tv_cancel_bt_question_dialog -> {
@@ -50,10 +70,16 @@ class QuestionDialogFragment : DialogFragment(), View.OnClickListener {
     }
 
     companion object {
+        private const val REQUEST_RE_LOGIN: Int = 1001
+        private const val REQUEST_DELETE_FAVORITE: Int = 1002
+        private const val REQUEST_MY_ORDER: Int = 1003
+
         private const val msgObject: String = "msg"
-        fun newInstance(msg: String): QuestionDialogFragment = QuestionDialogFragment().apply {
+        private const val codeObject: String = "code"
+        fun newInstance(msg: String, code: Int): QuestionDialogFragment = QuestionDialogFragment().apply {
             arguments = Bundle().apply {
                 putString(msgObject, msg)
+                putInt(codeObject, code)
             }
         }
     }

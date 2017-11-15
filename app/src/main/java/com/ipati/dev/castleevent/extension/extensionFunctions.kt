@@ -60,8 +60,8 @@ fun onShowRegisterDialogFragment(supportFragmentManager: FragmentManager): Regis
     }
 }
 
-fun FragmentManager.replaceFragment(frameLayout: Int, fragmentOwner: Fragment) {
-    beginTransaction().replace(frameLayout, fragmentOwner).commitNow()
+fun FragmentManager.replaceFragment(frameLayout: Int, fragmentOwner: Fragment, tag: String) {
+    beginTransaction().replace(frameLayout, fragmentOwner, tag).commitNow()
 }
 
 fun Context.onShowToast(msg: String) {
@@ -75,12 +75,18 @@ fun onShowMissingDialog(activity: FragmentActivity, msg: String, codeMessage: In
     }
 }
 
-fun onShowQuestionDialog(activity: FragmentActivity, msg: String): QuestionDialogFragment {
-    return QuestionDialogFragment.newInstance(msg).apply {
+fun onShowQuestionDialog(activity: FragmentActivity, msg: String, code: Int): QuestionDialogFragment {
+    return QuestionDialogFragment.newInstance(msg, code).apply {
         isCancelable = false
         show(activity.supportFragmentManager, "QuestionDialogFragment")
     }
 }
+
+fun onShowSuccessDialog(activity: FragmentActivity, msg: String) = SuccessDialogFragment.newInstance(msg).apply {
+    isCancelable = false
+    show(activity.supportFragmentManager, "SuccessDialogFragment")
+}
+
 
 
 

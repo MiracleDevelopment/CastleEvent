@@ -12,10 +12,12 @@ import kotlinx.android.synthetic.main.custom_list_item_my_order.view.*
 import java.util.*
 
 class ListMyOrderAdapter(mListOrder: ArrayList<RecorderTickets>) : RecyclerView.Adapter<ListMyOrderAdapter.ListMyOderHolder>() {
-    var mListItem: ArrayList<RecorderTickets> = mListOrder
     lateinit var onShowTicketsDialog: LoadingTicketsEvent
     lateinit var mCalendar: Calendar
 
+    var listItemMyOrder: ArrayList<RecorderTickets> = mListOrder
+    var callBackItemCount: ((itemCount: Int) -> Unit?)? = null
+    var callBackLongPress: ((eventPushId: String, eventId: String, position: Int) -> Unit?)? = null
     override fun onBindViewHolder(holder: ListMyOderHolder?, position: Int) {
         holder?.onBind()
     }
@@ -25,7 +27,10 @@ class ListMyOrderAdapter(mListOrder: ArrayList<RecorderTickets>) : RecyclerView.
         return ListMyOderHolder(view)
     }
 
-    override fun getItemCount(): Int = mListItem.count()
+    override fun getItemCount(): Int {
+        callBackItemCount?.invoke(listItemMyOrder.count())
+        return listItemMyOrder.count()
+    }
 
     inner class ListMyOderHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnTouchListener {
 
@@ -33,9 +38,17 @@ class ListMyOrderAdapter(mListOrder: ArrayList<RecorderTickets>) : RecyclerView.
             GestureDetector(itemView.context, object : GestureDetector.SimpleOnGestureListener() {
                 override fun onSingleTapConfirmed(e: MotionEvent?): Boolean {
                     onQrInformationSend()
-                    return super.onSingleTapConfirmed(e)
+                    return false
+                }
+
+                override fun onLongPress(e: MotionEvent?) {
+                    super.onLongPress(e)
+                    callBackLongPress?.invoke(listItemMyOrder[adapterPosition].eventTickets
+                            , listItemMyOrder[adapterPosition].eventId
+                            , adapterPosition)
                 }
             })
+
         }
 
         override fun onTouch(p0: View?, p1: MotionEvent?): Boolean {
@@ -48,20 +61,20 @@ class ListMyOrderAdapter(mListOrder: ArrayList<RecorderTickets>) : RecyclerView.
         @SuppressLint("SetTextI18n")
         fun onBind() {
             itemView.title_list_my_order_event.text = "Castle Event" + " #" + (adapterPosition + 1).toString()
-            itemView.tv_title_order_name_event.text = mListItem[adapterPosition].eventName
-            itemView.tv_order_location.text = mListItem[adapterPosition].eventLocation
-            itemView.tv_order_date_time_buy.text = mListItem[adapterPosition].dateStamp
-            itemView.tv_count_people_tickets.text = mListItem[adapterPosition].count.toString()
+            itemView.tv_title_order_name_event.text = listItemMyOrder[adapterPosition].eventName
+            itemView.tv_order_location.text = listItemMyOrder[adapterPosition].eventLocation
+            itemView.tv_order_date_time_buy.text = listItemMyOrder[adapterPosition].dateStamp
+            itemView.tv_count_people_tickets.text = listItemMyOrder[adapterPosition].count.toString()
             itemView.tv_get_qr_code.setOnTouchListener(this)
             itemView.my_order_view_list.setOnTouchListener(this)
 
-            loadPhotoTickets(itemView.context, mListItem[adapterPosition].eventLogo, itemView.im_photo_order_event)
+            loadPhotoTickets(itemView.context, listItemMyOrder[adapterPosition].eventLogo, itemView.im_photo_order_event)
             onDateConfig(itemView)
         }
 
         private fun onDateConfig(itemView: View) {
             mCalendar = Calendar.getInstance()
-            mCalendar.timeInMillis = mListItem[adapterPosition].timeStamp
+            mCalendar.timeInMillis = listItemMyOrder[adapterPosition].timeStamp
             val displayDay = mCalendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale("th"))
             when (displayDay) {
                 "วันจันทร์" -> {
@@ -90,12 +103,12 @@ class ListMyOrderAdapter(mListOrder: ArrayList<RecorderTickets>) : RecyclerView.
 
         private fun onQrInformationSend() {
             onShowTicketsDialog = itemView.context as MyOrderActivity
-            onShowTicketsDialog.onShowTicketsUser(mListItem[adapterPosition].eventId
-                    , mListItem[adapterPosition].eventLogo
-                    , mListItem[adapterPosition].eventName
-                    , mListItem[adapterPosition].userAccount
-                    , mListItem[adapterPosition].eventLocation
-                    , mListItem[adapterPosition].count)
+            onShowTicketsDialog.onShowTicketsUser(listItemMyOrder[adapterPosition].eventId
+                    , listItemMyOrder[adapterPosition].eventLogo
+                    , listItemMyOrder[adapterPosition].eventName
+                    , listItemMyOrder[adapterPosition].userAccount
+                    , listItemMyOrder[adapterPosition].eventLocation
+                    , listItemMyOrder[adapterPosition].count)
         }
     }
 

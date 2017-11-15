@@ -14,7 +14,10 @@ import kotlinx.android.synthetic.main.custom_list_event_adapter_layout.view.*
 class ListEventAdapter(listItem: ArrayList<ItemListEvent>) : RecyclerView.Adapter<ListEventAdapter.ListEventHolder>() {
     var itemList: ArrayList<ItemListEvent> = listItem
     var itemViewTransition: View? = null
-    var onItemTransitionClickable: ((view: View?, width: Int, height: Int, transitionName: String, eventId: Long) -> Unit)? = null
+    var onItemTransitionClickable: ((view: View?, width: Int, height: Int
+                                     , transitionName: String
+                                     , eventId: Long, status: Int) -> Unit)? = null
+
     override fun getItemCount(): Int = itemList.count()
 
 
@@ -48,7 +51,7 @@ class ListEventAdapter(listItem: ArrayList<ItemListEvent>) : RecyclerView.Adapte
                                 , widthOriginal
                                 , heightOriginal
                                 , ViewCompat.getTransitionName(itemViewTransition?.custom_im_cover_list_event)
-                                , itemList[adapterPosition].eventId)
+                                , itemList[adapterPosition].eventId, 0)
 
                     }
                     return super.onSingleTapConfirmed(e)
@@ -75,16 +78,14 @@ class ListEventAdapter(listItem: ArrayList<ItemListEvent>) : RecyclerView.Adapte
                     " " + itemList[adapterPosition].eventRest.toString() +
                     " " + itemView.getStringResource(R.string.tv_people)
 
-            setVisibleView(itemView.custom_im_cover_list_event)
+            setVisibleView()
             setStatusEvent(itemView, itemList[adapterPosition].eventStatus)
 
             itemView.constraint_space_content_layout.setOnTouchListener(this)
         }
 
-        private fun setVisibleView(appearanceView: View) {
-            if (appearanceView.visibility == View.INVISIBLE) {
-                appearanceView.visibility = View.VISIBLE
-            }
+        private fun setVisibleView() {
+            itemView.custom_im_cover_list_event.visibility = View.VISIBLE
         }
 
         private fun setStatusEvent(statusView: View, status: Boolean) {

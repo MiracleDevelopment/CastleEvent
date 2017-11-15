@@ -1,14 +1,19 @@
 package com.ipati.dev.castleevent.fragment
 
+import android.content.Intent
 import android.os.Bundle
+import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.app.Fragment
+import android.support.v4.view.ViewCompat
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.ipati.dev.castleevent.ListDetailEventActivity
 import com.ipati.dev.castleevent.R
 import com.ipati.dev.castleevent.adapter.ComingListEventAdapter
+import com.ipati.dev.castleevent.extension.onShowToast
 import com.ipati.dev.castleevent.model.ModelListItem.ItemListEvent
 import com.ipati.dev.castleevent.service.FirebaseService.ComingRealTimeDatabaseManager
 import kotlinx.android.synthetic.main.activity_comming_event_fragment.*
@@ -50,6 +55,8 @@ class ComingEventFragment : Fragment() {
         val listItemEvent = comingRealTimeDatabaseManager.listItemEventComing.filter { it.eventName.contains(eventName, true) }
         comingRealTimeDatabaseManager.adapterListComing = ComingListEventAdapter(listChangeCategory(listItemEvent))
         setAdapterRecyclerView()
+
+        context.onShowToast("Coming Filter Work")
     }
 
     //Todo: categoryEnglish
@@ -95,6 +102,24 @@ class ComingEventFragment : Fragment() {
 
     private fun setAdapterRecyclerView() {
         recycler_coming_event.adapter = comingRealTimeDatabaseManager.adapterListComing
+        comingRealTimeDatabaseManager.adapterListComing.callBackComingListEventAdapter = { eventId, width
+                                                                                           , height
+                                                                                           , transitionName
+                                                                                           , viewTransition
+                                                                                           , status ->
+            val intentListDetail = Intent(context, ListDetailEventActivity::class.java)
+            intentListDetail.putExtra("eventId", eventId)
+            intentListDetail.putExtra("width", width)
+            intentListDetail.putExtra("height", height)
+            intentListDetail.putExtra("transitionName", transitionName)
+            intentListDetail.putExtra("status", status)
+
+            val activityOptionCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(activity
+                    , viewTransition
+                    , ViewCompat.getTransitionName(viewTransition))
+
+            startActivity(intentListDetail, activityOptionCompat.toBundle())
+        }
     }
 
     //Todo : ConvertListToArrayList

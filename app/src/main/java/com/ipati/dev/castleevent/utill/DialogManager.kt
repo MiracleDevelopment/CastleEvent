@@ -37,17 +37,11 @@ class DialogManager(activity: FragmentActivity) {
         }
     }
 
-    fun onDismissLoadingDialog() {
-        return loadingDialog.dismiss()
-    }
+    fun onDismissLoadingDialog() = loadingDialog.dismiss()
 
-    fun onDismissConfirmDialog() {
-        return confirmDialog.dismiss()
-    }
+    fun onDismissConfirmDialog() = confirmDialog.dismiss()
 
-    fun onDismissMissingDialog() {
-        return missingDialog.dismiss()
-    }
+    fun onDismissMissingDialog() = missingDialog.dismiss()
 
     companion object {
         private const val tagLoadingFragment = "LoadingFragment"

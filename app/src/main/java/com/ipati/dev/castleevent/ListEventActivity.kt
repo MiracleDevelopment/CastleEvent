@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.support.design.widget.BottomSheetBehavior
 import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
@@ -125,11 +126,12 @@ class ListEventActivity : BaseAppCompatActivity(), View.OnClickListener {
                     userEmail = fireBaseUser.email
                     photoUrl = fireBaseUser.photoUrl.toString()
 
-                    drawee_user_login.hierarchy.setPlaceholderImage(R.mipmap.ic_launcher)
+                    drawee_user_login.hierarchy.setPlaceholderImage(R.mipmap.castle_place_holder)
                     drawee_user_login.setImageURI(photoUrl, applicationContext)
                 } else {
                     drawee_user_login.hierarchy.setPlaceholderImage(null)
                     drawee_user_login.setImageURI("", applicationContext)
+                    drawee_user_login.setActualImageResource(R.mipmap.ic_person_white)
                 }
             }
         }

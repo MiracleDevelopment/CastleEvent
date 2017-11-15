@@ -14,9 +14,13 @@ class RecordListEvent {
     fun pushEventRealTime(userName: String?, eventId: String?
                           , eventName: String?, locationEvent: String?, logoEvent: String?
                           , count: Long, dateStamp: String, timeStamp: Long): Task<Void>? {
+        refListEvent = ref.child("eventUser").child(uid)
 
-        refListEvent = ref.child("eventUser").child(uid).child(idEvent)
-        recorderTickets = RecorderTickets(userName!!, eventId!!, eventName!!, locationEvent!!, logoEvent!!, count, dateStamp, timeStamp)
+        recorderTickets = RecorderTickets(refListEvent.push().key
+                , userName!!, eventId!!, eventName!!
+                , locationEvent!!, logoEvent!!, count
+                , dateStamp, timeStamp)
+
         return refListEvent.push().setValue(recorderTickets)
     }
 }

@@ -39,8 +39,9 @@ class MissingDialogFragment : DialogFragment() {
     }
 
     private fun sizeImageAlert() {
-        im_logo_missing.layoutParams.width = context.matrixWidthPx(200)
-        im_logo_missing.layoutParams.height = context.matrixHeightPx(200)
+        im_logo_missing.layoutParams.width = context.matrixWidthPx(180)
+        im_logo_missing.layoutParams.height = context.matrixHeightPx(180)
+
         tv_accept_cancel_missing_dialog.layoutParams.width = context
                 .matrixWidthPx(context.resources.displayMetrics.widthPixels - 350)
 

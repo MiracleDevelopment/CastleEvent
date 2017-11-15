@@ -39,6 +39,7 @@ import com.ipati.dev.castleevent.base.BaseFragment
 import com.ipati.dev.castleevent.R
 import com.ipati.dev.castleevent.extension.matrixHeightPx
 import com.ipati.dev.castleevent.extension.matrixWidthPx
+import com.ipati.dev.castleevent.extension.onShowSuccessDialog
 import com.ipati.dev.castleevent.model.Fresco.loadGoogleMapStatic
 import com.ipati.dev.castleevent.model.Fresco.loadLogo
 import com.ipati.dev.castleevent.model.Fresco.loadPhotoDetail
@@ -82,6 +83,7 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
     private var recorderEvent: RecordListEvent? = null
     private var checkRest: DatabaseReference? = null
     private var bundle: Bundle? = null
+    private var statusType: Int? = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -116,9 +118,8 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
         dateManager = DateManager(context)
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater?.inflate(R.layout.activity_detail_event_fragment, container, false)
-    }
+    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? =
+            inflater?.inflate(R.layout.activity_detail_event_fragment, container, false)
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -129,6 +130,7 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
             im_detail_cover.layoutParams.height = context.matrixHeightPx(app_bar_detail_event.layoutParams.height)
 
             eventId = bundle!!.getLong(listEventObject)
+            statusType = bundle?.getInt(statusTypeObject)
             realTimeDatabaseDetailManager = RealTimeDatabaseDetailManager(context, lifecycle, eventId!!, this)
         }
 
@@ -207,6 +209,14 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
 
                 resources.getString(R.string.closeEvent) -> {
                     dialogManager.onShowMissingDialog(resources.getString(R.string.closeEvent), REQUEST_CLOSE_TICKET)
+                }
+
+                context.getString(R.string.comingTickets) -> {
+                    dialogManager.onShowMissingDialog(context.getString(R.string.comingTickets), REQUEST_COMING)
+                }
+
+                context.getString(R.string.expireTickets) -> {
+                    dialogManager.onShowMissingDialog(context.getString(R.string.expireTickets), REQUEST_EXPIRE)
                 }
 
                 else -> {
@@ -326,30 +336,39 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
     }
 
     private fun statusButton(status: String) {
-        when (status) {
-            resources.getString(R.string.expiredTickets) -> {
-                setReceiveTicketsDisable(status)
+        when (statusType) {
+            1 -> {
+                tv_bottom_sheet_limit_access.text = context.getString(R.string.comingMsg)
+                setReceiveTicketsDisable(context.getString(R.string.comingTickets))
             }
-            resources.getString(R.string.lessAfterDate) -> {
-                setReceiveTicketsDisable(status)
-            }
-
-            resources.getString(R.string.pleaseLogin) -> {
-                setReceiveTicketsDisable(status)
+            2 -> {
+                tv_bottom_sheet_limit_access.text = context.getString(R.string.expireMsg)
+                setReceiveTicketsDisable(context.getString(R.string.expireTickets))
             }
 
-            resources.getString(R.string.closeEvent) -> {
-                setReceiveTicketsDisable(status)
-            }
-            else -> {
-                setReceiveTicketEnable(status)
+            else -> when (status) {
+                resources.getString(R.string.expiredTickets) -> {
+                    setReceiveTicketsDisable(status)
+                }
+                resources.getString(R.string.lessAfterDate) -> {
+                    setReceiveTicketsDisable(status)
+                }
+
+                resources.getString(R.string.pleaseLogin) -> {
+                    setReceiveTicketsDisable(status)
+                }
+
+                resources.getString(R.string.closeEvent) -> {
+                    setReceiveTicketsDisable(status)
+                }
+                else -> {
+                    setReceiveTicketEnable(status)
+                }
             }
         }
     }
 
-    private fun setRestJoinEvent(count: Int): Int {
-        return (restEvent!! - count).toInt()
-    }
+    private fun setRestJoinEvent(count: Int): Int = (restEvent!! - count).toInt()
 
     private fun onCheckStatusCredentialGoogleCalendar() {
         if (onCheckGoogleApiService()) {
@@ -450,8 +469,9 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
                             , dateManager.getCurrentDate(), java.util.Calendar.getInstance().timeInMillis)
                             ?.addOnCompleteListener { task ->
                                 if (!task.isComplete) {
-                                    dialogManager.onShowMissingDialog(task.exception?.message!!, REQURST_OTHER_ERROR)
+                                    dialogManager.onShowMissingDialog(task.exception?.message!!, REQUEST_OTHER_ERROR)
                                 } else {
+                                    onShowSuccessDialog(activity, "จองบัตรงาน $nameEvent เรียบร้อยแล้วค่ะ")
                                     MakePushEvent(googleCredentialAccount).execute()
                                     Log.d("TransactionStatus", "Success")
                                 }
@@ -466,7 +486,7 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
                         if (setRestJoinEvent(number_picker.value) >= 0) {
                             restItemEvent?.eventRest = (setRestJoinEvent(number_picker.value).toLong())
                         } else {
-                            dialogManager.onShowMissingDialog("บัตรเหลือเพียง $restEvent ใบ", REQURST_OTHER_ERROR)
+                            dialogManager.onShowMissingDialog("บัตรเหลือเพียง $restEvent ใบ", REQUEST_OTHER_ERROR)
                         }
                     } ?: Transaction.success(p0)
                     p0.value = restItemEvent
@@ -595,6 +615,7 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
         private const val widthObject: String = "width"
         private const val heightObject: String = "height"
         private const val transition: String = "transition"
+        private const val statusTypeObject: String = "status"
 
         private const val REQUEST_ACCOUNT: Int = 1112
         private const val REQUEST_GOOGLE_PLAY: Int = 1121
@@ -605,15 +626,18 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
         private const val REQUEST_TIME_LIMIT: Int = 1002
         private const val REQUEST_LOGIN_AUTHENTICATION: Int = 1003
         private const val REQUEST_CLOSE_TICKET: Int = 1004
-        private const val REQURST_OTHER_ERROR: Int = 1005
+        private const val REQUEST_OTHER_ERROR: Int = 1005
+        private const val REQUEST_COMING: Int = 1006
+        private const val REQUEST_EXPIRE: Int = 1007
 
-        fun newInstance(width: Int, height: Int, transitionName: String, nameObject: Long): ListDetailEventFragment {
+        fun newInstance(width: Int, height: Int, transitionName: String, nameObject: Long, statusType: Int): ListDetailEventFragment {
             val listDetailEventFragment = ListDetailEventFragment()
             val bundle = Bundle()
             bundle.putLong(listEventObject, nameObject)
             bundle.putInt(widthObject, width)
             bundle.putInt(heightObject, height)
             bundle.putString(transition, transitionName)
+            bundle.putInt(statusTypeObject, statusType)
             listDetailEventFragment.arguments = bundle
             return listDetailEventFragment
         }
@@ -664,7 +688,7 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
                         startActivityForResult((listError as UserRecoverableAuthIOException).intent, REQUEST_CALENDAR_PERMISSION)
                     }
                     else -> {
-                        dialogManager.onShowMissingDialog(listError?.message.toString(), REQURST_OTHER_ERROR)
+                        dialogManager.onShowMissingDialog(listError?.message.toString(), REQUEST_OTHER_ERROR)
                     }
                 }
             }

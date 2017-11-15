@@ -4,6 +4,7 @@ import android.arch.lifecycle.Lifecycle
 import android.arch.lifecycle.LifecycleObserver
 import android.arch.lifecycle.OnLifecycleEvent
 import android.content.Context
+import android.support.v4.app.FragmentActivity
 import android.util.Log
 import com.google.firebase.database.*
 import com.ipati.dev.castleevent.adapter.FavoriteMenuAdapter

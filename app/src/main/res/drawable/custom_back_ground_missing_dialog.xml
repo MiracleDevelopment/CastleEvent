@@ -3,8 +3,8 @@
     android:shape="rectangle">
     <solid android:color="@color/colorBackgroundButtonMissingDialog" />
     <padding
-        android:bottom="2dp"
+        android:bottom="4dp"
         android:left="2dp"
         android:right="2dp"
-        android:top="2dp" />
+        android:top="4dp" />
 </shape>

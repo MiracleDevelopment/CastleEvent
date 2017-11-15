@@ -11,10 +11,7 @@ import android.view.*
 import android.widget.DatePicker
 import com.google.firebase.auth.*
 import com.ipati.dev.castleevent.R
-import com.ipati.dev.castleevent.extension.onDismissDialog
-import com.ipati.dev.castleevent.extension.onShowLoadingDialog
-import com.ipati.dev.castleevent.extension.onShowQuestionDialog
-import com.ipati.dev.castleevent.extension.onShowToast
+import com.ipati.dev.castleevent.extension.*
 import com.ipati.dev.castleevent.model.Fresco.loadPhotoUserProfile
 import com.ipati.dev.castleevent.model.UserManager.*
 import com.ipati.dev.castleevent.model.UserProfileUpdate
@@ -119,6 +116,7 @@ class ProfileUserFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
 
                         //Todo: OnSuccess
                         loadingDialogFragment.onDismissDialog()
+                        onShowSuccessDialog(activity, context.getString(R.string.updateProfileSuccess))
                     }, { errorCode: Exception ->
                         //Todo: OnFailure
 
@@ -133,7 +131,7 @@ class ProfileUserFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
 
                             is FirebaseAuthRecentLoginRequiredException -> {
                                 changeProfileUser.reAuthentication(activity, {
-                                    onShowQuestionDialog(activity, "คุณต้องการเข้าสู่ระบบใหม่ ใช่/ไม่")
+                                    onShowQuestionDialog(activity, "คุณต้องการเข้าสู่ระบบใหม่ ใช่/ไม่", 1001)
                                 })
                             }
                         }
