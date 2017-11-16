@@ -12,7 +12,8 @@ import android.view.Window
 import com.google.firebase.auth.FirebaseAuth
 import com.ipati.dev.castleevent.LoginActivity
 import com.ipati.dev.castleevent.R
-import com.ipati.dev.castleevent.extension.matrixHeightPx
+import com.ipati.dev.castleevent.extension.pxToDp
+import com.ipati.dev.castleevent.extension.pxToDp
 import kotlinx.android.synthetic.main.activity_question_dialog_fragment.*
 
 class QuestionDialogFragment : DialogFragment(), View.OnClickListener {
@@ -27,8 +28,8 @@ class QuestionDialogFragment : DialogFragment(), View.OnClickListener {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-        im_error_outline_logo.layoutParams.width = context.matrixHeightPx(180)
-        im_error_outline_logo.layoutParams.height = context.matrixHeightPx(180)
+        im_error_outline_logo.layoutParams.width = context.pxToDp(180)
+        im_error_outline_logo.layoutParams.height = context.pxToDp(180)
 
         arguments?.let {
             tv_msg_question_dialog.text = arguments.getString(msgObject)

@@ -20,11 +20,11 @@ import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInResult
 import com.ipati.dev.castleevent.R
-import com.ipati.dev.castleevent.R.id.im_twitter
 import com.ipati.dev.castleevent.RegisterActivity
 import com.ipati.dev.castleevent.authCredential.facebookAuthCredential
 import com.ipati.dev.castleevent.authCredential.twitterAuthCredential
-import com.ipati.dev.castleevent.extension.matrixHeightPx
+import com.ipati.dev.castleevent.extension.pxToDp
+import com.ipati.dev.castleevent.extension.onShowToast
 import com.ipati.dev.castleevent.service.*
 import com.ipati.dev.castleevent.utill.SharePreferenceGoogleSignInManager
 import com.twitter.sdk.android.core.*
@@ -44,9 +44,8 @@ class LoginFragment : Fragment(), View.OnClickListener {
         setHasOptionsMenu(true)
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater?.inflate(R.layout.activity_login_fragment, container, false)
-    }
+    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? =
+            inflater?.inflate(R.layout.activity_login_fragment, container, false)
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -124,7 +123,7 @@ class LoginFragment : Fragment(), View.OnClickListener {
     }
 
     private fun initialLottieAnimation() {
-        lottie_view_animation_login.layoutParams.height = context.matrixHeightPx(280)
+        lottie_view_animation_login.layoutParams.height = context.pxToDp(280)
         lottie_view_animation_login.setAnimation("login_animation.json")
         lottie_view_animation_login.loop(true)
         lottie_view_animation_login.enableMergePathsForKitKatAndAbove(true)
@@ -141,36 +140,23 @@ class LoginFragment : Fragment(), View.OnClickListener {
                 startActivity(registerIntent)
             }
             R.id.tv_login_fragment -> {
-                when {
-                    TextUtils.isEmpty(login_ed_username.text.toString()) -> {
-                        login_ed_username.error = "Please put your userEmail"
-                    }
-                }
+                login_ed_username.error = null
+                login_ed_password.error = null
 
-                when {
-                    TextUtils.isEmpty(login_ed_password.text.toString()) -> {
-                        login_ed_password.error = "Please put your password"
-                    }
-                }
+                logInAuthManager.stateValidate(login_ed_username, login_ed_password, {
+                    logInAuthManager.loginAuthentication(login_ed_username.text.toString(), login_ed_password.text.toString())
+                }, { errorMsg ->
+                    login_ed_username.error = errorMsg
+                }, { errorPassword ->
+                    login_ed_password.error = errorPassword
+                })
 
-                when {
-                    !TextUtils.isEmpty(login_ed_username.text.toString()) && !TextUtils.isEmpty(login_ed_password.text.toString()) -> {
-                        when (true) {
-                            android.util.Patterns.EMAIL_ADDRESS.matcher(login_ed_username.text.toString()).matches() -> {
-                                when (login_ed_password.length()) {
-                                    in 6..10 -> {
-                                        logInAuthManager.loginAuthentication(login_ed_username.text.toString(), login_ed_password.text.toString(), login_ed_username, login_ed_password)
-                                    }
-                                    else -> {
-                                        login_ed_password.error = "Password is More  6 Character"
-                                    }
-                                }
-                            }
-                            else -> {
-                                login_ed_username.error = "Please put @ in your userEmail"
-                            }
-                        }
-                    }
+                logInAuthManager.callBackSuccessValidate = {
+                    logInAuthManager.loginAuthentication(login_ed_username.text.toString(), login_ed_password.text.toString())
+                    context.onShowToast("Complete")
+                }
+                logInAuthManager.callBackFailureValidate = { msg ->
+                    context.onShowToast(msg)
                 }
             }
         }

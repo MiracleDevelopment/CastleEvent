@@ -28,13 +28,8 @@ fun View.getStringResource(resource: Int): String {
     return resources.getString(resource)
 }
 
-fun Context.matrixWidthPx(specificWidth: Int): Int {
-    return ((specificWidth / resources.displayMetrics.density) * resources.displayMetrics.density).toInt()
-}
+fun Context.pxToDp(specificWidth: Int): Int = ((specificWidth / resources.displayMetrics.density) * resources.displayMetrics.density).toInt()
 
-fun Context.matrixHeightPx(specificHeight: Int): Int {
-    return ((specificHeight / resources.displayMetrics.density) * resources.displayMetrics.density).toInt()
-}
 
 fun onShowSettingDialog(supportFragmentManager: FragmentManager): SettingDialogFragment {
     return SettingDialogFragment.newInstance().apply {
@@ -43,9 +38,7 @@ fun onShowSettingDialog(supportFragmentManager: FragmentManager): SettingDialogF
 }
 
 
-fun onShowSnackBar(view: View, msg: String) {
-    return Snackbar.make(view, msg, Toast.LENGTH_SHORT).show()
-}
+fun onShowSnackBar(view: View, msg: String) = Snackbar.make(view, msg, Toast.LENGTH_SHORT).show()
 
 fun onShowLoadingDialog(activity: FragmentActivity, msg: String, statusLoading: Boolean): LoadingDialogFragment {
     return LoadingDialogFragment.newInstance(msg, statusLoading).apply {

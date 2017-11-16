@@ -61,10 +61,17 @@ class ListEventFragment : BaseFragment() {
     //Todo: EditText Filter
     fun setOnSearchListener(eventName: String) {
         val listItemCategory = realTimeDatabaseManager.arrayItemList.filter { it.eventName.contains(eventName, true) }
-        realTimeDatabaseManager.adapterListEvent = ListEventAdapter(listChangeItem(listItemCategory))
-        setShareElementTransition()
 
-        context.onShowToast("New Filter Work")
+        when (listItemCategory.count()) {
+            0 -> {
+                realTimeDatabaseManager.adapterListEvent = ListEventAdapter(realTimeDatabaseManager.arrayItemList)
+                setShareElementTransition()
+            }
+            else -> {
+                realTimeDatabaseManager.adapterListEvent = ListEventAdapter(listChangeItem(listItemCategory))
+                setShareElementTransition()
+            }
+        }
     }
 
     //Todo: categoryEnglish

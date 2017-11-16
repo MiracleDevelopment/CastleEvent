@@ -52,10 +52,17 @@ class ExpireEventFragment : Fragment() {
     //Todo: EditText Filter
     fun setOnSearchListener(eventName: String) {
         val listItemEvent = expireRealTimeDatabase.listItemEventExpire.filter { it.eventName.contains(eventName, true) }
-        expireRealTimeDatabase.adapterExpire = ExpireListEventAdapter(listChangeItem(listItemEvent))
-        setAdapterRecyclerView()
+        when (listItemEvent.count()) {
+            0 -> {
+                expireRealTimeDatabase.adapterExpire = ExpireListEventAdapter(expireRealTimeDatabase.listItemEventExpire)
+                setAdapterRecyclerView()
+            }
+            else -> {
+                expireRealTimeDatabase.adapterExpire = ExpireListEventAdapter(listChangeItem(listItemEvent))
+                setAdapterRecyclerView()
+            }
+        }
 
-        context.onShowToast("Expire Filter Work")
     }
 
     //Todo categoryEnglish

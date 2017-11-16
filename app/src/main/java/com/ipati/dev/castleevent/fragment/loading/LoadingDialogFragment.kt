@@ -8,7 +8,7 @@ import android.os.Bundle
 import android.support.v4.app.DialogFragment
 import android.view.*
 import com.ipati.dev.castleevent.R
-import com.ipati.dev.castleevent.extension.matrixHeightPx
+import com.ipati.dev.castleevent.extension.pxToDp
 
 import kotlinx.android.synthetic.main.activity_loading_dialog_fragment.*
 
@@ -27,7 +27,7 @@ class LoadingDialogFragment : DialogFragment() {
         arguments?.let {
             tv_loading_header_dialog_fragment.text = arguments.getString(titleObject)
 
-            lottie_view_animation_loading_dialog.layoutParams.height = context.matrixHeightPx(350)
+            lottie_view_animation_loading_dialog.layoutParams.height = context.pxToDp(350)
             lottie_view_animation_loading_dialog.setAnimation("loading_animation.json")
             lottie_view_animation_loading_dialog.loop(true)
             lottie_view_animation_loading_dialog.playAnimation()

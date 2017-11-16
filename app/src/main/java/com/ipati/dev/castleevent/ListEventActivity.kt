@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.support.design.widget.BottomSheetBehavior
+import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
@@ -12,6 +13,7 @@ import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.*
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
@@ -20,6 +22,7 @@ import com.ipati.dev.castleevent.adapter.ItemViewPagerAdapter
 import com.ipati.dev.castleevent.base.BaseAppCompatActivity
 import com.ipati.dev.castleevent.extension.onShowSettingDialog
 import com.ipati.dev.castleevent.extension.onShowSnackBar
+import com.ipati.dev.castleevent.extension.onShowToast
 import com.ipati.dev.castleevent.fragment.ComingEventFragment
 import com.ipati.dev.castleevent.fragment.ExpireEventFragment
 import com.ipati.dev.castleevent.fragment.ListEventFragment
@@ -46,6 +49,7 @@ class ListEventActivity : BaseAppCompatActivity(), View.OnClickListener {
     private var lifeCycleRegistry: LifecycleRegistry = LifecycleRegistry(this)
     private var doubleTwiceBackPress: Boolean = false
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list_event)
@@ -55,8 +59,8 @@ class ListEventActivity : BaseAppCompatActivity(), View.OnClickListener {
         notificationManager = NotificationManager(this)
 
         setChangeStateLogin()
-        initialViewPager()
         setUpTabLayout()
+        initialViewPager()
         setUpBottomSheet()
         setUpRecyclerBottomSheet()
         setUpDrawerSimpleProfile()
@@ -141,10 +145,13 @@ class ListEventActivity : BaseAppCompatActivity(), View.OnClickListener {
 
     private fun initialViewPager() {
         itemViewPagerAdapter = ItemViewPagerAdapter(applicationContext, supportFragmentManager)
+        vp_list_event.offscreenPageLimit = 3
         vp_list_event.adapter = itemViewPagerAdapter
         vp_list_event.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {
-
+                ed_search_filter.setText("")
+                ed_search_filter.isCursorVisible = false
+                ed_search_filter.removeTextChangedListener(textWatcher)
             }
 
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
@@ -152,8 +159,7 @@ class ListEventActivity : BaseAppCompatActivity(), View.OnClickListener {
             }
 
             override fun onPageSelected(position: Int) {
-                ed_search_filter.setText("")
-                ed_search_filter.isCursorVisible = false
+
             }
         })
     }
@@ -202,40 +208,6 @@ class ListEventActivity : BaseAppCompatActivity(), View.OnClickListener {
 
     private fun setUpSearchEvent() {
         ed_search_filter.setOnClickListener(this)
-        ed_search_filter.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(p0: Editable?) {
-                when (vp_list_event.currentItem) {
-                    0 -> {
-                        val listEventFragment = itemViewPagerAdapter.getRegisteredFragment(0)
-                        listEventFragment?.let {
-                            (listEventFragment as ListEventFragment).setOnSearchListener(ed_search_filter.text.toString())
-                        }
-                    }
-
-                    1 -> {
-                        val comingEventFragment = itemViewPagerAdapter.getRegisteredFragment(1)
-                        comingEventFragment?.let {
-                            (comingEventFragment as ComingEventFragment).setOnSearchListener(ed_search_filter.text.toString())
-                        }
-                    }
-
-                    2 -> {
-                        val expireEventFragment = itemViewPagerAdapter.getRegisteredFragment(2)
-                        expireEventFragment?.let {
-                            (expireEventFragment as ExpireEventFragment).setOnSearchListener(ed_search_filter.text.toString())
-                        }
-                    }
-                }
-            }
-
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-            }
-        })
     }
 
 
@@ -264,13 +236,51 @@ class ListEventActivity : BaseAppCompatActivity(), View.OnClickListener {
             R.id.ed_search_filter -> {
                 ed_search_filter.isCursorVisible = true
                 ed_search_filter.requestFocus()
+                ed_search_filter.addTextChangedListener(textWatcher)
             }
         }
     }
 
-    override fun getLifecycle(): LifecycleRegistry {
-        return lifeCycleRegistry
+    private fun onChangeState() {
+        when (vp_list_event.currentItem) {
+            0 -> {
+                val listEventFragment = itemViewPagerAdapter.getRegisteredFragment(0)
+                listEventFragment?.let {
+                    (listEventFragment as ListEventFragment).setOnSearchListener(ed_search_filter.text.toString())
+                }
+            }
+
+            1 -> {
+                val comingEventFragment = itemViewPagerAdapter.getRegisteredFragment(1)
+                comingEventFragment?.let {
+                    (comingEventFragment as ComingEventFragment).setOnSearchListener(ed_search_filter.text.toString())
+                }
+            }
+
+            2 -> {
+                val expireEventFragment = itemViewPagerAdapter.getRegisteredFragment(2)
+                expireEventFragment?.let {
+                    (expireEventFragment as ExpireEventFragment).setOnSearchListener(ed_search_filter.text.toString())
+                }
+            }
+        }
     }
+
+    private val textWatcher: TextWatcher = object : TextWatcher {
+        override fun afterTextChanged(p0: Editable?) {
+            onChangeState()
+        }
+
+        override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+        }
+
+        override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+        }
+    }
+
+    override fun getLifecycle(): LifecycleRegistry = lifeCycleRegistry
 
     override fun onStart() {
         super.onStart()

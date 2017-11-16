@@ -121,6 +121,9 @@ class MyOrderFragment : BaseFragment() {
                             mapData.put("$uid/${item.key}", null)
                             callBackFireBase(refChildMyOrder, mapData, position, loadingDialogFragment)
                         }
+                        else -> {
+                            loadingDialogFragment.onDismissDialog()
+                        }
                     }
                 }
             }
@@ -136,7 +139,7 @@ class MyOrderFragment : BaseFragment() {
                     loadingDialogFragment.onDismissDialog()
                 }
                 else -> {
-                    Log.d("onCancelChangeData",it.exception?.message.toString())
+                    Log.d("onCancelChangeData", it.exception?.message.toString())
                     loadingDialogFragment.onDismissDialog()
                 }
             }

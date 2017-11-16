@@ -7,7 +7,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.Window
 import android.view.WindowManager
-import com.ipati.dev.castleevent.extension.matrixHeightPx
+import com.ipati.dev.castleevent.extension.pxToDp
 import kotlinx.android.synthetic.main.activity_loading_change_language.*
 
 class LoadingChangeLanguage : AppCompatActivity() {
@@ -29,7 +29,7 @@ class LoadingChangeLanguage : AppCompatActivity() {
     private fun loadLanguage() {
         tv_header_change_language.text = intent.getStringExtra("changeLanguage")
 
-        lottie_view_animation_loading_change_language.layoutParams.height = applicationContext.matrixHeightPx(350)
+        lottie_view_animation_loading_change_language.layoutParams.height = applicationContext.pxToDp(350)
         lottie_view_animation_loading_change_language.setAnimation("loading_animation.json")
         lottie_view_animation_loading_change_language.loop(true)
         lottie_view_animation_loading_change_language.playAnimation()

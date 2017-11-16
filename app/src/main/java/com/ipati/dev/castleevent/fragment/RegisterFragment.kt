@@ -72,7 +72,7 @@ class RegisterFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     }
 
     private fun initialLottieAnimation() {
-        lottie_view_animation_register.layoutParams.height = context.matrixHeightPx(280)
+        lottie_view_animation_register.layoutParams.height = context.pxToDp(280)
 
         val lottieDrawable = LottieDrawable()
         LottieComposition.Factory.fromAssetFileName(context, "login_animation.json", { composition ->

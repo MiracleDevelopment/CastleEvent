@@ -18,21 +18,58 @@ import com.ipati.dev.castleevent.model.UserManager.username
 
 class LoginAuthManager(activity: FragmentActivity, lifecycle: Lifecycle) : LifecycleObserver {
     private var activity: FragmentActivity? = null
-    private var mAuth: FirebaseAuth = FirebaseAuth.getInstance()
+    private var auth: FirebaseAuth = FirebaseAuth.getInstance()
     private var mLifecycle: Lifecycle = lifecycle
     private lateinit var fireBaseUser: FirebaseUser
     private lateinit var listEventIntent: Intent
+    var callBackSuccessValidate: (() -> Unit?)? = null
+    var callBackFailureValidate: ((msg: String) -> Unit?)? = null
 
     init {
         this.activity = activity
         mLifecycle.addObserver(this)
     }
 
-    fun loginAuthentication(email: String, password: String, usernameView: EditText, passwordView: EditText) {
+    fun stateValidate(emailEditText: EditText, passwordEditText: EditText, onSuccess: (() -> Unit)
+                      , onErrorEmail: ((errorMsg: String) -> Unit), onErrorPassword: ((errorPassword: String) -> Unit)) {
+        when {
+            emailEditText.text.isEmpty() -> {
+                onErrorEmail("isEmpty")
+            }
+        }
+
+        when {
+            !android.util.Patterns.EMAIL_ADDRESS.matcher(emailEditText.text.toString()).matches() -> {
+                onErrorEmail("missing Patterns Email")
+            }
+        }
+
+        when {
+            passwordEditText.text.isEmpty() -> {
+                onErrorPassword("isEmpty")
+            }
+        }
+
+
+        when {
+            passwordEditText.text.length < 6 -> {
+                onErrorPassword("More Than 6 Character")
+            }
+        }
+
+        when {
+            android.util.Patterns.EMAIL_ADDRESS.matcher(emailEditText.text.toString()).matches()
+                    && passwordEditText.text.length >= 6 -> {
+                onSuccess()
+            }
+        }
+    }
+
+    fun loginAuthentication(email: String, password: String) {
         val loadingDialogFragment: LoadingDialogFragment = LoadingDialogFragment.newInstance("ระบบกำลังล๊อคอิน...", false)
         loadingDialogFragment.onShowDialog(activity!!)
 
-        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
+        auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 fireBaseUser = FirebaseAuth.getInstance().currentUser!!
                 uid = fireBaseUser.uid
@@ -42,9 +79,6 @@ class LoginAuthManager(activity: FragmentActivity, lifecycle: Lifecycle) : Lifec
 
                 listEventIntent = Intent(activity, ListEventActivity::class.java)
                 activity!!.startActivity(listEventIntent)
-
-                usernameView.setText("")
-                passwordView.setText("")
 
                 loadingDialogFragment.dismiss()
             }

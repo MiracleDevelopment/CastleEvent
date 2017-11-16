@@ -7,10 +7,11 @@ import android.content.Context
 import android.util.Log
 import com.google.firebase.database.*
 import com.ipati.dev.castleevent.adapter.ListEventAdapter
+import com.ipati.dev.castleevent.extension.onShowToast
 import com.ipati.dev.castleevent.model.ModelListItem.ItemListEvent
 
 class RealTimeDatabaseManager(context: Context, lifeCycle: Lifecycle) : LifecycleObserver {
-    private var contextManager: Context? = null
+    private var contextManager: Context = context
     private var lifeCycleManager: Lifecycle? = null
     private var itemListEvent: ItemListEvent? = null
     private var onChildListener: ChildEventListener? = null
@@ -23,7 +24,6 @@ class RealTimeDatabaseManager(context: Context, lifeCycle: Lifecycle) : Lifecycl
 
     //Todo:init Class Constructor
     init {
-        contextManager = context
         lifeCycleManager = lifeCycle
         lifeCycleManager!!.addObserver(this)
     }

@@ -53,10 +53,16 @@ class ComingEventFragment : Fragment() {
     //Todo: EditText Filter
     fun setOnSearchListener(eventName: String) {
         val listItemEvent = comingRealTimeDatabaseManager.listItemEventComing.filter { it.eventName.contains(eventName, true) }
-        comingRealTimeDatabaseManager.adapterListComing = ComingListEventAdapter(listChangeCategory(listItemEvent))
-        setAdapterRecyclerView()
-
-        context.onShowToast("Coming Filter Work")
+        when (listItemEvent.count()) {
+            0 -> {
+                comingRealTimeDatabaseManager.adapterListComing = ComingListEventAdapter(comingRealTimeDatabaseManager.listItemEventComing)
+                setAdapterRecyclerView()
+            }
+            else -> {
+                comingRealTimeDatabaseManager.adapterListComing = ComingListEventAdapter(listChangeCategory(listItemEvent))
+                setAdapterRecyclerView()
+            }
+        }
     }
 
     //Todo: categoryEnglish

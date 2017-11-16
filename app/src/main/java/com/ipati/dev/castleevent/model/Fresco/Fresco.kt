@@ -1,25 +1,20 @@
 package com.ipati.dev.castleevent.model.Fresco
 
 import android.content.Context
-import android.media.Image
 import android.net.Uri
-import android.widget.RelativeLayout
 import com.facebook.drawee.backends.pipeline.Fresco
 import com.facebook.drawee.interfaces.DraweeController
 import com.facebook.drawee.view.SimpleDraweeView
 import com.facebook.imagepipeline.common.ResizeOptions
 import com.facebook.imagepipeline.request.ImageRequest
 import com.facebook.imagepipeline.request.ImageRequestBuilder
-import com.facebook.imagepipeline.request.Postprocessor
-import com.ipati.dev.castleevent.extension.matrixHeightPx
-import com.ipati.dev.castleevent.extension.matrixWidthPx
-import jp.wasabeef.fresco.processors.BlurPostprocessor
-import jp.wasabeef.fresco.processors.CombinePostProcessors
+import com.ipati.dev.castleevent.extension.pxToDp
+import com.ipati.dev.castleevent.extension.pxToDp
 
 
 fun loadPhoto(context: Context, url: String, widthCardView: Int, im: SimpleDraweeView) {
-    im.layoutParams.width = context.matrixWidthPx(widthCardView)
-    im.layoutParams.height = context.matrixHeightPx(350)
+    im.layoutParams.width = context.pxToDp(widthCardView)
+    im.layoutParams.height = context.pxToDp(350)
 
     val mImageRequest: ImageRequest = ImageRequestBuilder
             .newBuilderWithSource(Uri.parse(url))
@@ -36,8 +31,8 @@ fun loadPhoto(context: Context, url: String, widthCardView: Int, im: SimpleDrawe
 }
 
 fun loadLogo(context: Context, url: String, im: SimpleDraweeView) {
-    im.layoutParams.height = context.matrixWidthPx(180)
-    im.layoutParams.width = context.matrixHeightPx(180)
+    im.layoutParams.height = context.pxToDp(180)
+    im.layoutParams.width = context.pxToDp(180)
 
     val imageRequest: ImageRequest = ImageRequestBuilder
             .newBuilderWithSource(Uri.parse(url))
@@ -70,8 +65,8 @@ fun loadPhotoDetail(context: Context, url: String, im: SimpleDraweeView) {
 }
 
 fun loadPhotoAdvertise(context: Context, url: String, im: SimpleDraweeView) {
-    im.layoutParams.width = context.matrixWidthPx(context.resources.displayMetrics.widthPixels)
-    im.layoutParams.height = context.matrixHeightPx(450)
+    im.layoutParams.width = context.pxToDp(context.resources.displayMetrics.widthPixels)
+    im.layoutParams.height = context.pxToDp(450)
 
     val imageRequest: ImageRequest = ImageRequestBuilder.newBuilderWithSource(Uri.parse(url))
             .setLocalThumbnailPreviewsEnabled(true)
@@ -86,8 +81,8 @@ fun loadPhotoAdvertise(context: Context, url: String, im: SimpleDraweeView) {
 }
 
 fun loadPhotoProfileUser(context: Context, url: String?, im: SimpleDraweeView) {
-    im.layoutParams.width = context.matrixWidthPx(360)
-    im.layoutParams.height = context.matrixHeightPx(360)
+    im.layoutParams.width = context.pxToDp(360)
+    im.layoutParams.height = context.pxToDp(360)
 
 
     val imageRequest: ImageRequest = ImageRequestBuilder.newBuilderWithSource(Uri.parse(url))
@@ -104,8 +99,8 @@ fun loadPhotoProfileUser(context: Context, url: String?, im: SimpleDraweeView) {
 }
 
 fun loadPhotoItemMenu(context: Context, resource: Int, im: SimpleDraweeView) {
-    im.layoutParams.width = context.matrixWidthPx(80)
-    im.layoutParams.height = context.matrixHeightPx(80)
+    im.layoutParams.width = context.pxToDp(80)
+    im.layoutParams.height = context.pxToDp(80)
 
     val imageRequest: ImageRequest = ImageRequestBuilder.newBuilderWithResourceId(resource)
             .build()
@@ -121,8 +116,8 @@ fun loadPhotoItemMenu(context: Context, resource: Int, im: SimpleDraweeView) {
 }
 
 fun loadPhotoTickets(context: Context, url: String, im: SimpleDraweeView) {
-    im.layoutParams.width = context.matrixWidthPx(140)
-    im.layoutParams.height = context.matrixHeightPx(140)
+    im.layoutParams.width = context.pxToDp(140)
+    im.layoutParams.height = context.pxToDp(140)
 
     val imageRequest: ImageRequest = ImageRequestBuilder.newBuilderWithSource(Uri.parse(url))
             .setLocalThumbnailPreviewsEnabled(true)
@@ -137,8 +132,8 @@ fun loadPhotoTickets(context: Context, url: String, im: SimpleDraweeView) {
 }
 
 fun loadPhotoUserTickets(context: Context, url: String, im: SimpleDraweeView) {
-    im.layoutParams.width = context.matrixWidthPx(360)
-    im.layoutParams.height = context.matrixHeightPx(150)
+    im.layoutParams.width = context.pxToDp(360)
+    im.layoutParams.height = context.pxToDp(150)
 
     val imageRequest: ImageRequest = ImageRequestBuilder.newBuilderWithSource(Uri.parse(url))
             .setLocalThumbnailPreviewsEnabled(true)
@@ -154,8 +149,8 @@ fun loadPhotoUserTickets(context: Context, url: String, im: SimpleDraweeView) {
 }
 
 fun loadPhotoUserProfile(context: Context, url: String, im: SimpleDraweeView) {
-    im.layoutParams.width = context.matrixWidthPx(360)
-    im.layoutParams.height = context.matrixHeightPx(360)
+    im.layoutParams.width = context.pxToDp(360)
+    im.layoutParams.height = context.pxToDp(360)
 
     val imageRequest: ImageRequest = ImageRequestBuilder.newBuilderWithSource(Uri.parse(url))
             .setLocalThumbnailPreviewsEnabled(true)
@@ -171,8 +166,8 @@ fun loadPhotoUserProfile(context: Context, url: String, im: SimpleDraweeView) {
 }
 
 fun loadGoogleMapStatic(context: Context, latitude: Double, longitude: Double, im: SimpleDraweeView) {
-    im.layoutParams.width = context.matrixWidthPx(context.resources.displayMetrics.widthPixels)
-    im.layoutParams.height = context.matrixHeightPx(350)
+    im.layoutParams.width = context.pxToDp(context.resources.displayMetrics.widthPixels)
+    im.layoutParams.height = context.pxToDp(350)
 
     val queryMapStatic = "https://maps.googleapis.com/maps/api/staticmap?" +
             "center=$latitude,$longitude&zoom=14&size=500x200&markers=color:red%7Clabel:C%7C$latitude,$longitude" +

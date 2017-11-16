@@ -37,8 +37,8 @@ import com.google.firebase.database.*
 import com.ipati.dev.castleevent.BuildConfig
 import com.ipati.dev.castleevent.base.BaseFragment
 import com.ipati.dev.castleevent.R
-import com.ipati.dev.castleevent.extension.matrixHeightPx
-import com.ipati.dev.castleevent.extension.matrixWidthPx
+import com.ipati.dev.castleevent.extension.pxToDp
+import com.ipati.dev.castleevent.extension.pxToDp
 import com.ipati.dev.castleevent.extension.onShowSuccessDialog
 import com.ipati.dev.castleevent.model.Fresco.loadGoogleMapStatic
 import com.ipati.dev.castleevent.model.Fresco.loadLogo
@@ -126,8 +126,8 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
         bundle = arguments
         bundle?.let {
             ViewCompat.setTransitionName(im_detail_cover, bundle?.getString(transition))
-            im_detail_cover.layoutParams.width = context.matrixWidthPx(resources.displayMetrics.widthPixels)
-            im_detail_cover.layoutParams.height = context.matrixHeightPx(app_bar_detail_event.layoutParams.height)
+            im_detail_cover.layoutParams.width = context.pxToDp(resources.displayMetrics.widthPixels)
+            im_detail_cover.layoutParams.height = context.pxToDp(app_bar_detail_event.layoutParams.height)
 
             eventId = bundle!!.getLong(listEventObject)
             statusType = bundle?.getInt(statusTypeObject)
@@ -452,7 +452,7 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
     }
 
     private fun recordMyTickets() {
-        checkRest = ref.child("eventItem").child("eventContinue").child(keyEvent)
+        checkRest = ref.child("eventItem").child("eventContinue").child("news").child(keyEvent)
         checkRest?.runTransaction(object : Transaction.Handler {
             override fun onComplete(p0: DatabaseError?, p1: Boolean, p2: DataSnapshot?) {
                 if (p0 != null) {

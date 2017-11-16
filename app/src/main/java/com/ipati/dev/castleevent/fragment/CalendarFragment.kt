@@ -293,9 +293,7 @@ class CalendarFragment : Fragment(), View.OnClickListener {
 
 
     companion object {
-        fun newInstance(): CalendarFragment {
-            return CalendarFragment().apply { arguments = Bundle() }
-        }
+        fun newInstance(): CalendarFragment = CalendarFragment().apply { arguments = Bundle() }
     }
 
     @SuppressLint("StaticFieldLeak")

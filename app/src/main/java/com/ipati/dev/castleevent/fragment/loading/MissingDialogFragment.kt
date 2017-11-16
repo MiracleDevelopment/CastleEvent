@@ -5,15 +5,14 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
-import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import com.ipati.dev.castleevent.ListDetailEventActivity
 import com.ipati.dev.castleevent.R
-import com.ipati.dev.castleevent.extension.matrixHeightPx
-import com.ipati.dev.castleevent.extension.matrixWidthPx
+import com.ipati.dev.castleevent.extension.pxToDp
+import com.ipati.dev.castleevent.extension.pxToDp
 import com.ipati.dev.castleevent.model.OnMissingConfirm
 import kotlinx.android.synthetic.main.activity_missing_dialog_fragment.*
 
@@ -39,11 +38,11 @@ class MissingDialogFragment : DialogFragment() {
     }
 
     private fun sizeImageAlert() {
-        im_logo_missing.layoutParams.width = context.matrixWidthPx(180)
-        im_logo_missing.layoutParams.height = context.matrixHeightPx(180)
+        im_logo_missing.layoutParams.width = context.pxToDp(180)
+        im_logo_missing.layoutParams.height = context.pxToDp(180)
 
         tv_accept_cancel_missing_dialog.layoutParams.width = context
-                .matrixWidthPx(context.resources.displayMetrics.widthPixels - 350)
+                .pxToDp(context.resources.displayMetrics.widthPixels - 350)
 
         tv_accept_cancel_missing_dialog.setOnClickListener {
             when (codeMessage) {
