@@ -1,5 +1,6 @@
 package com.ipati.dev.castleevent.service.RecordedEvent
 
+import android.util.Log
 import com.google.android.gms.tasks.Task
 import com.google.firebase.database.*
 import com.ipati.dev.castleevent.model.GoogleCalendar.*
@@ -13,14 +14,14 @@ class RecordListEvent {
 
     fun pushEventRealTime(userName: String?, eventId: String?
                           , eventName: String?, locationEvent: String?, logoEvent: String?
-                          , count: Long, dateStamp: String, timeStamp: Long): Task<Void>? {
-        refListEvent = ref.child("eventUser").child(uid)
+                          , count: Long, dateStamp: String, timeStamp: Long, fireBaseCallBack: ((id: String) -> Unit)): Task<Void>? {
+        refListEvent = ref.child("eventUser").child(uid).push()
 
         recorderTickets = RecorderTickets(refListEvent.push().key
                 , userName!!, eventId!!, eventName!!
-                , locationEvent!!, logoEvent!!, count
+                , locationEvent!!, logoEvent!!, "", count
                 , dateStamp, timeStamp)
-
-        return refListEvent.push().setValue(recorderTickets)
+        fireBaseCallBack(refListEvent.key)
+        return refListEvent.setValue(recorderTickets)
     }
 }

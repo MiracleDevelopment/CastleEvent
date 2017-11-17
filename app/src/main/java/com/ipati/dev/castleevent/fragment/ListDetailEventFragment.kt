@@ -40,6 +40,7 @@ import com.ipati.dev.castleevent.R
 import com.ipati.dev.castleevent.extension.pxToDp
 import com.ipati.dev.castleevent.extension.pxToDp
 import com.ipati.dev.castleevent.extension.onShowSuccessDialog
+import com.ipati.dev.castleevent.extension.onShowToast
 import com.ipati.dev.castleevent.model.Fresco.loadGoogleMapStatic
 import com.ipati.dev.castleevent.model.Fresco.loadLogo
 import com.ipati.dev.castleevent.model.Fresco.loadPhotoDetail
@@ -50,6 +51,7 @@ import com.ipati.dev.castleevent.model.LoadingDetailData
 import com.ipati.dev.castleevent.model.OnUpdateInformation
 import com.ipati.dev.castleevent.model.GmsLocation.GooglePlayServiceMapManager
 import com.ipati.dev.castleevent.model.ModelListItem.ItemListEvent
+import com.ipati.dev.castleevent.model.UserManager.uid
 import com.ipati.dev.castleevent.model.UserManager.username
 import com.ipati.dev.castleevent.service.AuthenticationStatus
 import com.ipati.dev.castleevent.service.FirebaseService.RealTimeDatabaseDetailManager
@@ -60,6 +62,7 @@ import kotlinx.android.synthetic.main.activity_detail_event_fragment.*
 import kotlinx.android.synthetic.main.layout_bottom_sheet.*
 import kotlinx.android.synthetic.main.layout_get_tickets_submit.*
 import java.util.*
+import kotlin.collections.HashMap
 
 
 class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInformation, View.OnClickListener {
@@ -83,6 +86,7 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
     private var recorderEvent: RecordListEvent? = null
     private var checkRest: DatabaseReference? = null
     private var bundle: Bundle? = null
+    private var idPushFireBase: String? = null
     private var statusType: Int? = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -466,16 +470,16 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
 
                     recorderEvent?.pushEventRealTime(username, eventId.toString(), nameEvent
                             , locationEvent, logoEvent, number_picker.value.toLong()
-                            , dateManager.getCurrentDate(), java.util.Calendar.getInstance().timeInMillis)
-                            ?.addOnCompleteListener { task ->
-                                if (!task.isComplete) {
-                                    dialogManager.onShowMissingDialog(task.exception?.message!!, REQUEST_OTHER_ERROR)
-                                } else {
-                                    onShowSuccessDialog(activity, "จองบัตรงาน $nameEvent เรียบร้อยแล้วค่ะ")
-                                    MakePushEvent(googleCredentialAccount).execute()
-                                    Log.d("TransactionStatus", "Success")
-                                }
-                            }
+                            , dateManager.getCurrentDate(), java.util.Calendar.getInstance().timeInMillis, { id ->
+                        idPushFireBase = id
+                    })?.addOnCompleteListener { task ->
+                        if (!task.isComplete) {
+                            dialogManager.onShowMissingDialog(task.exception?.message!!, REQUEST_OTHER_ERROR)
+                        } else {
+                            onShowSuccessDialog(activity, "จองบัตรงาน $nameEvent เรียบร้อยแล้วค่ะ")
+                            MakePushEvent(googleCredentialAccount).execute()
+                        }
+                    }
                 }
             }
 
@@ -586,8 +590,8 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
             REQUEST_PERMISSION_ACCOUNT -> {
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     onCheckStatusCredentialGoogleCalendar()
-                    dialogManager.onDismissConfirmDialog()
                     recordMyTickets()
+                    dialogManager.onDismissConfirmDialog()
                 } else {
                     if (!shouldShowRequestPermissionRationale(Manifest.permission.GET_ACCOUNTS)) {
                         recordMyTickets()
@@ -596,17 +600,6 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
                 }
             }
         }
-    }
-
-    fun setOnPositiveListener() {
-        val intentSettingPermission = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS
-                , Uri.parse("package:${BuildConfig.APPLICATION_ID}"))
-        startActivity(intentSettingPermission)
-        dialogManager.onDismissConfirmDialog()
-    }
-
-    fun setOnNegativeListener() {
-        dialogManager.onDismissConfirmDialog()
     }
 
 
@@ -677,6 +670,21 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
         override fun onPostExecute(result: Event?) {
             super.onPostExecute(result)
             Log.d("resultTaskInsertEvent", result?.htmlLink)
+
+            val dataBaseUpdate: DatabaseReference = ref.child("eventUser").child(uid)
+            val mapFieldCalendar: HashMap<String, Any> = HashMap()
+            mapFieldCalendar.put("$idPushFireBase/eventCalendarId", result?.id!!)
+
+            dataBaseUpdate.updateChildren(mapFieldCalendar).addOnCompleteListener {
+                when {
+                    it.isSuccessful -> {
+
+                    }
+                    else -> {
+                        context.onShowToast(it.exception?.message.toString())
+                    }
+                }
+            }
             dialogManager.onDismissLoadingDialog()
         }
 

@@ -95,15 +95,13 @@ class ProfileUserFragment : Fragment(), View.OnClickListener, DatePickerDialog.O
             R.id.tv_record_profile -> {
                 resetOnError()
                 val loadingDialogFragment = onShowLoadingDialog(activity, "กำลังอัพเดทข้อมูล...", false)
-                if (changeProfileUser.onCheckStateChange(ed_account_name_profile.text.toString()
-                        , ed_account_pass_profile.text.toString()
+                if (changeProfileUser.onCheckStateChange(
+                        ed_account_pass_profile.text.toString()
                         , ed_re_account_password_profile.text.toString()
                         , ed_email_profile.text.toString()
 
                         //Todo: Callback
-                        , { errorUsername: String ->
-                    tv_input_username_profile.error = errorUsername
-                }, { errorPassword: String ->
+                        , { errorPassword: String ->
                     tv_input_password_profile.error = errorPassword
                     tv_input_re_password.error = errorPassword
                 }, { errorEmail: String ->

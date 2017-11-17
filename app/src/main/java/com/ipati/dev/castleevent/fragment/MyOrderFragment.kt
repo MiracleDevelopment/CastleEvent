@@ -1,6 +1,11 @@
 package com.ipati.dev.castleevent.fragment
 
 
+import android.accounts.Account
+import android.accounts.AccountManager
+import android.annotation.SuppressLint
+import android.content.Intent
+import android.os.AsyncTask
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DefaultItemAnimator
@@ -11,6 +16,13 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import com.google.api.client.extensions.android.http.AndroidHttp
+import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential
+import com.google.api.client.http.HttpTransport
+import com.google.api.client.json.jackson2.JacksonFactory
+import com.google.api.client.util.ExponentialBackOff
+import com.google.api.services.calendar.Calendar
+import com.google.api.services.calendar.CalendarScopes
 import com.google.firebase.database.*
 import com.ipati.dev.castleevent.base.BaseFragment
 import com.ipati.dev.castleevent.R
@@ -20,14 +32,21 @@ import com.ipati.dev.castleevent.fragment.loading.TicketsEventDialogFragment
 import com.ipati.dev.castleevent.model.History.RecorderTickets
 import com.ipati.dev.castleevent.model.UserManager.uid
 import com.ipati.dev.castleevent.service.FirebaseService.MyOrderRealTimeManager
+import com.ipati.dev.castleevent.utill.SharePreferenceGoogleSignInManager
 import kotlinx.android.synthetic.main.activity_my_order_fragment.*
+import java.util.*
 
 class MyOrderFragment : BaseFragment() {
     private val myOrderRealTimeManager: MyOrderRealTimeManager by lazy {
         MyOrderRealTimeManager(context, lifecycle)
     }
 
+    private val sharePreferenceGoogleSignIn: SharePreferenceGoogleSignInManager by lazy {
+        SharePreferenceGoogleSignInManager(context)
+    }
+
     private lateinit var ticketsEventDialog: TicketsEventDialogFragment
+    private lateinit var googleCredential: GoogleAccountCredential
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -40,6 +59,17 @@ class MyOrderFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         initialToolbar()
         initialRecyclerView()
+        setUpGoogleCredential()
+    }
+
+    private fun setUpGoogleCredential() {
+        googleCredential = GoogleAccountCredential.usingOAuth2(context, Arrays.asList(CalendarScopes.CALENDAR))
+                .setBackOff(ExponentialBackOff())
+
+        sharePreferenceGoogleSignIn.defaultSharePreferenceManager()?.let {
+            googleCredential.selectedAccountName = sharePreferenceGoogleSignIn.defaultSharePreferenceManager()
+        } ?: startActivityForResult(googleCredential.newChooseAccountIntent(), REQUEST_ACCOUNT_GOOGLE)
+
     }
 
     private fun initialToolbar() {
@@ -119,7 +149,7 @@ class MyOrderFragment : BaseFragment() {
                             val refChildMyOrder = ref.child("eventUser")
                             val mapData: HashMap<String, Any?> = HashMap()
                             mapData.put("$uid/${item.key}", null)
-                            callBackFireBase(refChildMyOrder, mapData, position, loadingDialogFragment)
+                            callBackFireBase(refChildMyOrder, mapData, position, loadingDialogFragment, itemEvent.eventCalendarId)
                         }
                         else -> {
                             loadingDialogFragment.onDismissDialog()
@@ -130,12 +160,15 @@ class MyOrderFragment : BaseFragment() {
         })
     }
 
-    private fun callBackFireBase(ref: DatabaseReference, mapData: HashMap<String, Any?>, position: Int, loadingDialogFragment: LoadingDialogFragment) {
+    private fun callBackFireBase(ref: DatabaseReference, mapData: HashMap<String, Any?>, position: Int
+                                 , loadingDialogFragment: LoadingDialogFragment, calendarId: String) {
         ref.updateChildren(mapData).addOnCompleteListener {
             when {
                 it.isSuccessful -> {
                     myOrderRealTimeManager.adapterMyOrder.listItemMyOrder.removeAt(position)
                     myOrderRealTimeManager.adapterMyOrder.notifyItemRemoved(position)
+
+                    CalendarDeleteEvent(calendarId).execute()
                     loadingDialogFragment.onDismissDialog()
                 }
                 else -> {
@@ -146,9 +179,59 @@ class MyOrderFragment : BaseFragment() {
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when (requestCode) {
+            REQUEST_ACCOUNT_GOOGLE -> {
+                val accountName = data?.getStringExtra(AccountManager.KEY_ACCOUNT_NAME)
+                googleCredential.selectedAccountName = accountName
+            }
+        }
+    }
+
     companion object {
+        private const val REQUEST_ACCOUNT_GOOGLE: Int = 1010
         fun newInstance(): MyOrderFragment = MyOrderFragment().apply {
             arguments = Bundle()
         }
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    inner class CalendarDeleteEvent(eventId: String) : AsyncTask<Void, Void, Void>() {
+        private val httpTransport: HttpTransport = AndroidHttp.newCompatibleTransport()
+        private val jsonFactory: JacksonFactory = JacksonFactory.getDefaultInstance()
+
+        private val eventIdCalendar: String = eventId
+        private var serviceCalendar: Calendar
+
+        private var error: Exception? = null
+
+        init {
+            serviceCalendar = Calendar.Builder(httpTransport, jsonFactory, googleCredential)
+                    .setApplicationName("Castle EventApp")
+                    .build()
+        }
+
+        override fun doInBackground(vararg p0: Void?): Void? {
+            return try {
+                serviceCalendar.events().delete("primary", eventIdCalendar).execute()
+            } catch (e: Exception) {
+                error = e
+                null
+            }
+        }
+
+        override fun onPostExecute(result: Void?) {
+            super.onPostExecute(result)
+            Log.d("onPostExecute", "Complete")
+        }
+
+        override fun onCancelled() {
+            super.onCancelled()
+            if (error != null) {
+                Log.d("errorMsg", error?.message.toString())
+            }
+        }
+
     }
 }

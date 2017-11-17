@@ -23,6 +23,7 @@ import com.ipati.dev.castleevent.base.BaseAppCompatActivity
 import com.ipati.dev.castleevent.extension.onShowSettingDialog
 import com.ipati.dev.castleevent.extension.onShowSnackBar
 import com.ipati.dev.castleevent.extension.onShowToast
+import com.ipati.dev.castleevent.extension.pxToDp
 import com.ipati.dev.castleevent.fragment.ComingEventFragment
 import com.ipati.dev.castleevent.fragment.ExpireEventFragment
 import com.ipati.dev.castleevent.fragment.ListEventFragment
@@ -66,6 +67,8 @@ class ListEventActivity : BaseAppCompatActivity(), View.OnClickListener {
         setUpDrawerSimpleProfile()
         setUpDrawerSetting()
         setUpSearchEvent()
+
+        Log.d("densityDevice", applicationContext.resources.displayMetrics.densityDpi.toString())
     }
 
 

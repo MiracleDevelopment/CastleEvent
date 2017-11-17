@@ -34,26 +34,26 @@ class LoginAuthManager(activity: FragmentActivity, lifecycle: Lifecycle) : Lifec
                       , onErrorEmail: ((errorMsg: String) -> Unit), onErrorPassword: ((errorPassword: String) -> Unit)) {
         when {
             emailEditText.text.isEmpty() -> {
-                onErrorEmail("isEmpty")
+                onErrorEmail(errorEmpty)
             }
         }
 
         when {
             !android.util.Patterns.EMAIL_ADDRESS.matcher(emailEditText.text.toString()).matches() -> {
-                onErrorEmail("missing Patterns Email")
+                onErrorEmail(errorMissingPatternsEmail)
             }
         }
 
         when {
             passwordEditText.text.isEmpty() -> {
-                onErrorPassword("isEmpty")
+                onErrorPassword(errorEmpty)
             }
         }
 
 
         when {
             passwordEditText.text.length < 6 -> {
-                onErrorPassword("More Than 6 Character")
+                onErrorPassword(errorCharacter)
             }
         }
 
@@ -86,6 +86,12 @@ class LoginAuthManager(activity: FragmentActivity, lifecycle: Lifecycle) : Lifec
             loadingDialogFragment.dismiss()
             Toast.makeText(activity, exception.message.toString(), Toast.LENGTH_SHORT).show()
         }
+    }
+
+    companion object {
+        private const val errorEmpty: String = "errorEmpty"
+        private const val errorMissingPatternsEmail = "missing Pattern Email"
+        private const val errorCharacter = "More than 6 Character"
     }
 }
 

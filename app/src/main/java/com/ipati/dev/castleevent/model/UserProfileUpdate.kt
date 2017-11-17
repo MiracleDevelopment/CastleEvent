@@ -47,8 +47,7 @@ class UserProfileUpdate(context: Context) {
         }
     }
 
-    fun onCheckStateChange(userAccount: String, password: String, rePassword: String, emailUser: String
-                           , errorUserName: ((String) -> Unit)
+    fun onCheckStateChange(password: String, rePassword: String, emailUser: String
                            , errorPassword: ((String) -> Unit)
                            , errorEmail: ((String) -> Unit)): Boolean {
 

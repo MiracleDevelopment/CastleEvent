@@ -68,7 +68,8 @@ class GoogleCalendarInsertEvent(context: Context, summary: String?, location: St
             val startEvent: Int = getCurrentDay(getEqualDate(startEvent!!)?.time!!)
             val endEvent: Int = getCurrentDay(getEqualDate(endCalendar!!)?.time!!)
 
-            val recurrenceRest: Int = (endEvent - startEvent) + 1
+//            val recurrenceRest: Int = (endEvent - startEvent) + 1
+            val recurrenceRest = 1
 
             Log.d("recurrence", recurrenceRest.toString())
             event.recurrence = setRecurrence(recurrenceRest)
