@@ -15,6 +15,7 @@ import android.widget.Toast
 import com.google.android.gms.tasks.Task
 import com.ipati.dev.castleevent.R
 import com.ipati.dev.castleevent.adapter.FavoriteCategoryAdapter
+import com.ipati.dev.castleevent.base.BaseFragment
 import com.ipati.dev.castleevent.extension.onDismissDialog
 import com.ipati.dev.castleevent.extension.onShowLoadingDialog
 import com.ipati.dev.castleevent.model.UserManager.gender
@@ -25,7 +26,7 @@ import kotlinx.android.synthetic.main.activity_favorite_category_fragment.*
 import kotlinx.android.synthetic.main.custom_layout_favorite_category.view.*
 import kotlinx.android.synthetic.main.layout_button_record_category.*
 
-class FavoriteCategoryFragment : Fragment() {
+class FavoriteCategoryFragment : BaseFragment() {
     private val adapterCategory: FavoriteCategoryAdapter by lazy {
         FavoriteCategoryAdapter(context)
     }

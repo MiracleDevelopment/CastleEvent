@@ -11,6 +11,7 @@ import android.view.*
 import android.widget.DatePicker
 import com.google.firebase.auth.*
 import com.ipati.dev.castleevent.R
+import com.ipati.dev.castleevent.base.BaseFragment
 import com.ipati.dev.castleevent.extension.*
 import com.ipati.dev.castleevent.model.Fresco.loadPhotoUserProfile
 import com.ipati.dev.castleevent.model.UserManager.*
@@ -21,7 +22,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-class ProfileUserFragment : Fragment(), View.OnClickListener, DatePickerDialog.OnDateSetListener {
+class ProfileUserFragment : BaseFragment(), View.OnClickListener, DatePickerDialog.OnDateSetListener {
     private lateinit var editTableChangeText: EditableChangeText
     private lateinit var listItemEditText: ArrayList<DataEditText>
     private lateinit var userProfileManager: ProfileUserFragmentManager

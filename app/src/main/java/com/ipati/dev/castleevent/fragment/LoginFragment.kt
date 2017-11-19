@@ -23,6 +23,7 @@ import com.ipati.dev.castleevent.R
 import com.ipati.dev.castleevent.RegisterActivity
 import com.ipati.dev.castleevent.authCredential.facebookAuthCredential
 import com.ipati.dev.castleevent.authCredential.twitterAuthCredential
+import com.ipati.dev.castleevent.base.BaseFragment
 import com.ipati.dev.castleevent.extension.pxToDp
 import com.ipati.dev.castleevent.extension.onShowToast
 import com.ipati.dev.castleevent.service.*
@@ -32,7 +33,7 @@ import com.twitter.sdk.android.core.identity.TwitterAuthClient
 import kotlinx.android.synthetic.main.activity_login_fragment.*
 
 
-class LoginFragment : Fragment(), View.OnClickListener {
+class LoginFragment : BaseFragment(), View.OnClickListener {
     private lateinit var callbackManager: CallbackManager
     private lateinit var loginTwitterAuthentication: TwitterAuthClient
     private lateinit var twitterConfig: TwitterConfig

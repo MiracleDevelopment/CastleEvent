@@ -97,4 +97,16 @@
     <string name="expireMsg">Expire Event</string>
     <string name="confirm">Accept</string>
     <string name="updateProfileSuccess">Update Complete</string>
+
+    <string-array name="CategoryFavorite">
+        <item>Education</item>
+        <item>Sport</item>
+        <item>Music</item>
+        <item>Technology</item>
+        <item>Animal</item>
+        <item>Party</item>
+        <item>Food</item>
+        <item>Art</item>
+        <item>Music</item>
+    </string-array>
 </resources>

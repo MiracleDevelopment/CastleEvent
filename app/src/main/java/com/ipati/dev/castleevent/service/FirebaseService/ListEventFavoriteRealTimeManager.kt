@@ -28,6 +28,7 @@ class ListEventFavoriteRealTimeManager(msg: String, lifecycle: Lifecycle) : Life
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
     fun onStop() {
         refDatabase?.let {
+            listItemFavoriteEvent.clear()
             refDatabase.removeEventListener(childEventListener)
         }
     }
@@ -49,8 +50,15 @@ class ListEventFavoriteRealTimeManager(msg: String, lifecycle: Lifecycle) : Life
         override fun onChildAdded(p0: DataSnapshot?, p1: String?) {
             val itemListEvent: ItemListEvent? = p0?.getValue(ItemListEvent::class.java)
             itemListEvent?.let {
-                listItemFavoriteEvent.add(itemListEvent)
-                adapterListFavoriteItem.notifyDataSetChanged()
+                when (itemListEvent.categoryName) {
+                    msg -> {
+                        listItemFavoriteEvent.add(itemListEvent)
+                        adapterListFavoriteItem.notifyDataSetChanged()
+                    }
+                    else -> {
+
+                    }
+                }
             }
         }
 

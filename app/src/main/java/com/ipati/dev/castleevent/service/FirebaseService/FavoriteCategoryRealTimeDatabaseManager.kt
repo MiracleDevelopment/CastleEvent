@@ -3,8 +3,6 @@ package com.ipati.dev.castleevent.service.FirebaseService
 import android.arch.lifecycle.Lifecycle
 import android.arch.lifecycle.LifecycleObserver
 import android.arch.lifecycle.OnLifecycleEvent
-import android.content.Context
-import android.support.v4.app.FragmentActivity
 import android.util.Log
 import com.google.firebase.database.*
 import com.ipati.dev.castleevent.adapter.FavoriteMenuAdapter
@@ -82,26 +80,34 @@ class FavoriteCategoryRealTimeDatabaseManager(lifecycle: Lifecycle) : LifecycleO
             }
 
             override fun onChildAdded(p0: DataSnapshot?, p1: String?) {
-                val recordCategoryData = p0?.getValue(CategoryRecordData::class.java)
-                listItemFavorite.add(recordCategoryData!!)
-                adapterFavorite.notifyDataSetChanged()
-                onChangeItemCount?.invoke(1)
+                val recordCategoryData: CategoryRecordData? = p0?.getValue(CategoryRecordData::class.java)
+                recordCategoryData?.let {
+                    listItemFavorite.add(recordCategoryData)
+                    adapterFavorite.notifyDataSetChanged()
+                    onChangeItemCount?.invoke(1)
+                }
             }
 
             override fun onChildRemoved(p0: DataSnapshot?) {
-                val recordCategoryData = p0?.getValue(CategoryRecordData::class.java)
-                listItemFavorite.remove(recordCategoryData)
-                adapterFavorite.notifyDataSetChanged()
-                onChangeItemCount?.invoke(0)
+                val recordCategoryData: CategoryRecordData? = p0?.getValue(CategoryRecordData::class.java)
+                recordCategoryData?.let {
+                    listItemFavorite.remove(recordCategoryData)
+                    adapterFavorite.notifyDataSetChanged()
+                    onChangeItemCount?.invoke(0)
 
-                when (listItemFavorite.count()) {
-                    0 -> {
-                        Log.d("listItemFavoriteSize", "Zero")
-                    }
-                    else -> {
-                        when (listItemFavorite[0].listCategory.count()) {
-                            0 -> {
-                                listItemFavorite.clear()
+                    when (listItemFavorite.count()) {
+                        0 -> {
+                            Log.d("listItemFavoriteSize", "Zero")
+                        }
+                        else -> {
+                            when (listItemFavorite[0].listCategory.count()) {
+                                0 -> {
+                                    listItemFavorite.clear()
+                                }
+
+                                else -> {
+
+                                }
                             }
                         }
                     }

@@ -19,7 +19,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:placeholderImage="@mipmap/castle_place_holder"
-        app:placeholderImageScaleType="centerCrop" />
+        app:placeholderImageScaleType="centerCrop"
+        app:roundedCornerRadius="6dp" />
 
 
     <ImageView

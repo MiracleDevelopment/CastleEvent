@@ -7,10 +7,11 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.Window
 import android.view.WindowManager
+import com.ipati.dev.castleevent.base.BaseAppCompatActivity
 import com.ipati.dev.castleevent.extension.pxToDp
 import kotlinx.android.synthetic.main.activity_loading_change_language.*
 
-class LoadingChangeLanguage : AppCompatActivity() {
+class LoadingChangeLanguage : BaseAppCompatActivity() {
     private lateinit var handlerThread: Handler
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -25,6 +25,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.database.FirebaseDatabase
 import com.ipati.dev.castleevent.R
+import com.ipati.dev.castleevent.base.BaseFragment
 import com.ipati.dev.castleevent.extension.*
 import com.ipati.dev.castleevent.fragment.loading.LoadingDialogFragment
 import com.ipati.dev.castleevent.model.Register.RegisterManager
@@ -37,7 +38,7 @@ import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
 
-class RegisterFragment : Fragment(), DatePickerDialog.OnDateSetListener {
+class RegisterFragment : BaseFragment(), DatePickerDialog.OnDateSetListener {
     private lateinit var registerManager: RegisterManager
     private lateinit var auth: FirebaseAuth
     private lateinit var fireBaseUser: FirebaseUser

@@ -36,6 +36,7 @@ import com.google.api.services.calendar.model.Event
 import com.google.api.services.calendar.model.Events
 import com.ipati.dev.castleevent.R
 import com.ipati.dev.castleevent.adapter.ListEventCalendarAdapter
+import com.ipati.dev.castleevent.base.BaseFragment
 import com.ipati.dev.castleevent.model.EventDetailModel
 import com.ipati.dev.castleevent.model.GoogleCalendar.CalendarFragment.CalendarManager
 import com.ipati.dev.castleevent.utill.*
@@ -44,7 +45,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-class CalendarFragment : Fragment(), View.OnClickListener {
+class CalendarFragment : BaseFragment(), View.OnClickListener {
     private var REQUEST_ACCOUNT: Int = 1111
     private var maxCalendarHeight: Int = 346
     private var maxHeaderCalendar: Int = 312

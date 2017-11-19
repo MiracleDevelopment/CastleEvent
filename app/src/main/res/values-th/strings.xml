@@ -85,7 +85,7 @@
     <string name="next_step">ต่อไป -></string>
     <string name="success_button">เสร็จสิ้น</string>
     <string name="add_category">เพิ่มความชอบของคุณ</string>
-    <string name="no_item">ไม่มีไอเท็ม</string>
+    <string name="no_item">ไม่มีข้อมูล</string>
     <string name="skip"><![CDATA[ข้าม ->]]></string>
     <string name="birth_day">วันเ/เดือน/ปี</string>
     <string name="accept_bt">ยืนยัน</string>
@@ -97,4 +97,17 @@
     <string name="expireMsg">อีเว้นนี้จัดขึ้นไปแล้วค่ะ</string>
     <string name="confirm">ยืนยัน</string>
     <string name="อัพเดทโปรไฟล์ของคุณเสร็จแล้วค่ะ">Update Complete</string>
+
+    <string-array name="CategoryFavorite">
+        <item>การศึกษา</item>
+        <item>กีฬา</item>
+        <item>ดนตรี</item>
+        <item>เทคโนโลยี</item>
+        <item>สัตว์เลี้ยง</item>
+        <item>งานเลี้ยง</item>
+        <item>อาหาร</item>
+        <item>ศิลปะ</item>
+        <item>เพลง</item>
+    </string-array>
+
 </resources>

@@ -8,9 +8,10 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import com.ipati.dev.castleevent.R
+import com.ipati.dev.castleevent.base.BaseFragment
 import kotlinx.android.synthetic.main.activity_contact_user_fragment.*
 
-class ContactUserFragment : Fragment() {
+class ContactUserFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

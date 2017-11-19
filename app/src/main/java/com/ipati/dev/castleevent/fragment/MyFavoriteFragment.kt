@@ -106,16 +106,15 @@ class MyFavoriteFragment : BaseFragment() {
 
     private fun setCallBack(listItem: ArrayList<CategoryRecordData>, position: Int) {
         onShowQuestionDialog(activity, "คุณต้องการลบ Category นี้ ใช่ / ไม่", 1002).callBackQuestion = {
-            listItem[0].listCategory.removeAt(position)
-            favoriteCategoryManager.adapterFavorite.notifyItemRemoved(position)
-            deleteItemFireBase()
+            deleteItemFireBase(listItem, position)
         }
     }
 
-    private fun deleteItemFireBase() {
+    private fun deleteItemFireBase(listItem: ArrayList<CategoryRecordData>, position: Int) {
         val ref = FirebaseDatabase.getInstance().reference
         val refEdit = ref.child("userCategoryProfile").child(uid)
         val childrenChangeData: HashMap<String, Any> = HashMap()
+        listItem[0].listCategory.removeAt(position)
 
         refEdit.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError?) {
@@ -126,14 +125,16 @@ class MyFavoriteFragment : BaseFragment() {
                 val loadingDialogFragment = onShowLoadingDialog(activity, "ระบบกำลังลบข้อมูล...", false)
                 for (item in p0?.children!!) {
                     childrenChangeData.put("${item.key}/listCategory"
-                            , favoriteCategoryManager.adapterFavorite.listItemFavoriteCategory[0].listCategory)
+                            , listItem[0].listCategory)
 
                     refEdit.updateChildren(childrenChangeData).addOnCompleteListener { task: Task<Void> ->
                         when {
                             task.isSuccessful -> {
+                                favoriteCategoryManager.adapterFavorite.notifyItemRemoved(position)
                                 loadingDialogFragment.onDismissDialog()
                             }
                             else -> {
+                                context.onShowToast(task.exception?.message.toString())
                                 loadingDialogFragment.onDismissDialog()
                             }
                         }

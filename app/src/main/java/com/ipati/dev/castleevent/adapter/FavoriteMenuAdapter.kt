@@ -32,7 +32,7 @@ class FavoriteMenuAdapter(listItemFavorite: ArrayList<CategoryRecordData>) : Rec
             setOnSingleTap?.invoke(p0?.tv_item_category?.text.toString())
         }
 
-        private val listNameItem: Array<out String>? = itemView.resources.getStringArray(R.array.CategoryFavorite)
+        private val listNameItem: Array<out String>? = itemView.context.resources.getStringArray(R.array.CategoryFavorite)
 
 
         fun onBind() {

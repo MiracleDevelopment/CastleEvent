@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import com.ipati.dev.castleevent.ListDetailEventActivity
 import com.ipati.dev.castleevent.R
 import com.ipati.dev.castleevent.adapter.ComingListEventAdapter
+import com.ipati.dev.castleevent.base.BaseFragment
 import com.ipati.dev.castleevent.extension.onShowToast
 import com.ipati.dev.castleevent.model.ModelListItem.ItemListEvent
 import com.ipati.dev.castleevent.service.FirebaseService.ComingRealTimeDatabaseManager
@@ -20,7 +21,7 @@ import kotlinx.android.synthetic.main.activity_comming_event_fragment.*
 import java.util.*
 import kotlin.collections.ArrayList
 
-class ComingEventFragment : Fragment() {
+class ComingEventFragment : BaseFragment() {
     private lateinit var comingRealTimeDatabaseManager: ComingRealTimeDatabaseManager
     var changeCategory: ((msg: String) -> Unit) = { msg: String ->
         when (Locale.getDefault().language) {

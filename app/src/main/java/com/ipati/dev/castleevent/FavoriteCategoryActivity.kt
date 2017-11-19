@@ -2,10 +2,11 @@ package com.ipati.dev.castleevent
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import com.ipati.dev.castleevent.base.BaseAppCompatActivity
 import com.ipati.dev.castleevent.extension.replaceFragment
 import com.ipati.dev.castleevent.fragment.FavoriteCategoryFragment
 
-class FavoriteCategoryActivity : AppCompatActivity() {
+class FavoriteCategoryActivity : BaseAppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
