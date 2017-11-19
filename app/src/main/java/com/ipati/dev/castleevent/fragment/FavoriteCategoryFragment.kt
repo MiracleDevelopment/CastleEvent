@@ -41,7 +41,6 @@ class FavoriteCategoryFragment : Fragment() {
         setUpToolbar()
         setUpRecyclerView()
         setUpView()
-
     }
 
     private fun setUpToolbar() {

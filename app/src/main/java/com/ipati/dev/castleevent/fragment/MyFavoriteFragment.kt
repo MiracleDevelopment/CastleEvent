@@ -16,6 +16,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.ipati.dev.castleevent.FavoriteCategoryActivity
+import com.ipati.dev.castleevent.ListEventFavoriteActivity
 import com.ipati.dev.castleevent.R
 import com.ipati.dev.castleevent.base.BaseFragment
 import com.ipati.dev.castleevent.extension.onDismissDialog
@@ -73,6 +74,12 @@ class MyFavoriteFragment : BaseFragment() {
         recycler_view_my_favorite.layoutManager = GridLayoutManager(context, 3, GridLayoutManager.VERTICAL, false)
         recycler_view_my_favorite.itemAnimator = DefaultItemAnimator()
         recycler_view_my_favorite.adapter = favoriteCategoryManager.adapterFavorite
+
+        favoriteCategoryManager.adapterFavorite.setOnSingleTap = {
+            val intentListEventFavoriteFragment = Intent(context, ListEventFavoriteActivity::class.java)
+            intentListEventFavoriteFragment.putExtra("stringCategory", it)
+            startActivity(intentListEventFavoriteFragment)
+        }
 
         favoriteCategoryManager.adapterFavorite.setOnRemoveItem = { listItem, position ->
             setCallBack(listItem, position)

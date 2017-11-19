@@ -103,5 +103,6 @@
     <color name="colorFontBtQuestionDialog">#FFFFFF</color>
     <color name="colorLine">#00BCD4</color>
     <color name="colorBackgroundSuccess">#00BCD4</color>
-    <color name="colorFontNoItem">#FFF</color>
+    <color name="colorFontNoItem">#FFFFFF</color>
+    <color name="colorFontListFavorite">#FFFFFF</color>
 </resources>

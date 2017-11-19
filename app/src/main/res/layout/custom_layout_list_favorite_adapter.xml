@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/constraint_parent_favorite"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/custom_item_list_ripple"
+    android:clickable="true"
+    android:focusable="true"
+    android:orientation="vertical">
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/simple_drawee_logo_event"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="2dp"
+        app:fadeDuration="200"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:placeholderImage="@mipmap/castle_place_holder"
+        app:placeholderImageScaleType="centerCrop" />
+
+
+    <ImageView
+        android:id="@+id/logo_location_favorite_event"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:src="@mipmap/ic_gps_fixed"
+        app:layout_constraintBottom_toTopOf="@+id/im_logo_time_favorite"
+        app:layout_constraintEnd_toEndOf="@+id/tv_location_favorite"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toEndOf="@+id/simple_drawee_logo_event"
+        app:layout_constraintTop_toBottomOf="@+id/tv_name_event_favorite" />
+
+    <ImageView
+        android:id="@+id/im_logo_time_favorite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/ic_access_alarm"
+        app:layout_constraintBottom_toTopOf="@+id/im_logo_count_favorite"
+        app:layout_constraintEnd_toEndOf="@+id/tv_time_favorite"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toEndOf="@+id/simple_drawee_logo_event"
+        app:layout_constraintTop_toBottomOf="@+id/logo_location_favorite_event" />
+
+
+    <ImageView
+        android:id="@+id/im_logo_count_favorite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:src="@mipmap/ic_account_circle"
+        app:layout_constraintBottom_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/tv_count_favorite"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toEndOf="@+id/simple_drawee_logo_event"
+        app:layout_constraintTop_toBottomOf="@+id/im_logo_time_favorite" />
+
+    <TextView
+        android:id="@+id/tv_name_event_favorite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="2dp"
+        android:text="Name Event"
+        android:textColor="@color/colorFontListFavorite"
+        android:textSize="@dimen/sizeFontHeader"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/simple_drawee_logo_event"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0" />
+
+    <TextView
+        android:id="@+id/tv_location_favorite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="AIA Capital Center"
+        android:textColor="@color/colorFontListFavorite"
+        android:textSize="@dimen/sizeFontContent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toEndOf="@+id/logo_location_favorite_event"
+        app:layout_constraintTop_toTopOf="@+id/tv_name_event_favorite"
+        app:layout_constraintVertical_bias="0.25" />
+
+    <TextView
+        android:id="@+id/tv_time_favorite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="11.00 น - 12.00 น"
+        android:textColor="@color/colorFontListFavorite"
+        android:textSize="@dimen/sizeFontContent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toEndOf="@+id/im_logo_time_favorite"
+        app:layout_constraintTop_toBottomOf="@+id/tv_location_favorite"
+        app:layout_constraintVertical_bias="0.2" />
+
+    <TextView
+        android:id="@+id/tv_count_favorite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="จำนวน 0 คน"
+        android:textColor="@color/colorFontListFavorite"
+        android:textSize="@dimen/sizeFontContent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toEndOf="@+id/im_logo_count_favorite"
+        app:layout_constraintTop_toBottomOf="@+id/tv_time_favorite"
+        app:layout_constraintVertical_bias="0.4" />
+
+</android.support.constraint.ConstraintLayout>

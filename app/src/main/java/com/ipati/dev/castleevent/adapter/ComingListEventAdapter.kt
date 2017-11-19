@@ -59,7 +59,7 @@ class ComingListEventAdapter(listItemEvent: ArrayList<ItemListEvent>) : Recycler
         @SuppressLint("SetTextI18n")
         private fun setUpDetail() {
             loadPhoto(itemView.context, listItemEventComing[adapterPosition].eventCover
-                    , itemView.card_view_list_event.layoutParams.width
+                    , itemView.card_view_list_event.layoutParams.width, 350
                     , itemView.custom_im_cover_list_event)
 
             itemView.custom_tv_header_list_event.text = listItemEventComing[adapterPosition].eventName

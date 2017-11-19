@@ -69,7 +69,7 @@ class ListEventAdapter(listItem: ArrayList<ItemListEvent>) : RecyclerView.Adapte
         @SuppressLint("SetTextI18n")
         fun onBind(itemList: ArrayList<ItemListEvent>) {
             loadPhoto(itemView.context, itemList[adapterPosition].eventCover
-                    , itemView.card_view_list_event.layoutParams.width, itemView.custom_im_cover_list_event)
+                    , itemView.card_view_list_event.layoutParams.width, 350, itemView.custom_im_cover_list_event)
 
             itemView.custom_tv_header_list_event.text = itemList[adapterPosition].eventName
 

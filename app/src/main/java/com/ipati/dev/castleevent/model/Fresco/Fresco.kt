@@ -12,9 +12,9 @@ import com.ipati.dev.castleevent.extension.pxToDp
 import com.ipati.dev.castleevent.extension.pxToDp
 
 
-fun loadPhoto(context: Context, url: String, widthCardView: Int, im: SimpleDraweeView) {
+fun loadPhoto(context: Context, url: String, widthCardView: Int, heightCardView: Int, im: SimpleDraweeView) {
     im.layoutParams.width = context.pxToDp(widthCardView)
-    im.layoutParams.height = context.pxToDp(350)
+    im.layoutParams.height = context.pxToDp(heightCardView)
 
     val mImageRequest: ImageRequest = ImageRequestBuilder
             .newBuilderWithSource(Uri.parse(url))
