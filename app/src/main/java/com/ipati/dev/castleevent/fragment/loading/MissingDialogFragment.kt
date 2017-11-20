@@ -18,13 +18,14 @@ import kotlinx.android.synthetic.main.activity_missing_dialog_fragment.*
 
 class MissingDialogFragment : DialogFragment() {
     private var onMissingDialogConfirm: OnMissingConfirm? = null
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater?.inflate(R.layout.activity_missing_dialog_fragment, container, false)
-    }
-
     private var codeMessage: Int = 0
     var callBackReAuthentication: (() -> Unit)? = null
+    var callBackNetWork: (() -> Unit?)? = null
     @SuppressLint("ResourceType")
+
+    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? =
+            inflater?.inflate(R.layout.activity_missing_dialog_fragment, container, false)
+
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -51,6 +52,11 @@ class MissingDialogFragment : DialogFragment() {
                     dialog.dismiss()
                 }
 
+                codeNetWork -> {
+                    callBackNetWork?.invoke()
+                    dialog.dismiss()
+                }
+
                 else -> {
                     confirmTicket()
                 }
@@ -68,7 +74,8 @@ class MissingDialogFragment : DialogFragment() {
     companion object {
         private const val msgObject = "msg"
         private const val codeMessageObject = "codeMessage"
-        private const val codeReAuthentication = 1112
+        private const val codeReAuthentication: Int = 1112
+        private const val codeNetWork: Int = 1010
         fun newInstance(msg: String, codeMessage: Int): MissingDialogFragment {
             return MissingDialogFragment().apply {
                 arguments = Bundle().apply {

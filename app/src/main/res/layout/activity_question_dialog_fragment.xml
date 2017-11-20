@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:orientation="vertical"
     app:cardBackgroundColor="@android:color/transparent"
     app:cardCornerRadius="6dp"
     tools:context="com.ipati.dev.castleevent.fragment.loading.QuestionDialogFragment">

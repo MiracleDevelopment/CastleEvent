@@ -105,4 +105,5 @@
     <color name="colorBackgroundSuccess">#00BCD4</color>
     <color name="colorFontNoItem">#FFFFFF</color>
     <color name="colorFontListFavorite">#FFFFFF</color>
+    <color name="colorBackgroundDim">#66000000</color>
 </resources>

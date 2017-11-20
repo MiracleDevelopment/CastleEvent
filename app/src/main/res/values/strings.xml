@@ -103,6 +103,7 @@
     <string name="expireMsg">Expire Event</string>
     <string name="confirm">Confirm</string>
     <string name="updateProfileSuccess">Update Complete</string>
+    <string name="edit_photo">Edit Photo</string>
 
     <string-array name="CategoryFavorite">
         <item>การศึกษา</item>

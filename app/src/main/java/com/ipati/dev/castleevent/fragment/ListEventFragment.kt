@@ -3,10 +3,14 @@ package com.ipati.dev.castleevent.fragment
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.ActivityOptionsCompat
+import android.support.v4.app.SharedElementCallback
 import android.support.v4.view.ViewCompat
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.view.*
+import com.facebook.drawee.drawable.ScalingUtils
+import com.facebook.drawee.view.DraweeTransition
+import com.facebook.drawee.view.SimpleDraweeView
 import com.ipati.dev.castleevent.ListDetailEventActivity
 import com.ipati.dev.castleevent.base.BaseFragment
 import com.ipati.dev.castleevent.R
@@ -43,9 +47,9 @@ class ListEventFragment : BaseFragment() {
         activity.invalidateOptionsMenu()
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater?.inflate(R.layout.activity_list_event_fragment, container, false)
-    }
+    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? =
+            inflater?.inflate(R.layout.activity_list_event_fragment, container, false)
+
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -120,9 +124,7 @@ class ListEventFragment : BaseFragment() {
     }
 
     //Todo: ConvertListToArrayList
-    private fun listChangeItem(list: List<ItemListEvent>): ArrayList<ItemListEvent> {
-        return ArrayList(list)
-    }
+    private fun listChangeItem(list: List<ItemListEvent>): ArrayList<ItemListEvent> = ArrayList(list)
 
 
     private fun setShareElementTransition() {

@@ -20,6 +20,7 @@ class QuestionDialogFragment : DialogFragment(), View.OnClickListener {
     private var codeMsg: Int = 0
     var callBackQuestion: (() -> Any?)? = null
     var callBackMyOrderQuestion: (() -> Unit?)? = null
+
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? =
             inflater?.inflate(R.layout.activity_question_dialog_fragment, container, false)
 

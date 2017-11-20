@@ -12,6 +12,7 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.support.design.widget.BottomSheetBehavior
+import android.support.v4.app.SharedElementCallback
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewCompat
 import android.support.v7.app.AppCompatActivity
@@ -21,6 +22,7 @@ import android.view.*
 import android.widget.Toast
 import com.facebook.drawee.drawable.ScalingUtils
 import com.facebook.drawee.view.DraweeTransition
+import com.facebook.drawee.view.SimpleDraweeView
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.api.client.extensions.android.http.AndroidHttp
@@ -93,7 +95,6 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
         postponeEnterTransition()
-        startPostponedEnterTransition()
 
         activity.window.sharedElementEnterTransition = DraweeTransition
                 .createTransitionSet(ScalingUtils.ScaleType.CENTER_CROP, ScalingUtils.ScaleType.CENTER_CROP)
@@ -113,6 +114,7 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
                 .addTarget(R.id.im_detail_cover)
                 .excludeChildren(android.R.id.statusBarBackground, true)
 
+
         authenticationStatus = AuthenticationStatus()
         googleApiAvailability = GoogleApiAvailability.getInstance()
         googlePlayServiceMap = GooglePlayServiceMapManager(activity, lifecycle)
@@ -124,6 +126,7 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? =
             inflater?.inflate(R.layout.activity_detail_event_fragment, container, false)
+
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -139,12 +142,16 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
         }
 
         bt_get_tickets.setOnClickListener { btView -> onClick(btView) }
+
     }
 
 
     private fun initialToolbar(itemListEvent: ItemListEvent) {
         (activity as AppCompatActivity).setSupportActionBar(toolbar_detail_event_fragment)
-        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        (activity as AppCompatActivity).apply {
+            supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        }
+
         toolbar_detail_event_fragment.title = itemListEvent.eventName
     }
 

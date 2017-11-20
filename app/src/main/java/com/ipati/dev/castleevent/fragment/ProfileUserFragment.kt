@@ -41,29 +41,18 @@ class ProfileUserFragment : BaseFragment(), View.OnClickListener, DatePickerDial
         setHasOptionsMenu(true)
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater?.inflate(R.layout.activity_profile_user_fragment, container, false)
-    }
+    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? =
+            inflater?.inflate(R.layout.activity_profile_user_fragment, container, false)
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         userProfileManager = ProfileUserFragmentManager(lifecycle)
         initialToolbar()
         initialEditText()
-        getLanguageDefault()
-
         li_gender_male.setOnClickListener(this)
         li_gender_female.setOnClickListener(this)
         ed_birth_day.setOnClickListener(this)
         enableMale()
-    }
-
-    private fun getLanguageDefault() {
-        if (Locale.getDefault().language == "en") {
-            im_edit_photo_profile.hierarchy.setOverlayImage(ContextCompat.getDrawable(context, R.mipmap.crop_image_eng))
-        } else {
-            im_edit_photo_profile.hierarchy.setOverlayImage(ContextCompat.getDrawable(context, R.mipmap.crop_image))
-        }
     }
 
     private fun initialToolbar() {
@@ -84,12 +73,31 @@ class ProfileUserFragment : BaseFragment(), View.OnClickListener, DatePickerDial
         ed_email_profile.setText(userEmail)
 
         tv_record_profile.setOnClickListener { view -> onClick(view) }
-        im_edit_photo_profile.setOnClickListener { view -> onClick(view) }
+        im_edit_photo_profile.setOnTouchListener { p0, p1 ->
+            p0.performClick()
+            when (p1.action) {
+                MotionEvent.ACTION_CANCEL -> {
+                    return@setOnTouchListener true
+                }
 
-        im_edit_photo_profile.setOnLongClickListener {
-            tv_show_upload.visibility = View.VISIBLE; return@setOnLongClickListener false
+                MotionEvent.ACTION_DOWN -> {
+                    tv_show_upload.visibility = View.VISIBLE
+                    return@setOnTouchListener true
+                }
+
+                MotionEvent.ACTION_UP -> {
+                    val intentPhoto = Intent(Intent.ACTION_GET_CONTENT)
+                    intentPhoto.type = "image/*"
+                    startActivityForResult(Intent.createChooser(intentPhoto, "Choose Image Profile"), REQUEST_PHOTO)
+                    return@setOnTouchListener true
+                }
+
+            }
+            return@setOnTouchListener false
         }
+
     }
+
 
     override fun onClick(p0: View?) {
         when (p0?.id) {
@@ -142,13 +150,6 @@ class ProfileUserFragment : BaseFragment(), View.OnClickListener, DatePickerDial
                 } else {
                     loadingDialogFragment.onDismissDialog()
                 }
-            }
-
-            R.id.im_edit_photo_profile -> {
-                tv_show_upload.visibility = View.VISIBLE
-                val intentPhoto = Intent(Intent.ACTION_GET_CONTENT)
-                intentPhoto.type = "image/*"
-                startActivityForResult(Intent.createChooser(intentPhoto, "Choose Image Profile"), REQUEST_PHOTO)
             }
 
             R.id.li_gender_male -> {

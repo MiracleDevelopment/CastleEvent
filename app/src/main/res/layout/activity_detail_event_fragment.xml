@@ -21,7 +21,9 @@
             android:layout_height="match_parent"
             app:collapsedTitleGravity="center_vertical"
             app:collapsedTitleTextAppearance="@style/CollapsingAppBar"
+            app:contentScrim="@color/colorBackgroundDim"
             app:expandedTitleTextAppearance="@style/ExpandCollapsingAppBar"
+            app:layout_collapseParallaxMultiplier="0.7"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <com.facebook.drawee.view.SimpleDraweeView

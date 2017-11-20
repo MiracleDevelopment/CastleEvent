@@ -4,8 +4,10 @@ import android.annotation.SuppressLint
 import android.support.v4.view.ViewCompat
 import android.support.v7.widget.RecyclerView
 import android.view.*
+import com.facebook.drawee.view.SimpleDraweeView
 import com.ipati.dev.castleevent.R
 import com.ipati.dev.castleevent.extension.getStringResource
+import com.ipati.dev.castleevent.extension.onShowToast
 import com.ipati.dev.castleevent.model.Fresco.loadPhoto
 import com.ipati.dev.castleevent.model.ModelListItem.ItemListEvent
 import kotlinx.android.synthetic.main.custom_list_event_adapter_layout.view.*
