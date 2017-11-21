@@ -91,6 +91,9 @@ class ProfileUserFragment : BaseFragment(), View.OnClickListener, DatePickerDial
                     startActivityForResult(Intent.createChooser(intentPhoto, "Choose Image Profile"), REQUEST_PHOTO)
                     return@setOnTouchListener true
                 }
+                MotionEvent.ACTION_BUTTON_RELEASE -> {
+                    tv_show_upload.visibility = View.GONE
+                }
 
             }
             return@setOnTouchListener false

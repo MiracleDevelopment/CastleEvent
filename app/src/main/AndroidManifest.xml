@@ -114,12 +114,12 @@
         <activity
             android:name=".LoadingChangeLanguage"
             android:screenOrientation="portrait" />
-        <activity android:name=".UserProfileMenuActivity" />
+        <activity
+            android:name=".UserProfileMenuActivity"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+
         <activity android:name=".FavoriteCategoryActivity" />
         <activity android:name=".MyFavoriteActivity" />
         <activity android:name=".ListEventFavoriteActivity" />
-        <activity android:name=".fragment.ListEventFavoriteFragment" />
-        <activity android:name=".fragment.loading.ForgotPasswordDialogFragment"></activity>
     </application>
-
 </manifest>

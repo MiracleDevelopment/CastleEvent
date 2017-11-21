@@ -11,9 +11,12 @@ import android.view.ViewGroup
 import android.view.Window
 import com.ipati.dev.castleevent.ListDetailEventActivity
 import com.ipati.dev.castleevent.R
+import com.ipati.dev.castleevent.extension.onShowToast
 import com.ipati.dev.castleevent.extension.pxToDp
 import com.ipati.dev.castleevent.extension.pxToDp
 import com.ipati.dev.castleevent.model.OnMissingConfirm
+import icepick.Icepick
+import icepick.State
 import kotlinx.android.synthetic.main.activity_missing_dialog_fragment.*
 
 class MissingDialogFragment : DialogFragment() {
@@ -21,7 +24,7 @@ class MissingDialogFragment : DialogFragment() {
     private var codeMessage: Int = 0
     var callBackReAuthentication: (() -> Unit)? = null
     var callBackNetWork: (() -> Unit?)? = null
-    @SuppressLint("ResourceType")
+
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? =
             inflater?.inflate(R.layout.activity_missing_dialog_fragment, container, false)
@@ -35,6 +38,7 @@ class MissingDialogFragment : DialogFragment() {
             tv_msg_missing_dialog_fragment.text = arguments.getString(msgObject)
             codeMessage = arguments.getInt(codeMessageObject)
         }
+
         sizeImageAlert()
     }
 
@@ -75,12 +79,29 @@ class MissingDialogFragment : DialogFragment() {
         }
     }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        savedInstanceState?.let {
+            tv_msg_missing_dialog_fragment.text = savedInstanceState.getString(msgObject)
+            codeMessage = savedInstanceState.getInt(codeMessageObject)
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle?) {
+        super.onSaveInstanceState(outState)
+        outState?.let {
+            outState.putString(msgObject, tv_msg_missing_dialog_fragment.text.toString())
+            outState.putInt(codeMessageObject, codeMessage)
+        }
+    }
+
     companion object {
         private const val msgObject = "msg"
         private const val codeMessageObject = "codeMessage"
         private const val codeReAuthentication: Int = 1112
         private const val codeNetWork: Int = 1010
         private const val codeResetPassword: Int = 1313
+
         fun newInstance(msg: String, codeMessage: Int): MissingDialogFragment {
             return MissingDialogFragment().apply {
                 arguments = Bundle().apply {

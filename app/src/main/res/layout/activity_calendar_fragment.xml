@@ -8,151 +8,155 @@
     android:orientation="vertical"
     tools:context="com.ipati.dev.castleevent.fragment.CalendarFragment">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
         <LinearLayout
-            android:id="@+id/calendar_bar_app"
             android:layout_width="match_parent"
-            android:layout_height="312dp"
-            android:animateLayoutChanges="true"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <android.support.v7.widget.CardView
+            <LinearLayout
+                android:id="@+id/calendar_bar_app"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="312dp"
                 android:animateLayoutChanges="true"
-                android:elevation="15dp"
-                app:cardBackgroundColor="@color/colorBackgroundCalendar">
+                android:orientation="vertical">
 
-                <android.support.v7.widget.Toolbar
-                    android:id="@+id/toolbar_calendar"
-                    android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    android:background="@android:color/transparent"
-                    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
-
-                </android.support.v7.widget.Toolbar>
-
-                <TextView
-                    android:id="@+id/tv_header_month"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:gravity="center"
-                    android:padding="10dp"
-                    android:text="สิงหาคม"
-                    android:textColor="@color/colorFontHeader"
-                    android:textSize="@dimen/sizeFontMonthCalendar"
-                    android:textStyle="bold" />
-
-                <LinearLayout
+                <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:orientation="vertical">
+                    android:animateLayoutChanges="true"
+                    android:elevation="15dp"
+                    app:cardBackgroundColor="@color/colorBackgroundCalendar">
+
+                    <android.support.v7.widget.Toolbar
+                        android:id="@+id/toolbar_calendar"
+                        android:layout_width="match_parent"
+                        android:layout_height="?attr/actionBarSize"
+                        android:background="@android:color/transparent"
+                        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+                    </android.support.v7.widget.Toolbar>
 
                     <TextView
-                        android:id="@+id/tv_calendar_select_date"
+                        android:id="@+id/tv_header_month"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/stringTestCalendar"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="center"
+                        android:padding="10dp"
+                        android:text="สิงหาคม"
                         android:textColor="@color/colorFontHeader"
-                        android:textSize="@dimen/sizeFontCalendar"
+                        android:textSize="@dimen/sizeFontMonthCalendar"
                         android:textStyle="bold" />
 
-                    <TextView
-                        android:id="@+id/tv_calendar_year"
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tv_calendar_select_date"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/stringTestCalendar"
+                            android:textColor="@color/colorFontHeader"
+                            android:textSize="@dimen/sizeFontCalendar"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_calendar_year"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            android:textColor="@color/colorFontHeader"
+                            android:textSize="@dimen/sizeFontHeaderMenu"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_calendar_detail_event"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            android:textColor="@color/colorFontHeader"
+                            android:textSize="@dimen/sizeFontContent" />
+
+                        <TextView
+                            android:id="@+id/tv_calendar_time_ticket"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            android:textColor="@color/colorFontHeader"
+                            android:textSize="@dimen/sizeFontContent" />
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/im_calendar_today"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="5dp"
-                        android:textColor="@color/colorFontHeader"
-                        android:textSize="@dimen/sizeFontHeaderMenu"
-                        android:textStyle="bold" />
+                        android:layout_gravity="end|bottom"
+                        android:layout_margin="5dp"
+                        android:src="@mipmap/ic_today" />
 
-                    <TextView
-                        android:id="@+id/tv_calendar_detail_event"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="5dp"
-                        android:textColor="@color/colorFontHeader"
-                        android:textSize="@dimen/sizeFontContent" />
+                </android.support.v7.widget.CardView>
+            </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/tv_calendar_time_ticket"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="5dp"
-                        android:textColor="@color/colorFontHeader"
-                        android:textSize="@dimen/sizeFontContent" />
+            <com.github.sundeepk.compactcalendarview.CompactCalendarView
+                android:id="@+id/compat_calendar_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbarAlwaysDrawHorizontalTrack="true"
+                app:compactCalendarCurrentDayBackgroundColor="@color/colorSelectDate"
+                app:compactCalendarCurrentDayTextColor="@color/colorFontSelectCalendar"
+                app:compactCalendarCurrentSelectedDayBackgroundColor="@color/colorBackgroundCalendar"
+                app:compactCalendarCurrentSelectedDayTextColor="@color/colorFontSelectCalendar"
+                app:compactCalendarEventIndicatorStyle="small_indicator"
+                app:compactCalendarMultiEventIndicatorColor="@color/colorFontSelectCalendar"
+                app:compactCalendarOtherMonthDaysTextColor="#E0E0E0"
+                app:compactCalendarTargetHeight="256dp"
+                app:compactCalendarTextColor="@color/colorFontCalendar"
+                app:compactCalendarTextSize="18sp" />
 
-                </LinearLayout>
-
-                <ImageView
-                    android:id="@+id/im_calendar_today"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end|bottom"
-                    android:layout_margin="5dp"
-                    android:src="@mipmap/ic_today" />
-
-            </android.support.v7.widget.CardView>
-        </LinearLayout>
-
-        <com.github.sundeepk.compactcalendarview.CompactCalendarView
-            android:id="@+id/compat_calendar_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scrollbarAlwaysDrawHorizontalTrack="true"
-            app:compactCalendarCurrentDayBackgroundColor="@color/colorSelectDate"
-            app:compactCalendarCurrentDayTextColor="@color/colorFontSelectCalendar"
-            app:compactCalendarCurrentSelectedDayBackgroundColor="@color/colorBackgroundCalendar"
-            app:compactCalendarCurrentSelectedDayTextColor="@color/colorFontSelectCalendar"
-            app:compactCalendarEventIndicatorStyle="small_indicator"
-            app:compactCalendarMultiEventIndicatorColor="@color/colorFontSelectCalendar"
-            app:compactCalendarOtherMonthDaysTextColor="#E0E0E0"
-            app:compactCalendarTargetHeight="256dp"
-            app:compactCalendarTextColor="@color/colorFontCalendar"
-            app:compactCalendarTextSize="18sp" />
-
-        <LinearLayout
-            android:id="@+id/tv_hind_bt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center_horizontal"
-            android:orientation="horizontal"
-            android:visibility="gone">
-
-            <TextView
-                android:id="@+id/tv_title"
+            <LinearLayout
+                android:id="@+id/tv_hind_bt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/circular"
-                android:padding="5dp"
-                android:text="@string/hind"
-                android:textColor="@color/colorFontCalendar"
-                android:textSize="25sp" />
+                android:layout_gravity="center"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal"
+                android:visibility="gone">
 
-            <ImageView
-                android:id="@+id/im_arrow_download"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:src="@mipmap/ic_expand_more" />
+                <TextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/circular"
+                    android:padding="5dp"
+                    android:text="@string/hind"
+                    android:textColor="@color/colorFontCalendar"
+                    android:textSize="25sp" />
 
+                <ImageView
+                    android:id="@+id/im_arrow_download"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@mipmap/ic_expand_more" />
+
+            </LinearLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/calendar_recycler_list_event"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingTop="5dp">
+
+            </android.support.v7.widget.RecyclerView>
         </LinearLayout>
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/calendar_recycler_list_event"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingTop="5dp">
-
-        </android.support.v7.widget.RecyclerView>
-
-
-    </LinearLayout>
+    </ScrollView>
 </LinearLayout>

@@ -24,9 +24,7 @@ fun LoadingDialogFragment.onDismissDialog() {
     dismiss()
 }
 
-fun View.getStringResource(resource: Int): String {
-    return resources.getString(resource)
-}
+fun View.getStringResource(resource: Int): String = resources.getString(resource)
 
 fun Context.pxToDp(specificWidth: Int): Int = ((specificWidth / resources.displayMetrics.density) * resources.displayMetrics.density).toInt()
 

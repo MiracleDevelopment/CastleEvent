@@ -16,7 +16,6 @@ import com.ipati.dev.castleevent.model.OnProgressPhotoUser
 
 class ProfileUserActivity : BaseAppCompatActivity(), DismissDialogFragment, OnProgressPhotoUser {
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile_user)

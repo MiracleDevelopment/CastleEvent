@@ -17,8 +17,6 @@ import kotlinx.android.synthetic.main.activity_forgot_password_dialog_fragment.*
 import kotlinx.android.synthetic.main.activity_login_fragment.*
 
 class ForgotPasswordDialogFragment : DialogFragment(), View.OnClickListener {
-
-
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? =
             inflater?.inflate(R.layout.activity_forgot_password_dialog_fragment, container, false)
 

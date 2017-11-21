@@ -9,54 +9,63 @@
     android:orientation="vertical"
     tools:context="com.ipati.dev.castleevent.fragment.ProfileUserFragment">
 
-    <ScrollView
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:padding="5dp"
+        android:text="@string/header_profile"
+        android:textColor="@color/colorFontProfile"
+        android:textSize="@dimen/sizeFontHeaderMenu"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_user_profile"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:layout_height="@dimen/sizeHeightCustomToolbar"
+        android:background="@android:color/transparent"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+    </android.support.v7.widget.Toolbar>
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_user_profile">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
+            <android.support.constraint.Guideline
+                android:id="@+id/guide_line_base_user_profile"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:padding="5dp"
-                android:text="@string/header_profile"
-                android:textColor="@color/colorFontProfile"
-                android:textSize="@dimen/sizeFontHeaderMenu"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar_user_profile"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/sizeHeightCustomToolbar"
-                android:background="@android:color/transparent"
-                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
-
-            </android.support.v7.widget.Toolbar>
-
+                android:orientation="horizontal"
+                app:layout_constraintGuide_begin="0dp" />
 
             <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/im_edit_photo_profile"
-                android:layout_width="0dp"
+                android:layout_width="250dp"
                 android:layout_height="0dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_margin="2dp"
-                app:actualImageScaleType="centerCrop"
+                app:actualImageScaleType="fitCenter"
                 app:layout_constraintBottom_toTopOf="@+id/tv_edit_profile"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/toolbar_user_profile"
+                app:layout_constraintTop_toBottomOf="@+id/guide_line_base_user_profile"
                 app:placeholderImage="@mipmap/castle_place_holder"
                 app:pressedStateOverlayImage="@drawable/shape_circle_press_image"
                 app:roundAsCircle="true"
@@ -78,7 +87,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/tv_edit_profile"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/toolbar_user_profile" />
+                app:layout_constraintTop_toBottomOf="@+id/guide_line_base_user_profile" />
 
             <TextView
                 android:id="@+id/tv_edit_profile"
@@ -295,7 +304,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.95" />
+                app:layout_constraintGuide_begin="580dp" />
         </android.support.constraint.ConstraintLayout>
-    </ScrollView>
+    </android.support.v4.widget.NestedScrollView>
 </android.support.constraint.ConstraintLayout>

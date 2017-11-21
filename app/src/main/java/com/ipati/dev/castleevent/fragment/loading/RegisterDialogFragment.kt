@@ -20,9 +20,9 @@ import kotlinx.android.synthetic.main.activity_register_dialog_fragment.*
 
 
 class RegisterDialogFragment : DialogFragment(), View.OnClickListener {
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater?.inflate(R.layout.activity_register_dialog_fragment, container, false)
-    }
+
+    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? =
+            inflater?.inflate(R.layout.activity_register_dialog_fragment, container, false)
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

@@ -13,6 +13,10 @@ import kotlinx.android.synthetic.main.activity_log_out_fragment_dialog.*
 
 class LogOutFragmentDialog : DialogFragment(), View.OnClickListener {
     var onClickPositiveLogOut: (() -> Unit)? = null
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        retainInstance = true
+    }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? =
             inflater?.inflate(R.layout.activity_log_out_fragment_dialog, container, false)
@@ -52,8 +56,10 @@ class LogOutFragmentDialog : DialogFragment(), View.OnClickListener {
     override fun onClick(p0: View?) {
         when (p0?.id) {
             R.id.tv_accept_dialog_logout -> {
-                onClickPositiveLogOut?.invoke()
-                dialog.dismiss()
+                if (onClickPositiveLogOut != null) {
+                    onClickPositiveLogOut!!.invoke()
+                    dialog.dismiss()
+                }
             }
 
             R.id.tv_cancel_dialog_logout -> {

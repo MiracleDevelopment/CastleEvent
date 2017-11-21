@@ -149,9 +149,6 @@ fun loadPhotoUserTickets(context: Context, url: String, im: SimpleDraweeView) {
 }
 
 fun loadPhotoUserProfile(context: Context, url: String, im: SimpleDraweeView) {
-//    im.layoutParams.width = context.pxToDp(480)
-//    im.layoutParams.height = context.pxToDp(480)
-
     val imageRequest: ImageRequest = ImageRequestBuilder.newBuilderWithSource(Uri.parse(url))
             .setLocalThumbnailPreviewsEnabled(true)
             .build()

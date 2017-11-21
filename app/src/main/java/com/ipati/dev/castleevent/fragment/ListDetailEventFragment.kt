@@ -43,6 +43,7 @@ import com.ipati.dev.castleevent.extension.pxToDp
 import com.ipati.dev.castleevent.extension.pxToDp
 import com.ipati.dev.castleevent.extension.onShowSuccessDialog
 import com.ipati.dev.castleevent.extension.onShowToast
+import com.ipati.dev.castleevent.fragment.loading.MissingDialogFragment
 import com.ipati.dev.castleevent.model.Fresco.loadGoogleMapStatic
 import com.ipati.dev.castleevent.model.Fresco.loadLogo
 import com.ipati.dev.castleevent.model.Fresco.loadPhotoDetail
@@ -60,6 +61,8 @@ import com.ipati.dev.castleevent.service.FirebaseService.RealTimeDatabaseDetailM
 import com.ipati.dev.castleevent.service.RecordedEvent.RecordListEvent
 import com.ipati.dev.castleevent.utill.DialogManager
 import com.ipati.dev.castleevent.utill.SharePreferenceGoogleSignInManager
+import icepick.Icepick
+import icepick.State
 import kotlinx.android.synthetic.main.activity_detail_event_fragment.*
 import kotlinx.android.synthetic.main.layout_bottom_sheet.*
 import kotlinx.android.synthetic.main.layout_get_tickets_submit.*
@@ -80,16 +83,16 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
     private lateinit var dateManager: DateManager
 
     private var ref: DatabaseReference = FirebaseDatabase.getInstance().reference
-    private var eventId: Long? = null
+    @State private var eventId: Long? = null
     private var accountBank: String? = null
     private var statusCodeGoogleApi: Int? = null
-    private var pushEvent: MakePushEvent? = null
+    @State private var pushEvent: MakePushEvent? = null
     private var restItemEvent: ItemListEvent? = null
     private var recorderEvent: RecordListEvent? = null
-    private var checkRest: DatabaseReference? = null
-    private var bundle: Bundle? = null
-    private var idPushFireBase: String? = null
-    private var statusType: Int? = 0
+    @State private var checkRest: DatabaseReference? = null
+    @State private var bundle: Bundle? = null
+    @State private var idPushFireBase: String? = null
+    @State private var statusType: Int? = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -114,14 +117,7 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
                 .addTarget(R.id.im_detail_cover)
                 .excludeChildren(android.R.id.statusBarBackground, true)
 
-
-        authenticationStatus = AuthenticationStatus()
-        googleApiAvailability = GoogleApiAvailability.getInstance()
-        googlePlayServiceMap = GooglePlayServiceMapManager(activity, lifecycle)
-        googleSharePreference = SharePreferenceGoogleSignInManager(context)
-        calendarManager = CalendarManager(context)
-        dialogManager = DialogManager(activity)
-        dateManager = DateManager(context)
+        Icepick.restoreInstanceState(this, savedInstanceState)
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? =
@@ -130,6 +126,14 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        authenticationStatus = AuthenticationStatus()
+        googleApiAvailability = GoogleApiAvailability.getInstance()
+        googlePlayServiceMap = GooglePlayServiceMapManager(activity, lifecycle)
+        googleSharePreference = SharePreferenceGoogleSignInManager(context)
+        calendarManager = CalendarManager(context)
+        dialogManager = DialogManager(activity)
+        dateManager = DateManager(context)
+
         bundle = arguments
         bundle?.let {
             ViewCompat.setTransitionName(im_detail_cover, bundle?.getString(transition))
@@ -142,7 +146,6 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
         }
 
         bt_get_tickets.setOnClickListener { btView -> onClick(btView) }
-
     }
 
 
@@ -264,7 +267,6 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
     @SuppressLint("SetTextI18n")
     override fun setDataChange(itemListEvent: ItemListEvent) {
         loadPhotoDetail(context, itemListEvent.eventCover, im_detail_cover)
-//        loadPhotoAdvertise(context, itemListEvent.eventAdvertise, im_advertise_detail)
         loadLogo(context, itemListEvent.eventLogoCredit, im_logo_owner_event)
         loadGoogleMapStatic(context, itemListEvent.eventLatitude, itemListEvent.eventLongitude, im_static_map)
 
@@ -306,7 +308,6 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
     @SuppressLint("SetTextI18n")
     private fun setOnDetailEvent(itemListEvent: ItemListEvent) {
         loadPhotoDetail(context, itemListEvent.eventCover, im_detail_cover)
-//        loadPhotoAdvertise(context, itemListEvent.eventAdvertise, im_advertise_detail)
         loadLogo(context, itemListEvent.eventLogoCredit, im_logo_owner_event)
         loadGoogleMapStatic(context, itemListEvent.eventLatitude, itemListEvent.eventLongitude, im_static_map)
 
@@ -432,7 +433,7 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
 
     fun onMissingDialogConfirmFragment() {
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-        dialogManager.onDismissMissingDialog()
+        dialogManager.onDismissConfirmDialog()
     }
 
     private fun addEvent() {
@@ -463,6 +464,8 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
     }
 
     private fun recordMyTickets() {
+        dialogManager.onShowLoadingDialog("ระบบกำลังดำเนินงาน")
+
         checkRest = ref.child("eventItem").child("eventContinue").child("news").child(keyEvent)
         checkRest?.runTransaction(object : Transaction.Handler {
             override fun onComplete(p0: DatabaseError?, p1: Boolean, p2: DataSnapshot?) {
@@ -483,8 +486,10 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
                         if (!task.isComplete) {
                             dialogManager.onShowMissingDialog(task.exception?.message!!, REQUEST_OTHER_ERROR)
                         } else {
-                            onShowSuccessDialog(activity, "จองบัตรงาน $nameEvent เรียบร้อยแล้วค่ะ")
-                            MakePushEvent(googleCredentialAccount).execute()
+                            activity?.let {
+                                onShowSuccessDialog(activity, "จองบัตรงาน $nameEvent เรียบร้อยแล้วค่ะ")
+                                MakePushEvent(googleCredentialAccount).execute()
+                            } ?: dialogManager.onDismissLoadingDialog()
                         }
                     }
                 }
@@ -505,16 +510,12 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
                 return Transaction.success(p0)
             }
         })
-
-        dialogManager.onShowLoadingDialog("ระบบกำลังดำเนินงาน")
     }
-
 
     //Todo : DialogConfirmFragment
     fun onNegativeConfirmFragment() {
         dialogManager.onDismissConfirmDialog()
     }
-
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
@@ -583,7 +584,6 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
                         googleSharePreference.sharePreferenceManager(accountBank)
                         googleCredentialAccount.selectedAccountName = accountBank
                         attendee = accountBank
-                        onPositiveConfirmFragment()
                     }
                 }
             }
@@ -607,6 +607,11 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
                 }
             }
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle?) {
+        super.onSaveInstanceState(outState)
+        Icepick.saveInstanceState(this, outState)
     }
 
 

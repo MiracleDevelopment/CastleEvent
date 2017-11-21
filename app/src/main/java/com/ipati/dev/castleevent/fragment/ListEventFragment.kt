@@ -2,6 +2,7 @@ package com.ipati.dev.castleevent.fragment
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Parcelable
 import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.app.SharedElementCallback
 import android.support.v4.view.ViewCompat
@@ -16,9 +17,11 @@ import com.ipati.dev.castleevent.base.BaseFragment
 import com.ipati.dev.castleevent.R
 import com.ipati.dev.castleevent.adapter.ListEventAdapter
 import com.ipati.dev.castleevent.extension.onShowToast
+import com.ipati.dev.castleevent.model.GoogleCalendar.categoryNameEvent
 import com.ipati.dev.castleevent.model.ModelListItem.ItemListEvent
 import com.ipati.dev.castleevent.service.FirebaseService.CategoryRealTimeManager
 import com.ipati.dev.castleevent.service.FirebaseService.RealTimeDatabaseManager
+import icepick.State
 import kotlinx.android.synthetic.main.activity_list_event_fragment.*
 import kotlinx.android.synthetic.main.custom_list_event_adapter_layout.view.*
 import java.util.*
@@ -27,7 +30,6 @@ import kotlin.collections.ArrayList
 class ListEventFragment : BaseFragment() {
     private lateinit var realTimeDatabaseManager: RealTimeDatabaseManager
     private lateinit var categoryRealTimeDatabaseManager: CategoryRealTimeManager
-
     val changeCategory: ((msg: String) -> Unit) = { msg: String ->
         when (Locale.getDefault().language) {
             "en" -> {
@@ -96,7 +98,6 @@ class ListEventFragment : BaseFragment() {
 
     //Todo: categoryThai
     private fun setChangeCategoryTH(category: String) {
-
         when (category) {
             context.getString(R.string.categoryAll) -> {
                 realTimeDatabaseManager.adapterListEvent = ListEventAdapter(realTimeDatabaseManager.arrayItemList)
@@ -121,6 +122,7 @@ class ListEventFragment : BaseFragment() {
                 setShareElementTransition()
             }
         }
+
     }
 
     //Todo: ConvertListToArrayList
@@ -153,8 +155,17 @@ class ListEventFragment : BaseFragment() {
         startActivity(intentAnimation, activityOptionsCompat.toBundle())
     }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle?) {
+        super.onSaveInstanceState(outState)
+    }
+
     companion object {
         private const val listEventObject: String = "ListEventFragment"
+        private const val categoryObject: String = "categoryName"
         fun newInstance(nameObject: String): ListEventFragment {
             val listEventFragment = ListEventFragment()
             val bundle = Bundle()
