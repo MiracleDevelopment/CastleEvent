@@ -11,33 +11,38 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorBackgroundDialog"
         android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/tv_title_dialog_confirm"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:padding="2dp"
-            android:text="กรุณายืนยันการจอง"
-            android:textColor="#000"
-            android:textSize="20sp" />
-
-        <TextView
-            android:id="@+id/tv_msg_dialog_confirm"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:lines="2"
-            android:padding="2dp"
-            android:textColor="#000"
-            android:textSize="16sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
+            android:background="@color/colorBackgroundDialog"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_title_dialog_confirm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:padding="2dp"
+                android:text="กรุณายืนยันการจอง"
+                android:textColor="#000"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/tv_msg_dialog_confirm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:lines="2"
+                android:padding="2dp"
+                android:textColor="#000"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:weightSum="2">
 
@@ -48,6 +53,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/custom_back_ground_denied"
                 android:gravity="center"
+                android:lines="1"
                 android:text="@string/cancel_bt"
                 android:textColor="#FFF"
                 android:textSize="18sp" />
@@ -59,6 +65,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/custom_back_ground_accept"
                 android:gravity="center"
+                android:lines="1"
                 android:text="@string/accept_bt"
                 android:textColor="#FFF"
                 android:textSize="18sp" />

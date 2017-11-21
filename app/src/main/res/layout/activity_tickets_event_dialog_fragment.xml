@@ -12,6 +12,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:minWidth="150dp"
         android:orientation="vertical">
 
         <TextView
@@ -22,7 +23,7 @@
             android:padding="5dp"
             android:text="@string/tickets"
             android:textColor="@color/colorFontTicketsDialog"
-            android:textSize="@dimen/sizeFontHeader" />
+            android:textSize="18sp" />
 
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/im_logo_event_ticket_dialog"
@@ -69,13 +70,13 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/tv_username_tickets_dialog"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:lines="1"
                     android:padding="6dp"
@@ -84,7 +85,7 @@
 
                 <TextView
                     android:id="@+id/tv_people_count_tickets_dialog"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:lines="1"
                     android:padding="6dp"
@@ -99,7 +100,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:adjustViewBounds="true"
-            android:src="@mipmap/ic_launcher" />
+            android:src="@mipmap/castle_place_holder" />
 
         <TextView
             android:id="@+id/tv_close_dialog_qr_code"

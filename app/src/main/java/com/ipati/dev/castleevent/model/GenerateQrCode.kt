@@ -12,7 +12,7 @@ class GenerateQrCode(context: Context) {
 
     fun bitMapQrCode(userAccount: String, eventId: String): Bitmap {
         val userInfo = userAccount + " : " + eventId
-        return QRCode.from(userInfo).withSize(300, 300).withColor(ContextCompat.getColor(mContext, R.color.colorContentQrCode)
+        return QRCode.from(userInfo).withSize(500, 500).withColor(ContextCompat.getColor(mContext, R.color.colorContentQrCode)
                 , ContextCompat.getColor(mContext, R.color.colorBackgroundQrCode)).bitmap()
     }
 }

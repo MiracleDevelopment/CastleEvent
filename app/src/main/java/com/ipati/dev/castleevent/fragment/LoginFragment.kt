@@ -24,6 +24,7 @@ import com.ipati.dev.castleevent.RegisterActivity
 import com.ipati.dev.castleevent.authCredential.facebookAuthCredential
 import com.ipati.dev.castleevent.authCredential.twitterAuthCredential
 import com.ipati.dev.castleevent.base.BaseFragment
+import com.ipati.dev.castleevent.extension.onShowForgotPasswordDialog
 import com.ipati.dev.castleevent.extension.pxToDp
 import com.ipati.dev.castleevent.extension.onShowToast
 import com.ipati.dev.castleevent.service.*
@@ -63,6 +64,7 @@ class LoginFragment : BaseFragment(), View.OnClickListener {
         im_twitter.setOnClickListener { v -> onClick(v) }
         im_google_plus.setOnClickListener { v -> onClick(v) }
         tv_create_account_login.setOnClickListener { v -> onClick(v) }
+        tv_forgot_password.setOnClickListener(this)
         tv_login_fragment?.let {
             tv_login_fragment.setOnClickListener { v -> onClick(v) }
         }
@@ -159,6 +161,9 @@ class LoginFragment : BaseFragment(), View.OnClickListener {
                 logInAuthManager.callBackFailureValidate = { msg ->
                     context.onShowToast(msg)
                 }
+            }
+            R.id.tv_forgot_password -> {
+                onShowForgotPasswordDialog(activity)
             }
         }
     }

@@ -118,7 +118,8 @@
         <activity android:name=".FavoriteCategoryActivity" />
         <activity android:name=".MyFavoriteActivity" />
         <activity android:name=".ListEventFavoriteActivity" />
-        <activity android:name=".fragment.ListEventFavoriteFragment"></activity>
+        <activity android:name=".fragment.ListEventFavoriteFragment" />
+        <activity android:name=".fragment.loading.ForgotPasswordDialogFragment"></activity>
     </application>
 
 </manifest>

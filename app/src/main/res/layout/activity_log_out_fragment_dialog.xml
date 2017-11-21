@@ -13,6 +13,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:minWidth="256dp"
         android:orientation="vertical">
 
         <LinearLayout
@@ -36,6 +37,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto_light"
+                android:gravity="center"
                 android:padding="5dp"
                 android:textColor="@color/colorFontDialogLogOut"
                 android:textSize="@dimen/sizeFontContent" />
@@ -44,22 +46,24 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:background="@color/colorBackgroundBottomTabDialog"
             android:orientation="horizontal"
             android:weightSum="2">
 
             <TextView
                 android:id="@+id/tv_cancel_dialog_logout"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:background="@drawable/custom_back_ground_cancel_log_out"
                 android:clickable="true"
                 android:focusable="true"
                 android:gravity="center"
-                android:padding="6dp"
+                android:lines="1"
+                android:paddingBottom="4dp"
+                android:paddingEnd="8dp"
+                android:paddingStart="8dp"
+                android:paddingTop="4dp"
                 android:text="@string/cancel_dialog_logout"
                 android:textColor="@color/colorCancelButton"
                 android:textSize="@dimen/sizeFontButton" />
@@ -68,14 +72,18 @@
             <TextView
                 android:id="@+id/tv_accept_dialog_logout"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:background="@drawable/custom_back_ground_dialog_log_out"
                 android:clickable="true"
                 android:focusable="true"
                 android:gravity="center"
-                android:padding="6dp"
+                android:lines="1"
+                android:paddingBottom="4dp"
+                android:paddingEnd="8dp"
+                android:paddingStart="8dp"
+                android:paddingTop="4dp"
                 android:text="@string/accept_dialog_logout"
                 android:textColor="@color/colorAcceptButton"
                 android:textSize="@dimen/sizeFontButton" />

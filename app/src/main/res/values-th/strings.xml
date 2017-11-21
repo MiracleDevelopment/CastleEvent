@@ -98,6 +98,7 @@
     <string name="confirm">ยืนยัน</string>
     <string name="อัพเดทโปรไฟล์ของคุณเสร็จแล้วค่ะ">Update Complete</string>
     <string name="edit_photo">แก้ไขรูปโปรไฟล์</string>
+    <string name="email">Email</string>
 
     <string-array name="CategoryFavorite">
         <item>การศึกษา</item>

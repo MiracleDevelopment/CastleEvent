@@ -42,19 +42,20 @@ class ListEventAdapter(listItem: ArrayList<ItemListEvent>) : RecyclerView.Adapte
             GestureDetector(itemView.context, object : GestureDetector.SimpleOnGestureListener() {
                 override fun onSingleTapConfirmed(e: MotionEvent?): Boolean {
                     itemViewTransition?.let {
-                        val widthOriginal: Int = itemViewTransition?.custom_im_cover_list_event!!.measuredWidth
-                        val heightOriginal: Int = itemViewTransition?.custom_im_cover_list_event!!.measuredHeight
+                        if (adapterPosition >= 0) {
+                            val widthOriginal: Int = itemViewTransition?.custom_im_cover_list_event!!.measuredWidth
+                            val heightOriginal: Int = itemViewTransition?.custom_im_cover_list_event!!.measuredHeight
 
-                        ViewCompat.setTransitionName(itemViewTransition?.custom_im_cover_list_event
-                                , "${itemViewTransition!!.custom_im_cover_list_event.id}$adapterPosition")
+                            ViewCompat.setTransitionName(itemViewTransition?.custom_im_cover_list_event
+                                    , "${itemViewTransition!!.custom_im_cover_list_event.id}$adapterPosition")
 
 
-                        onItemTransitionClickable?.invoke(itemViewTransition?.custom_im_cover_list_event
-                                , widthOriginal
-                                , heightOriginal
-                                , ViewCompat.getTransitionName(itemViewTransition?.custom_im_cover_list_event)
-                                , itemList[adapterPosition].eventId, 0)
-
+                            onItemTransitionClickable?.invoke(itemViewTransition?.custom_im_cover_list_event
+                                    , widthOriginal
+                                    , heightOriginal
+                                    , ViewCompat.getTransitionName(itemViewTransition?.custom_im_cover_list_event)
+                                    , itemList[adapterPosition].eventId, 0)
+                        }
                     }
                     return super.onSingleTapConfirmed(e)
                 }

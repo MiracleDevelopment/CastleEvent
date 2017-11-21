@@ -57,6 +57,10 @@ class MissingDialogFragment : DialogFragment() {
                     dialog.dismiss()
                 }
 
+                codeResetPassword -> {
+                    dialog.dismiss()
+                }
+
                 else -> {
                     confirmTicket()
                 }
@@ -76,6 +80,7 @@ class MissingDialogFragment : DialogFragment() {
         private const val codeMessageObject = "codeMessage"
         private const val codeReAuthentication: Int = 1112
         private const val codeNetWork: Int = 1010
+        private const val codeResetPassword: Int = 1313
         fun newInstance(msg: String, codeMessage: Int): MissingDialogFragment {
             return MissingDialogFragment().apply {
                 arguments = Bundle().apply {

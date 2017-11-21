@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,110 +8,175 @@
     android:orientation="vertical"
     tools:context="com.ipati.dev.castleevent.fragment.LoginFragment">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar_login_fragment"
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/sizeHeightCustomToolbar"
-            android:background="@android:color/transparent"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+            android:layout_height="wrap_content">
 
-        </android.support.v7.widget.Toolbar>
-
-
-        <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/lottie_view_animation_login"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:id="@+id/tv_header_login_name_app"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:padding="5dp"
-            android:text="@string/nameApp"
-            android:textColor="@color/colorFontLogin"
-            android:textSize="@dimen/sizeFontNameApp"
-            android:textStyle="bold" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:orientation="vertical">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
+            <android.support.constraint.Guideline
+                android:id="@+id/horizontal_guide_line_bottom_login"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.90" />
 
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/tv_input_layout_username"
+            <android.support.constraint.Guideline
+                android:id="@+id/horizontal_guide_line_bottom_end_login"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="1" />
+
+            <android.support.constraint.Guideline
+                android:id="@+id/vertical_guide_center_half_login"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.5" />
+
+            <android.support.constraint.Guideline
+                android:id="@+id/horizontal_guide_line_login"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.8" />
+
+            <android.support.constraint.Guideline
+                android:id="@+id/horizontal_guide_line_half_field"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.65" />
+
+            <android.support.constraint.Guideline
+                android:id="@+id/horizontal_guide_line_header_login"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.35" />
+
+            <android.support.constraint.Guideline
+                android:id="@+id/horizontal_guide_field_edit_text_username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.38" />
+
+            <android.support.constraint.Guideline
+                android:id="@+id/horizontal_guide_field_edit_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.48" />
+
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar_login_fragment"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/sizeHeightCustomToolbar"
+                android:background="@android:color/transparent"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+            </android.support.v7.widget.Toolbar>
+
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/lottie_view_animation_login"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toTopOf="@+id/tv_header_login_name_app"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/toolbar_login_fragment" />
+
+            <TextView
+                android:id="@+id/tv_header_login_name_app"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="5dp"
+                android:text="@string/nameApp"
+                android:textColor="@color/colorFontLogin"
+                android:textSize="@dimen/sizeFontNameApp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/horizontal_guide_line_header_login"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lottie_view_animation_login"
+                app:layout_constraintVertical_bias="0.9" />
+
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/tv_input_layout_username"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:textColorHint="@color/colorHintResource"
+                app:layout_constraintBottom_toTopOf="@+id/horizontal_guide_line_half_field"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/horizontal_guide_field_edit_text_username"
+                app:layout_constraintVertical_bias="0">
+
+                <com.ipati.dev.castleevent.customize.CustomFontEditText
+                    android:id="@+id/login_ed_username"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:textColorHint="@color/colorHintResource">
+                    android:hint="@string/loginUsername"
+                    android:inputType="textEmailAddress"
+                    android:lines="1"
+                    android:textColor="@color/colorEditTextResource"
+                    android:textSize="@dimen/sizeFontLogin" />
 
-                    <com.ipati.dev.castleevent.customize.CustomFontEditText
-                        android:id="@+id/login_ed_username"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/loginUsername"
-                        android:inputType="textEmailAddress"
-                        android:lines="1"
-                        android:textColor="@color/colorEditTextResource"
-                        android:textSize="@dimen/sizeFontLogin" />
+            </android.support.design.widget.TextInputLayout>
 
-                </android.support.design.widget.TextInputLayout>
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/tv_input_password"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:textColorHint="@color/colorHintResource"
+                app:layout_constraintBottom_toTopOf="@+id/horizontal_guide_line_half_field"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/horizontal_guide_field_edit_text"
+                app:layout_constraintVertical_bias="0">
 
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/tv_input_password"
+                <com.ipati.dev.castleevent.customize.CustomFontEditText
+                    android:id="@+id/login_ed_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:textColorHint="@color/colorHintResource">
+                    android:hint="@string/loginPassword"
+                    android:inputType="textPassword"
+                    android:lines="1"
+                    android:textColor="@color/colorEditTextResource"
+                    android:textSize="@dimen/sizeFontLogin" />
+            </android.support.design.widget.TextInputLayout>
 
-                    <com.ipati.dev.castleevent.customize.CustomFontEditText
-                        android:id="@+id/login_ed_password"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/loginPassword"
-                        android:inputType="textPassword"
-                        android:lines="1"
-                        android:textColor="@color/colorEditTextResource"
-                        android:textSize="@dimen/sizeFontLogin" />
-                </android.support.design.widget.TextInputLayout>
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:orientation="horizontal"
-            android:padding="10dp">
 
             <android.support.v7.widget.CardView
+                android:id="@+id/card_login"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:cardBackgroundColor="@color/colorBackgroundResource"
-                app:cardElevation="10dp">
+                app:cardElevation="10dp"
+                app:layout_constraintBottom_toTopOf="@+id/tv_word_space"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/horizontal_guide_line_half_field"
+                app:layout_constraintVertical_bias="0.5">
 
                 <TextView
                     android:id="@+id/tv_login_fragment"
@@ -122,39 +187,45 @@
                     android:textColor="@color/colorEditTextResource"
                     android:textSize="@dimen/sizeFontHeader" />
             </android.support.v7.widget.CardView>
-        </LinearLayout>
 
-        <TextView
-            android:id="@+id/tv_word_space"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:padding="5dp"
-            android:text="@string/or_sign_in_with"
-            android:textColor="@color/colorFontLogin"
-            android:textSize="@dimen/sizeFontHeader"
-            android:textStyle="bold" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:gravity="center"
-            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/tv_word_space"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="5dp"
+                android:text="@string/or_sign_in_with"
+                android:textColor="@color/colorFontLogin"
+                android:textSize="@dimen/sizeFontHeader"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/horizontal_guide_line_login"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
+
 
             <ImageView
                 android:id="@+id/im_facebook"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
-                android:src="@mipmap/ic_launcher_facebook" />
+                android:src="@mipmap/ic_launcher_facebook"
+                app:layout_constraintEnd_toStartOf="@+id/im_twitter"
+                app:layout_constraintHorizontal_bias="1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/horizontal_guide_line_login" />
 
             <ImageView
                 android:id="@+id/im_twitter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
-                android:src="@mipmap/ic_launcher_twitter" />
+                android:src="@mipmap/ic_launcher_twitter"
+                app:layout_constraintEnd_toEndOf="@+id/vertical_guide_center_half_login"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="@+id/vertical_guide_center_half_login"
+                app:layout_constraintTop_toBottomOf="@+id/horizontal_guide_line_login" />
 
 
             <ImageView
@@ -162,37 +233,46 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
-                android:src="@mipmap/ic_launcher_google" />
-        </LinearLayout>
-    </LinearLayout>
+                android:src="@mipmap/ic_launcher_google"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toEndOf="@+id/im_twitter"
+                app:layout_constraintTop_toBottomOf="@+id/horizontal_guide_line_login" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp">
 
-        <TextView
-            android:id="@+id/tv_create_account_login"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_gravity="start"
-            android:padding="10dp"
-            android:text="@string/create_account"
-            android:textColor="@color/colorHintResource"
-            android:textSize="@dimen/sizeFontSubMenu"
-            android:textStyle="bold" />
+            <TextView
+                android:id="@+id/tv_create_account_login"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_gravity="start"
+                android:padding="10dp"
+                android:text="@string/create_account"
+                android:textColor="@color/colorHintResource"
+                android:textSize="@dimen/sizeFontSubMenu"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/horizontal_guide_line_bottom_end_login"
+                app:layout_constraintEnd_toEndOf="@+id/vertical_guide_center_half_login"
+                app:layout_constraintHorizontal_bias="0.1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/horizontal_guide_line_bottom_login" />
 
-        <TextView
-            android:id="@+id/tv_forgot_password"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_gravity="end"
-            android:padding="10dp"
-            android:text="@string/forgot_password"
-            android:textColor="@color/colorFontLogin"
-            android:textSize="@dimen/sizeFontSubMenu"
-            android:textStyle="bold" />
-    </RelativeLayout>
-</LinearLayout>
+            <TextView
+                android:id="@+id/tv_forgot_password"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="end"
+                android:padding="10dp"
+                android:text="@string/forgot_password"
+                android:textColor="@color/colorFontLogin"
+                android:textSize="@dimen/sizeFontSubMenu"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/horizontal_guide_line_bottom_end_login"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.9"
+                app:layout_constraintStart_toStartOf="@+id/vertical_guide_center_half_login"
+                app:layout_constraintTop_toBottomOf="@+id/horizontal_guide_line_bottom_login" />
+        </android.support.constraint.ConstraintLayout>
+    </ScrollView>
+</android.support.constraint.ConstraintLayout>

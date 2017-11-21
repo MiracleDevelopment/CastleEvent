@@ -104,6 +104,7 @@
     <string name="confirm">Confirm</string>
     <string name="updateProfileSuccess">Update Complete</string>
     <string name="edit_photo">Edit Photo</string>
+    <string name="email">Email</string>
 
     <string-array name="CategoryFavorite">
         <item>การศึกษา</item>

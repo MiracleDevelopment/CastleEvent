@@ -3,9 +3,11 @@
     android:shape="rectangle">
     <padding
         android:bottom="4dp"
-        android:left="10dp"
-        android:right="10dp"
-        android:top="4dp" />
+        android:left="8dp"
+        android:right="8dp"
+        android:top="4dp">
+
+    </padding>
 
     <solid android:color="@color/colorBackgroundCancel" />
 </shape>

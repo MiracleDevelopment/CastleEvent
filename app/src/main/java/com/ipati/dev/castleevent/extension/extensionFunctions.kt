@@ -80,6 +80,11 @@ fun onShowSuccessDialog(activity: FragmentActivity, msg: String) = SuccessDialog
     show(activity.supportFragmentManager, "SuccessDialogFragment")
 }
 
+fun onShowForgotPasswordDialog(activity: FragmentActivity) = ForgotPasswordDialogFragment.newInstance().apply {
+    isCancelable = true
+    show(activity.supportFragmentManager, "ForgotPassword")
+}
+
 
 
 
