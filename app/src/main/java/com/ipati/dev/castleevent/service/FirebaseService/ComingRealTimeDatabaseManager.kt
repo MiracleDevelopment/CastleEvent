@@ -46,10 +46,13 @@ class ComingRealTimeDatabaseManager(lifecycle: Lifecycle) : LifecycleObserver {
         override fun onChildChanged(p0: DataSnapshot?, p1: String?) {
             val itemListEvent: ItemListEvent? = p0?.getValue(ItemListEvent::class.java)
             itemListEvent?.let {
-                val itemListChange: ItemListEvent? = listItemEventComing.find { it.eventKey == p0.key }
+                val itemListChange: ItemListEvent? = listItemEventComing.find { it.eventKey == itemListEvent.eventKey }
                 val indexChange: Int = listItemEventComing.indexOf(itemListChange)
-                listItemEventComing[indexChange] = itemListEvent
-                adapterListComing.notifyItemChanged(indexChange)
+                listItemEventComing.removeAt(indexChange)
+                adapterListComing.notifyItemRemoved(indexChange)
+
+                listItemEventComing.add(0, itemListEvent)
+                adapterListComing.notifyItemInserted(0)
             }
         }
 
@@ -62,7 +65,13 @@ class ComingRealTimeDatabaseManager(lifecycle: Lifecycle) : LifecycleObserver {
         }
 
         override fun onChildRemoved(p0: DataSnapshot?) {
-
+            val itemListEvent: ItemListEvent? = p0?.getValue(ItemListEvent::class.java)
+            itemListEvent?.let {
+                val listItemRemove = listItemEventComing.find { it.eventKey == itemListEvent.eventKey }
+                val listIndexElement = listItemEventComing.indexOf(listItemRemove)
+                listItemEventComing.remove(listItemRemove)
+                adapterListComing.notifyItemRemoved(listIndexElement)
+            }
         }
     }
 

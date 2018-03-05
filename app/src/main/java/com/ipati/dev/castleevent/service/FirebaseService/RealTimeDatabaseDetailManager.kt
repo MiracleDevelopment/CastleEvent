@@ -12,7 +12,7 @@ import com.ipati.dev.castleevent.model.OnUpdateInformation
 import com.ipati.dev.castleevent.model.ModelListItem.ItemListEvent
 
 
-class RealTimeDatabaseDetailManager(context: Context, lifecycle: Lifecycle, eventId: Long, listDetailEventFragment: ListDetailEventFragment) : LifecycleObserver {
+class RealTimeDatabaseDetailManager(context: Context, lifecycle: Lifecycle, eventId: Long, eventCategory: String, listDetailEventFragment: ListDetailEventFragment) : LifecycleObserver {
     private var contextManager: Context? = null
     private var lifecycleManager: Lifecycle? = null
     private var eventIdManager: Long? = null
@@ -24,7 +24,7 @@ class RealTimeDatabaseDetailManager(context: Context, lifecycle: Lifecycle, even
     private lateinit var childEvent: ChildEventListener
     private var realTimeDataDetail: DatabaseReference = FirebaseDatabase.getInstance().reference
     private var realTimeDataDetailRef: DatabaseReference = realTimeDataDetail.child("eventItem")
-            .child("eventContinue").child("news")
+            .child("eventContinue").child(eventCategory)
 
     init {
         eventIdManager = eventId

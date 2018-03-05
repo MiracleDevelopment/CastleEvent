@@ -12,7 +12,7 @@ import kotlinx.android.synthetic.main.custom_list_event_adapter_layout.view.*
 
 class ComingListEventAdapter(listItemEvent: ArrayList<ItemListEvent>) : RecyclerView.Adapter<ComingListEventAdapter.ViewHolder>() {
     private val listItemEventComing: ArrayList<ItemListEvent> = listItemEvent
-    var callBackComingListEventAdapter: ((eventId: Long, width: Int, height: Int, transitionName: String
+    var callBackComingListEventAdapter: ((eventId: Long, eventCategory: String, width: Int, height: Int, transitionName: String
                                           , viewTransition: View, status: Int) -> Unit?)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
@@ -35,7 +35,7 @@ class ComingListEventAdapter(listItemEvent: ArrayList<ItemListEvent>) : Recycler
                     ViewCompat.setTransitionName(itemView.custom_im_cover_list_event
                             , "{${itemView.custom_im_cover_list_event.id}$adapterPosition }")
 
-                    callBackComingListEventAdapter?.invoke(listItemEventComing[adapterPosition].eventId
+                    callBackComingListEventAdapter?.invoke(listItemEventComing[adapterPosition].eventId, "coming"
                             , itemView.custom_im_cover_list_event.layoutParams.width
                             , itemView.custom_im_cover_list_event.layoutParams.height
                             , ViewCompat.getTransitionName(itemView.custom_im_cover_list_event)

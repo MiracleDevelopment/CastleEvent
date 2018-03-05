@@ -30,6 +30,7 @@ import kotlin.collections.ArrayList
 class ListEventFragment : BaseFragment() {
     private lateinit var realTimeDatabaseManager: RealTimeDatabaseManager
     private lateinit var categoryRealTimeDatabaseManager: CategoryRealTimeManager
+
     val changeCategory: ((msg: String) -> Unit) = { msg: String ->
         when (Locale.getDefault().language) {
             "en" -> {
@@ -132,14 +133,14 @@ class ListEventFragment : BaseFragment() {
     private fun setShareElementTransition() {
         recycler_list_event.adapter = realTimeDatabaseManager.adapterListEvent
         realTimeDatabaseManager.adapterListEvent?.onItemTransitionClickable = { view, width, height, transitionName
-                                                                                , eventId
+                                                                                , eventId, eventCategory
                                                                                 , status ->
-            intentTransitionView(view, width, height, transitionName, eventId, status)
+            intentTransitionView(view, width, height, transitionName, eventId, eventCategory, status)
         }
     }
 
 
-    private fun intentTransitionView(view: View?, width: Int, height: Int, transitionName: String, eventId: Long, status: Int) {
+    private fun intentTransitionView(view: View?, width: Int, height: Int, transitionName: String, eventId: Long, eventCategory: String, status: Int) {
         val intentAnimation = Intent(context, ListDetailEventActivity::class.java)
 
         val activityOptionsCompat: ActivityOptionsCompat = ActivityOptionsCompat
@@ -151,21 +152,13 @@ class ListEventFragment : BaseFragment() {
         intentAnimation.putExtra("height", height)
         intentAnimation.putExtra("transitionName", transitionName)
         intentAnimation.putExtra("eventId", eventId)
+        intentAnimation.putExtra("eventCategory", eventCategory)
         intentAnimation.putExtra("status", status)
         startActivity(intentAnimation, activityOptionsCompat.toBundle())
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-    }
-
-    override fun onSaveInstanceState(outState: Bundle?) {
-        super.onSaveInstanceState(outState)
-    }
-
     companion object {
         private const val listEventObject: String = "ListEventFragment"
-        private const val categoryObject: String = "categoryName"
         fun newInstance(nameObject: String): ListEventFragment {
             val listEventFragment = ListEventFragment()
             val bundle = Bundle()

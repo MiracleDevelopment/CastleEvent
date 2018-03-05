@@ -20,7 +20,9 @@ data class ItemListEvent(var eventKey: String = ""
                          , var eventCalendarEnd: String = ""
                          , var eventPrice: String = ""
                          , var eventPhone: String = ""
-                         , var eventEmail: String = "")
+                         , var eventEmail: String = ""
+                         , var eventTimeStamp: Long = 0
+                         , var eventMillionSecondStart: Long = 0)
 
 
 

@@ -11,7 +11,6 @@ import com.ipati.dev.castleevent.extension.onShowToast
 import com.ipati.dev.castleevent.model.ModelListItem.ItemListEvent
 
 class RealTimeDatabaseManager(context: Context, lifeCycle: Lifecycle) : LifecycleObserver {
-    private var contextManager: Context = context
     private var lifeCycleManager: Lifecycle? = null
     private var itemListEvent: ItemListEvent? = null
     private var onChildListener: ChildEventListener? = null
@@ -73,8 +72,12 @@ class RealTimeDatabaseManager(context: Context, lifeCycle: Lifecycle) : Lifecycl
                 itemListEvent?.let {
                     val itemChange: ItemListEvent? = arrayItemList.find { it.eventKey == itemListEvent?.eventKey }
                     val indexRef: Int = arrayItemList.indexOf(itemChange)
-                    arrayItemList[indexRef] = itemListEvent!!
-                    adapterListEvent?.notifyItemChanged(indexRef)
+
+                    arrayItemList.removeAt(indexRef)
+                    adapterListEvent?.notifyItemRemoved(indexRef)
+
+                    arrayItemList.add(0, itemListEvent!!)
+                    adapterListEvent?.notifyItemInserted(0)
                 }
             }
 

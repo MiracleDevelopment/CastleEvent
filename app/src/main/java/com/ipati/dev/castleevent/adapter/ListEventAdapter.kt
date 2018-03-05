@@ -18,7 +18,7 @@ class ListEventAdapter(listItem: ArrayList<ItemListEvent>) : RecyclerView.Adapte
     var itemViewTransition: View? = null
     var onItemTransitionClickable: ((view: View?, width: Int, height: Int
                                      , transitionName: String
-                                     , eventId: Long, status: Int) -> Unit)? = null
+                                     , eventId: Long, eventCategory: String, status: Int) -> Unit)? = null
 
     override fun getItemCount(): Int = itemList.count()
 
@@ -54,7 +54,7 @@ class ListEventAdapter(listItem: ArrayList<ItemListEvent>) : RecyclerView.Adapte
                                     , widthOriginal
                                     , heightOriginal
                                     , ViewCompat.getTransitionName(itemViewTransition?.custom_im_cover_list_event)
-                                    , itemList[adapterPosition].eventId, 0)
+                                    , itemList[adapterPosition].eventId, "news", 0)
                         }
                     }
                     return super.onSingleTapConfirmed(e)

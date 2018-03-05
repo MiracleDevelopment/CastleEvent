@@ -28,11 +28,11 @@ class FirebaseMessagingService : FirebaseMessagingService() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun sendNotification(mRemoteMessage: RemoteMessage.Notification) {
-        notificationManager.createNotificationManager(mRemoteMessage, iconLarge(mapData), 0)
+//        notificationManager.createNotificationManager(mRemoteMessage, iconLarge(mapData), 0)
     }
 
     private fun sendNotificationLess(mRemoteMessage: RemoteMessage.Notification) {
-        notificationManager.createNotificationLess(mRemoteMessage, iconLarge(mapData))
+//        notificationManager.createNotificationLess(mRemoteMessage, iconLarge(mapData))
     }
 
     private fun iconLarge(mMapData: Map<String, String>?): Bitmap? {

@@ -109,7 +109,7 @@ class ComingEventFragment : BaseFragment() {
 
     private fun setAdapterRecyclerView() {
         recycler_coming_event.adapter = comingRealTimeDatabaseManager.adapterListComing
-        comingRealTimeDatabaseManager.adapterListComing.callBackComingListEventAdapter = { eventId, width
+        comingRealTimeDatabaseManager.adapterListComing.callBackComingListEventAdapter = { eventId, eventCategory, width
                                                                                            , height
                                                                                            , transitionName
                                                                                            , viewTransition
@@ -119,6 +119,7 @@ class ComingEventFragment : BaseFragment() {
             intentListDetail.putExtra("width", width)
             intentListDetail.putExtra("height", height)
             intentListDetail.putExtra("transitionName", transitionName)
+            intentListDetail.putExtra("eventCategory", eventCategory)
             intentListDetail.putExtra("status", status)
 
             val activityOptionCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(activity

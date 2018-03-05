@@ -46,10 +46,13 @@ class ExpireRealTimeDatabaseManager(lifecycle: Lifecycle) : LifecycleObserver {
         override fun onChildChanged(p0: DataSnapshot?, p1: String?) {
             val itemListEvent: ItemListEvent? = p0?.getValue(ItemListEvent::class.java)
             itemListEvent?.let {
-                val itemListChange: ItemListEvent? = listItemEventExpire.find { it.eventKey == p0.key }
+                val itemListChange: ItemListEvent? = listItemEventExpire.find { it.eventKey == itemListEvent.eventKey }
                 val indexChange: Int = listItemEventExpire.indexOf(itemListChange)
-                listItemEventExpire[indexChange] = itemListEvent
-                adapterExpire.notifyItemChanged(indexChange)
+                listItemEventExpire.removeAt(indexChange)
+                adapterExpire.notifyItemRemoved(indexChange)
+
+                listItemEventExpire.add(0, itemListEvent)
+                adapterExpire.notifyItemInserted(0)
             }
         }
 
@@ -62,7 +65,13 @@ class ExpireRealTimeDatabaseManager(lifecycle: Lifecycle) : LifecycleObserver {
         }
 
         override fun onChildRemoved(p0: DataSnapshot?) {
-
+            val itemListEvent: ItemListEvent? = p0?.getValue(ItemListEvent::class.java)
+            itemListEvent?.let {
+                val itemListRemove = listItemEventExpire.find { it.eventKey == itemListEvent.eventKey }
+                val indexItemExpire = listItemEventExpire.indexOf(itemListRemove)
+                listItemEventExpire.remove(itemListRemove)
+                adapterExpire.notifyItemRemoved(indexItemExpire)
+            }
         }
     }
 

@@ -116,12 +116,13 @@ class ExpireEventFragment : Fragment() {
 
     private fun setAdapterRecyclerView() {
         recycler_expire_event.adapter = expireRealTimeDatabase.adapterExpire
-        expireRealTimeDatabase.adapterExpire.callBackExpireListEventAdapter = { eventId, width, height, transitionName, viewTransition, status ->
+        expireRealTimeDatabase.adapterExpire.callBackExpireListEventAdapter = { eventId, eventCategory, width, height, transitionName, viewTransition, status ->
             val intentExpire = Intent(context, ListDetailEventActivity::class.java)
             intentExpire.putExtra("eventId", eventId)
             intentExpire.putExtra("width", width)
             intentExpire.putExtra("height", height)
             intentExpire.putExtra("transitionName", transitionName)
+            intentExpire.putExtra("eventCategory", eventCategory)
             intentExpire.putExtra("status", status)
 
             val activityOptionCompat: ActivityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(activity

@@ -34,11 +34,12 @@ class ListDetailEventActivity : BaseAppCompatActivity(), LoadingDialogListener, 
     private fun setUpFragment() {
         intent.extras?.let {
             val eventId = it.getLong("eventId")
+            val eventCategory = it.getString("eventCategory")
             val widthView = it.getInt("width")
             val heightView = it.getInt("height")
             val transitionName = it.getString("transitionName")
             val statusType = it.getInt("status")
-            listDetailFragment = ListDetailEventFragment.newInstance(widthView, heightView, transitionName, eventId, statusType)
+            listDetailFragment = ListDetailEventFragment.newInstance(widthView, heightView, transitionName, eventId, eventCategory, statusType)
             supportFragmentManager.beginTransaction()
                     .replace(R.id.frame_list_detail_event
                             , listDetailFragment

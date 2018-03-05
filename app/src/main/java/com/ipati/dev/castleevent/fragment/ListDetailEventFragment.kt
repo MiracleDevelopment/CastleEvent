@@ -76,23 +76,30 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
     private lateinit var googlePlayServiceMap: GooglePlayServiceMapManager
     private lateinit var googleCredentialAccount: GoogleAccountCredential
     private lateinit var googleApiAvailability: GoogleApiAvailability
-    private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
+
     private lateinit var calendarManager: CalendarManager
     private lateinit var authenticationStatus: AuthenticationStatus
     private lateinit var dialogManager: DialogManager
     private lateinit var dateManager: DateManager
 
     private var ref: DatabaseReference = FirebaseDatabase.getInstance().reference
-    @State private var eventId: Long? = null
+    private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
+    @State
+    private var eventId: Long? = null
     private var accountBank: String? = null
     private var statusCodeGoogleApi: Int? = null
-    @State private var pushEvent: MakePushEvent? = null
+    @State
+    private var pushEvent: MakePushEvent? = null
     private var restItemEvent: ItemListEvent? = null
     private var recorderEvent: RecordListEvent? = null
-    @State private var checkRest: DatabaseReference? = null
-    @State private var bundle: Bundle? = null
-    @State private var idPushFireBase: String? = null
-    @State private var statusType: Int? = 0
+    @State
+    private var checkRest: DatabaseReference? = null
+    @State
+    private var bundle: Bundle? = null
+    @State
+    private var idPushFireBase: String? = null
+    @State
+    private var statusType: Int? = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -141,8 +148,9 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
             im_detail_cover.layoutParams.height = context.pxToDp(app_bar_detail_event.layoutParams.height)
 
             eventId = bundle!!.getLong(listEventObject)
+            val eventCategory = bundle!!.getString(eventCategoryObject)
             statusType = bundle?.getInt(statusTypeObject)
-            realTimeDatabaseDetailManager = RealTimeDatabaseDetailManager(context, lifecycle, eventId!!, this)
+            realTimeDatabaseDetailManager = RealTimeDatabaseDetailManager(context, lifecycle, eventId!!, eventCategory, this)
         }
 
         bt_get_tickets.setOnClickListener { btView -> onClick(btView) }
@@ -621,6 +629,7 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
         private const val heightObject: String = "height"
         private const val transition: String = "transition"
         private const val statusTypeObject: String = "status"
+        private const val eventCategoryObject: String = "eventCategory"
 
         private const val REQUEST_ACCOUNT: Int = 1112
         private const val REQUEST_GOOGLE_PLAY: Int = 1121
@@ -635,13 +644,14 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
         private const val REQUEST_COMING: Int = 1006
         private const val REQUEST_EXPIRE: Int = 1007
 
-        fun newInstance(width: Int, height: Int, transitionName: String, nameObject: Long, statusType: Int): ListDetailEventFragment {
+        fun newInstance(width: Int, height: Int, transitionName: String, nameObject: Long, eventCategory: String, statusType: Int): ListDetailEventFragment {
             val listDetailEventFragment = ListDetailEventFragment()
             val bundle = Bundle()
             bundle.putLong(listEventObject, nameObject)
             bundle.putInt(widthObject, width)
             bundle.putInt(heightObject, height)
             bundle.putString(transition, transitionName)
+            bundle.putString(eventCategoryObject, eventCategory)
             bundle.putInt(statusTypeObject, statusType)
             listDetailEventFragment.arguments = bundle
             return listDetailEventFragment

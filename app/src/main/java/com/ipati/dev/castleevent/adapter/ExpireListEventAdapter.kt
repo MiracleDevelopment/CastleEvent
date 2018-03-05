@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.custom_list_event_adapter_layout.view.*
 class ExpireListEventAdapter(listItemListEvent: ArrayList<ItemListEvent>) : RecyclerView.Adapter<ExpireListEventAdapter.ViewHolder>() {
     private val listItemListEventExpire: ArrayList<ItemListEvent> = listItemListEvent
 
-    var callBackExpireListEventAdapter: ((eventId: Long, width: Int, height: Int
+    var callBackExpireListEventAdapter: ((eventId: Long, eventCategory: String, width: Int, height: Int
                                           , transitionName: String
                                           , viewTransition: View
                                           , status: Int) -> Unit?)? = null
@@ -35,7 +35,7 @@ class ExpireListEventAdapter(listItemListEvent: ArrayList<ItemListEvent>) : Recy
             GestureDetector(itemView.context, object : GestureDetector.SimpleOnGestureListener() {
                 override fun onSingleTapConfirmed(e: MotionEvent?): Boolean {
                     ViewCompat.setTransitionName(itemView.custom_im_cover_list_event, "${itemView.custom_im_cover_list_event.id}$adapterPosition")
-                    callBackExpireListEventAdapter?.invoke(listItemListEventExpire[adapterPosition].eventId
+                    callBackExpireListEventAdapter?.invoke(listItemListEventExpire[adapterPosition].eventId, "expire"
                             , itemView.custom_im_cover_list_event.layoutParams.width
                             , itemView.custom_im_cover_list_event.layoutParams.height
                             , ViewCompat.getTransitionName(itemView.custom_im_cover_list_event)
