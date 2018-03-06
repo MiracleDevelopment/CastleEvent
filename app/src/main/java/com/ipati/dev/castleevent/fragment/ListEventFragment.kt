@@ -2,26 +2,18 @@ package com.ipati.dev.castleevent.fragment
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Parcelable
 import android.support.v4.app.ActivityOptionsCompat
-import android.support.v4.app.SharedElementCallback
 import android.support.v4.view.ViewCompat
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.view.*
-import com.facebook.drawee.drawable.ScalingUtils
-import com.facebook.drawee.view.DraweeTransition
-import com.facebook.drawee.view.SimpleDraweeView
 import com.ipati.dev.castleevent.ListDetailEventActivity
 import com.ipati.dev.castleevent.base.BaseFragment
 import com.ipati.dev.castleevent.R
 import com.ipati.dev.castleevent.adapter.ListEventAdapter
-import com.ipati.dev.castleevent.extension.onShowToast
-import com.ipati.dev.castleevent.model.GoogleCalendar.categoryNameEvent
 import com.ipati.dev.castleevent.model.ModelListItem.ItemListEvent
 import com.ipati.dev.castleevent.service.FirebaseService.CategoryRealTimeManager
 import com.ipati.dev.castleevent.service.FirebaseService.RealTimeDatabaseManager
-import icepick.State
 import kotlinx.android.synthetic.main.activity_list_event_fragment.*
 import kotlinx.android.synthetic.main.custom_list_event_adapter_layout.view.*
 import java.util.*
@@ -83,18 +75,8 @@ class ListEventFragment : BaseFragment() {
 
     //Todo: categoryEnglish
     private fun setChangeCategoryEN(category: String) {
-        val listItemCategory = realTimeDatabaseManager.arrayItemList.filter { it.categoryName == category }
-        when (listItemCategory.count()) {
-            0 -> {
-                realTimeDatabaseManager.adapterListEvent = ListEventAdapter(realTimeDatabaseManager.arrayItemList)
-                setShareElementTransition()
-            }
-
-            else -> {
-                realTimeDatabaseManager.adapterListEvent = ListEventAdapter(listChangeItem(listItemCategory))
-                setShareElementTransition()
-            }
-        }
+        realTimeDatabaseManager.adapterListEvent = ListEventAdapter(listItemCategory(category))
+        setShareElementTransition()
     }
 
     //Todo: categoryThai
@@ -106,19 +88,19 @@ class ListEventFragment : BaseFragment() {
             }
 
             context.getString(R.string.categoryEducation) -> {
-                val listItemCategory = realTimeDatabaseManager.arrayItemList.filter { it.categoryName == "Education" }
+                val listItemCategory = realTimeDatabaseManager.arrayItemList.filter { it.eventCategory == "Education" }
                 realTimeDatabaseManager.adapterListEvent = ListEventAdapter(listChangeItem(listItemCategory))
                 setShareElementTransition()
             }
 
             context.getString(R.string.categoryTechnology) -> {
-                val listItemCategory = realTimeDatabaseManager.arrayItemList.filter { it.categoryName == "Technology" }
+                val listItemCategory = realTimeDatabaseManager.arrayItemList.filter { it.eventCategory == "Technology" }
                 realTimeDatabaseManager.adapterListEvent = ListEventAdapter(listChangeItem(listItemCategory))
                 setShareElementTransition()
             }
 
             context.getString(R.string.categorySport) -> {
-                val listItemCategory = realTimeDatabaseManager.arrayItemList.filter { it.categoryName == "Sport" }
+                val listItemCategory = realTimeDatabaseManager.arrayItemList.filter { it.eventCategory == "Sport" }
                 realTimeDatabaseManager.adapterListEvent = ListEventAdapter(listChangeItem(listItemCategory))
                 setShareElementTransition()
             }
@@ -136,6 +118,28 @@ class ListEventFragment : BaseFragment() {
                                                                                 , eventId, eventCategory
                                                                                 , status ->
             intentTransitionView(view, width, height, transitionName, eventId, eventCategory, status)
+        }
+    }
+
+    private fun listItemCategory(category: String): ArrayList<ItemListEvent> {
+        return when (category) {
+            context.getString(R.string.categoryAll) -> {
+                ArrayList(realTimeDatabaseManager.arrayItemList)
+            }
+
+            context.getString(R.string.categoryEducation) -> {
+                val listItemEvent = realTimeDatabaseManager.arrayItemList.filter { it.eventCategory == category }
+                ArrayList(listItemEvent)
+            }
+
+            context.getString(R.string.categoryTechnology) -> {
+                val listItemEvent = realTimeDatabaseManager.arrayItemList.filter { it.eventCategory == category }
+                ArrayList(listItemEvent)
+            }
+            else -> {
+                val listItemEvent = realTimeDatabaseManager.arrayItemList.filter { it.eventCategory == category }
+                ArrayList(listItemEvent)
+            }
         }
     }
 

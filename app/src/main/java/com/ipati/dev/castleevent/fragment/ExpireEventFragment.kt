@@ -13,7 +13,6 @@ import android.view.ViewGroup
 import com.ipati.dev.castleevent.ListDetailEventActivity
 import com.ipati.dev.castleevent.R
 import com.ipati.dev.castleevent.adapter.ExpireListEventAdapter
-import com.ipati.dev.castleevent.extension.onShowToast
 import com.ipati.dev.castleevent.model.ModelListItem.ItemListEvent
 import com.ipati.dev.castleevent.service.FirebaseService.ExpireRealTimeDatabaseManager
 import kotlinx.android.synthetic.main.activity_expire_event_fragment.*
@@ -67,18 +66,8 @@ class ExpireEventFragment : Fragment() {
 
     //Todo categoryEnglish
     private fun setChangeCategoryEN(category: String) {
-        val itemChangeCategory = expireRealTimeDatabase.listItemEventExpire.filter { it.categoryName == category }
-        when (itemChangeCategory.count()) {
-            0 -> {
-                expireRealTimeDatabase.adapterExpire = ExpireListEventAdapter(expireRealTimeDatabase.listItemEventExpire)
-                setAdapterRecyclerView()
-            }
-
-            else -> {
-                expireRealTimeDatabase.adapterExpire = ExpireListEventAdapter(listChangeItem(itemChangeCategory))
-                setAdapterRecyclerView()
-            }
-        }
+        expireRealTimeDatabase.adapterExpire = ExpireListEventAdapter(listItemEvent(category))
+        setAdapterRecyclerView()
     }
 
     //Todo: categoryThai
@@ -90,19 +79,19 @@ class ExpireEventFragment : Fragment() {
             }
 
             context.getString(R.string.categoryEducation) -> {
-                val listItemCategory = expireRealTimeDatabase.listItemEventExpire.filter { it.categoryName == "Education" }
+                val listItemCategory = expireRealTimeDatabase.listItemEventExpire.filter { it.eventCategory == "Education" }
                 expireRealTimeDatabase.adapterExpire = ExpireListEventAdapter(listChangeItem(listItemCategory))
                 setAdapterRecyclerView()
             }
 
             context.getString(R.string.categoryTechnology) -> {
-                val listItemCategory = expireRealTimeDatabase.listItemEventExpire.filter { it.categoryName == "Technology" }
+                val listItemCategory = expireRealTimeDatabase.listItemEventExpire.filter { it.eventCategory == "Technology" }
                 expireRealTimeDatabase.adapterExpire = ExpireListEventAdapter(listChangeItem(listItemCategory))
                 setAdapterRecyclerView()
             }
 
             else -> {
-                val listItemCategory = expireRealTimeDatabase.listItemEventExpire.filter { it.categoryName == "Sport" }
+                val listItemCategory = expireRealTimeDatabase.listItemEventExpire.filter { it.eventCategory == "Sport" }
                 expireRealTimeDatabase.adapterExpire = ExpireListEventAdapter(listChangeItem(listItemCategory))
                 setAdapterRecyclerView()
             }
@@ -112,6 +101,29 @@ class ExpireEventFragment : Fragment() {
     //Todo : ConvertListToArrayList
     private fun listChangeItem(list: List<ItemListEvent>): ArrayList<ItemListEvent> {
         return ArrayList(list)
+    }
+
+    private fun listItemEvent(category: String): ArrayList<ItemListEvent> {
+        return when (category) {
+            context.getString(R.string.categoryAll) -> {
+                ArrayList(expireRealTimeDatabase.listItemEventExpire)
+            }
+
+            context.getString(R.string.categoryEducation) -> {
+                val listEventItem = expireRealTimeDatabase.listItemEventExpire.filter { it.eventCategory == category }
+                ArrayList(listEventItem)
+            }
+
+            context.getString(R.string.categoryTechnology) -> {
+                val listEventItem = expireRealTimeDatabase.listItemEventExpire.filter { it.eventCategory == category }
+                ArrayList(listEventItem)
+            }
+            else -> {
+                val listEventItem = expireRealTimeDatabase.listItemEventExpire.filter { it.eventCategory == category }
+                ArrayList(listEventItem)
+            }
+
+        }
     }
 
     private fun setAdapterRecyclerView() {

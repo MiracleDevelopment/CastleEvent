@@ -50,7 +50,7 @@ class ListEventFavoriteRealTimeManager(msg: String, lifecycle: Lifecycle) : Life
         override fun onChildAdded(p0: DataSnapshot?, p1: String?) {
             val itemListEvent: ItemListEvent? = p0?.getValue(ItemListEvent::class.java)
             itemListEvent?.let {
-                when (itemListEvent.categoryName) {
+                when (itemListEvent.eventCategory) {
                     msg -> {
                         listItemFavoriteEvent.add(itemListEvent)
                         adapterListFavoriteItem.notifyDataSetChanged()

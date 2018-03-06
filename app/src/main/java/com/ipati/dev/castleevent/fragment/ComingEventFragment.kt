@@ -3,18 +3,17 @@ package com.ipati.dev.castleevent.fragment
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.ActivityOptionsCompat
-import android.support.v4.app.Fragment
 import android.support.v4.view.ViewCompat
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.ipati.dev.castleevent.ListDetailEventActivity
 import com.ipati.dev.castleevent.R
 import com.ipati.dev.castleevent.adapter.ComingListEventAdapter
 import com.ipati.dev.castleevent.base.BaseFragment
-import com.ipati.dev.castleevent.extension.onShowToast
 import com.ipati.dev.castleevent.model.ModelListItem.ItemListEvent
 import com.ipati.dev.castleevent.service.FirebaseService.ComingRealTimeDatabaseManager
 import kotlinx.android.synthetic.main.activity_comming_event_fragment.*
@@ -68,17 +67,8 @@ class ComingEventFragment : BaseFragment() {
 
     //Todo: categoryEnglish
     private fun setChangeCategoryEn(category: String) {
-        val listItemList = comingRealTimeDatabaseManager.listItemEventComing.filter { it.categoryName == category }
-        when (listItemList.count()) {
-            0 -> {
-                comingRealTimeDatabaseManager.adapterListComing = ComingListEventAdapter(comingRealTimeDatabaseManager.listItemEventComing)
-                setAdapterRecyclerView()
-            }
-            else -> {
-                comingRealTimeDatabaseManager.adapterListComing = ComingListEventAdapter(ArrayList(listItemList))
-                setAdapterRecyclerView()
-            }
-        }
+        comingRealTimeDatabaseManager.adapterListComing = ComingListEventAdapter(listItemCategory(category))
+        setAdapterRecyclerView()
     }
 
     //Todo: categoryThai
@@ -90,17 +80,19 @@ class ComingEventFragment : BaseFragment() {
             }
 
             context.getString(R.string.categoryEducation) -> {
-                val listItemCategory = comingRealTimeDatabaseManager.listItemEventComing.filter { it.categoryName == "Education" }
+                val listItemCategory = comingRealTimeDatabaseManager.listItemEventComing.filter { it.eventCategory == "Education" }
                 comingRealTimeDatabaseManager.adapterListComing = ComingListEventAdapter(listChangeCategory(listItemCategory))
                 setAdapterRecyclerView()
             }
+
             context.getString(R.string.categoryTechnology) -> {
-                val listItemCategory = comingRealTimeDatabaseManager.listItemEventComing.filter { it.categoryName == "Technology" }
+                val listItemCategory = comingRealTimeDatabaseManager.listItemEventComing.filter { it.eventCategory == "Technology" }
                 comingRealTimeDatabaseManager.adapterListComing = ComingListEventAdapter(listChangeCategory(listItemCategory))
                 setAdapterRecyclerView()
             }
+
             else -> {
-                val listItemCategory = comingRealTimeDatabaseManager.listItemEventComing.filter { it.categoryName == "Sport" }
+                val listItemCategory = comingRealTimeDatabaseManager.listItemEventComing.filter { it.eventCategory == "Sport" }
                 comingRealTimeDatabaseManager.adapterListComing = ComingListEventAdapter(listChangeCategory(listItemCategory))
                 setAdapterRecyclerView()
             }
@@ -127,6 +119,29 @@ class ComingEventFragment : BaseFragment() {
                     , ViewCompat.getTransitionName(viewTransition))
 
             startActivity(intentListDetail, activityOptionCompat.toBundle())
+        }
+    }
+
+    private fun listItemCategory(category: String): ArrayList<ItemListEvent> {
+        return when (category) {
+            context.getString(R.string.categoryAll) -> {
+                ArrayList(comingRealTimeDatabaseManager.listItemEventComing)
+            }
+
+            context.getString(R.string.categoryEducation) -> {
+                val listItemEvent = comingRealTimeDatabaseManager.listItemEventComing.filter { it.eventCategory == category }
+                ArrayList(listItemEvent)
+            }
+
+            context.getString(R.string.categoryTechnology) -> {
+                val listItemEvent = comingRealTimeDatabaseManager.listItemEventComing.filter { it.eventCategory == category }
+                ArrayList(listItemEvent)
+            }
+
+            else -> {
+                val listItemEvent = comingRealTimeDatabaseManager.listItemEventComing.filter { it.eventCategory == category }
+                ArrayList(listItemEvent)
+            }
         }
     }
 

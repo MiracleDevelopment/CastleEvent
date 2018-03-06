@@ -6,13 +6,10 @@ import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
-import android.provider.Settings
 import android.support.design.widget.BottomSheetBehavior
-import android.support.v4.app.SharedElementCallback
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewCompat
 import android.support.v7.app.AppCompatActivity
@@ -22,7 +19,6 @@ import android.view.*
 import android.widget.Toast
 import com.facebook.drawee.drawable.ScalingUtils
 import com.facebook.drawee.view.DraweeTransition
-import com.facebook.drawee.view.SimpleDraweeView
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.api.client.extensions.android.http.AndroidHttp
@@ -36,14 +32,11 @@ import com.google.api.services.calendar.Calendar
 import com.google.api.services.calendar.CalendarScopes
 import com.google.api.services.calendar.model.Event
 import com.google.firebase.database.*
-import com.ipati.dev.castleevent.BuildConfig
 import com.ipati.dev.castleevent.base.BaseFragment
 import com.ipati.dev.castleevent.R
 import com.ipati.dev.castleevent.extension.pxToDp
-import com.ipati.dev.castleevent.extension.pxToDp
 import com.ipati.dev.castleevent.extension.onShowSuccessDialog
 import com.ipati.dev.castleevent.extension.onShowToast
-import com.ipati.dev.castleevent.fragment.loading.MissingDialogFragment
 import com.ipati.dev.castleevent.model.Fresco.loadGoogleMapStatic
 import com.ipati.dev.castleevent.model.Fresco.loadLogo
 import com.ipati.dev.castleevent.model.Fresco.loadPhotoDetail
@@ -294,7 +287,7 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
         keyEvent = itemListEvent.eventKey
         idEvent = itemListEvent.eventId.toString()
         nameEvent = itemListEvent.eventName
-        categoryNameEvent = itemListEvent.categoryName
+        categoryNameEvent = itemListEvent.eventCategory
         logoEvent = itemListEvent.eventCover
         startEvent = itemListEvent.eventCalendarStart
         endEvent = itemListEvent.eventCalendarEnd
@@ -336,7 +329,7 @@ class ListDetailEventFragment : BaseFragment(), LoadingDetailData, OnUpdateInfor
         keyEvent = itemListEvent.eventKey
         idEvent = itemListEvent.eventId.toString()
         nameEvent = itemListEvent.eventName
-        categoryNameEvent = itemListEvent.categoryName
+        categoryNameEvent = itemListEvent.eventCategory
         logoEvent = itemListEvent.eventCover
         startEvent = itemListEvent.eventCalendarStart
         endEvent = itemListEvent.eventCalendarEnd

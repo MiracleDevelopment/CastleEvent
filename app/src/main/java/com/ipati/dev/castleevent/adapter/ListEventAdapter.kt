@@ -54,7 +54,7 @@ class ListEventAdapter(listItem: ArrayList<ItemListEvent>) : RecyclerView.Adapte
                                     , widthOriginal
                                     , heightOriginal
                                     , ViewCompat.getTransitionName(itemViewTransition?.custom_im_cover_list_event)
-                                    , itemList[adapterPosition].eventId, "news", 0)
+                                    , itemList[adapterPosition].eventId, "new", 0)
                         }
                     }
                     return super.onSingleTapConfirmed(e)

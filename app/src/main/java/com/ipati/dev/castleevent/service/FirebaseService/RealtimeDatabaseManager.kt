@@ -19,7 +19,7 @@ class RealTimeDatabaseManager(context: Context, lifeCycle: Lifecycle) : Lifecycl
 
     private var tagChild = "eventItem/eventContinue"
     private var refDatabase: DatabaseReference = FirebaseDatabase.getInstance().reference
-    private var refDatabaseChild: DatabaseReference? = refDatabase.child(tagChild).child("news")
+    private var refDatabaseChild: DatabaseReference? = refDatabase.child(tagChild).child("new")
 
     //Todo:init Class Constructor
     init {
