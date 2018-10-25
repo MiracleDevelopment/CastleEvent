@@ -6,6 +6,7 @@ apply plugin: 'io.fabric'
 repositories {
     maven { url 'https://maven.fabric.io/public' }
     maven {url "https://clojars.org/repo/"}
+    google()
     jcenter()
 }
 
@@ -108,19 +109,19 @@ dependencies {
     implementation 'com.github.kenglxn.QRGen:android:2.2.0'
     implementation 'com.michaelmuenzer.android:ScrollableNumberPicker:0.2.2'
     implementation 'com.github.sundeepk:compact-calendar-view:2.0.2.2'
-    implementation 'android.arch.lifecycle:runtime:1.0.3'
+    implementation 'android.arch.lifecycle:runtime:1.1.1'
     implementation 'android.arch.lifecycle:extensions:1.0.0'
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:0.19.3"
     implementation 'jp.wasabeef:fresco-processors:2.1.0'
     implementation 'frankiesardo:icepick:3.2.0'
     annotationProcessor 'frankiesardo:icepick-processor:3.2.0'
 
-    testCompile 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.12'
     implementation 'com.android.support:support-annotations:27.0.1'
     androidTestCompile('com.android.support.test:runner:1.0.1') {
         exclude group: 'com.android.support', module: 'support-annotations'
     }
-    androidTestCompile 'com.android.support.test.espresso:espresso-core:3.0.1'
+    androidTestApi 'com.android.support.test.espresso:espresso-core:3.0.1'
     annotationProcessor 'android.arch.lifecycle:compiler:1.0.0'
 }
 apply plugin: 'com.google.gms.google-services'
